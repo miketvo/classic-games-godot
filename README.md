@@ -8,13 +8,13 @@ Each folder containing a `project.godot` file is a project meant to be used with
 
 ## Importing all projects
 
-To import all games at once in the project manager:
+To import all projects at once in the project manager:
 
 - Clone this repository or [download a ZIP archive](https://github.com/miketvo/classic-games-godot/archive/main.zip).
   - If you've downloaded a ZIP archive, extract it somewhere.
 - Open the Godot project manager and click the **Scan** button on the right.
-- Choose the path to the folder containing all games.
-- All games should now appear in the project manager.
+- Choose the path to the folder containing all projects.
+- All projects should now appear in the project manager.
 
 ## Try the games in your browser (Work-in-progress)
 
