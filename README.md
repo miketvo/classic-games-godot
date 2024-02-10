@@ -2,19 +2,19 @@
 
 My implementation of classic video games I played in my childhood using the Godot game engine. For educational purposes.
 
-Each folder containing a `project.godot` file is a demo project meant to be used with [Godot Engine](https://godotengine.org), the open source 2D and 3D game engine.
+Each folder containing a `project.godot` file is a project meant to be used with [Godot Engine](https://godotengine.org), the open source 2D and 3D game engine.
 
 **Godot version: (4.x release)**
 
-## Importing all games
+## Importing all projects
 
-To import all demos at once in the project manager:
+To import all games at once in the project manager:
 
 - Clone this repository or [download a ZIP archive](https://github.com/miketvo/classic-games-godot/archive/main.zip).
   - If you've downloaded a ZIP archive, extract it somewhere.
 - Open the Godot project manager and click the **Scan** button on the right.
 - Choose the path to the folder containing all games.
-- All demos should now appear in the project manager.
+- All games should now appear in the project manager.
 
 ## Try the games in your browser (Work-in-progress)
 
