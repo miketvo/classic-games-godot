@@ -1,7 +1,5 @@
-extends Node2D
+extends GameScene
 
-
-signal scene_finished
 
 @onready var _animation_player: AnimationPlayer = get_node("Sprite2D/AnimationPlayer")
 
@@ -17,4 +15,4 @@ func _process(_delta: float) -> void:
 
 func end_splash():
     _animation_player.stop(true)
-    scene_finished.emit()
+    scene_finished.emit("")
