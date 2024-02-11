@@ -23,7 +23,7 @@ boot_splash/minimum_display_time=2000
 [autoload]
 
 Global="*res://scripts/util/global.gd"
-GameScene="*res://scripts/util/game_scene.gd"
+GameScene2D="*res://scripts/util/game_scene_2d.gd"
 
 [display]
 
