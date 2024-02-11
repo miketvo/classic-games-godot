@@ -1,0 +1,41 @@
+[gd_scene load_steps=2 format=3 uid="uid://dw130mw8nfytq"]
+
+[ext_resource type="Script" path="res://scripts/ui/main_menu_ui.gd" id="1_oofdk"]
+
+[node name="MainMenuUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_oofdk")
+
+[node name="PlayButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 140.0
+offset_top = 90.0
+offset_right = 220.0
+offset_bottom = 122.0
+scale = Vector2(0.6, 0.6)
+text = "Play"
+
+[node name="SettingsButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 140.0
+offset_top = 113.0
+offset_right = 220.0
+offset_bottom = 145.0
+scale = Vector2(0.6, 0.6)
+text = "Settings"
+
+[node name="QuitButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 140.0
+offset_top = 136.0
+offset_right = 220.0
+offset_bottom = 168.0
+scale = Vector2(0.6, 0.6)
+text = "Quit"
+
+[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
