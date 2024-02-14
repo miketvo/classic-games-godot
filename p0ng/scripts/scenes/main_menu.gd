@@ -1,11 +1,12 @@
 extends GameScene2D
 
 
-# Called when the node enters the scene tree for the first time.
+var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+@onready var ball: RigidBody2D = $Ball
+
+
 func _ready() -> void:
-    pass # Replace with function body.
+    var velocity = Vector2.UP * rng.randf_range(160.0, 180.0) 
+    velocity = velocity.rotated(rng.randf_range(0.0, 2.0 * PI))
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-    pass
+    ball.set_linear_velocity(velocity)
