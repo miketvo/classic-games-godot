@@ -1,16 +1,98 @@
-[gd_scene load_steps=3 format=3 uid="uid://dyud8dot2715o"]
+[gd_scene load_steps=6 format=3 uid="uid://dyud8dot2715o"]
 
-[ext_resource type="Texture2D" uid="uid://cipcf1efsmsnt" path="res://assets/objects/paddle.png" id="1_brd5l"]
+[ext_resource type="Texture2D" uid="uid://btu8cwupgi6d3" path="res://assets/objects/paddle.png" id="1_brd5l"]
+
+[sub_resource type="Animation" id="Animation_cw7nb"]
+length = 0.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_fbvie"]
+length = 0.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jos0x"]
+_data = {
+"active": SubResource("Animation_fbvie"),
+"idle": SubResource("Animation_cw7nb")
+}
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_80yj8"]
-size = Vector2(4, 24)
+size = Vector2(48, 240)
 
 [node name="Paddle" type="CharacterBody2D"]
 motion_mode = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
 texture = ExtResource("1_brd5l")
+hframes = 2
+frame = 1
+metadata/_aseprite_wizard_config_ = {
+"i_mode": -1,
+"keep_anim_length": false,
+"layer": "",
+"o_ex_p": "",
+"o_folder": "res://assets/objects",
+"o_name": "paddle",
+"only_visible": false,
+"op_exp": true,
+"player": "Sprite2D/AnimationPlayer",
+"source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/p0ng/objects/paddle.ase"
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+libraries = {
+"": SubResource("AnimationLibrary_jos0x")
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_80yj8")
-debug_color = Color(1, 0, 0.141176, 0.419608)
+debug_color = Color(0.580392, 0.745098, 0, 0.419608)

@@ -11,31 +11,27 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_oofdk")
 
-[node name="PlayButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 140.0
-offset_top = 90.0
-offset_right = 220.0
-offset_bottom = 122.0
-scale = Vector2(0.6, 0.6)
-text = "Play"
+[node name="MainMenuContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 692.0
+offset_right = -692.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
 
-[node name="SettingsButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 140.0
-offset_top = 113.0
-offset_right = 220.0
-offset_bottom = 145.0
-scale = Vector2(0.6, 0.6)
-text = "Settings"
+[node name="PlayButton" type="Button" parent="MainMenuContainer"]
+layout_mode = 2
+text = "start"
 
-[node name="QuitButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 140.0
-offset_top = 136.0
-offset_right = 220.0
-offset_bottom = 168.0
-scale = Vector2(0.6, 0.6)
-text = "Quit"
+[node name="SettingsButton" type="Button" parent="MainMenuContainer"]
+layout_mode = 2
+text = "settings"
 
-[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]
+[node name="QuitButton" type="Button" parent="MainMenuContainer"]
+layout_mode = 2
+text = "quit"
+
+[connection signal="pressed" from="MainMenuContainer/QuitButton" to="." method="_on_quit_button_pressed"]
