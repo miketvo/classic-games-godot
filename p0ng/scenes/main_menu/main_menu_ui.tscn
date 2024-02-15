@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://dw130mw8nfytq"]
+[gd_scene load_steps=3 format=3 uid="uid://dw130mw8nfytq"]
 
+[ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_jv3ik"]
 [ext_resource type="Script" path="res://scripts/ui/main_menu_ui.gd" id="1_oofdk"]
 
 [node name="MainMenuUI" type="Control"]
@@ -7,8 +8,11 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 1.0
+offset_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_jv3ik")
 script = ExtResource("1_oofdk")
 
 [node name="MainMenuContainer" type="VBoxContainer" parent="."]
@@ -16,14 +20,20 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 692.0
-offset_right = -692.0
+offset_left = 920.0
+offset_top = 520.0
+offset_right = -872.0
+offset_bottom = -462.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(4, 4)
+pivot_offset = Vector2(64, 0)
 alignment = 1
 
 [node name="PlayButton" type="Button" parent="MainMenuContainer"]
 layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
 text = "start"
 
 [node name="SettingsButton" type="Button" parent="MainMenuContainer"]
@@ -34,4 +44,5 @@ text = "settings"
 layout_mode = 2
 text = "quit"
 
-[connection signal="pressed" from="MainMenuContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="MainMenuContainer/PlayButton" to="." method="_on_main_menu_play_button_pressed"]
+[connection signal="pressed" from="MainMenuContainer/QuitButton" to="." method="_on_main_menu_quit_button_pressed"]

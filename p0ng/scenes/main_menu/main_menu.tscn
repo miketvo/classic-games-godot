@@ -7,7 +7,6 @@
 
 [sub_resource type="Animation" id="Animation_buhpd"]
 length = 0.1
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -35,7 +34,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_3ddme"]
 length = 0.1
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -63,7 +61,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_jnpnn"]
 length = 0.1
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -91,7 +88,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_0npt7"]
 length = 0.1
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -119,7 +115,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_6dmco"]
 length = 0.1
-loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -157,7 +152,7 @@ _data = {
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_kt8cq")
 
-[node name="Title" type="StaticBody2D" parent="."]
+[node name="Title" type="Node2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="Title"]
 texture_filter = 1
@@ -183,8 +178,47 @@ libraries = {
 "": SubResource("AnimationLibrary_pfsmp")
 }
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Title"]
-polygon = PackedVector2Array(948, 216, 948, 408, 756, 408, 756, 216, 780, 240, 780, 384, 924, 384, 924, 240, 780, 240, 756, 216)
+[node name="Walls" type="Node2D" parent="Title"]
+
+[node name="TopWall" type="RigidBody2D" parent="Title/Walls"]
+gravity_scale = 0.0
+freeze = true
+freeze_mode = 1
+max_contacts_reported = 1
+contact_monitor = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Title/Walls/TopWall"]
+polygon = PackedVector2Array(948, 216, 756, 216, 780, 240, 924, 240)
+
+[node name="LeftWall" type="RigidBody2D" parent="Title/Walls"]
+gravity_scale = 0.0
+freeze = true
+freeze_mode = 1
+max_contacts_reported = 1
+contact_monitor = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Title/Walls/LeftWall"]
+polygon = PackedVector2Array(780, 240, 756, 216, 756, 408, 780, 384)
+
+[node name="BottomWall" type="RigidBody2D" parent="Title/Walls"]
+gravity_scale = 0.0
+freeze = true
+freeze_mode = 1
+max_contacts_reported = 1
+contact_monitor = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Title/Walls/BottomWall"]
+polygon = PackedVector2Array(924, 384, 780, 384, 756, 408, 948, 408)
+
+[node name="RightWall" type="RigidBody2D" parent="Title/Walls"]
+gravity_scale = 0.0
+freeze = true
+freeze_mode = 1
+max_contacts_reported = 1
+contact_monitor = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Title/Walls/RightWall"]
+polygon = PackedVector2Array(924, 240, 924, 383, 948, 408, 948, 216)
 
 [node name="UIContainer" type="Control" parent="."]
 layout_mode = 3
@@ -194,8 +228,12 @@ offset_bottom = 1080.0
 
 [node name="MainMenuUI" parent="UIContainer" instance=ExtResource("1_rs3e2")]
 layout_mode = 1
-offset_top = 495.0
-offset_bottom = -173.0
 
 [node name="Ball" parent="." instance=ExtResource("3_vhbn3")]
 position = Vector2(852, 312)
+
+[connection signal="animation_finished" from="Title/Sprite2D/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="body_entered" from="Title/Walls/TopWall" to="." method="_on_top_wall_body_entered"]
+[connection signal="body_entered" from="Title/Walls/LeftWall" to="." method="_on_left_wall_body_entered"]
+[connection signal="body_entered" from="Title/Walls/BottomWall" to="." method="_on_bottom_wall_body_entered"]
+[connection signal="body_entered" from="Title/Walls/RightWall" to="." method="_on_right_wall_body_entered"]
