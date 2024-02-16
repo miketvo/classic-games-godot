@@ -8,7 +8,7 @@
 script = ExtResource("1_kt8cq")
 
 [node name="GameTitle" parent="." instance=ExtResource("2_i4oc1")]
-position = Vector2(960, 276)
+position = Vector2(960, 264)
 
 [node name="UIContainer" type="Control" parent="."]
 layout_mode = 3

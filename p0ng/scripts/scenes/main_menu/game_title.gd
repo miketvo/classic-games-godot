@@ -31,28 +31,28 @@ func _ready() -> void:
 #region Signal listeners
 
 #region Listens to Walls/*.body_entered(body: Node)
-func _on_top_wall_body_entered(body: Node):
+func _on_top_wall_body_entered(body: Node) -> void:
     if body == _ball:
         _title_sprite_animation_player.play("collide_top")
 
 
-func _on_left_wall_body_entered(body: Node):
+func _on_left_wall_body_entered(body: Node) -> void:
     if body == _ball:
         _title_sprite_animation_player.play("collide_left")
 
 
-func _on_bottom_wall_body_entered(body: Node):
+func _on_bottom_wall_body_entered(body: Node) -> void:
     if body == _ball:
         _title_sprite_animation_player.play("collide_bottom")
 
 
-func _on_right_wall_body_entered(body: Node):
+func _on_right_wall_body_entered(body: Node) -> void:
     if body == _ball:
         _title_sprite_animation_player.play("collide_right")
 #endregion
 
 
-## Listens to Sprite2D/AnimationPlayer.animation_finished(anim_name:StringName)
+## Listens to $Sprite2D/AnimationPlayer.animation_finished(anim_name:StringName)
 func _on_animation_player_animation_finished(anim_name:StringName) -> void:
     if anim_name != "idle":
         _reset_title_animation()
@@ -63,7 +63,7 @@ func _on_animation_player_animation_finished(anim_name:StringName) -> void:
 
 # ============================================================================ #
 #region Utils
-func _reset_title_animation():
+func _reset_title_animation() -> void:
     _title_sprite_animation_player.play("idle")
 #endregion
 # ============================================================================ #
