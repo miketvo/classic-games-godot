@@ -18,10 +18,9 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
     if Input.is_action_just_released("pause") and not paused:
         print_debug("Pause Request")
-        slide_transition($PauseMenuContainer, Vector2.UP, 0.5)
+        tween_transition_slide_container($PauseMenuContainer, Vector2.UP, TRANS_DURATION)
         paused = true
     elif Input.is_action_just_released("pause") and paused:
-        print_debug("Resume Request")
         _on_resume_request()
 #endregion
 # ============================================================================ #
@@ -32,7 +31,7 @@ func _process(_delta: float) -> void:
 
 ## Listens to $PauseMenuContainer/ResumeButton.pressed()
 func _on_resume_request() -> void:
-    slide_transition($PauseMenuContainer, Vector2.DOWN, 0.5)
+    tween_transition_slide_container($PauseMenuContainer, Vector2.DOWN, TRANS_DURATION)
     paused = false
 
 ## Listens to $PauseMenuContainer/QuitToDesktopButton.pressed()

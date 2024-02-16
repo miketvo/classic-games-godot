@@ -25,7 +25,7 @@ func _process(_delta: float) -> void:
 # ============================================================================ #
 #region Signal listeners
 ## Listens to $UI/GameUI/PauseMenuContainer/EndGameButton.pressed
-func _on_end_game_request():
+func _on_end_game_request() -> void:
     scene_finished.emit(SceneKey.MAIN_MENU)
 #endregion
 # ============================================================================ #

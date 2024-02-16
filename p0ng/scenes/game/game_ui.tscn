@@ -46,6 +46,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_basa2")
 text = "NaN"
 
 [node name="PauseMenuContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
 offset_left = 870.0
 offset_top = 1080.0
 offset_right = 1050.0
