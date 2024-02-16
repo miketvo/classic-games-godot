@@ -160,6 +160,7 @@ position = Vector2(960, 300)
 texture = ExtResource("2_y1mjq")
 hframes = 3
 vframes = 2
+frame = 3
 metadata/_aseprite_wizard_config_ = {
 "i_mode": 0,
 "keep_anim_length": false,
@@ -231,9 +232,3 @@ layout_mode = 1
 
 [node name="Ball" parent="." instance=ExtResource("3_vhbn3")]
 position = Vector2(852, 312)
-
-[connection signal="animation_finished" from="Title/Sprite2D/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
-[connection signal="body_entered" from="Title/Walls/TopWall" to="." method="_on_top_wall_body_entered"]
-[connection signal="body_entered" from="Title/Walls/LeftWall" to="." method="_on_left_wall_body_entered"]
-[connection signal="body_entered" from="Title/Walls/BottomWall" to="." method="_on_bottom_wall_body_entered"]
-[connection signal="body_entered" from="Title/Walls/RightWall" to="." method="_on_right_wall_body_entered"]

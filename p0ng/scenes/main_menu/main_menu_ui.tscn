@@ -30,7 +30,7 @@ scale = Vector2(4, 4)
 pivot_offset = Vector2(64, 0)
 alignment = 1
 
-[node name="PlayButton" type="Button" parent="MainMenuContainer"]
+[node name="StartButton" type="Button" parent="MainMenuContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
@@ -44,5 +44,30 @@ text = "settings"
 layout_mode = 2
 text = "quit"
 
-[connection signal="pressed" from="MainMenuContainer/PlayButton" to="." method="_on_main_menu_play_button_pressed"]
-[connection signal="pressed" from="MainMenuContainer/QuitButton" to="." method="_on_main_menu_quit_button_pressed"]
+[node name="StartMenuContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 920.0
+offset_top = -393.0
+offset_right = 1048.0
+offset_bottom = -295.0
+scale = Vector2(4, 4)
+pivot_offset = Vector2(64, 0)
+
+[node name="Heading" type="Label" parent="StartMenuContainer"]
+layout_mode = 2
+theme_type_variation = &"LabelHeading"
+text = "start game"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OnePlayer" type="Button" parent="StartMenuContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+text = "1 player"
+
+[node name="TwoPlayers" type="Button" parent="StartMenuContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+text = "2 players"
