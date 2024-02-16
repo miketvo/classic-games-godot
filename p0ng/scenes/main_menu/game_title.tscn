@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bcs7c522ihgsf"]
+[gd_scene load_steps=11 format=3 uid="uid://bcs7c522ihgsf"]
 
 [ext_resource type="Texture2D" uid="uid://cgx0wqxo2m12y" path="res://assets/title.png" id="1_i665m"]
 [ext_resource type="Script" path="res://scripts/scenes/main_menu/game_title.gd" id="2_7hyao"]
@@ -148,6 +148,9 @@ _data = {
 "idle": SubResource("Animation_6dmco")
 }
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_a5ta5"]
+radius = 24.0
+
 [node name="GameTitle" type="Node2D"]
 script = ExtResource("2_7hyao")
 
@@ -219,3 +222,11 @@ polygon = PackedVector2Array(72, 72, 96, 96, 96, -96, 72, -72)
 
 [node name="Ball" parent="." instance=ExtResource("3_1tn13")]
 position = Vector2(-108, 12)
+
+[node name="Sprite2D" parent="Ball" index="0"]
+scale = Vector2(2, 2)
+
+[node name="CollisionShape2D" parent="Ball" index="1"]
+shape = SubResource("CircleShape2D_a5ta5")
+
+[editable path="Ball"]

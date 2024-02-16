@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://deb4d1ukrlrt6" path="res://assets/objects/ball.png" id="2_v5f0i"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0ye4j"]
-radius = 24.0
+radius = 12.0
 
 [node name="Ball" type="RigidBody2D"]
 physics_material_override = ExtResource("1_ixlon")
@@ -22,7 +22,7 @@ metadata/_aseprite_wizard_config_ = {
 "o_folder": "res://assets/objects",
 "o_name": "ball",
 "only_visible": false,
-"op_exp": true,
+"op_exp": false,
 "player": "",
 "source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/p0ng/objects/ball.ase"
 }
