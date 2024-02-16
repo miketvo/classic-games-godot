@@ -27,7 +27,6 @@ func tween_transition_slide_container(
                 + container.size.y * container.scale.y / 2
 
     var tween: Tween = create_tween()
-    tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
     tween.tween_property(
             container, "position",
             direction * movement_scale,
