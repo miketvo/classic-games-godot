@@ -10,9 +10,9 @@ func _ready() -> void:
     input_disabled = false
     process_mode = Node.PROCESS_MODE_ALWAYS
 
-    $PauseMenuContainer/ResumeButton\
+    $PauseMenuContainer/VBoxContainer/ResumeButton\
             .connect("pressed", _on_resume_request)
-    $PauseMenuContainer/QuitToDesktopButton\
+    $PauseMenuContainer/VBoxContainer/QuitToDesktopButton\
             .connect("pressed", _on_pause_menu_quit_to_desktop_button_pressed)
 
 
@@ -41,7 +41,7 @@ func _input(_event: InputEvent) -> void:
 
 ## Listens to $PauseMenuContainer/ResumeButton.pressed()
 func _on_resume_request() -> void:
-    for control: Control in $PauseMenuContainer.get_children():
+    for control: Control in $PauseMenuContainer/VBoxContainer.get_children():
         control.release_focus()
 
     input_disabled = true

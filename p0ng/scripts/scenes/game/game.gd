@@ -12,7 +12,7 @@ const Padde: PackedScene = preload("res://scenes/game/paddle.tscn")
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    $UI/GameUI/PauseMenuContainer/EndGameButton\
+    $UI/GameUI/PauseMenuContainer/VBoxContainer/EndGameButton\
             .connect("pressed", _on_end_game_request)
 
 

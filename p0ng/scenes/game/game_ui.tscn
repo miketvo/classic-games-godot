@@ -45,34 +45,37 @@ size_flags_vertical = 1
 theme_override_styles/normal = SubResource("StyleBoxEmpty_basa2")
 text = "NaN"
 
-[node name="PauseMenuContainer" type="VBoxContainer" parent="."]
+[node name="PauseMenuContainer" type="PanelContainer" parent="."]
 layout_mode = 0
-offset_left = 870.0
-offset_top = 1080.0
-offset_right = 1050.0
-offset_bottom = 1214.0
+offset_left = 874.0
+offset_top = 1104.0
+offset_right = 1052.0
+offset_bottom = 1238.0
 scale = Vector2(4, 4)
 pivot_offset = Vector2(90, 0)
 
-[node name="Heading" type="Label" parent="PauseMenuContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenuContainer"]
+layout_mode = 2
+
+[node name="Heading" type="Label" parent="PauseMenuContainer/VBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"LabelHeading"
 text = "paused"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ResumeButton" type="Button" parent="PauseMenuContainer"]
+[node name="ResumeButton" type="Button" parent="PauseMenuContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
 text = "resume"
 
-[node name="EndGameButton" type="Button" parent="PauseMenuContainer"]
+[node name="EndGameButton" type="Button" parent="PauseMenuContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
 text = "end game"
 
-[node name="QuitToDesktopButton" type="Button" parent="PauseMenuContainer"]
+[node name="QuitToDesktopButton" type="Button" parent="PauseMenuContainer/VBoxContainer"]
 layout_mode = 2
 text = "quit to desktop"
