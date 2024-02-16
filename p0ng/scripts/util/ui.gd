@@ -4,15 +4,11 @@ extends Control
 const TRANS_DURATION: float = 0.5
 
 
-func _on_tween_transition_finshed():
-    get_tree().paused = false
-
-
 func tween_transition_slide_container(
     container: Container,
     direction: Vector2,
     duration: float
-) -> void:
+) -> Tween:
     if direction not in Global.UNIT_VECTORS:
         assert(
                 false,
@@ -31,12 +27,11 @@ func tween_transition_slide_container(
                 + container.size.y * container.scale.y / 2
 
     var tween: Tween = create_tween()
+    tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
     tween.tween_property(
             container, "position",
             direction * movement_scale,
             duration
     ).as_relative().from_current().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 
-    tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-    get_tree().paused = true
-    tween.connect("finished", _on_tween_transition_finshed)
+    return tween
