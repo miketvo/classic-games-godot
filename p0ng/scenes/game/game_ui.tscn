@@ -17,7 +17,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_h5sd5")
 
-[node name="HUD" type="HBoxContainer" parent="."]
+[node name="HUDContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -27,7 +27,7 @@ grow_horizontal = 2
 scale = Vector2(4, 4)
 alignment = 1
 
-[node name="LeftScore" type="Label" parent="HUD"]
+[node name="LeftScore" type="Label" parent="HUDContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -35,9 +35,40 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_x6r1n")
 text = "NaN"
 horizontal_alignment = 2
 
-[node name="RightScore" type="Label" parent="HUD"]
+[node name="RightScore" type="Label" parent="HUDContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 theme_override_styles/normal = SubResource("StyleBoxEmpty_basa2")
 text = "NaN"
+
+[node name="PauseMenuContainer" type="VBoxContainer" parent="."]
+offset_left = 896.0
+offset_top = 1080.0
+offset_right = 1076.0
+offset_bottom = 1214.0
+scale = Vector2(4, 4)
+pivot_offset = Vector2(90, 0)
+
+[node name="Heading" type="Label" parent="PauseMenuContainer"]
+layout_mode = 2
+theme_type_variation = &"LabelHeading"
+text = "paused"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="PauseMenuContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+text = "resume"
+
+[node name="EndGameButton" type="Button" parent="PauseMenuContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+text = "end game"
+
+[node name="QuitToDesktopButton" type="Button" parent="PauseMenuContainer"]
+layout_mode = 2
+text = "quit to desktop"

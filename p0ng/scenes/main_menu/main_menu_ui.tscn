@@ -38,6 +38,7 @@ text = "start"
 
 [node name="SettingsButton" type="Button" parent="MainMenuContainer"]
 layout_mode = 2
+disabled = true
 text = "settings"
 
 [node name="QuitButton" type="Button" parent="MainMenuContainer"]
@@ -64,6 +65,7 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
+disabled = true
 text = "1 player"
 
 [node name="TwoPlayersButton" type="Button" parent="StartMenuContainer"]
