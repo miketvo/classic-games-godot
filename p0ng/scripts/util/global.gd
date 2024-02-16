@@ -8,4 +8,4 @@ const UNIT_VECTORS: Array = [
     Vector2.RIGHT,
 ]
 
-const UI_TRANS_DURATION: float = 0.5
+const TARGET_SCORE: int = 11

@@ -24,6 +24,7 @@ boot_splash/minimum_display_time=2000
 
 Global="*res://scripts/util/global.gd"
 GameScene2D="*res://scripts/util/game_scene_2d.gd"
+UI="*res://scripts/util/ui.gd"
 
 [display]
 
