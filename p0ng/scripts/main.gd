@@ -7,7 +7,7 @@ var _current_scene: Node
 
 
 # ============================================================================ #
-#region Game loop
+#region Godot builtins
 func _ready() -> void:
     _next_scene_key = SceneKey.SPLASH
     _current_scene = null
