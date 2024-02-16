@@ -267,4 +267,3 @@ offset_bottom = 1080.0
 
 [node name="GameUI" parent="UI" instance=ExtResource("2_86o8i")]
 layout_mode = 1
-offset_top = 48.0

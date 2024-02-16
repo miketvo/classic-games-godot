@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://dofglbl0ean4l"]
+[gd_scene load_steps=5 format=3 uid="uid://dofglbl0ean4l"]
 
 [ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_h5sd5"]
+[ext_resource type="Script" path="res://scripts/scenes/game/game_ui.gd" id="2_5qob0"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x6r1n"]
 content_margin_right = 12.0
@@ -16,13 +17,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_h5sd5")
+script = ExtResource("2_5qob0")
 
 [node name="HUDContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
+offset_top = 48.0
 offset_right = -1440.0
-offset_bottom = 28.0
+offset_bottom = 76.0
 grow_horizontal = 2
 scale = Vector2(4, 4)
 alignment = 1
@@ -43,9 +46,9 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_basa2")
 text = "NaN"
 
 [node name="PauseMenuContainer" type="VBoxContainer" parent="."]
-offset_left = 896.0
+offset_left = 870.0
 offset_top = 1080.0
-offset_right = 1076.0
+offset_right = 1050.0
 offset_bottom = 1214.0
 scale = Vector2(4, 4)
 pivot_offset = Vector2(90, 0)
