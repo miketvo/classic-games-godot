@@ -16,7 +16,7 @@ func tween_transition_slide_container(
     if direction not in Global.UNIT_VECTORS:
         assert(
                 false,
-                "MainMenuUI._tween_transition_slide_container() "
+                "UI.tween_transition_slide_container() "
                 + "only accepts unit vector for `direction`"
         )
 

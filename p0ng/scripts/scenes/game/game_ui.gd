@@ -1,7 +1,7 @@
 extends UI
 
 
-var paused: bool
+var game_paused: bool
 
 
 # ============================================================================ #
@@ -12,15 +12,14 @@ func _ready() -> void:
     $PauseMenuContainer/QuitToDesktopButton\
             .connect("pressed", _on_pause_menu_quit_to_desktop_button_pressed)
 
-    paused = false
+    game_paused = false
 
 
 func _process(_delta: float) -> void:
-    if Input.is_action_just_released("pause") and not paused:
-        print_debug("Pause Request")
+    if Input.is_action_just_released("pause") and not game_paused:
         tween_transition_slide_container($PauseMenuContainer, Vector2.UP, TRANS_DURATION)
-        paused = true
-    elif Input.is_action_just_released("pause") and paused:
+        game_paused = true
+    elif Input.is_action_just_released("pause") and game_paused:
         _on_resume_request()
 #endregion
 # ============================================================================ #
@@ -31,8 +30,9 @@ func _process(_delta: float) -> void:
 
 ## Listens to $PauseMenuContainer/ResumeButton.pressed()
 func _on_resume_request() -> void:
+    $PauseMenuContainer.get_children()
     tween_transition_slide_container($PauseMenuContainer, Vector2.DOWN, TRANS_DURATION)
-    paused = false
+    game_paused = false
 
 ## Listens to $PauseMenuContainer/QuitToDesktopButton.pressed()
 func _on_pause_menu_quit_to_desktop_button_pressed() -> void:

@@ -1,7 +1,7 @@
 extends Node
 
 
-const UNIT_VECTORS: Array = [
+const UNIT_VECTORS: PackedVector2Array = [
     Vector2.UP,
     Vector2.LEFT,
     Vector2.DOWN,
