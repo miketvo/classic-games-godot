@@ -37,6 +37,14 @@ window/stretch/mode="viewport"
 
 enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg")
 
+[file_customization]
+
+folder_colors={
+"res://assets/": "red",
+"res://scenes/": "purple",
+"res://scripts/": "blue"
+}
+
 [filesystem]
 
 import/blender/enabled=false

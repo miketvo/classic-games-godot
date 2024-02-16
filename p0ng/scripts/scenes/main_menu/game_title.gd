@@ -52,11 +52,10 @@ func _on_right_wall_body_entered(body: Node):
 #endregion
 
 
-#region Listens to Sprite2D/AnimationPlayer.animation_finished(anim_name:StringName)
+## Listens to Sprite2D/AnimationPlayer.animation_finished(anim_name:StringName)
 func _on_animation_player_animation_finished(anim_name:StringName) -> void:
     if anim_name != "idle":
         _reset_title_animation()
-#endregion
 
 #endregion
 # ============================================================================ #
