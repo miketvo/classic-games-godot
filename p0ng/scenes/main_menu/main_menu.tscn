@@ -10,11 +10,11 @@ script = ExtResource("1_kt8cq")
 [node name="GameTitle" parent="." instance=ExtResource("2_i4oc1")]
 position = Vector2(960, 264)
 
-[node name="UIContainer" type="Control" parent="."]
+[node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 
-[node name="MainMenuUI" parent="UIContainer" instance=ExtResource("1_rs3e2")]
+[node name="MainMenuUI" parent="UI" instance=ExtResource("1_rs3e2")]
 layout_mode = 1

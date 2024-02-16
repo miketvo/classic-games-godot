@@ -1,7 +1,7 @@
 extends GameScene2D
 
 
-@onready var _main_menu_ui: Control = $UIContainer/MainMenuUI
+@onready var _main_menu_ui: Control = $UI/MainMenuUI
 
 
 # ============================================================================ #
