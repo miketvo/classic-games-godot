@@ -15,7 +15,7 @@ func _init() -> void:
     player_id = NONE
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
     var direction: float = 0
     match player_id:
         PLAYER_LEFT:
@@ -28,12 +28,11 @@ func _physics_process(delta: float) -> void:
                 _not_controllable_warned = true
             return
 
-    var calculated_speed = Global.PLAYER_SPEED * delta * 100.0
     if direction:
-        velocity.y = direction * calculated_speed
+        velocity.y = direction * Global.PLAYER_SPEED
     else:
-        velocity.y = move_toward(velocity.y, 0, calculated_speed)
+        velocity.y = direction * Global.PLAYER_SPEED
 
-    move_and_slide()
+    move_and_slide() # Already accounted for delta
 #endregion
 # ============================================================================ #
