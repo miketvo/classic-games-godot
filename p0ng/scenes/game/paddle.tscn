@@ -91,4 +91,4 @@ libraries = {
 }
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PackedVector2Array(0, -60, -4, -59, -8, -52, -11, -33, -12, 0, -11, 33, -8, 52, -4, 59, 0, 60, 4, 59, 8, 52, 11, 33, 12, 0, 11, -33, 8, -52, 4, -59)
+polygon = PackedVector2Array(6, -64, -1, -60, -7, -52, -11, -33, -12, -8, -12, 8, -11, 33, -7, 52, -1, 60, 6, 64, 4, 60, -2, 52, -6, 33, -7, 8, -7, -8, -6, -33, -2, -52, 4, -60)

@@ -58,6 +58,7 @@ func _spawn_left_paddle() -> void:
     left_paddle = Paddle.instantiate()
     left_paddle.set_script(PlayerPaddleScript)
     left_paddle.position = _left_paddle_spawn.position
+    left_paddle.rotation = PI
     left_paddle.player_id = PlayerPaddle.PLAYER_LEFT
     add_child(left_paddle)
 
