@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://dyud8dot2715o"]
+[gd_scene load_steps=6 format=3 uid="uid://dyud8dot2715o"]
 
 [ext_resource type="Texture2D" uid="uid://btu8cwupgi6d3" path="res://assets/objects/paddle.png" id="1_brd5l"]
+[ext_resource type="PhysicsMaterial" uid="uid://cd7kk6idyr2lx" path="res://assets/materials/paddle.phymat" id="1_umk5i"]
 
 [sub_resource type="Animation" id="Animation_fbvie"]
 length = 0.1
@@ -64,8 +65,8 @@ _data = {
 "idle": SubResource("Animation_cw7nb")
 }
 
-[node name="Paddle" type="CharacterBody2D"]
-motion_mode = 1
+[node name="Paddle" type="AnimatableBody2D"]
+physics_material_override = ExtResource("1_umk5i")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1

@@ -1,5 +1,5 @@
 class_name PlayerPaddle
-extends CharacterBody2D
+extends AnimatableBody2D
 
 
 enum {NONE, PLAYER_LEFT, PLAYER_RIGHT}
@@ -15,7 +15,7 @@ func _init() -> void:
     player_id = NONE
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
     var direction: float = 0
     match player_id:
         PLAYER_LEFT:
@@ -28,11 +28,9 @@ func _physics_process(_delta: float) -> void:
                 _not_controllable_warned = true
             return
 
-    if direction:
-        velocity.y = direction * Global.PLAYER_SPEED
-    else:
-        velocity.y = direction * Global.PLAYER_SPEED
+    var velocity: Vector2 = Vector2.DOWN * direction
+    velocity *= Global.PLAYER_SPEED * delta
 
-    move_and_slide() # Already accounted for delta
+    position += velocity
 #endregion
 # ============================================================================ #

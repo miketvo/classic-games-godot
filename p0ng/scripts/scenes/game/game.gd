@@ -6,8 +6,8 @@ const Paddle: PackedScene = preload("res://scenes/game/paddle.tscn")
 const PlayerPaddleScript: Script = preload("res://scripts/characters/player_paddle.gd")
 
 var ball: RigidBody2D
-var left_paddle: CharacterBody2D
-var right_paddle: CharacterBody2D
+var left_paddle: AnimatableBody2D
+var right_paddle: AnimatableBody2D
 
 var _ball_active: bool
 

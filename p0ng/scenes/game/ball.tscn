@@ -1,13 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://bvj431e37jkc0"]
 
-[ext_resource type="PhysicsMaterial" uid="uid://k24mdnr45b2n" path="res://assets/materials/ball.tres" id="1_ixlon"]
+[ext_resource type="PhysicsMaterial" uid="uid://chekfn10f5e6e" path="res://assets/materials/ball.phymat" id="1_8ddod"]
 [ext_resource type="Texture2D" uid="uid://deb4d1ukrlrt6" path="res://assets/objects/ball.png" id="2_v5f0i"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0ye4j"]
 radius = 12.0
 
 [node name="Ball" type="RigidBody2D"]
-physics_material_override = ExtResource("1_ixlon")
+physics_material_override = ExtResource("1_8ddod")
 gravity_scale = 0.0
 linear_damp_mode = 1
 
