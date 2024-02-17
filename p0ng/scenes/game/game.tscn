@@ -148,6 +148,8 @@ script = ExtResource("1_eisns")
 
 [node name="UpperBound" type="StaticBody2D" parent="World"]
 position = Vector2(960, 24)
+collision_layer = 3
+collision_mask = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="World/UpperBound"]
 texture_filter = 1
@@ -193,6 +195,8 @@ debug_color = Color(0.92549, 0.270588, 0, 0.419608)
 
 [node name="BottomBound" type="StaticBody2D" parent="World"]
 position = Vector2(960, 1056)
+collision_layer = 3
+collision_mask = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BottomBound"]
 texture_filter = 1

@@ -31,6 +31,6 @@ func _physics_process(delta: float) -> void:
     var velocity: Vector2 = Vector2.DOWN * direction
     velocity *= Global.PLAYER_SPEED * delta
 
-    position += velocity
+    move_and_collide(velocity)
 #endregion
 # ============================================================================ #
