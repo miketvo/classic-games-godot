@@ -79,12 +79,12 @@ func _serve_ball(
 ) -> void:
     var base_vector = Vector2.LEFT if Global.FIRST_SIDE_SERVED == Global.SIDE_LEFT\
             else Vector2.RIGHT
+    base_vector = base_vector.rotated(angular_deviation)
 
     # a = delta(speed) / delta(time) (px/s^2)
     var acceleration: float = delta_speed / (delta * Engine.physics_ticks_per_second)
     var impulse = base_vector * ball.mass * acceleration # F = m * a (Newton)
 
-    impulse = impulse.rotated(angular_deviation)
     ball.apply_central_impulse(impulse)
 #endregion
 # ============================================================================ #
