@@ -13,7 +13,7 @@ var right_score: int
 var game_round: int
 
 var _rng = RandomNumberGenerator.new()
-var _ball_prior_velocity: Vector2
+var _ball_speed: float
 var _ball_active: bool
 var _side_served: int
 
@@ -69,22 +69,19 @@ func _on_ball_body_entered(body: Node) -> void:
             top_bound.get_node("Sprite2D/AnimationPlayer").play("active")
         bottom_bound:
             bottom_bound.get_node("Sprite2D/AnimationPlayer").play("active")
-        left_paddle, right_paddle:
-            _ball_prior_velocity = ball.linear_velocity
-            match body:
-                left_paddle:
-                    left_paddle.get_node("Sprite2D/AnimationPlayer").play("active")
-                right_paddle:
-                    right_paddle.get_node("Sprite2D/AnimationPlayer").play("active")
+        left_paddle:
+            left_paddle.get_node("Sprite2D/AnimationPlayer").play("active")
+        right_paddle:
+            right_paddle.get_node("Sprite2D/AnimationPlayer").play("active")
 
 
-## Listens to ball.body_entered(body: Node)
+## Listens to ball.body_exited(body: Node)
 func _on_ball_body_exited(body: Node) -> void:
     if body in [ left_paddle, right_paddle ]:
+        _ball_speed *= Global.BALL_SPEED_DIFFICULTY_MULTIPLIER
         var boosted_velocity: Vector2 =\
                 Vector2.from_angle(ball.linear_velocity.angle())\
-                * _ball_prior_velocity.length()\
-                * Global.BALL_SPEED_DIFFICULTY_MULTIPLIER
+                * _ball_speed
         ball.linear_velocity = boosted_velocity
 
 
@@ -175,6 +172,7 @@ func _spawn_ball() -> void:
     ball.position = _ball_spawn.position
     ball.connect("body_entered", _on_ball_body_entered)
     ball.connect("body_exited", _on_ball_body_exited)
+    _ball_speed = Global.BALL_SPEED_INITIAL
     _ball_active = false
     add_child(ball)
 
