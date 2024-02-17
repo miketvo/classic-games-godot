@@ -1,7 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://dyud8dot2715o"]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_s1lnt"]
-load_path = "res://.godot/imported/paddle.png-b383c0826f142026698a0e8f48b72acd.ctex"
+[ext_resource type="Texture2D" uid="uid://btu8cwupgi6d3" path="res://assets/objects/paddle.png" id="1_brd5l"]
 
 [sub_resource type="Animation" id="Animation_fbvie"]
 length = 0.1
@@ -65,15 +64,15 @@ _data = {
 "idle": SubResource("Animation_cw7nb")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_80yj8"]
-size = Vector2(48, 240)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_12uhr"]
+size = Vector2(24, 120)
 
 [node name="Paddle" type="CharacterBody2D"]
 motion_mode = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
-texture = SubResource("CompressedTexture2D_s1lnt")
+texture = ExtResource("1_brd5l")
 hframes = 2
 metadata/_aseprite_wizard_config_ = {
 "i_mode": -1,
@@ -83,7 +82,7 @@ metadata/_aseprite_wizard_config_ = {
 "o_folder": "res://assets/objects",
 "o_name": "paddle",
 "only_visible": false,
-"op_exp": true,
+"op_exp": false,
 "player": "Sprite2D/AnimationPlayer",
 "source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/p0ng/objects/paddle.ase"
 }
@@ -94,5 +93,5 @@ libraries = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_80yj8")
-debug_color = Color(0.580392, 0.745098, 0, 0.419608)
+shape = SubResource("RectangleShape2D_12uhr")
+debug_color = Color(0.172549, 0.643137, 0, 0.419608)

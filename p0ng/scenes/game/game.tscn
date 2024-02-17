@@ -262,6 +262,7 @@ position = Vector2(1812, 540)
 position = Vector2(960, 540)
 
 [node name="UI" type="Control" parent="."]
+z_index = 99
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1920.0

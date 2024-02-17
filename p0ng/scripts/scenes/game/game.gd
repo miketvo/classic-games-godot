@@ -3,6 +3,7 @@ extends GameScene2D
 
 const Ball: PackedScene = preload("res://scenes/game/ball.tscn")
 const Paddle: PackedScene = preload("res://scenes/game/paddle.tscn")
+const PlayerPaddleScript: Script = preload("res://scripts/characters/player_paddle.gd")
 
 var ball: RigidBody2D
 var left_paddle: CharacterBody2D
@@ -50,13 +51,17 @@ func _spawn_ball():
 
 func _spawn_left_paddle():
     left_paddle = Paddle.instantiate()
+    left_paddle.set_script(PlayerPaddleScript)
     left_paddle.position = _left_paddle_spawn.position
+    left_paddle.player_id = PlayerPaddle.PLAYER_LEFT
     add_child(left_paddle)
 
 
 func _spawn_right_paddle():
     right_paddle = Paddle.instantiate()
+    right_paddle.set_script(PlayerPaddleScript)
     right_paddle.position = _right_paddle_spawn.position
+    right_paddle.player_id = PlayerPaddle.PLAYER_RIGHT
     add_child(right_paddle)
 #endregion
 # ============================================================================ #

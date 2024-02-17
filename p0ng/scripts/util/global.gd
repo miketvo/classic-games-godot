@@ -9,3 +9,4 @@ const UNIT_VECTORS: PackedVector2Array = [
 ]
 
 const TARGET_SCORE: int = 11
+const PLAYER_SPEED: float = 450.0
