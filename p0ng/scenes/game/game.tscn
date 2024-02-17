@@ -69,10 +69,10 @@ _data = {
 size = Vector2(1920, 48)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_6sehx"]
-normal = Vector2(-1, 0)
+normal = Vector2(1, 0)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_dvvex"]
-normal = Vector2(1, 0)
+normal = Vector2(-1, 0)
 
 [sub_resource type="Animation" id="Animation_hvt0i"]
 length = 0.1
@@ -176,6 +176,7 @@ debug_color = Color(0.462745, 0.45098, 0.988235, 0.419608)
 [node name="LeftBound" type="Area2D" parent="World"]
 position = Vector2(0, 540)
 monitorable = false
+priority = 99
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/LeftBound"]
 shape = SubResource("WorldBoundaryShape2D_6sehx")
@@ -184,6 +185,7 @@ debug_color = Color(0.92549, 0.270588, 0, 0.419608)
 [node name="RightBound" type="Area2D" parent="World"]
 position = Vector2(1920, 540)
 monitorable = false
+priority = 99
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/RightBound"]
 shape = SubResource("WorldBoundaryShape2D_dvvex")

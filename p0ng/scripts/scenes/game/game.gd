@@ -10,11 +10,12 @@ var left_paddle: AnimatableBody2D
 var right_paddle: AnimatableBody2D
 var left_score: int
 var right_score: int
+var game_round: int
 
 var _rng = RandomNumberGenerator.new()
 var _ball_prior_velocity: Vector2
 var _ball_active: bool
-var _round: int
+var _side_served: int
 
 @onready var _ball_spawn: Node2D = $Spawns/BallSpawn
 @onready var _left_paddle_spawn: Node2D = $Spawns/LeftPaddleSpawn
@@ -30,7 +31,6 @@ var _round: int
 func _ready() -> void:
     _spawn_left_paddle()
     _spawn_right_paddle()
-    _spawn_ball()
     _configure_world()
     _configure_ui()
     _configure_game()
@@ -42,15 +42,16 @@ func _process(_delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-    if not _ball_active and _round == 0:
+    if not _ball_active:
+        _spawn_ball()
         _serve_ball(
                 delta,
                 Global.BALL_SPEED_INITIAL,
-                Global.FIRST_SIDE_SERVED,
+                _side_served,
                 Global.SERVING_ANGULAR_VARIATION
         )
         _ball_active = true
-        _round = 1
+        game_round += 1
 #endregion
 # ============================================================================ #
 
@@ -91,6 +92,18 @@ func _on_ball_body_exited(body: Node) -> void:
 func _on_vertical_separator_body_entered(body: Node) -> void:
     if body == ball:
         $World/VerticalSeparator/Sprite2D/AnimationPlayer.play("active")
+
+
+## Listens to $World/VerticalSeparator.body_entered(body: Node)
+func _on_left_bound_body_entered(body: Node) -> void:
+    if body == ball:
+        _win_round(Global.SIDE_RIGHT)
+
+
+## Listens to $World/VerticalSeparator.body_entered(body: Node)
+func _on_right_bound_body_entered(body: Node) -> void:
+    if body == ball:
+        _win_round(Global.SIDE_LEFT)
 
 
 # Listens to $*/Sprite2D/AnimationPlayer.animation_finished(anim_name: StringName)
@@ -167,26 +180,38 @@ func _spawn_ball() -> void:
 
 
 ## Serve the ball to the side of the game defined in [param direction], taking
-## [param delta] into account.
+## [param delta] into account. Meant to be called after
+## [method Game._spawn_ball].
 func _serve_ball(
         delta: float,
         delta_speed: float,
         direction: int,
         angular_variation: PackedFloat32Array = [0.0, 0.0]
 ) -> void:
-    var base_vector: Vector2 = Vector2.LEFT if direction == Global.SIDE_LEFT\
-            else Vector2.RIGHT
-    base_vector = base_vector.rotated(_rng.randf_range(
+    var unit_vector: Vector2
+    match direction:
+        Global.SIDE_LEFT:
+            unit_vector = Vector2.LEFT
+        Global.SIDE_RIGHT:
+            unit_vector = Vector2.RIGHT
+        _:
+            assert(false, "Unrecognized side")
+    unit_vector = unit_vector.rotated(_rng.randf_range(
             angular_variation[0],
             angular_variation[1]
     ))
 
     # a = delta(speed) / delta(time) (px/s^2)
     var acceleration: float = delta_speed / (delta * Engine.physics_ticks_per_second)
-    var impulse = base_vector * ball.mass * acceleration # F = m * a (Newton)
+    var impulse = unit_vector * ball.mass * acceleration # F = m * a (Newton)
 
     ball.apply_central_impulse(impulse)
 #endregion
+
+
+func _despawn_ball() -> void:
+    ball.queue_free()
+    remove_child(ball)
 
 
 func _configure_world() -> void:
@@ -206,6 +231,14 @@ func _configure_world() -> void:
             "animation_finished",
             _on_vertical_separator_animation_finished
     )
+    $World/LeftBound.connect(
+            "body_entered",
+            _on_left_bound_body_entered
+    )
+    $World/RightBound.connect(
+            "body_entered",
+            _on_right_bound_body_entered
+    )
 
 
 func _configure_ui() -> void:
@@ -215,8 +248,28 @@ func _configure_ui() -> void:
             .connect("pressed", _on_end_game_request)
 
 
-func _configure_game():
-    _round = 0
+func _configure_game() -> void:
+    game_round = 0
     left_score = 0
     right_score = 0
+    _side_served = Global.FIRST_SIDE_SERVED
+
+
+func _win_round(winning_side: int) -> void:
+    match winning_side:
+        Global.SIDE_LEFT:
+            left_score += 1
+        Global.SIDE_RIGHT:
+            right_score += 1
+        _:
+            assert(false, "Unrecognized side")
+
+    match _side_served:
+        Global.SIDE_LEFT:
+            _side_served = Global.SIDE_RIGHT
+        Global.SIDE_RIGHT:
+            _side_served = Global.SIDE_LEFT
+
+    _despawn_ball()
+    _ball_active = false
 # ============================================================================ #
