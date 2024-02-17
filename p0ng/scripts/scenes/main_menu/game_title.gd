@@ -19,7 +19,7 @@ func _ready() -> void:
             .connect("animation_finished", _on_animation_player_animation_finished)
 
     var ball_speed = _rng.randf_range(160.0, 180.0)
-    var ball_velocity = Vector2.UP * ball_speed
+    var ball_velocity = Vector2.RIGHT * ball_speed
     ball_velocity = ball_velocity.rotated(_rng.randf_range(0.0, 2.0 * PI))
     _ball.set_linear_velocity(ball_velocity)
 #endregion

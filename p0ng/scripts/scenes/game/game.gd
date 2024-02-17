@@ -12,6 +12,7 @@ var left_score: int
 var right_score: int
 
 var _rng = RandomNumberGenerator.new()
+var _ball_prior_velocity: Vector2
 var _ball_active: bool
 var _round: int
 
@@ -68,11 +69,22 @@ func _on_ball_body_entered(body: Node) -> void:
         bottom_bound:
             bottom_bound.get_node("Sprite2D/AnimationPlayer").play("active")
         left_paddle, right_paddle:
+            _ball_prior_velocity = ball.linear_velocity
             match body:
                 left_paddle:
                     left_paddle.get_node("Sprite2D/AnimationPlayer").play("active")
                 right_paddle:
                     right_paddle.get_node("Sprite2D/AnimationPlayer").play("active")
+
+
+## Listens to ball.body_entered(body: Node)
+func _on_ball_body_exited(body: Node) -> void:
+    if body in [ left_paddle, right_paddle ]:
+        var boosted_velocity: Vector2 =\
+                Vector2.from_angle(ball.linear_velocity.angle())\
+                * _ball_prior_velocity.length()\
+                * Global.BALL_SPEED_DIFFICULTY_MULTIPLIER
+        ball.linear_velocity = boosted_velocity
 
 
 ## Listens to $World/VerticalSeparator.body_entered(body: Node)
@@ -148,8 +160,9 @@ func _spawn_right_paddle() -> void:
 func _spawn_ball() -> void:
     ball = Ball.instantiate()
     ball.position = _ball_spawn.position
-    _ball_active = false
     ball.connect("body_entered", _on_ball_body_entered)
+    ball.connect("body_exited", _on_ball_body_exited)
+    _ball_active = false
     add_child(ball)
 
 
