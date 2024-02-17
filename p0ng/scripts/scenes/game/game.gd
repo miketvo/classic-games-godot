@@ -8,8 +8,12 @@ const PlayerPaddleScript: Script = preload("res://scripts/characters/player_padd
 var ball: RigidBody2D
 var left_paddle: AnimatableBody2D
 var right_paddle: AnimatableBody2D
+var left_score: int
+var right_score: int
 
+var _rng = RandomNumberGenerator.new()
 var _ball_active: bool
+var _round: int
 
 @onready var _ball_spawn: Node2D = $Spawns/BallSpawn
 @onready var _left_paddle_spawn: Node2D = $Spawns/LeftPaddleSpawn
@@ -28,12 +32,24 @@ func _ready() -> void:
     _spawn_ball()
     _configure_world()
     _configure_ui()
+    _configure_game()
+
+
+func _process(_delta: float) -> void:
+    _score_label[Global.SIDE_LEFT].text = "%d" % left_score
+    _score_label[Global.SIDE_RIGHT].text = "%d" % right_score
 
 
 func _physics_process(delta: float) -> void:
-    if not _ball_active:
-        _serve_ball(delta, Global.BALL_SPEED_INITIAL)
+    if not _ball_active and _round == 0:
+        _serve_ball(
+                delta,
+                Global.BALL_SPEED_INITIAL,
+                Global.FIRST_SIDE_SERVED,
+                Global.SERVING_ANGULAR_VARIATION
+        )
         _ball_active = true
+        _round = 1
 #endregion
 # ============================================================================ #
 
@@ -43,14 +59,20 @@ func _physics_process(delta: float) -> void:
 
 ## Listens to ball.body_entered(body: Node)
 func _on_ball_body_entered(body: Node) -> void:
-    if body == $World/TopBound:
-        $World/TopBound/Sprite2D/AnimationPlayer.play("active")
-    elif body == $World/BottomBound:
-        $World/BottomBound/Sprite2D/AnimationPlayer.play("active")
-    elif body == left_paddle:
-        left_paddle.get_node("Sprite2D/AnimationPlayer").play("active")
-    elif body == right_paddle:
-        right_paddle.get_node("Sprite2D/AnimationPlayer").play("active")
+    var top_bound = $World/TopBound
+    var bottom_bound = $World/BottomBound
+
+    match body:
+        top_bound:
+            top_bound.get_node("Sprite2D/AnimationPlayer").play("active")
+        bottom_bound:
+            bottom_bound.get_node("Sprite2D/AnimationPlayer").play("active")
+        left_paddle, right_paddle:
+            match body:
+                left_paddle:
+                    left_paddle.get_node("Sprite2D/AnimationPlayer").play("active")
+                right_paddle:
+                    right_paddle.get_node("Sprite2D/AnimationPlayer").play("active")
 
 
 ## Listens to $World/VerticalSeparator.body_entered(body: Node)
@@ -131,16 +153,20 @@ func _spawn_ball() -> void:
     add_child(ball)
 
 
-## Serve the ball to the side of the game defined in
-## [constant Global.FIRST_SIDE_SERVED], taking [param delta] into account.
+## Serve the ball to the side of the game defined in [param direction], taking
+## [param delta] into account.
 func _serve_ball(
         delta: float,
-        delta_speed: float = 0.0,
-        angular_deviation: float = 0.0
+        delta_speed: float,
+        direction: int,
+        angular_variation: PackedFloat32Array = [0.0, 0.0]
 ) -> void:
-    var base_vector = Vector2.LEFT if Global.FIRST_SIDE_SERVED == Global.SIDE_LEFT\
+    var base_vector: Vector2 = Vector2.LEFT if direction == Global.SIDE_LEFT\
             else Vector2.RIGHT
-    base_vector = base_vector.rotated(angular_deviation)
+    base_vector = base_vector.rotated(_rng.randf_range(
+            angular_variation[0],
+            angular_variation[1]
+    ))
 
     # a = delta(speed) / delta(time) (px/s^2)
     var acceleration: float = delta_speed / (delta * Engine.physics_ticks_per_second)
@@ -170,10 +196,14 @@ func _configure_world() -> void:
 
 
 func _configure_ui() -> void:
-    for score_label in _score_label.values():
-        score_label.text = "0"
     $UI/GameUI/PauseMenuContainer/VBoxContainer/RestartButton\
             .connect("pressed", _on_restart_request)
     $UI/GameUI/PauseMenuContainer/VBoxContainer/EndGameButton\
             .connect("pressed", _on_end_game_request)
+
+
+func _configure_game():
+    _round = 0
+    left_score = 0
+    right_score = 0
 # ============================================================================ #
