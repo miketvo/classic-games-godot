@@ -2,7 +2,7 @@ class_name PlayerPaddle
 extends AnimatableBody2D
 
 
-enum {NONE, PLAYER_LEFT, PLAYER_RIGHT}
+enum { NONE, PLAYER_LEFT, PLAYER_RIGHT }
 
 @export var player_id: int
 var _not_controllable_warned: bool

@@ -7,7 +7,6 @@
 
 [sub_resource type="Animation" id="Animation_i5uq0"]
 length = 0.1
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -35,7 +34,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_8f6lh"]
 length = 0.1
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -78,7 +76,6 @@ normal = Vector2(1, 0)
 
 [sub_resource type="Animation" id="Animation_hvt0i"]
 length = 0.1
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -106,7 +103,6 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_c3s2s"]
 length = 0.1
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -146,12 +142,12 @@ script = ExtResource("1_eisns")
 
 [node name="World" type="Node2D" parent="."]
 
-[node name="UpperBound" type="StaticBody2D" parent="World"]
+[node name="TopBound" type="StaticBody2D" parent="World"]
 position = Vector2(960, 24)
 collision_layer = 3
 collision_mask = 3
 
-[node name="Sprite2D" type="Sprite2D" parent="World/UpperBound"]
+[node name="Sprite2D" type="Sprite2D" parent="World/TopBound"]
 texture_filter = 1
 texture = ExtResource("1_54c4m")
 hframes = 2
@@ -163,17 +159,17 @@ metadata/_aseprite_wizard_config_ = {
 "o_folder": "res://assets/objects",
 "o_name": "h_bound",
 "only_visible": false,
-"op_exp": true,
-"player": "Bounds/UpperBound/Sprite2D/AnimationPlayer",
+"op_exp": false,
+"player": "World/TopBound/Sprite2D/AnimationPlayer",
 "source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/p0ng/objects/h_bound.ase"
 }
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="World/UpperBound/Sprite2D"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="World/TopBound/Sprite2D"]
 libraries = {
 "": SubResource("AnimationLibrary_3a2ev")
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/UpperBound"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/TopBound"]
 shape = SubResource("RectangleShape2D_24w54")
 debug_color = Color(0.462745, 0.45098, 0.988235, 0.419608)
 
@@ -210,8 +206,8 @@ metadata/_aseprite_wizard_config_ = {
 "o_folder": "res://assets/objects",
 "o_name": "h_bound",
 "only_visible": false,
-"op_exp": true,
-"player": "Bounds/UpperBound/Sprite2D/AnimationPlayer",
+"op_exp": false,
+"player": "World/TopBound/Sprite2D/AnimationPlayer",
 "source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/p0ng/objects/h_bound.ase"
 }
 
@@ -225,6 +221,7 @@ shape = SubResource("RectangleShape2D_24w54")
 debug_color = Color(0.462745, 0.45098, 0.988235, 0.419608)
 
 [node name="VerticalSeparator" type="Area2D" parent="World"]
+monitorable = false
 
 [node name="Sprite2D" type="Sprite2D" parent="World/VerticalSeparator"]
 texture_filter = 1

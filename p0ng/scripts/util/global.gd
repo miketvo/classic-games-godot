@@ -12,6 +12,7 @@ const UNIT_VECTORS: PackedVector2Array = [
 ]
 
 const PLAYER_SPEED: float = 450.0 ## Unit: px/s
-const INITIAL_BALL_SPEED: = 450.0 ## Unit: px/s
+const BALL_SPEED_INITIAL: float = 450.0 ## Unit: px/s
+const BALL_SPEED_STEP_INCREMENT: float = 50.0 ## Unit: px/s
 const FIRST_SIDE_SERVED: int = SIDE_RIGHT
 const TARGET_SCORE: int = 11
