@@ -24,6 +24,8 @@ func _ready() -> void:
     _spawn_ball()
     _ball_active = false
 
+    $UI/GameUI/PauseMenuContainer/VBoxContainer/RestartButton\
+            .connect("pressed", _on_restart_request)
     $UI/GameUI/PauseMenuContainer/VBoxContainer/EndGameButton\
             .connect("pressed", _on_end_game_request)
 
@@ -37,6 +39,10 @@ func _physics_process(delta: float) -> void:
 
 # ============================================================================ #
 #region Signal listeners
+
+## Listens to $UI/GameUI/PauseMenuContainer/RestartButton.pressed
+func _on_restart_request() -> void:
+    scene_finished.emit(SceneKey.GAME)
 
 ## Listens to $UI/GameUI/PauseMenuContainer/EndGameButton.pressed
 func _on_end_game_request() -> void:

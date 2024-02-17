@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dyud8dot2715o"]
+[gd_scene load_steps=5 format=3 uid="uid://dyud8dot2715o"]
 
 [ext_resource type="Texture2D" uid="uid://btu8cwupgi6d3" path="res://assets/objects/paddle.png" id="1_brd5l"]
 
@@ -64,9 +64,6 @@ _data = {
 "idle": SubResource("Animation_cw7nb")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_12uhr"]
-size = Vector2(24, 120)
-
 [node name="Paddle" type="CharacterBody2D"]
 motion_mode = 1
 
@@ -92,6 +89,5 @@ libraries = {
 "": SubResource("AnimationLibrary_jos0x")
 }
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_12uhr")
-debug_color = Color(0.172549, 0.643137, 0, 0.419608)
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(0, -60, -4, -59, -8, -52, -11, -33, -12, 0, -11, 33, -8, 52, -4, 59, 0, 60, 4, 59, 8, 52, 11, 33, 12, 0, 11, -33, 8, -52, 4, -59)
