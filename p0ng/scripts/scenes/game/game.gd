@@ -60,8 +60,8 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-    var left_score_label_text: String = "%d%s" %\
-            [ left_score, " " + game_point_text if not _game_point_state ^ 0b10 else "" ]
+    var left_score_label_text: String = "%s%d" %\
+            [ game_point_text + " " if not _game_point_state ^ 0b10 else "", left_score ]
     _score_label[Global.SIDE_LEFT].text = left_score_label_text
     var right_score_label_text: String = "%d%s" %\
             [ right_score, " " + game_point_text if not _game_point_state ^ 0b01 else "" ]
