@@ -4,6 +4,8 @@ extends GameScene2D
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
+    $UI/MainMenuUI/MainMenuContainer/StartButton.grab_focus()
+
     $UI/MainMenuUI/StartMenuContainer/OnePlayerButton\
             .connect("pressed", _on_main_menu_ui_start_menu_one_player_button_pressed)
     $UI/MainMenuUI/StartMenuContainer/TwoPlayersButton\
