@@ -53,7 +53,7 @@ func _on_scene_finished(next_scene_key: SceneKey) -> void:
 
     _current_scene.queue_free()
     remove_child(_current_scene)
-    _set_next_scene(next_scene_key)
+    _current_scene_key = next_scene_key
     _current_scene = null
 
 #endregion
