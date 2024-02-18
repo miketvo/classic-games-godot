@@ -117,6 +117,11 @@ func _on_ball_body_exited(body: Node) -> void:
                 Vector2.from_angle(ball.linear_velocity.angle())\
                 * _ball_speed
         ball.linear_velocity = boosted_velocity
+    else:
+        var maintained_velocity: Vector2 =\
+                Vector2.from_angle(ball.linear_velocity.angle())\
+                * _ball_speed
+        ball.linear_velocity = maintained_velocity
 
 
 ## Listens to $World/VerticalSeparator.body_entered(body: Node)
