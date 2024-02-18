@@ -1,9 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://fsyym8qkg3qr"]
+[gd_scene load_steps=16 format=3 uid="uid://fsyym8qkg3qr"]
 
 [ext_resource type="Texture2D" uid="uid://brmiahx2e6glj" path="res://assets/objects/h_bound.png" id="1_54c4m"]
 [ext_resource type="Script" path="res://scripts/scenes/game/game.gd" id="1_eisns"]
 [ext_resource type="PackedScene" uid="uid://dofglbl0ean4l" path="res://scenes/game/game_ui.tscn" id="2_86o8i"]
 [ext_resource type="Texture2D" uid="uid://vsipwnemlqw6" path="res://assets/objects/v_separator.png" id="2_ss7o6"]
+[ext_resource type="PhysicsMaterial" uid="uid://cd7kk6idyr2lx" path="res://assets/materials/paddle.phymat" id="2_t7sr3"]
 
 [sub_resource type="Animation" id="Animation_i5uq0"]
 length = 0.1
@@ -139,6 +140,7 @@ size = Vector2(24, 1080)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_eisns")
+game_point_text = "GAME!"
 
 [node name="World" type="Node2D" parent="."]
 
@@ -146,6 +148,7 @@ script = ExtResource("1_eisns")
 position = Vector2(960, 24)
 collision_layer = 3
 collision_mask = 3
+physics_material_override = ExtResource("2_t7sr3")
 
 [node name="Sprite2D" type="Sprite2D" parent="World/TopBound"]
 texture_filter = 1
@@ -195,6 +198,7 @@ debug_color = Color(0.92549, 0.270588, 0, 0.419608)
 position = Vector2(960, 1056)
 collision_layer = 3
 collision_mask = 3
+physics_material_override = ExtResource("2_t7sr3")
 
 [node name="Sprite2D" type="Sprite2D" parent="World/BottomBound"]
 texture_filter = 1
@@ -265,7 +269,6 @@ position = Vector2(1812, 540)
 position = Vector2(960, 540)
 
 [node name="UI" type="Control" parent="."]
-z_index = 99
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1920.0

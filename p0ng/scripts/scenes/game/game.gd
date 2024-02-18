@@ -1,21 +1,33 @@
 extends GameScene2D
 
 
+# ============================================================================ #
+#region Enums, Constants & Variables
+enum {
+    GAME_STATE_NORMAL,
+    GAME_STATE_DEUCE,
+}
+
 const Ball: PackedScene = preload("res://scenes/game/ball.tscn")
 const Paddle: PackedScene = preload("res://scenes/game/paddle.tscn")
 const PlayerPaddleScript: Script = preload("res://scripts/characters/player_paddle.gd")
+
+@export var game_point_text: String
 
 var ball: RigidBody2D
 var left_paddle: AnimatableBody2D
 var right_paddle: AnimatableBody2D
 var left_score: int
 var right_score: int
-var game_round: int
 
 var _rng = RandomNumberGenerator.new()
 var _ball_speed: float
-var _ball_active: bool
+var _game_over: bool
+var _round_started: bool
 var _side_served: int
+var _game_state: int
+var _game_round: int
+var _game_point_state: int  ## Bitwise flag, left and right sides correspond to leftmost and rightmost bit
 
 @onready var _ball_spawn: Node2D = $Spawns/BallSpawn
 @onready var _left_paddle_spawn: Node2D = $Spawns/LeftPaddleSpawn
@@ -24,6 +36,16 @@ var _side_served: int
     Global.SIDE_LEFT: $UI/GameUI/HUDContainer/LeftScore,
     Global.SIDE_RIGHT: $UI/GameUI/HUDContainer/RightScore,
 }
+@onready var _win_label: Dictionary = {
+    Global.SIDE_LEFT: $UI/GameUI/EndgameMessageContainer/LeftContainer/WinLabel,
+    Global.SIDE_RIGHT: $UI/GameUI/EndgameMessageContainer/RightContainer/WinLabel,
+}
+@onready var _lose_label: Dictionary = {
+    Global.SIDE_LEFT: $UI/GameUI/EndgameMessageContainer/LeftContainer/LoseLabel,
+    Global.SIDE_RIGHT: $UI/GameUI/EndgameMessageContainer/RightContainer/LoseLabel,
+}
+#endregion
+# ============================================================================ #
 
 
 # ============================================================================ #
@@ -37,12 +59,16 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-    _score_label[Global.SIDE_LEFT].text = "%d" % left_score
-    _score_label[Global.SIDE_RIGHT].text = "%d" % right_score
+    var left_score_label_text: String = "%d%s" %\
+            [ left_score, " " + game_point_text if not _game_point_state ^ 0b10 else "" ]
+    _score_label[Global.SIDE_LEFT].text = left_score_label_text
+    var right_score_label_text: String = "%d%s" %\
+            [ right_score, " " + game_point_text if not _game_point_state ^ 0b01 else "" ]
+    _score_label[Global.SIDE_RIGHT].text = right_score_label_text
 
 
 func _physics_process(delta: float) -> void:
-    if not _ball_active:
+    if not _round_started and not _game_over:
         _spawn_ball()
         _serve_ball(
                 delta,
@@ -50,8 +76,7 @@ func _physics_process(delta: float) -> void:
                 _side_served,
                 Global.SERVING_ANGULAR_VARIATION
         )
-        _ball_active = true
-        game_round += 1
+        _round_started = true
 #endregion
 # ============================================================================ #
 
@@ -173,7 +198,7 @@ func _spawn_ball() -> void:
     ball.connect("body_entered", _on_ball_body_entered)
     ball.connect("body_exited", _on_ball_body_exited)
     _ball_speed = Global.BALL_SPEED_INITIAL
-    _ball_active = false
+    _round_started = false
     add_child(ball)
 
 
@@ -240,6 +265,11 @@ func _configure_world() -> void:
 
 
 func _configure_ui() -> void:
+    _win_label[Global.SIDE_LEFT].hide()
+    _win_label[Global.SIDE_RIGHT].hide()
+    _lose_label[Global.SIDE_LEFT].hide()
+    _lose_label[Global.SIDE_RIGHT].hide()
+
     $UI/GameUI/PauseMenuContainer/VBoxContainer/RestartButton\
             .connect("pressed", _on_restart_request)
     $UI/GameUI/PauseMenuContainer/VBoxContainer/EndGameButton\
@@ -247,10 +277,29 @@ func _configure_ui() -> void:
 
 
 func _configure_game() -> void:
-    game_round = 0
     left_score = 0
     right_score = 0
-    _side_served = Global.FIRST_SIDE_SERVED
+    _game_over = false
+    _side_served = _rng.randi_range(Global.SIDE_LEFT, Global.SIDE_RIGHT)
+    _game_state = GAME_STATE_NORMAL
+    _game_round = 0
+    _game_point_state = 0b00
+
+    if OS.is_debug_build():
+        print_debug(
+            "\nGame Over       : %s\nRound Started   : %s\nSide Served     : %s\nGame State      : %s\nGame Round      : %d\nGame Point State: %d\nScore           : %d | %d"
+                % [
+                    _game_over,
+                    _round_started,
+                    _side_served,
+                    _game_state,
+                    _game_round,
+                    _game_point_state,
+                    left_score,
+                    right_score,
+                ]
+        )
+
 
 
 func _win_round(winning_side: int) -> void:
@@ -262,12 +311,74 @@ func _win_round(winning_side: int) -> void:
         _:
             assert(false, "Unrecognized side")
 
-    match _side_served:
-        Global.SIDE_LEFT:
-            _side_served = Global.SIDE_RIGHT
-        Global.SIDE_RIGHT:
-            _side_served = Global.SIDE_LEFT
-
     _despawn_ball()
-    _ball_active = false
+    _round_started = false
+
+    const GAME_SCORE: int = Global.TARGET_SCORE - 1
+    if left_score == GAME_SCORE and right_score == GAME_SCORE:
+        _game_state = GAME_STATE_DEUCE
+
+    _game_point_state = 0b00
+    match [ left_score, right_score, left_score - right_score, _game_state ]:
+        [ GAME_SCORE, _, _, GAME_STATE_NORMAL ] when left_score > right_score:
+            _game_point_state = 0b10
+        [ _, GAME_SCORE, _, GAME_STATE_NORMAL ] when left_score < right_score:
+            _game_point_state = 0b01
+        [ _, _, 1, GAME_STATE_DEUCE]:
+            _game_point_state = 0b10
+        [ _, _, -1, GAME_STATE_DEUCE]:
+            _game_point_state = 0b01
+
+    match _game_state:
+        GAME_STATE_NORMAL:
+            if left_score == Global.TARGET_SCORE:
+                _win_game(Global.SIDE_LEFT)
+                return
+            if right_score == Global.TARGET_SCORE:
+                _win_game(Global.SIDE_RIGHT)
+                return
+        GAME_STATE_DEUCE:
+            if left_score - right_score == 2:
+                _win_game(Global.SIDE_LEFT)
+                return
+            if left_score - right_score == -2:
+                _win_game(Global.SIDE_RIGHT)
+                return
+
+    if _game_state == GAME_STATE_NORMAL:
+        if (_game_round - 1) % 2 == 0:
+            _side_served = Global.flip_side(_side_served)
+    elif _game_state == GAME_STATE_DEUCE:
+        _side_served = Global.flip_side(_side_served)
+
+    if OS.is_debug_build():
+        print_debug(
+                "\nGame Over       : %s\nRound Started   : %s\nSide Served     : %s\nGame State      : %s\nGame Round      : %d\nGame Point State: %d\nScore           : %d | %d"
+                % [
+                    _game_over,
+                    _round_started,
+                    _side_served,
+                    _game_state,
+                    _game_round,
+                    _game_point_state,
+                    left_score,
+                    right_score,
+                ]
+        )
+
+    _game_round += 1
+
+
+func _win_game(winning_side: int) -> void:
+    _game_over = true
+    match winning_side:
+        Global.SIDE_LEFT:
+            _win_label[Global.SIDE_LEFT].show()
+            _lose_label[Global.SIDE_RIGHT].show()
+        Global.SIDE_RIGHT:
+            _win_label[Global.SIDE_RIGHT].show()
+            _lose_label[Global.SIDE_LEFT].show()
+        _:
+            assert(false, "Unrecognized side")
+
 # ============================================================================ #
