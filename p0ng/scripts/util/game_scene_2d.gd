@@ -6,9 +6,8 @@ extends Node2D
 ## [br][br]
 ## Not emitted by default. Must be emitted manually.
 ## [br][br]
-## This signal is connected to [Main]. If [param next_scene_key] is
-## [enum SceneKey.NONE], then the next scene is chosen by [Main]. Otherwise, it
-## will be used for the next scene change.
+## This signal is connected to [Main]. If [param next_scene_key] is used for the
+## next scene change.
 signal scene_finished(next_scene_key: SceneKey)
 
 enum SceneKey {

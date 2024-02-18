@@ -54,6 +54,7 @@ func _on_scene_finished(next_scene_key: SceneKey) -> void:
     _current_scene.queue_free()
     remove_child(_current_scene)
     _set_next_scene(next_scene_key)
+    _current_scene = null
 
 #endregion
 # ============================================================================ #
@@ -62,20 +63,6 @@ func _on_scene_finished(next_scene_key: SceneKey) -> void:
 # ============================================================================ #
 #region Utils
 func _set_next_scene(next_scene_key: SceneKey) -> void:
-    # Scene change when [param next_scene_key] is provided
-    if next_scene_key != SceneKey.NONE:
-        _current_scene_key = next_scene_key
-        return
-
-    # Automatic scene change when [param next_scene_key] is NOT provided
-    match _current_scene_key:
-        SceneKey.SPLASH:
-            _current_scene_key = SceneKey.MAIN_MENU
-        SceneKey.GAME:
-            _current_scene_key = SceneKey.MAIN_MENU
-        SceneKey.MAIN_MENU, SceneKey.NONE:
-            assert(false, "Not implemented")
-        _:
-            assert(false, "Unrecognized scene key")
+    _current_scene_key = next_scene_key
 #endregion
 # ============================================================================ #

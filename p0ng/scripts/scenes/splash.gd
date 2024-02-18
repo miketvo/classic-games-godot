@@ -24,6 +24,6 @@ func _process(_delta: float) -> void:
 ## unbind(1)
 func _end_splash() -> void:
     _animation_player.stop(true)
-    scene_finished.emit(SceneKey.NONE)
+    scene_finished.emit(SceneKey.MAIN_MENU)
 #endregion
 # ============================================================================ #
