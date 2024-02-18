@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bvj431e37jkc0"]
 
-[ext_resource type="PhysicsMaterial" uid="uid://chekfn10f5e6e" path="res://assets/materials/ball.phymat" id="1_8ddod"]
+[ext_resource type="PhysicsMaterial" uid="uid://erimhhryh6gt" path="res://assets/materials/ball.tres" id="1_1t8ao"]
 [ext_resource type="Texture2D" uid="uid://deb4d1ukrlrt6" path="res://assets/objects/ball.png" id="2_v5f0i"]
 [ext_resource type="Script" path="res://scripts/characters/ball.gd" id="2_wd0kw"]
 
@@ -8,7 +8,7 @@
 radius = 12.0
 
 [node name="Ball" type="RigidBody2D"]
-physics_material_override = ExtResource("1_8ddod")
+physics_material_override = ExtResource("1_1t8ao")
 gravity_scale = 0.0
 continuous_cd = 1
 max_contacts_reported = 8
