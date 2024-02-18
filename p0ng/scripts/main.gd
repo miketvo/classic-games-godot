@@ -24,11 +24,14 @@ func _process(_delta: float) -> void:
 
 # ============================================================================ #
 #region Signal listeners
+
+## Listens to _current_scene.scene_finished(next_scene_key: SceneKey)
 func _on_scene_finished(next_scene_key: SceneKey) -> void:
     _current_scene.queue_free()
     get_tree().root.remove_child(_current_scene)
     _current_scene = null
     set_next_scene(next_scene_key)
+
 #endregion
 # ============================================================================ #
 
