@@ -285,22 +285,6 @@ func _configure_game() -> void:
     _game_round = 0
     _game_point_state = 0b00
 
-    if OS.is_debug_build():
-        print_debug(
-            "\nGame Over       : %s\nRound Started   : %s\nSide Served     : %s\nGame State      : %s\nGame Round      : %d\nGame Point State: %d\nScore           : %d | %d"
-                % [
-                    _game_over,
-                    _round_started,
-                    _side_served,
-                    _game_state,
-                    _game_round,
-                    _game_point_state,
-                    left_score,
-                    right_score,
-                ]
-        )
-
-
 
 func _win_round(winning_side: int) -> void:
     match winning_side:
@@ -351,21 +335,6 @@ func _win_round(winning_side: int) -> void:
     elif _game_state == GAME_STATE_DEUCE:
         _side_served = Global.flip_side(_side_served)
 
-    if OS.is_debug_build():
-        print_debug(
-                "\nGame Over       : %s\nRound Started   : %s\nSide Served     : %s\nGame State      : %s\nGame Round      : %d\nGame Point State: %d\nScore           : %d | %d"
-                % [
-                    _game_over,
-                    _round_started,
-                    _side_served,
-                    _game_state,
-                    _game_round,
-                    _game_point_state,
-                    left_score,
-                    right_score,
-                ]
-        )
-
     _game_round += 1
 
 
@@ -380,5 +349,4 @@ func _win_game(winning_side: int) -> void:
             _lose_label[Global.SIDE_LEFT].show()
         _:
             assert(false, "Unrecognized side")
-
 # ============================================================================ #
