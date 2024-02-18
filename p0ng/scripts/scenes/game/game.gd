@@ -111,17 +111,18 @@ func _on_ball_body_entered(body: Node) -> void:
 
 ## Listens to ball.body_exited(body: Node)
 func _on_ball_body_exited(body: Node) -> void:
-    if body in [ left_paddle, right_paddle ]:
-        _ball_speed *= Global.BALL_SPEED_DIFFICULTY_MULTIPLIER
-        var boosted_velocity: Vector2 =\
-                Vector2.from_angle(ball.linear_velocity.angle())\
-                * _ball_speed
-        ball.linear_velocity = boosted_velocity
-    else:
-        var maintained_velocity: Vector2 =\
-                Vector2.from_angle(ball.linear_velocity.angle())\
-                * _ball_speed
-        ball.linear_velocity = maintained_velocity
+    var new_velocity: Vector2
+    match body:
+        left_paddle, right_paddle:
+            _ball_speed *= Global.BALL_SPEED_DIFFICULTY_MULTIPLIER
+            new_velocity =\
+                    Vector2.from_angle(ball.linear_velocity.angle())\
+                    * _ball_speed
+        _:
+            new_velocity =\
+                    Vector2.from_angle(ball.linear_velocity.angle())\
+                    * _ball_speed
+    ball.linear_velocity = new_velocity
 
 
 ## Listens to $World/VerticalSeparator.body_entered(body: Node)
