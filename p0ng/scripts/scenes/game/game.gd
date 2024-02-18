@@ -36,13 +36,14 @@ var _game_point_state: int  ## Bitwise flag, left and right sides correspond to 
     Global.SIDE_LEFT: $UI/GameUI/HUDContainer/LeftScore,
     Global.SIDE_RIGHT: $UI/GameUI/HUDContainer/RightScore,
 }
+@onready var _endgame_dialog: Container = $UI/GameUI/EndGameDialogContainer
 @onready var _win_label: Dictionary = {
-    Global.SIDE_LEFT: $UI/GameUI/EndgameMessageContainer/LeftContainer/WinLabel,
-    Global.SIDE_RIGHT: $UI/GameUI/EndgameMessageContainer/RightContainer/WinLabel,
+    Global.SIDE_LEFT: $UI/GameUI/EndGameDialogContainer/MessageContainer/LeftContainer/WinLabel,
+    Global.SIDE_RIGHT: $UI/GameUI/EndGameDialogContainer/MessageContainer/RightContainer/WinLabel,
 }
 @onready var _lose_label: Dictionary = {
-    Global.SIDE_LEFT: $UI/GameUI/EndgameMessageContainer/LeftContainer/LoseLabel,
-    Global.SIDE_RIGHT: $UI/GameUI/EndgameMessageContainer/RightContainer/LoseLabel,
+    Global.SIDE_LEFT: $UI/GameUI/EndGameDialogContainer/MessageContainer/LeftContainer/LoseLabel,
+    Global.SIDE_RIGHT: $UI/GameUI/EndGameDialogContainer/MessageContainer/RightContainer/LoseLabel,
 }
 #endregion
 # ============================================================================ #
@@ -65,6 +66,14 @@ func _process(_delta: float) -> void:
     var right_score_label_text: String = "%d%s" %\
             [ right_score, " " + game_point_text if not _game_point_state ^ 0b01 else "" ]
     _score_label[Global.SIDE_RIGHT].text = right_score_label_text
+
+    if _game_over:
+        UI.tween_transition_fade_appear_container(
+                _endgame_dialog,
+                UI.TRANS_DURATION / 2
+        ).set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+        $UI/GameUI.disable_pausing = true
+        get_tree().paused = true
 
 
 func _physics_process(delta: float) -> void:
@@ -156,12 +165,14 @@ func _on_right_paddle_animation_finished(anim_name: StringName) -> void:
 #endregion
 
 
-## Listens to $UI/GameUI/PauseMenuContainer/RestartButton.pressed()
+## Listens to $UI/GameUI/PauseMenuContainer/RestartButton.pressed() and
+## _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").pressed()
 func _on_restart_request() -> void:
     scene_finished.emit(SceneKey.GAME)
 
 
-## Listens to $UI/GameUI/PauseMenuContainer/EndGameButton.pressed()
+## Listens to $UI/GameUI/PauseMenuContainer/EndGameButton.pressed() and
+## _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton").pressed()
 func _on_end_game_request() -> void:
     scene_finished.emit(SceneKey.MAIN_MENU)
 
@@ -265,6 +276,7 @@ func _configure_world() -> void:
 
 
 func _configure_ui() -> void:
+    _endgame_dialog.modulate = Color(1.0, 1.0, 1.0, 0.0)
     _win_label[Global.SIDE_LEFT].hide()
     _win_label[Global.SIDE_RIGHT].hide()
     _lose_label[Global.SIDE_LEFT].hide()
@@ -273,6 +285,10 @@ func _configure_ui() -> void:
     $UI/GameUI/PauseMenuContainer/VBoxContainer/RestartButton\
             .connect("pressed", _on_restart_request)
     $UI/GameUI/PauseMenuContainer/VBoxContainer/EndGameButton\
+            .connect("pressed", _on_end_game_request)
+    _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton")\
+            .connect("pressed", _on_restart_request)
+    _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton")\
             .connect("pressed", _on_end_game_request)
 
 
@@ -339,7 +355,6 @@ func _win_round(winning_side: int) -> void:
 
 
 func _win_game(winning_side: int) -> void:
-    _game_over = true
     match winning_side:
         Global.SIDE_LEFT:
             _win_label[Global.SIDE_LEFT].show()
@@ -349,4 +364,8 @@ func _win_game(winning_side: int) -> void:
             _lose_label[Global.SIDE_LEFT].show()
         _:
             assert(false, "Unrecognized side")
+
+    left_paddle.set_script(null)
+    right_paddle.set_script(null)
+    _game_over = true
 # ============================================================================ #

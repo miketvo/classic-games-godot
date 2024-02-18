@@ -4,10 +4,23 @@ extends Control
 const TRANS_DURATION: float = 0.5
 
 
+func tween_transition_fade_appear_container(
+        container: Container,
+        duration: float
+) -> Tween:
+    var tween: Tween = create_tween()
+    tween.tween_property(
+            container, "modulate",
+            Color(1.0, 1.0, 1.0, 1.0),
+            duration
+    ).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+    return tween
+
+
 func tween_transition_slide_container(
-    container: Container,
-    direction: Vector2,
-    duration: float
+        container: Container,
+        direction: Vector2,
+        duration: float
 ) -> Tween:
     if direction not in Global.UNIT_VECTORS:
         assert(
