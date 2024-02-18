@@ -180,7 +180,7 @@ func _on_restart_request() -> void:
 ## Listens to $UI/GameUI/PauseMenuContainer/EndGameButton.pressed() and
 ## _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton").pressed()
 func _on_end_game_request() -> void:
-    scene_finished.emit(SceneKey.MAIN_MENU)
+    scene_finished.emit(SceneKey.NONE)
 
 #endregion
 # ============================================================================ #
