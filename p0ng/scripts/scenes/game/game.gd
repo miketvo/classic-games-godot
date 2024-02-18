@@ -68,12 +68,12 @@ func _process(_delta: float) -> void:
     _score_label[Global.SIDE_RIGHT].text = right_score_label_text
 
     if _game_over:
+        _endgame_dialog.process_mode = Node.PROCESS_MODE_INHERIT
         UI.tween_transition_fade_appear_container(
                 _endgame_dialog,
                 UI.TRANS_DURATION / 4
         ).set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
         $UI/GameUI.disable_pausing = true
-        _endgame_dialog.position = Vector2.ZERO
         get_tree().paused = true
 
 
@@ -285,6 +285,7 @@ func _configure_world() -> void:
 
 
 func _configure_ui() -> void:
+    _endgame_dialog.process_mode = Node.PROCESS_MODE_DISABLED
     _endgame_dialog.modulate = Color(1.0, 1.0, 1.0, 0.0)
     _win_label[Global.SIDE_LEFT].hide()
     _win_label[Global.SIDE_RIGHT].hide()
