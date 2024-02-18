@@ -70,9 +70,10 @@ func _process(_delta: float) -> void:
     if _game_over:
         UI.tween_transition_fade_appear_container(
                 _endgame_dialog,
-                UI.TRANS_DURATION / 2
+                UI.TRANS_DURATION / 4
         ).set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
         $UI/GameUI.disable_pausing = true
+        _endgame_dialog.position = Vector2.ZERO
         get_tree().paused = true
 
 
@@ -174,12 +175,14 @@ func _on_right_paddle_animation_finished(anim_name: StringName) -> void:
 ## Listens to $UI/GameUI/PauseMenuContainer/RestartButton.pressed() and
 ## _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").pressed()
 func _on_restart_request() -> void:
+    get_tree().paused = false
     scene_finished.emit(SceneKey.GAME)
 
 
 ## Listens to $UI/GameUI/PauseMenuContainer/EndGameButton.pressed() and
 ## _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton").pressed()
 func _on_end_game_request() -> void:
+    get_tree().paused = false
     scene_finished.emit(SceneKey.MAIN_MENU)
 
 #endregion

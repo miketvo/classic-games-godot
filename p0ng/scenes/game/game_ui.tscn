@@ -43,8 +43,9 @@ script = ExtResource("2_5qob0")
 [node name="EndGameDialogContainer" type="VBoxContainer" parent="."]
 z_index = 99
 layout_mode = 2
+offset_top = -1032.0
 offset_right = 480.0
-offset_bottom = 258.0
+offset_bottom = -774.0
 scale = Vector2(4, 4)
 
 [node name="MessageContainer" type="HBoxContainer" parent="EndGameDialogContainer"]
