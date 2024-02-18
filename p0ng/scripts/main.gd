@@ -58,11 +58,3 @@ func _on_scene_finished(next_scene_key: SceneKey) -> void:
 
 #endregion
 # ============================================================================ #
-
-
-# ============================================================================ #
-#region Utils
-func _set_next_scene(next_scene_key: SceneKey) -> void:
-    _current_scene_key = next_scene_key
-#endregion
-# ============================================================================ #
