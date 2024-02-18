@@ -260,10 +260,10 @@ debug_color = Color(0.807843, 0.270588, 0.784314, 0.419608)
 [node name="Spawns" type="Node2D" parent="."]
 
 [node name="LeftPaddleSpawn" type="Node2D" parent="Spawns"]
-position = Vector2(108, 540)
+position = Vector2(216, 540)
 
 [node name="RightPaddleSpawn" type="Node2D" parent="Spawns"]
-position = Vector2(1812, 540)
+position = Vector2(1704, 540)
 
 [node name="BallSpawn" type="Node2D" parent="Spawns"]
 position = Vector2(960, 540)
