@@ -68,6 +68,7 @@ func _process(_delta: float) -> void:
     _score_label[Global.SIDE_RIGHT].text = right_score_label_text
 
     if _game_over:
+        _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").grab_focus()
         _endgame_dialog.process_mode = Node.PROCESS_MODE_INHERIT
         UI.tween_transition_fade_appear_container(
                 _endgame_dialog,

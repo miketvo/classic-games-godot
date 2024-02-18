@@ -26,6 +26,7 @@ func _process(_delta: float) -> void:
         if Input.is_action_just_released("pause") and not get_tree().paused:
             input_disabled = true
             get_tree().paused = true
+            $PauseMenuContainer/VBoxContainer/ResumeButton.grab_focus()
             tween_transition_slide_container($PauseMenuContainer, Vector2.UP, TRANS_DURATION)\
                     .set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)\
                     .connect("finished", _on_tween_transition_finshed)
