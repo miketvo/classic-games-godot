@@ -27,7 +27,9 @@ var _round_started: bool
 var _side_served: int
 var _game_state: int
 var _game_round: int
-var _game_point_state: int  ## Bitwise flag, left and right sides correspond to leftmost and rightmost bit
+
+## 2-bit bitwise flag, left and right sides correspond to leftmost and rightmost bit.
+var _game_point_state: int
 
 @onready var _ball_spawn: Node2D = $Spawns/BallSpawn
 @onready var _left_paddle_spawn: Node2D = $Spawns/LeftPaddleSpawn
@@ -95,7 +97,7 @@ func _physics_process(delta: float) -> void:
 # ============================================================================ #
 #region Signal listeners
 
-## Listens to ball.body_entered(body: Node)
+## Listens to ball.body_entered(body: Node).
 func _on_ball_body_entered(body: Node) -> void:
     var top_bound = $World/TopBound
     var bottom_bound = $World/BottomBound
@@ -115,7 +117,7 @@ func _on_ball_body_entered(body: Node) -> void:
             right_paddle.get_node("Sprite2D/AnimationPlayer").queue("idle")
 
 
-## Listens to ball.body_exited(body: Node)
+## Listens to ball.body_exited(body: Node).
 func _on_ball_body_exited(body: Node) -> void:
     var new_velocity: Vector2
     match body:
@@ -131,34 +133,34 @@ func _on_ball_body_exited(body: Node) -> void:
     ball.linear_velocity = new_velocity
 
 
-## Listens to $World/VerticalSeparator.body_entered(body: Node)
+## Listens to $World/VerticalSeparator.body_entered(body: Node).
 func _on_vertical_separator_body_entered(body: Node) -> void:
     if body == ball:
         $World/VerticalSeparator/Sprite2D/AnimationPlayer.play("active")
         $World/VerticalSeparator/Sprite2D/AnimationPlayer.queue("idle")
 
 
-## Listens to $World/VerticalSeparator.body_entered(body: Node)
+## Listens to $World/VerticalSeparator.body_entered(body: Node).
 func _on_left_bound_body_entered(body: Node) -> void:
     if body == ball:
         _win_round(Global.SIDE_RIGHT)
 
 
-## Listens to $World/VerticalSeparator.body_entered(body: Node)
+## Listens to $World/VerticalSeparator.body_entered(body: Node).
 func _on_right_bound_body_entered(body: Node) -> void:
     if body == ball:
         _win_round(Global.SIDE_LEFT)
 
 
 ## Listens to $UI/GameUI/PauseMenuContainer/RestartButton.pressed() and
-## _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").pressed()
+## _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").pressed().
 func _on_restart_request() -> void:
     get_tree().paused = false
     scene_finished.emit(SceneKey.GAME)
 
 
 ## Listens to $UI/GameUI/PauseMenuContainer/EndGameButton.pressed() and
-## _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton").pressed()
+## _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton").pressed().
 func _on_end_game_request() -> void:
     get_tree().paused = false
     scene_finished.emit(SceneKey.MAIN_MENU)

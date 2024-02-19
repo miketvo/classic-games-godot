@@ -87,3 +87,5 @@ metadata/_aseprite_wizard_config_ = {
 libraries = {
 "": SubResource("AnimationLibrary_a4mwl")
 }
+
+[node name="IdleTimer" type="Timer" parent="."]

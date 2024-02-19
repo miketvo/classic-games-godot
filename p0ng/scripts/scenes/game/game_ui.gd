@@ -36,7 +36,7 @@ func _process(_delta: float) -> void:
 
 func _input(_event: InputEvent) -> void:
     if input_disabled:
-        # Stops event propagation to child nodes, effectively disabling inputs
+        # Stops event propagation to child nodes, effectively disabling inputs.
         accept_event()
 #endregion
 # ============================================================================ #
@@ -45,7 +45,7 @@ func _input(_event: InputEvent) -> void:
 # ============================================================================ #
 #region Signal listeners
 
-## Listens to $PauseMenuContainer/ResumeButton.pressed()
+## Listens to $PauseMenuContainer/ResumeButton.pressed().
 func _on_resume_request() -> void:
     for control: Control in $PauseMenuContainer/VBoxContainer.get_children():
         control.release_focus()
@@ -57,12 +57,12 @@ func _on_resume_request() -> void:
             .connect("finished", _on_tween_transition_finshed)
 
 ## Listens to $PauseMenuContainer/QuitToDesktopButton.pressed() and
-## $EndGameDialogContainer/MenuContainer/VBoxContainer/QuitToDesktopButton.pressed()
+## $EndGameDialogContainer/MenuContainer/VBoxContainer/QuitToDesktopButton.pressed().
 func _on_menu_quit_to_desktop_request() -> void:
     get_tree().quit()
 
 
-## Listens to tween transition Tween.finished() to re-enable input
+## Listens to tween transition Tween.finished() to re-enable input.
 func _on_tween_transition_finshed() -> void:
     input_disabled = false
 

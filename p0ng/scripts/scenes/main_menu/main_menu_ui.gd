@@ -26,7 +26,7 @@ func _input(_event: InputEvent) -> void:
 # ============================================================================ #
 #region Signal listeners
 
-## Listens to $MainMenuContainer/QuitButton.pressed()
+## Listens to $MainMenuContainer/QuitButton.pressed()._add_ice_candidate.
 func _on_main_menu_start_button_pressed() -> void:
     input_disabled = true
     $StartMenuContainer/BackButton.grab_focus()
@@ -36,12 +36,12 @@ func _on_main_menu_start_button_pressed() -> void:
             .connect("finished", _on_tween_transition_finshed)
 
 
-## Listens to $MainMenuContainer/QuitButton.pressed()
+## Listens to $MainMenuContainer/QuitButton.pressed().
 func _on_main_menu_quit_button_pressed() -> void:
     get_tree().quit()
 
 
-## Listens to $StartMenuContainer/BackButton.pressed()
+## Listens to $StartMenuContainer/BackButton.pressed().
 func _on_start_menu_back_button_pressed() -> void:
     input_disabled = true
     $MainMenuContainer/StartButton.grab_focus()
@@ -51,7 +51,7 @@ func _on_start_menu_back_button_pressed() -> void:
             .connect("finished", _on_tween_transition_finshed)
 
 
-## Listens to tween transition Tween.finished() to re-enable input
+## Listens to tween transition Tween.finished() to re-enable input.
 func _on_tween_transition_finshed() -> void:
     input_disabled = false
 
