@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://cm6ghli8pol4j"]
+[gd_scene load_steps=9 format=3 uid="uid://cm6ghli8pol4j"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_pqbot"]
 [ext_resource type="Shader" path="res://assets/shaders/crt.gdshader" id="2_l1nth"]
 [ext_resource type="Texture2D" uid="uid://dqfpuk0uj1ox8" path="res://assets/ui/cursor.png" id="2_mhiao"]
+[ext_resource type="Script" path="res://scripts/util/cursor.gd" id="3_0kmwn"]
 
 [sub_resource type="Animation" id="Animation_vflyu"]
 length = 0.1
@@ -92,11 +93,12 @@ shader_parameter/vignette_opacity = 0.51
 script = ExtResource("1_pqbot")
 
 [node name="Cursor" type="Sprite2D" parent="."]
+z_index = 4096
 texture_filter = 1
-position = Vector2(-6, -18)
 texture = ExtResource("2_mhiao")
-offset = Vector2(6, 18)
+offset = Vector2(15, 21)
 hframes = 2
+script = ExtResource("3_0kmwn")
 metadata/_aseprite_wizard_config_ = {
 "i_mode": -1,
 "keep_anim_length": false,

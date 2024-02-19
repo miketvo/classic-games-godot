@@ -9,13 +9,11 @@ var _current_scene: Node
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    _configure_cursor()
     _current_scene_key = SceneKey.SPLASH
     _current_scene = null
 
 
 func _process(_delta: float) -> void:
-    $Cursor.position = get_viewport().get_mouse_position()
     if _current_scene == null:
         _current_scene = load(GAME_SCENE[_current_scene_key]).instantiate()
         add_child(_current_scene)
@@ -55,14 +53,5 @@ func _on_scene_finished(next_scene_key: SceneKey) -> void:
     _current_scene_key = next_scene_key
     _current_scene = null
 
-#endregion
-# ============================================================================ #
-
-
-# ============================================================================ #
-#region Utils
-func _configure_cursor() -> void:
-    Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
-    $Cursor/AnimationPlayer.play("idle")
 #endregion
 # ============================================================================ #

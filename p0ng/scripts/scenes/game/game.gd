@@ -232,7 +232,14 @@ func _despawn_ball() -> void:
 
 
 func _configure_world() -> void:
-    pass
+    $World/LeftBound.connect(
+            "body_entered",
+            _on_left_bound_body_entered
+    )
+    $World/RightBound.connect(
+            "body_entered",
+            _on_right_bound_body_entered
+    )
 
 
 func _configure_ui() -> void:
