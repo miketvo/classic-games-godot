@@ -30,9 +30,9 @@ func _input(_event: InputEvent) -> void:
 func _on_main_menu_start_button_pressed() -> void:
     input_disabled = true
     $StartMenuContainer/BackButton.grab_focus()
-    tween_transition_slide_container($MainMenuContainer, Vector2.LEFT, TRANS_DURATION)\
+    tween_transition_slide_container($MainMenuContainer, Vector2.LEFT, UI_TRANSITION_DURATION)\
             .connect("finished", _on_tween_transition_finshed)
-    tween_transition_slide_container($StartMenuContainer, Vector2.LEFT, TRANS_DURATION)\
+    tween_transition_slide_container($StartMenuContainer, Vector2.LEFT, UI_TRANSITION_DURATION)\
             .connect("finished", _on_tween_transition_finshed)
 
 
@@ -45,9 +45,9 @@ func _on_main_menu_quit_button_pressed() -> void:
 func _on_start_menu_back_button_pressed() -> void:
     input_disabled = true
     $MainMenuContainer/StartButton.grab_focus()
-    tween_transition_slide_container($MainMenuContainer, Vector2.RIGHT, TRANS_DURATION)\
+    tween_transition_slide_container($MainMenuContainer, Vector2.RIGHT, UI_TRANSITION_DURATION)\
             .connect("finished", _on_tween_transition_finshed)
-    tween_transition_slide_container($StartMenuContainer, Vector2.RIGHT, TRANS_DURATION)\
+    tween_transition_slide_container($StartMenuContainer, Vector2.RIGHT, UI_TRANSITION_DURATION)\
             .connect("finished", _on_tween_transition_finshed)
 
 

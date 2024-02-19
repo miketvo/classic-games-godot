@@ -1,7 +1,7 @@
 extends Control
 
 
-const TRANS_DURATION: float = 0.5
+const UI_TRANSITION_DURATION: float = 0.5
 
 
 func tween_transition_fade_appear_container(
