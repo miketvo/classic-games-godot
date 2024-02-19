@@ -15,9 +15,6 @@ func _ready() -> void:
     $Walls/BottomWall.connect("body_entered", _on_bottom_wall_body_entered)
     $Walls/RightWall.connect("body_entered", _on_right_wall_body_entered)
 
-    _title_sprite_animation_player\
-            .connect("animation_finished", _on_animation_player_animation_finished)
-
     var ball_speed = _rng.randf_range(160.0, 180.0)
     var ball_velocity = Vector2.RIGHT * ball_speed
     ball_velocity = ball_velocity.rotated(_rng.randf_range(0.0, 2.0 * PI))
@@ -33,28 +30,26 @@ func _ready() -> void:
 func _on_top_wall_body_entered(body: Node) -> void:
     if body == _ball:
         _title_sprite_animation_player.play("collide_top")
+        _title_sprite_animation_player.queue("idle")
 
 
 func _on_left_wall_body_entered(body: Node) -> void:
     if body == _ball:
         _title_sprite_animation_player.play("collide_left")
+        _title_sprite_animation_player.queue("idle")
 
 
 func _on_bottom_wall_body_entered(body: Node) -> void:
     if body == _ball:
         _title_sprite_animation_player.play("collide_bottom")
+        _title_sprite_animation_player.queue("idle")
 
 
 func _on_right_wall_body_entered(body: Node) -> void:
     if body == _ball:
         _title_sprite_animation_player.play("collide_right")
+        _title_sprite_animation_player.queue("idle")
 #endregion
-
-
-## Listens to $Sprite2D/AnimationPlayer.animation_finished(anim_name:StringName)
-func _on_animation_player_animation_finished(anim_name: StringName) -> void:
-    if anim_name != "idle":
-        _title_sprite_animation_player.play("idle")
 
 #endregion
 # ============================================================================ #

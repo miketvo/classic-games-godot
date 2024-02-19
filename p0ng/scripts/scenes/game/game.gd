@@ -103,12 +103,16 @@ func _on_ball_body_entered(body: Node) -> void:
     match body:
         top_bound:
             top_bound.get_node("Sprite2D/AnimationPlayer").play("active")
+            top_bound.get_node("Sprite2D/AnimationPlayer").queue("idle")
         bottom_bound:
             bottom_bound.get_node("Sprite2D/AnimationPlayer").play("active")
+            bottom_bound.get_node("Sprite2D/AnimationPlayer").queue("idle")
         left_paddle:
             left_paddle.get_node("Sprite2D/AnimationPlayer").play("active")
+            left_paddle.get_node("Sprite2D/AnimationPlayer").queue("idle")
         right_paddle:
             right_paddle.get_node("Sprite2D/AnimationPlayer").play("active")
+            right_paddle.get_node("Sprite2D/AnimationPlayer").queue("idle")
 
 
 ## Listens to ball.body_exited(body: Node)
@@ -131,6 +135,7 @@ func _on_ball_body_exited(body: Node) -> void:
 func _on_vertical_separator_body_entered(body: Node) -> void:
     if body == ball:
         $World/VerticalSeparator/Sprite2D/AnimationPlayer.play("active")
+        $World/VerticalSeparator/Sprite2D/AnimationPlayer.queue("idle")
 
 
 ## Listens to $World/VerticalSeparator.body_entered(body: Node)
@@ -143,34 +148,6 @@ func _on_left_bound_body_entered(body: Node) -> void:
 func _on_right_bound_body_entered(body: Node) -> void:
     if body == ball:
         _win_round(Global.SIDE_LEFT)
-
-
-# Listens to $*/Sprite2D/AnimationPlayer.animation_finished(anim_name: StringName)
-#region
-func _on_top_bound_animation_finished(anim_name: StringName) -> void:
-    if anim_name != "idle":
-        $World/TopBound/Sprite2D/AnimationPlayer.play("idle")
-
-
-func _on_bottom_bound_animation_finished(anim_name: StringName) -> void:
-    if anim_name != "idle":
-        $World/BottomBound/Sprite2D/AnimationPlayer.play("idle")
-
-
-func _on_vertical_separator_animation_finished(anim_name: StringName) -> void:
-    if anim_name != "idle":
-        $World/VerticalSeparator/Sprite2D/AnimationPlayer.play("idle")
-
-
-func _on_left_paddle_animation_finished(anim_name: StringName) -> void:
-    if anim_name != "idle":
-        left_paddle.get_node("Sprite2D/AnimationPlayer").play("idle")
-
-
-func _on_right_paddle_animation_finished(anim_name: StringName) -> void:
-    if anim_name != "idle":
-        right_paddle.get_node("Sprite2D/AnimationPlayer").play("idle")
-#endregion
 
 
 ## Listens to $UI/GameUI/PauseMenuContainer/RestartButton.pressed() and
@@ -198,8 +175,6 @@ func _spawn_left_paddle() -> void:
     left_paddle.position = _left_paddle_spawn.position
     left_paddle.rotation = PI
     left_paddle.player_id = PlayerPaddle.PLAYER_LEFT
-    left_paddle.get_node("Sprite2D/AnimationPlayer")\
-            .connect("animation_finished", _on_left_paddle_animation_finished)
     add_child(left_paddle)
 
 
@@ -208,8 +183,6 @@ func _spawn_right_paddle() -> void:
     right_paddle.set_script(PlayerPaddleScript)
     right_paddle.position = _right_paddle_spawn.position
     right_paddle.player_id = PlayerPaddle.PLAYER_RIGHT
-    right_paddle.get_node("Sprite2D/AnimationPlayer")\
-            .connect("animation_finished", _on_right_paddle_animation_finished)
     add_child(right_paddle)
 
 
@@ -259,30 +232,7 @@ func _despawn_ball() -> void:
 
 
 func _configure_world() -> void:
-    $World/TopBound/Sprite2D/AnimationPlayer.connect(
-            "animation_finished",
-            _on_top_bound_animation_finished
-    )
-    $World/BottomBound/Sprite2D/AnimationPlayer.connect(
-            "animation_finished",
-            _on_bottom_bound_animation_finished
-    )
-    $World/VerticalSeparator.connect(
-            "body_entered",
-            _on_vertical_separator_body_entered
-    )
-    $World/VerticalSeparator/Sprite2D/AnimationPlayer.connect(
-            "animation_finished",
-            _on_vertical_separator_animation_finished
-    )
-    $World/LeftBound.connect(
-            "body_entered",
-            _on_left_bound_body_entered
-    )
-    $World/RightBound.connect(
-            "body_entered",
-            _on_right_bound_body_entered
-    )
+    pass
 
 
 func _configure_ui() -> void:

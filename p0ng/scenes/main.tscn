@@ -1,7 +1,68 @@
-[gd_scene load_steps=4 format=3 uid="uid://cm6ghli8pol4j"]
+[gd_scene load_steps=8 format=3 uid="uid://cm6ghli8pol4j"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_pqbot"]
 [ext_resource type="Shader" path="res://assets/shaders/crt.gdshader" id="2_l1nth"]
+[ext_resource type="Texture2D" uid="uid://dqfpuk0uj1ox8" path="res://assets/ui/cursor.png" id="2_mhiao"]
+
+[sub_resource type="Animation" id="Animation_vflyu"]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_liwy8"]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_a4mwl"]
+_data = {
+"click": SubResource("Animation_liwy8"),
+"idle": SubResource("Animation_vflyu")
+}
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_g3j7g"]
 shader = ExtResource("2_l1nth")
@@ -29,6 +90,30 @@ shader_parameter/vignette_opacity = 0.51
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_pqbot")
+
+[node name="Cursor" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(-6, -18)
+texture = ExtResource("2_mhiao")
+offset = Vector2(6, 18)
+hframes = 2
+metadata/_aseprite_wizard_config_ = {
+"i_mode": -1,
+"keep_anim_length": false,
+"layer": "",
+"o_ex_p": "",
+"o_folder": "res://assets/ui",
+"o_name": "cursor",
+"only_visible": false,
+"op_exp": false,
+"player": "Cursor/AnimationPlayer",
+"source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/p0ng/cursor.ase"
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Cursor"]
+libraries = {
+"": SubResource("AnimationLibrary_a4mwl")
+}
 
 [node name="PostProcessingLayer" type="CanvasLayer" parent="."]
 
