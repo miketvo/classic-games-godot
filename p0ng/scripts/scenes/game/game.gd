@@ -244,6 +244,10 @@ func _configure_world() -> void:
             "body_entered",
             _on_right_bound_body_entered
     )
+    $World/VerticalSeparator.connect(
+            "body_entered",
+            _on_vertical_separator_body_entered
+    )
 
 
 func _configure_ui() -> void:
