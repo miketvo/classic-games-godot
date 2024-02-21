@@ -50,7 +50,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 6
 theme_type_variation = &"LabelHeading"
 theme_override_styles/normal = SubResource("StyleBoxFlat_gnqa8")
-text = "SELECT A SIDE"
+text = "CHOOSE A SIDE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
