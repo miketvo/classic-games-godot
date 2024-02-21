@@ -1,6 +1,7 @@
 extends Control
 
 
+signal button_pressed(action: StringName)
 const UI_TRANSITION_DURATION: float = 0.5
 
 

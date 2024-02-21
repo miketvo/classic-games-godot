@@ -8,10 +8,11 @@ var input_disabled: bool
 #region Godot builtins
 func _ready() -> void:
     input_disabled = false
-
-    $MainMenuContainer/StartButton.connect("pressed", _on_main_menu_start_button_pressed)
-    $MainMenuContainer/QuitButton.connect("pressed", _on_main_menu_quit_button_pressed)
-
+    %StartButton.grab_focus()
+    %StartButton.connect("pressed", _on_main_menu_start_button_pressed)
+    %QuitButton.connect("pressed", _on_main_menu_quit_button_pressed)
+    %OnePlayerButton.connect("pressed", _on_start_menu_one_player_button_pressed)
+    %TwoPlayersButton.connect("pressed", _on_start_menu_two_players_button_pressed)
     $StartMenuContainer/BackButton.connect("pressed", _on_start_menu_back_button_pressed)
 
 
@@ -26,7 +27,7 @@ func _input(_event: InputEvent) -> void:
 # ============================================================================ #
 #region Signal listeners
 
-## Listens to $MainMenuContainer/QuitButton.pressed()._add_ice_candidate.
+#region Listens to $MainMenuContainer/*.
 func _on_main_menu_start_button_pressed() -> void:
     input_disabled = true
     $StartMenuContainer/BackButton.grab_focus()
@@ -36,12 +37,20 @@ func _on_main_menu_start_button_pressed() -> void:
             .connect("finished", _on_tween_transition_finshed)
 
 
-## Listens to $MainMenuContainer/QuitButton.pressed().
 func _on_main_menu_quit_button_pressed() -> void:
     get_tree().quit()
+#endregion
 
 
-## Listens to $StartMenuContainer/BackButton.pressed().
+#region Listens to $StartMenuContainer/*.
+func _on_start_menu_one_player_button_pressed() -> void:
+    button_pressed.emit("start_one_player")
+
+
+func _on_start_menu_two_players_button_pressed() -> void:
+    button_pressed.emit("start_two_players")
+
+
 func _on_start_menu_back_button_pressed() -> void:
     input_disabled = true
     $MainMenuContainer/StartButton.grab_focus()
@@ -49,6 +58,7 @@ func _on_start_menu_back_button_pressed() -> void:
             .connect("finished", _on_tween_transition_finshed)
     tween_transition_slide_container($StartMenuContainer, Vector2.RIGHT, UI_TRANSITION_DURATION)\
             .connect("finished", _on_tween_transition_finshed)
+#endregion
 
 
 ## Listens to tween transition Tween.finished() to re-enable input.

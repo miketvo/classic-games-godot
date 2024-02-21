@@ -8,20 +8,11 @@ enum {
     GAME_STATE_DEUCE,
 }
 
-enum GameMode {
-    GAME_MODE_ONE_PLAYER_LEFT,
-    GAME_MODE_ONE_PLAYER_RIGHT,
-    GAME_MODE_TWO_PLAYERS,
-}
 
-
-const Ball: PackedScene = preload("res://scenes/game/ball.tscn")
-const Paddle: PackedScene = preload("res://scenes/game/paddle.tscn")
+const Ball: PackedScene = preload("res://scenes/characters/ball.tscn")
+const Paddle: PackedScene = preload("res://scenes/characters/paddle.tscn")
 const PlayerPaddleScript: Script = preload("res://scripts/characters/player_paddle.gd")
-
-
-@export var game_mode: GameMode
-@export var game_point_text: String
+const AIPaddleScript: Script = preload("res://scripts/characters/ai_paddle.gd")
 
 
 var ball: RigidBody2D
@@ -29,9 +20,11 @@ var left_paddle: AnimatableBody2D
 var right_paddle: AnimatableBody2D
 var left_score: int
 var right_score: int
+var winner: int
 
 var _rng = RandomNumberGenerator.new()
 var _current_ball_speed: float
+var _game_mode: Global.GameMode
 var _game_over: bool
 var _round_started: bool
 var _side_served: int
@@ -45,19 +38,7 @@ var _game_point_state: int
 @onready var _ball_spawn: Node2D = $Spawns/BallSpawn
 @onready var _left_paddle_spawn: Node2D = $Spawns/LeftPaddleSpawn
 @onready var _right_paddle_spawn: Node2D = $Spawns/RightPaddleSpawn
-@onready var _score_label: Dictionary = {
-    Global.SIDE_LEFT: $UI/GameUI/HUDContainer/LeftScore,
-    Global.SIDE_RIGHT: $UI/GameUI/HUDContainer/RightScore,
-}
-@onready var _endgame_dialog: Container = $UI/GameUI/EndGameDialogContainer
-@onready var _win_label: Dictionary = {
-    Global.SIDE_LEFT: $UI/GameUI/EndGameDialogContainer/MessageContainer/LeftContainer/WinLabel,
-    Global.SIDE_RIGHT: $UI/GameUI/EndGameDialogContainer/MessageContainer/RightContainer/WinLabel,
-}
-@onready var _lose_label: Dictionary = {
-    Global.SIDE_LEFT: $UI/GameUI/EndGameDialogContainer/MessageContainer/LeftContainer/LoseLabel,
-    Global.SIDE_RIGHT: $UI/GameUI/EndGameDialogContainer/MessageContainer/RightContainer/LoseLabel,
-}
+@onready var _game_ui: UI = $UI/GameUI
 #endregion
 # ============================================================================ #
 
@@ -65,24 +46,17 @@ var _game_point_state: int
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    _spawn_left_paddle()
-    _spawn_right_paddle()
+    _game_mode = Global.game_mode
+    _game_ui.connect("button_pressed", _on_game_ui_button_pressed)
+    _spawn_paddes()
     _configure_world()
-    _configure_ui()
     _configure_game()
 
 
 func _process(_delta: float) -> void:
-    _update_score_labels()
+    _game_ui.update_score_labels(left_score, right_score, _game_point_state)
     if _game_over:
-        Global.software_cursor_visibility = SoftwareCursor.Visibility.ALWAYS_VISIBLE
-        _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").grab_focus()
-        _endgame_dialog.process_mode = Node.PROCESS_MODE_INHERIT
-        UI.tween_transition_fade_appear_container(
-                _endgame_dialog,
-                UI.UI_TRANSITION_DURATION / 4
-        ).set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-        $UI/GameUI.disable_pausing = true
+        _game_ui.game_over(winner)
         get_tree().paused = true
 
 
@@ -158,18 +132,15 @@ func _on_right_bound_body_entered(body: Node) -> void:
         _win_round(Global.SIDE_LEFT)
 
 
-## Listens to $UI/GameUI/PauseMenuContainer/RestartButton.pressed() and
-## _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").pressed().
-func _on_restart_request() -> void:
-    get_tree().paused = false
-    scene_finished.emit(SceneKey.GAME)
+## Listens to $UI/GameUI.button_pressed(action: StringName).
+func _on_game_ui_button_pressed(action: StringName) -> void:
+    match action:
+        "restart":
+            scene_finished.emit(SceneKey.GAME)
+        "end_game":
+            scene_finished.emit(SceneKey.MAIN_MENU)
 
 
-## Listens to $UI/GameUI/PauseMenuContainer/EndGameButton.pressed() and
-## _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton").pressed().
-func _on_end_game_request() -> void:
-    get_tree().paused = false
-    scene_finished.emit(SceneKey.MAIN_MENU)
 
 #endregion
 # ============================================================================ #
@@ -177,20 +148,29 @@ func _on_end_game_request() -> void:
 
 # ============================================================================ #
 #region Utils
-func _spawn_left_paddle() -> void:
+func _spawn_paddes() -> void:
     left_paddle = Paddle.instantiate()
-    left_paddle.set_script(PlayerPaddleScript)
-    left_paddle.position = _left_paddle_spawn.position
-    left_paddle.rotation = PI
-    left_paddle.player_id = PlayerPaddle.PLAYER_LEFT
-    add_child(left_paddle)
-
-
-func _spawn_right_paddle() -> void:
     right_paddle = Paddle.instantiate()
-    right_paddle.set_script(PlayerPaddleScript)
+    left_paddle.position = _left_paddle_spawn.position
     right_paddle.position = _right_paddle_spawn.position
-    right_paddle.player_id = PlayerPaddle.PLAYER_RIGHT
+    left_paddle.rotation = PI
+
+    match _game_mode:
+        Global.GameMode.GAME_MODE_TWO_PLAYERS:
+            left_paddle.set_script(PlayerPaddleScript)
+            right_paddle.set_script(PlayerPaddleScript)
+            left_paddle.player_control_scheme = PlayerPaddle.ControlScheme.MAIN
+            right_paddle.player_control_scheme = PlayerPaddle.ControlScheme.ALT
+        Global.GameMode.GAME_MODE_ONE_PLAYER_LEFT:
+            left_paddle.set_script(PlayerPaddleScript)
+            right_paddle.set_script(AIPaddleScript)
+            left_paddle.player_control_scheme = PlayerPaddle.ControlScheme.MAIN
+        Global.GameMode.GAME_MODE_ONE_PLAYER_RIGHT:
+            left_paddle.set_script(PlayerPaddleScript)
+            right_paddle.set_script(AIPaddleScript)
+            right_paddle.player_control_scheme = PlayerPaddle.ControlScheme.MAIN
+
+    add_child(left_paddle)
     add_child(right_paddle)
 
 
@@ -254,25 +234,6 @@ func _configure_world() -> void:
     )
 
 
-func _configure_ui() -> void:
-    Global.software_cursor_visibility = SoftwareCursor.Visibility.IDLE_AUTO_HIDE
-    _endgame_dialog.process_mode = Node.PROCESS_MODE_DISABLED
-    _endgame_dialog.modulate = Color(1.0, 1.0, 1.0, 0.0)
-    _win_label[Global.SIDE_LEFT].hide()
-    _win_label[Global.SIDE_RIGHT].hide()
-    _lose_label[Global.SIDE_LEFT].hide()
-    _lose_label[Global.SIDE_RIGHT].hide()
-
-    $UI/GameUI/PauseMenuContainer/VBoxContainer/RestartButton\
-            .connect("pressed", _on_restart_request)
-    $UI/GameUI/PauseMenuContainer/VBoxContainer/EndGameButton\
-            .connect("pressed", _on_end_game_request)
-    _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton")\
-            .connect("pressed", _on_restart_request)
-    _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton")\
-            .connect("pressed", _on_end_game_request)
-
-
 func _configure_game() -> void:
     left_score = 0
     right_score = 0
@@ -281,15 +242,6 @@ func _configure_game() -> void:
     _game_state = GAME_STATE_NORMAL
     _game_round = 0
     _game_point_state = 0b00
-
-
-func _update_score_labels() -> void:
-    var left_score_label_text: String = "%s%d" %\
-            [ game_point_text + " " if not _game_point_state ^ 0b10 else "", left_score ]
-    _score_label[Global.SIDE_LEFT].text = left_score_label_text
-    var right_score_label_text: String = "%d%s" %\
-            [ right_score, " " + game_point_text if not _game_point_state ^ 0b01 else "" ]
-    _score_label[Global.SIDE_RIGHT].text = right_score_label_text
 
 
 func _win_round(winning_side: int) -> void:
@@ -345,16 +297,7 @@ func _win_round(winning_side: int) -> void:
 
 
 func _win_game(winning_side: int) -> void:
-    match winning_side:
-        Global.SIDE_LEFT:
-            _win_label[Global.SIDE_LEFT].show()
-            _lose_label[Global.SIDE_RIGHT].show()
-        Global.SIDE_RIGHT:
-            _win_label[Global.SIDE_RIGHT].show()
-            _lose_label[Global.SIDE_LEFT].show()
-        _:
-            assert(false, "Unrecognized side")
-
+    winner = winning_side
     left_paddle.set_script(null)
     right_paddle.set_script(null)
     _game_over = true

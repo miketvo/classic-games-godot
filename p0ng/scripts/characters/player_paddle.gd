@@ -2,9 +2,9 @@ class_name PlayerPaddle
 extends AnimatableBody2D
 
 
-enum { NONE, PLAYER_LEFT, PLAYER_RIGHT }
+enum ControlScheme { NONE, MAIN, ALT }
 
-@export var player_id: int
+@export var player_control_scheme: ControlScheme
 var _not_controllable_warned: bool
 
 
@@ -12,15 +12,15 @@ var _not_controllable_warned: bool
 #region Godot builtins
 func _init() -> void:
     _not_controllable_warned = false
-    player_id = NONE
+    player_control_scheme = ControlScheme.NONE
 
 
 func _physics_process(delta: float) -> void:
     var direction: float = 0
-    match player_id:
-        PLAYER_LEFT:
+    match player_control_scheme:
+        ControlScheme.MAIN:
             direction = Input.get_axis("p_left_move_up", "p_left_move_down")
-        PLAYER_RIGHT:
+        ControlScheme.ALT:
             direction = Input.get_axis("p_right_move_up", "p_right_move_down")
         _:
             if not _not_controllable_warned:

@@ -31,17 +31,20 @@ pivot_offset = Vector2(64, 0)
 alignment = 1
 
 [node name="StartButton" type="Button" parent="MainMenuContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
 text = "start"
 
 [node name="SettingsButton" type="Button" parent="MainMenuContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "settings"
 
 [node name="QuitButton" type="Button" parent="MainMenuContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "quit"
 
@@ -62,13 +65,14 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="OnePlayerButton" type="Button" parent="StartMenuContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
-disabled = true
 text = "1 player"
 
 [node name="TwoPlayersButton" type="Button" parent="StartMenuContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0

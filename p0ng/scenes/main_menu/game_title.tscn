@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cgx0wqxo2m12y" path="res://assets/title.png" id="1_i665m"]
 [ext_resource type="Script" path="res://scripts/scenes/main_menu/game_title.gd" id="2_7hyao"]
-[ext_resource type="PackedScene" uid="uid://bvj431e37jkc0" path="res://scenes/game/ball.tscn" id="3_1tn13"]
+[ext_resource type="PackedScene" uid="uid://bvj431e37jkc0" path="res://scenes/characters/ball.tscn" id="3_1tn13"]
 
 [sub_resource type="Animation" id="Animation_buhpd"]
 length = 0.1

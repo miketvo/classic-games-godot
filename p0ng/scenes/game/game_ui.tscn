@@ -39,6 +39,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_h5sd5")
 script = ExtResource("2_5qob0")
+game_point_text = "GAME!"
 
 [node name="EndGameDialogContainer" type="VBoxContainer" parent="."]
 z_index = 99

@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://2aqxm1ipras"]
+
+[node name="Spawns" type="Node2D"]
+
+[node name="LeftPaddleSpawn" type="Node2D" parent="."]
+position = Vector2(216, 540)
+
+[node name="RightPaddleSpawn" type="Node2D" parent="."]
+position = Vector2(1704, 540)
+
+[node name="BallSpawn" type="Node2D" parent="."]
+position = Vector2(960, 540)

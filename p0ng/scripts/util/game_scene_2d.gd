@@ -13,6 +13,7 @@ signal scene_finished(next_scene_key: SceneKey)
 enum SceneKey {
     SPLASH,
     MAIN_MENU,
+    SIDE_SELECT,
     GAME,
     NONE,
 }
@@ -20,5 +21,6 @@ enum SceneKey {
 const GAME_SCENE = {
     SceneKey.SPLASH: "res://scenes/splash.tscn",
     SceneKey.MAIN_MENU: "res://scenes/main_menu/main_menu.tscn",
+    SceneKey.SIDE_SELECT: "res://scenes/game/side_select.tscn",
     SceneKey.GAME: "res://scenes/game/game.tscn",
 }
