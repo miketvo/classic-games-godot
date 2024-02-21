@@ -8,11 +8,20 @@ enum {
     GAME_STATE_DEUCE,
 }
 
+enum GameMode {
+    GAME_MODE_ONE_PLAYER,
+    GAME_MODE_TWO_PLAYERS,
+}
+
+
 const Ball: PackedScene = preload("res://scenes/game/ball.tscn")
 const Paddle: PackedScene = preload("res://scenes/game/paddle.tscn")
 const PlayerPaddleScript: Script = preload("res://scripts/characters/player_paddle.gd")
 
+
+@export var game_mode: GameMode
 @export var game_point_text: String
+
 
 var ball: RigidBody2D
 var left_paddle: AnimatableBody2D
@@ -30,6 +39,7 @@ var _game_round: int
 
 ## 2-bit bitwise flag, left and right sides correspond to leftmost and rightmost bit.
 var _game_point_state: int
+
 
 @onready var _software_cursor: SoftwareCursor = get_tree().root.get_node("Main/SoftwareCursor")
 @onready var _ball_spawn: Node2D = $Spawns/BallSpawn
