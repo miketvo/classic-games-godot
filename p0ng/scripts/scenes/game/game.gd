@@ -140,8 +140,6 @@ func _on_game_ui_button_pressed(action: StringName) -> void:
         "end_game":
             scene_finished.emit(SceneKey.MAIN_MENU)
 
-
-
 #endregion
 # ============================================================================ #
 
