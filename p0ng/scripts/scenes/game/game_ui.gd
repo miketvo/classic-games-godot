@@ -4,8 +4,6 @@ extends UI
 var input_disabled: bool
 var disable_pausing: bool
 
-@onready var _software_cursor: SoftwareCursor = get_tree().root.get_node("Main/SoftwareCursor")
-
 
 # ============================================================================ #
 #region Godot builtins
@@ -26,7 +24,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
     if not input_disabled and not disable_pausing:
         if Input.is_action_just_released("pause") and not get_tree().paused:
-            _software_cursor.visibility = SoftwareCursor.Visibility.ALWAYS_VISIBLE
+            Global.software_cursor_visibility = SoftwareCursor.Visibility.ALWAYS_VISIBLE
             input_disabled = true
             get_tree().paused = true
             $PauseMenuContainer/VBoxContainer/ResumeButton.grab_focus()
@@ -53,7 +51,7 @@ func _input(_event: InputEvent) -> void:
 
 ## Listens to $PauseMenuContainer/ResumeButton.pressed().
 func _on_resume_request() -> void:
-    _software_cursor.visibility = SoftwareCursor.Visibility.IDLE_AUTO_HIDE
+    Global.software_cursor_visibility = SoftwareCursor.Visibility.IDLE_AUTO_HIDE
     for control: Control in $PauseMenuContainer/VBoxContainer.get_children():
         control.release_focus()
 

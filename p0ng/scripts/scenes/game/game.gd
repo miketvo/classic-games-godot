@@ -9,7 +9,8 @@ enum {
 }
 
 enum GameMode {
-    GAME_MODE_ONE_PLAYER,
+    GAME_MODE_ONE_PLAYER_LEFT,
+    GAME_MODE_ONE_PLAYER_RIGHT,
     GAME_MODE_TWO_PLAYERS,
 }
 
@@ -41,7 +42,6 @@ var _game_round: int
 var _game_point_state: int
 
 
-@onready var _software_cursor: SoftwareCursor = get_tree().root.get_node("Main/SoftwareCursor")
 @onready var _ball_spawn: Node2D = $Spawns/BallSpawn
 @onready var _left_paddle_spawn: Node2D = $Spawns/LeftPaddleSpawn
 @onready var _right_paddle_spawn: Node2D = $Spawns/RightPaddleSpawn
@@ -75,7 +75,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
     _update_score_labels()
     if _game_over:
-        _software_cursor.visibility = SoftwareCursor.Visibility.ALWAYS_VISIBLE
+        Global.software_cursor_visibility = SoftwareCursor.Visibility.ALWAYS_VISIBLE
         _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").grab_focus()
         _endgame_dialog.process_mode = Node.PROCESS_MODE_INHERIT
         UI.tween_transition_fade_appear_container(
@@ -255,7 +255,7 @@ func _configure_world() -> void:
 
 
 func _configure_ui() -> void:
-    _software_cursor.visibility = SoftwareCursor.Visibility.IDLE_AUTO_HIDE
+    Global.software_cursor_visibility = SoftwareCursor.Visibility.IDLE_AUTO_HIDE
     _endgame_dialog.process_mode = Node.PROCESS_MODE_DISABLED
     _endgame_dialog.modulate = Color(1.0, 1.0, 1.0, 0.0)
     _win_label[Global.SIDE_LEFT].hide()

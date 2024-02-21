@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=3 uid="uid://ctsirbucehe3p"]
+
+[ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_co7gs"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0nmoe"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.0941176, 0.0470588, 0.129412, 1)
+border_width_left = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.0941176, 0.0470588, 0.129412, 1)
+
+[node name="SideSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+theme = ExtResource("1_co7gs")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_top = 260.0
+offset_right = 480.0
+offset_bottom = 365.0
+scale = Vector2(4, 4)
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_type_variation = &"LabelHeading"
+theme_override_styles/normal = SubResource("StyleBoxFlat_0nmoe")
+text = "SELECT A SIDE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.0
+
+[node name="LeftButtonContainer" type="CenterContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LeftButton" type="Button" parent="VBoxContainer/HBoxContainer/LeftButtonContainer"]
+layout_mode = 2
+text = "left"
+
+[node name="RightButtonContainer" type="CenterContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RightButton" type="Button" parent="VBoxContainer/HBoxContainer/RightButtonContainer"]
+layout_mode = 2
+text = "right"

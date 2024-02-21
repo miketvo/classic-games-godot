@@ -10,11 +10,11 @@ enum Visibility {
 }
 
 
-@export var visibility: Visibility = Visibility.ALWAYS_VISIBLE
-
 ## Amount of time in seconds of mouse idling time before the cursor is hidden,
-## if visibility is set to [enum SoftwareCursor.Visibility.IDLE_AUTO_HIDE].
-@export var idle_timeout: float = 1.0
+## if [member visibility] is set to
+## [enum SoftwareCursor.Visibility.IDLE_AUTO_HIDE].
+var idle_timeout: float = 1.0
+var visibility: Visibility = Visibility.ALWAYS_VISIBLE
 
 
 # ============================================================================ #
@@ -27,6 +27,8 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+    visibility = Global.software_cursor_visibility
+
     if visibility == Visibility.ALWAYS_VISIBLE and not visible:
         visible = true
 

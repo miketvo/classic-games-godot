@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cm6ghli8pol4j"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_pqbot"]
-[ext_resource type="PackedScene" uid="uid://b1sxxtnr6xah8" path="res://scenes/cursor.tscn" id="2_75p8a"]
+[ext_resource type="PackedScene" uid="uid://b1sxxtnr6xah8" path="res://scenes/software_cursor.tscn" id="2_75p8a"]
 [ext_resource type="Shader" path="res://assets/shaders/crt.gdshader" id="2_l1nth"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_g3j7g"]

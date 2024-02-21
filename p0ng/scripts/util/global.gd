@@ -16,6 +16,9 @@ const BALL_SPEED_DIFFICULTY_MULTIPLIER: float = 1.15
 const SERVING_ANGULAR_VARIATION: PackedFloat32Array = [-0.392699, 0.392699] ## Unit: radian.
 const TARGET_SCORE: int = 7
 
+var software_cursor_visibility: SoftwareCursor.Visibility\
+        = SoftwareCursor.Visibility.ALWAYS_VISIBLE
+
 
 func flip_side(side: int) -> int:
     match side:

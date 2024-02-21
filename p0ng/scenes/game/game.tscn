@@ -1,10 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://fsyym8qkg3qr"]
+[gd_scene load_steps=17 format=3 uid="uid://fsyym8qkg3qr"]
 
 [ext_resource type="Texture2D" uid="uid://brmiahx2e6glj" path="res://assets/objects/h_bound.png" id="1_54c4m"]
 [ext_resource type="Script" path="res://scripts/scenes/game/game.gd" id="1_eisns"]
 [ext_resource type="PackedScene" uid="uid://dofglbl0ean4l" path="res://scenes/game/game_ui.tscn" id="2_86o8i"]
 [ext_resource type="Texture2D" uid="uid://vsipwnemlqw6" path="res://assets/objects/v_separator.png" id="2_ss7o6"]
 [ext_resource type="PhysicsMaterial" uid="uid://da80ome7jpr3a" path="res://assets/materials/paddle.tres" id="2_t7sr3"]
+[ext_resource type="PackedScene" uid="uid://ctsirbucehe3p" path="res://scenes/game/side_select.tscn" id="5_ojrl8"]
 
 [sub_resource type="Animation" id="Animation_i5uq0"]
 length = 0.1
@@ -237,6 +238,8 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
+
+[node name="SideSelect" parent="UI" instance=ExtResource("5_ojrl8")]
 
 [node name="GameUI" parent="UI" instance=ExtResource("2_86o8i")]
 layout_mode = 1
