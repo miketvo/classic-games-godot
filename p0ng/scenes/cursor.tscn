@@ -80,7 +80,7 @@ metadata/_aseprite_wizard_config_ = {
 "only_visible": false,
 "op_exp": false,
 "player": "Cursor/AnimationPlayer",
-"source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/p0ng/cursor.ase"
+"source": "~/Projects/Godot/classic-games-godot-art/p0ng/cursor.ase"
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

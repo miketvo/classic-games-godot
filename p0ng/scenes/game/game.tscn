@@ -154,18 +154,6 @@ physics_material_override = ExtResource("2_t7sr3")
 texture_filter = 1
 texture = ExtResource("1_54c4m")
 hframes = 2
-metadata/_aseprite_wizard_config_ = {
-"i_mode": -1,
-"keep_anim_length": false,
-"layer": "",
-"o_ex_p": "",
-"o_folder": "res://assets/objects",
-"o_name": "h_bound",
-"only_visible": false,
-"op_exp": false,
-"player": "World/TopBound/Sprite2D/AnimationPlayer",
-"source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/p0ng/objects/h_bound.ase"
-}
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="World/TopBound/Sprite2D"]
 libraries = {
@@ -204,18 +192,6 @@ physics_material_override = ExtResource("2_t7sr3")
 texture_filter = 1
 texture = ExtResource("1_54c4m")
 hframes = 2
-metadata/_aseprite_wizard_config_ = {
-"i_mode": -1,
-"keep_anim_length": false,
-"layer": "",
-"o_ex_p": "",
-"o_folder": "res://assets/objects",
-"o_name": "h_bound",
-"only_visible": false,
-"op_exp": false,
-"player": "World/TopBound/Sprite2D/AnimationPlayer",
-"source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/p0ng/objects/h_bound.ase"
-}
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="World/BottomBound/Sprite2D"]
 libraries = {
@@ -234,18 +210,6 @@ texture_filter = 1
 position = Vector2(960, 540)
 texture = ExtResource("2_ss7o6")
 hframes = 2
-metadata/_aseprite_wizard_config_ = {
-"i_mode": -1,
-"keep_anim_length": false,
-"layer": "",
-"o_ex_p": "",
-"o_folder": "res://assets/objects",
-"o_name": "v_separator",
-"only_visible": false,
-"op_exp": true,
-"player": "World/VerticalSeparator/Sprite2D/AnimationPlayer",
-"source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/p0ng/objects/v_separator.ase"
-}
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="World/VerticalSeparator/Sprite2D"]
 libraries = {

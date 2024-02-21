@@ -19,18 +19,6 @@ script = ExtResource("2_wd0kw")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 texture = ExtResource("2_v5f0i")
-metadata/_aseprite_wizard_config_ = {
-"i_mode": 1,
-"keep_anim_length": false,
-"layer": "",
-"o_ex_p": "",
-"o_folder": "res://assets/objects",
-"o_name": "ball",
-"only_visible": false,
-"op_exp": false,
-"player": "",
-"source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/p0ng/objects/ball.ase"
-}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_0ye4j")

@@ -73,18 +73,6 @@ sync_to_physics = false
 texture_filter = 1
 texture = ExtResource("1_brd5l")
 hframes = 2
-metadata/_aseprite_wizard_config_ = {
-"i_mode": -1,
-"keep_anim_length": false,
-"layer": "",
-"o_ex_p": "",
-"o_folder": "res://assets/objects",
-"o_name": "paddle",
-"only_visible": false,
-"op_exp": false,
-"player": "Sprite2D/AnimationPlayer",
-"source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/p0ng/objects/paddle.ase"
-}
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
 libraries = {
