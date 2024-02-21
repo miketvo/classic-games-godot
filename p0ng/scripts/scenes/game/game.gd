@@ -8,12 +8,10 @@ enum {
     GAME_STATE_DEUCE,
 }
 
-
 const Ball: PackedScene = preload("res://scenes/characters/ball.tscn")
 const Paddle: PackedScene = preload("res://scenes/characters/paddle.tscn")
 const PlayerPaddleScript: Script = preload("res://scripts/characters/player_paddle.gd")
 const AIPaddleScript: Script = preload("res://scripts/characters/ai_paddle.gd")
-
 
 var ball: RigidBody2D
 var left_paddle: AnimatableBody2D
@@ -33,7 +31,6 @@ var _game_round: int
 
 ## 2-bit bitwise flag, left and right sides correspond to leftmost and rightmost bit.
 var _game_point_state: int
-
 
 @onready var _ball_spawn: Node2D = $Spawns/BallSpawn
 @onready var _left_paddle_spawn: Node2D = $Spawns/LeftPaddleSpawn
@@ -164,8 +161,8 @@ func _spawn_paddes() -> void:
             right_paddle.set_script(AIPaddleScript)
             left_paddle.player_control_scheme = PlayerPaddle.ControlScheme.MAIN
         Global.GameMode.GAME_MODE_ONE_PLAYER_RIGHT:
-            left_paddle.set_script(PlayerPaddleScript)
-            right_paddle.set_script(AIPaddleScript)
+            left_paddle.set_script(AIPaddleScript)
+            right_paddle.set_script(PlayerPaddleScript)
             right_paddle.player_control_scheme = PlayerPaddle.ControlScheme.MAIN
 
     add_child(left_paddle)

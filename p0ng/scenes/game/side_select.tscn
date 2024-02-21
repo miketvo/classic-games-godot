@@ -25,7 +25,7 @@ script = ExtResource("2_od2xv")
 [node name="Spawns" parent="Background" instance=ExtResource("3_6fs7p")]
 
 [node name="Paddle" parent="Background/Spawns/LeftPaddleSpawn" index="0" instance=ExtResource("4_34vne")]
-rotation = 3.15905
+rotation = 3.14159
 
 [node name="Paddle" parent="Background/Spawns/RightPaddleSpawn" index="0" instance=ExtResource("4_34vne")]
 
