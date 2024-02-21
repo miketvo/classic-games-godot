@@ -21,7 +21,7 @@ var left_score: int
 var right_score: int
 
 var _rng = RandomNumberGenerator.new()
-var _ball_speed: float
+var _current_ball_speed: float
 var _game_over: bool
 var _round_started: bool
 var _side_served: int
@@ -63,13 +63,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-    var left_score_label_text: String = "%s%d" %\
-            [ game_point_text + " " if not _game_point_state ^ 0b10 else "", left_score ]
-    _score_label[Global.SIDE_LEFT].text = left_score_label_text
-    var right_score_label_text: String = "%d%s" %\
-            [ right_score, " " + game_point_text if not _game_point_state ^ 0b01 else "" ]
-    _score_label[Global.SIDE_RIGHT].text = right_score_label_text
-
+    _update_score_labels()
     if _game_over:
         _software_cursor.visibility = SoftwareCursor.Visibility.ALWAYS_VISIBLE
         _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").grab_focus()
@@ -124,14 +118,14 @@ func _on_ball_body_exited(body: Node) -> void:
     var new_velocity: Vector2
     match body:
         left_paddle, right_paddle:
-            _ball_speed *= Global.BALL_SPEED_DIFFICULTY_MULTIPLIER
+            _current_ball_speed *= Global.BALL_SPEED_DIFFICULTY_MULTIPLIER
             new_velocity =\
                     Vector2.from_angle(ball.linear_velocity.angle())\
-                    * _ball_speed
+                    * _current_ball_speed
         _:
             new_velocity =\
                     Vector2.from_angle(ball.linear_velocity.angle())\
-                    * _ball_speed
+                    * _current_ball_speed
     ball.linear_velocity = new_velocity
 
 
@@ -195,7 +189,7 @@ func _spawn_ball() -> void:
     ball.position = _ball_spawn.position
     ball.connect("body_entered", _on_ball_body_entered)
     ball.connect("body_exited", _on_ball_body_exited)
-    _ball_speed = Global.BALL_SPEED_INITIAL
+    _current_ball_speed = Global.BALL_SPEED_INITIAL
     _round_started = false
     add_child(ball)
 
@@ -277,6 +271,15 @@ func _configure_game() -> void:
     _game_state = GAME_STATE_NORMAL
     _game_round = 0
     _game_point_state = 0b00
+
+
+func _update_score_labels() -> void:
+    var left_score_label_text: String = "%s%d" %\
+            [ game_point_text + " " if not _game_point_state ^ 0b10 else "", left_score ]
+    _score_label[Global.SIDE_LEFT].text = left_score_label_text
+    var right_score_label_text: String = "%d%s" %\
+            [ right_score, " " + game_point_text if not _game_point_state ^ 0b01 else "" ]
+    _score_label[Global.SIDE_RIGHT].text = right_score_label_text
 
 
 func _win_round(winning_side: int) -> void:
