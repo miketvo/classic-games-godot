@@ -30,7 +30,7 @@ func _input(_event: InputEvent) -> void:
 #region Listens to $MainMenuContainer/*.
 func _on_main_menu_start_button_pressed() -> void:
     input_disabled = true
-    $StartMenuContainer/BackButton.grab_focus()
+    $StartMenuContainer/OnePlayerButton.grab_focus()
     tween_transition_slide_container($MainMenuContainer, Vector2.LEFT, UI_TRANSITION_DURATION)\
             .connect("finished", _on_tween_transition_finshed)
     tween_transition_slide_container($StartMenuContainer, Vector2.LEFT, UI_TRANSITION_DURATION)\
