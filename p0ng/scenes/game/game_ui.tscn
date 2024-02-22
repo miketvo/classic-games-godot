@@ -115,6 +115,10 @@ size_flags_horizontal = 4
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
+focus_neighbor_top = NodePath("../QuitToDesktopButton")
+focus_neighbor_bottom = NodePath("../BackToMainMenuButton")
+focus_next = NodePath("../BackToMainMenuButton")
+focus_previous = NodePath("../QuitToDesktopButton")
 text = "rematch"
 
 [node name="BackToMainMenuButton" type="Button" parent="EndGameDialogContainer/MenuContainer/VBoxContainer"]
@@ -125,6 +129,10 @@ text = "back to main menu"
 
 [node name="QuitToDesktopButton" type="Button" parent="EndGameDialogContainer/MenuContainer/VBoxContainer"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../BackToMainMenuButton")
+focus_neighbor_bottom = NodePath("../RestartButton")
+focus_next = NodePath("../RestartButton")
+focus_previous = NodePath("../BackToMainMenuButton")
 text = "quit to desktop"
 
 [node name="HUDContainer" type="HBoxContainer" parent="."]
@@ -179,20 +187,36 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
+focus_neighbor_top = NodePath("../QuitToDesktopButton")
+focus_neighbor_bottom = NodePath("../RestartButton")
+focus_next = NodePath("../RestartButton")
+focus_previous = NodePath("../QuitToDesktopButton")
 text = "resume"
 
 [node name="RestartButton" type="Button" parent="PauseMenuContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
+focus_neighbor_top = NodePath("../ResumeButton")
+focus_neighbor_bottom = NodePath("../EndGameButton")
+focus_next = NodePath("../EndGameButton")
+focus_previous = NodePath("../ResumeButton")
 text = "restart"
 
 [node name="EndGameButton" type="Button" parent="PauseMenuContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
+focus_neighbor_top = NodePath("../RestartButton")
+focus_neighbor_bottom = NodePath("../QuitToDesktopButton")
+focus_next = NodePath("../QuitToDesktopButton")
+focus_previous = NodePath("../RestartButton")
 text = "end game"
 
 [node name="QuitToDesktopButton" type="Button" parent="PauseMenuContainer/VBoxContainer"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../EndGameButton")
+focus_neighbor_bottom = NodePath("../ResumeButton")
+focus_next = NodePath("../ResumeButton")
+focus_previous = NodePath("../EndGameButton")
 text = "quit to desktop"

@@ -35,17 +35,29 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
+focus_neighbor_top = NodePath("../QuitButton")
+focus_neighbor_bottom = NodePath("../SettingsButton")
+focus_next = NodePath("../SettingsButton")
+focus_previous = NodePath("../QuitButton")
 text = "start"
 
 [node name="SettingsButton" type="Button" parent="MainMenuContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+focus_neighbor_top = NodePath("../StartButton")
+focus_neighbor_bottom = NodePath("../QuitButton")
+focus_next = NodePath("../QuitButton")
+focus_previous = NodePath("../StartButton")
 disabled = true
 text = "settings"
 
 [node name="QuitButton" type="Button" parent="MainMenuContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+focus_neighbor_top = NodePath("../SettingsButton")
+focus_neighbor_bottom = NodePath("../StartButton")
+focus_next = NodePath("../StartButton")
+focus_previous = NodePath("../SettingsButton")
 text = "quit"
 
 [node name="StartMenuContainer" type="VBoxContainer" parent="."]
@@ -69,6 +81,10 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
+focus_neighbor_top = NodePath("../BackButton")
+focus_neighbor_bottom = NodePath("../TwoPlayersButton")
+focus_next = NodePath("../TwoPlayersButton")
+focus_previous = NodePath("../BackButton")
 text = "1 player"
 
 [node name="TwoPlayersButton" type="Button" parent="StartMenuContainer"]
@@ -76,8 +92,16 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
+focus_neighbor_top = NodePath("../OnePlayerButton")
+focus_neighbor_bottom = NodePath("../BackButton")
+focus_next = NodePath("../BackButton")
+focus_previous = NodePath("../OnePlayerButton")
 text = "2 players"
 
 [node name="BackButton" type="Button" parent="StartMenuContainer"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../TwoPlayersButton")
+focus_neighbor_bottom = NodePath("../OnePlayerButton")
+focus_next = NodePath("../OnePlayerButton")
+focus_previous = NodePath("../TwoPlayersButton")
 text = "back"
