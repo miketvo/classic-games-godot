@@ -29,6 +29,15 @@ func _process(_delta: float) -> void:
             print_stack()
             print("========================================")
             print()
+
+    if Input.is_action_just_pressed("toggle_fullscreen"):
+        match get_tree().root.mode:
+            Window.MODE_EXCLUSIVE_FULLSCREEN:
+                get_tree().root.mode = Window.MODE_WINDOWED
+            Window.MODE_MINIMIZED:
+                pass
+            _:
+                get_tree().root.mode = Window.MODE_EXCLUSIVE_FULLSCREEN
 #endregion
 # ============================================================================ #
 
