@@ -40,28 +40,28 @@ switch ($m) {
 }
 $godotProjects = Get-ChildItem -Path $repositoryPath -Filter "project.godot" -Recurse | Select-Object -ExpandProperty Directory
 
-Write-Output("[ GODOT PROJECTS REPOSITORY INFORMATION ]")
+Write-Output("===== [ GODOT PROJECTS REPOSITORY INFORMATION ]===== ")
 Write-Output("- Repository path: $repositoryPath")
 Write-Output("- Export path: $releaseFolderPath")
 Write-Output("- Detected projects:")
 Write-Output($godotProjects)
 
 $buildModeText = $m.ToUpper()
-Write-Output("")
-Write-Output("[ EXPORTING PROJECTS ($buildModeText)... ]")
+Write-Output("`n`n===== [ EXPORTING PROJECTS (MODE: $buildModeText) ] =====")
 foreach ($project in $godotProjects) {
-    Write-Output("Exporting $project")
+    Write-Output("`n`n[ Exporting $project ]`n")
     $projectName = $project.BaseName
     $exportPresetsPath = Join-Path -Path $project.FullName -ChildPath "export_presets.cfg"
     $exportPresetsCfg = Get-Content -Path $exportPresetsPath -Raw
-    $exportPresets = $exportPresetsCfg | Select-String -Pattern "\[preset.\d+\]\n\nname=""(.*)""" | ForEach-Object { $_.Matches.Groups[1].Value }
-    $exportPaths = $exportPresetsCfg | Select-String -Pattern "export_path=""(.*)""" | ForEach-Object { $_.Matches.Groups[1].Value }
+    $exportPresets = ($exportPresetsCfg | Select-String -Pattern '\n\nname="(.*)"' -AllMatches).Matches | ForEach-Object {
+        $_.Groups[1].Value
+    }
+    $exportPaths = ($exportPresetsCfg | Select-String -Pattern '\nexport_path="(.*)"' -AllMatches).Matches | ForEach-Object {
+        $_.Groups[1].Value
+    }
 
     foreach ($exportPreset in $exportPresets) {
-        $exportPath = $exportPaths
-        if ($exportPaths -is [System.Array]) {
-            $exportPath = $exportPaths[$exportPresets.IndexOf($exportPreset)]
-        }
+        $exportPath = $exportPaths[$exportPresets.IndexOf($exportPreset)]
         $absoluteExportPath = Join-Path -Path $project.FullName -ChildPath $exportPath
         $exportDirectory = Split-Path -Path $absoluteExportPath -Parent
         if (-not (Test-Path -Path $exportDirectory)) {
@@ -77,7 +77,6 @@ foreach ($project in $godotProjects) {
         $zipFileSource = Join-Path -Path $exportDirectory -ChildPath "*"
         $zipFileName = "$projectName-$exportPreset.zip"
         $zipFilePath = Join-Path -Path $releaseFolderPath -ChildPath $zipFileName
-        Write-Output("Packing $zipFileSource into $zipFilePath")
         if (-not (Test-Path -Path $releaseFolderPath)) {
             New-Item -ItemType Directory -Path $releaseFolderPath | Out-Null
         }
@@ -85,5 +84,9 @@ foreach ($project in $godotProjects) {
             Remove-Item -Path $zipFilePath -Force
         }
         Compress-Archive -Path $zipFileSource -DestinationPath $zipFilePath
+        Write-Output("Packed $zipFileSource into $zipFilePath`n")
     }
+
+    Write-Output("`n[ Project exported ]")
 }
+Write-Output("`n`n[ DONE ]")
