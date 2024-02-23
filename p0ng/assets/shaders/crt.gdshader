@@ -29,7 +29,7 @@ uniform bool pixelate = true; // Fill each square ("pixel") with a sampled color
 uniform bool roll = true;
 uniform float roll_speed = 8.0; // Positive values are down, negative are up
 uniform float roll_size : hint_range(0.0, 100.0) = 15.0;
-uniform float roll_variation : hint_range(0.1, 5.0) = 1.8; // This valie is not an exact science. You have to play around with the value to find a look you like. How this works is explained in the code below.
+uniform float roll_variation : hint_range(0.1, 5.0) = 1.8; // This value is not an exact science. You have to play around with the value to find a look you like. How this works is explained in the code below.
 uniform float distort_intensity : hint_range(0.0, 0.2) = 0.05; // The distortion created by the rolling effect.
 
 uniform float noise_opacity : hint_range(0.0, 1.0) = 0.4;
