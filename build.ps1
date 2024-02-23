@@ -72,7 +72,7 @@ foreach ($project in $godotProjects) {
         }
 
         Set-Location -Path $project
-        $godotExportCommand = "godot --headless $godotExportFlag ""$exportPreset"""
+        $godotExportCommand = "godot --headless --verbose $godotExportFlag ""$exportPreset"""
         Write-Output($godotExportCommand)
         Invoke-Expression -Command $godotExportCommand
         Set-Location -Path $PSScriptRoot
