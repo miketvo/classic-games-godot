@@ -22,7 +22,7 @@ if ($h.IsPresent) {
 }
 
 if ($c.IsPresent) {
-    Write-Host " [ CLEANING BUILD DIRS ] " -ForegroundColor Black -BackgroundColor Magenta
+    Write-Host " =====[ CLEANING BUILD DIRS ]===== " -ForegroundColor Black -BackgroundColor Magenta
     git clean -dxf -e ".godot"
     Write-Host "[ DONE ]" -ForegroundColor Magenta
 }
@@ -48,14 +48,14 @@ switch ($m) {
 }
 $godotProjects = Get-ChildItem -Path $repositoryPath -Filter "project.godot" -Recurse | Select-Object -ExpandProperty Directory
 
-Write-Host " ===== [ GODOT PROJECTS REPOSITORY INFORMATION ]===== " -ForegroundColor Black -BackgroundColor Yellow
+Write-Host " =====[ GODOT PROJECTS REPOSITORY INFORMATION ]===== " -ForegroundColor Black -BackgroundColor Yellow
 Write-Host "- Repository path: $repositoryPath" -ForegroundColor Yellow
 Write-Host "- Export path: $releaseFolderPath" -ForegroundColor Yellow
 Write-Host "- Detected projects:" -ForegroundColor Yellow
 Write-Output $godotProjects
 
 $buildModeText = $m.ToUpper()
-Write-Host " ===== [ EXPORTING PROJECTS (MODE: $buildModeText) ] ===== " -ForegroundColor Black -BackgroundColor Magenta
+Write-Host " =====[ EXPORTING PROJECTS (MODE: $buildModeText) ]===== " -ForegroundColor Black -BackgroundColor Magenta
 foreach ($project in $godotProjects) {
     Write-Host "Exporting $project" -ForegroundColor Magenta
     $projectName = $project.BaseName
