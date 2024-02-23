@@ -51,8 +51,8 @@ Write-Output("`n`n===== [ EXPORTING PROJECTS (MODE: $buildModeText) ] =====")
 foreach ($project in $godotProjects) {
     Write-Output("`n`n[ Exporting $project ]`n")
     $projectName = $project.BaseName
-    $exportPresetsPath = Join-Path -Path $project.FullName -ChildPath "export_presets.cfg"
-    $exportPresetsCfg = Get-Content -Path $exportPresetsPath -Raw
+    $exportPresetsFile = Join-Path -Path $project -ChildPath "export_presets.cfg"
+    $exportPresetsCfg = Get-Content -Path $exportPresetsFile -Raw
     $exportPresets = ($exportPresetsCfg | Select-String -Pattern '\n\nname="(.*)"' -AllMatches).Matches | ForEach-Object {
         $_.Groups[1].Value
     }
@@ -61,14 +61,17 @@ foreach ($project in $godotProjects) {
     }
 
     foreach ($exportPreset in $exportPresets) {
-        $exportPath = $exportPaths[$exportPresets.IndexOf($exportPreset)]
-        $absoluteExportPath = Join-Path -Path $project.FullName -ChildPath $exportPath
+        $exportPath = $exportPaths
+        if ($exportPaths -is [System.Array]) {
+            $exportPath = $exportPaths[$exportPresets.IndexOf($exportPreset)]
+        }
+        $absoluteExportPath = Join-Path -Path $project -ChildPath $exportPath
         $exportDirectory = Split-Path -Path $absoluteExportPath -Parent
         if (-not (Test-Path -Path $exportDirectory)) {
             New-Item -ItemType Directory -Path $exportDirectory | Out-Null
         }
 
-        Set-Location -Path $project.FullName
+        Set-Location -Path $project
         $godotExportCommand = "godot --headless $godotExportFlag ""$exportPreset"""
         Write-Output($godotExportCommand)
         Invoke-Expression -Command $godotExportCommand
