@@ -30,8 +30,8 @@ if ($c.IsPresent) {
 $repositoryPath = $PSScriptRoot
 switch ($m) {
     "" {
-        Write-Host "Error: No build mode specified. Try 'build.sh -h' for more information." -ForegroundColor Red
-        exit 1
+        Write-Host "Error: No build mode specified. Terminating." -ForegroundColor Yellow
+        exit 0
     }
     "debug" {
         $releaseFolderPath = Join-Path -Path $repositoryPath -ChildPath "build/debug"
