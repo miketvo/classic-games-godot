@@ -2,11 +2,13 @@
 # Syntax: build.ps1 [Options] -m <build-mode>
 # Options:
 #   -m Specify build mode. Accepted values are 'release' and 'debug'.
+#   -c (Optional) Clean build folders.
 #   -h (Optional) Display help and exit.
 #
 
 [CmdletBinding()] param(
     [string]$m,
+    [switch]$c,
     [switch]$h
 )
 
@@ -14,10 +16,16 @@ if ($h.IsPresent) {
     Write-Output "Syntax: build.ps1 [Options] -m <build-mode>"
     Write-Output "Options:"
     Write-Output "  -m Specify build mode. Accepted values are 'release' and 'debug'."
+    Write-Output "  -c (Optional) Clean build folders."
     Write-Output "  -h (Optional) Display this help and exit."
     exit 0
 }
 
+if ($c.IsPresent) {
+    Write-Host " [ CLEANING BUILD DIRS ] " -ForegroundColor Black -BackgroundColor Magenta
+    git clean -dxf -e ".godot"
+    Write-Host "[ DONE ]" -ForegroundColor Magenta
+}
 
 $repositoryPath = $PSScriptRoot
 switch ($m) {
@@ -40,16 +48,16 @@ switch ($m) {
 }
 $godotProjects = Get-ChildItem -Path $repositoryPath -Filter "project.godot" -Recurse | Select-Object -ExpandProperty Directory
 
-Write-Output("===== [ GODOT PROJECTS REPOSITORY INFORMATION ]===== ")
-Write-Output("- Repository path: $repositoryPath")
-Write-Output("- Export path: $releaseFolderPath")
-Write-Output("- Detected projects:")
-Write-Output($godotProjects)
+Write-Host " ===== [ GODOT PROJECTS REPOSITORY INFORMATION ]===== " -ForegroundColor Black -BackgroundColor Yellow
+Write-Host "- Repository path: $repositoryPath" -ForegroundColor Yellow
+Write-Host "- Export path: $releaseFolderPath" -ForegroundColor Yellow
+Write-Host "- Detected projects:" -ForegroundColor Yellow
+Write-Output $godotProjects
 
 $buildModeText = $m.ToUpper()
-Write-Output("`n`n===== [ EXPORTING PROJECTS (MODE: $buildModeText) ] =====")
+Write-Host " ===== [ EXPORTING PROJECTS (MODE: $buildModeText) ] ===== " -ForegroundColor Black -BackgroundColor Magenta
 foreach ($project in $godotProjects) {
-    Write-Output("`n`n[ Exporting $project ]`n")
+    Write-Host "Exporting $project" -ForegroundColor Magenta
     $projectName = $project.BaseName
     $exportPresetsFile = Join-Path -Path $project -ChildPath "export_presets.cfg"
     $exportPresetsCfg = Get-Content -Path $exportPresetsFile -Raw
@@ -87,9 +95,7 @@ foreach ($project in $godotProjects) {
             Remove-Item -Path $zipFilePath -Force
         }
         Compress-Archive -Path $zipFileSource -DestinationPath $zipFilePath
-        Write-Output("Packed $zipFileSource into $zipFilePath`n")
+        Write-Output "Packed $zipFileSource into $zipFilePath"
     }
-
-    Write-Output("`n[ Project exported ]")
 }
-Write-Output("`n`n[ DONE ]")
+Write-Host "[ DONE ]" -ForegroundColor Magenta
