@@ -9,9 +9,8 @@ enum {
 }
 
 const Ball: PackedScene = preload("res://scenes/characters/ball.tscn")
-const Paddle: PackedScene = preload("res://scenes/characters/paddle.tscn")
-const PlayerPaddleScript: Script = preload("res://scripts/characters/player_paddle.gd")
-const AIPaddleScript: Script = preload("res://scripts/characters/ai_paddle.gd")
+const PlayerPaddle: PackedScene = preload("res://scenes/characters/player_paddle.tscn")
+const AIPaddle: PackedScene = preload("res://scenes/characters/player_paddle.tscn")
 
 var ball: RigidBody2D
 var left_paddle: AnimatableBody2D
@@ -144,28 +143,27 @@ func _on_game_ui_button_pressed(action: StringName) -> void:
 # ============================================================================ #
 #region Utils
 func _spawn_paddes() -> void:
-    left_paddle = Paddle.instantiate()
-    right_paddle = Paddle.instantiate()
-    left_paddle.position = _left_paddle_spawn.position
-    right_paddle.position = _right_paddle_spawn.position
-    left_paddle.rotation = PI
 
     match _game_mode:
         Global.GameMode.GAME_MODE_TWO_PLAYERS:
-            left_paddle.set_script(PlayerPaddleScript)
-            right_paddle.set_script(PlayerPaddleScript)
-            left_paddle.player_control_scheme = PlayerPaddle.ControlScheme.MAIN
-            right_paddle.player_control_scheme = PlayerPaddle.ControlScheme.ALT
+            left_paddle = PlayerPaddle.instantiate()
+            right_paddle = PlayerPaddle.instantiate()
+            left_paddle.player_control_scheme = Global.ControlScheme.MAIN
+            right_paddle.player_control_scheme = Global.ControlScheme.ALT
         Global.GameMode.GAME_MODE_ONE_PLAYER_LEFT:
-            left_paddle.set_script(PlayerPaddleScript)
-            right_paddle.set_script(AIPaddleScript)
-            left_paddle.player_control_scheme = PlayerPaddle.ControlScheme.MAIN
+            left_paddle = PlayerPaddle.instantiate()
+            right_paddle = AIPaddle.instantiate()
+            left_paddle.player_control_scheme = Global.ControlScheme.MAIN
         Global.GameMode.GAME_MODE_ONE_PLAYER_RIGHT:
-            left_paddle.set_script(AIPaddleScript)
-            right_paddle.set_script(PlayerPaddleScript)
-            right_paddle.player_control_scheme = PlayerPaddle.ControlScheme.MAIN
+            left_paddle = AIPaddle.instantiate()
+            right_paddle = PlayerPaddle.instantiate()
+            right_paddle.player_control_scheme = Global.ControlScheme.MAIN
 
+    left_paddle.position = _left_paddle_spawn.position
+    left_paddle.rotation = PI
     add_child(left_paddle)
+
+    right_paddle.position = _right_paddle_spawn.position
     add_child(right_paddle)
 
 

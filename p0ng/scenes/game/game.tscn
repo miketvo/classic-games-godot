@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://fsyym8qkg3qr"]
 
 [ext_resource type="Script" path="res://scripts/scenes/game/game.gd" id="1_eisns"]
-[ext_resource type="PackedScene" uid="uid://c77ktlmd3rbkb" path="res://scenes/game/world.tscn" id="2_0ybp3"]
+[ext_resource type="PackedScene" path="res://scenes/game/world.tscn" id="2_0ybp3"]
 [ext_resource type="PackedScene" uid="uid://dofglbl0ean4l" path="res://scenes/game/game_ui.tscn" id="2_86o8i"]
-[ext_resource type="PackedScene" uid="uid://2aqxm1ipras" path="res://scenes/game/spawns.tscn" id="3_skvg6"]
+[ext_resource type="PackedScene" path="res://scenes/game/spawns.tscn" id="3_skvg6"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_eisns")
@@ -20,3 +20,4 @@ offset_bottom = 1080.0
 
 [node name="GameUI" parent="UI" instance=ExtResource("2_86o8i")]
 layout_mode = 1
+game_point_text = ""

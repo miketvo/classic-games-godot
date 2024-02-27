@@ -9,6 +9,8 @@ enum GameMode {
     GAME_MODE_TWO_PLAYERS,
 }
 
+enum ControlScheme { NONE, MAIN, ALT }
+
 
 const UNIT_VECTORS: PackedVector2Array = [
     Vector2.UP,

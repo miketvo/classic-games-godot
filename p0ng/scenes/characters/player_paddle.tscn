@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://cjpp524nscngr"]
+
+[ext_resource type="PackedScene" uid="uid://dyud8dot2715o" path="res://scenes/characters/paddle.tscn" id="1_6cysf"]
+[ext_resource type="Script" path="res://scripts/characters/player_paddle.gd" id="2_3hynh"]
+
+[node name="Paddle" instance=ExtResource("1_6cysf")]
+script = ExtResource("2_3hynh")

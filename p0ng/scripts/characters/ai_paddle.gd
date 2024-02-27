@@ -1,4 +1,3 @@
-class_name AIPaddle
 extends AnimatableBody2D
 
 
