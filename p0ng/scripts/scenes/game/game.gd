@@ -77,8 +77,8 @@ func _physics_process(delta: float) -> void:
 func _on_ball_body_entered(body: Node) -> void:
     var top_bound = $World/TopBound
     var bottom_bound = $World/BottomBound
-    var left_paddle_hitbox: AnimatableBody2D = left_paddle.get_node("CharacterComponent")
-    var right_paddle_hitbox: AnimatableBody2D = right_paddle.get_node("CharacterComponent")
+    var left_paddle_character: AnimatableBody2D = left_paddle.get_node("CharacterComponent")
+    var right_paddle_character: AnimatableBody2D = right_paddle.get_node("CharacterComponent")
 
     match body:
         top_bound:
@@ -87,21 +87,21 @@ func _on_ball_body_entered(body: Node) -> void:
         bottom_bound:
             bottom_bound.get_node("Sprite2D/AnimationPlayer").play("active")
             bottom_bound.get_node("Sprite2D/AnimationPlayer").queue("idle")
-        left_paddle_hitbox:
-            left_paddle_hitbox.get_node("Sprite2D/AnimationPlayer").play("active")
-            left_paddle_hitbox.get_node("Sprite2D/AnimationPlayer").queue("idle")
-        right_paddle_hitbox:
-            right_paddle_hitbox.get_node("Sprite2D/AnimationPlayer").play("active")
-            right_paddle_hitbox.get_node("Sprite2D/AnimationPlayer").queue("idle")
+        left_paddle_character:
+            left_paddle_character.get_node("Sprite2D/AnimationPlayer").play("active")
+            left_paddle_character.get_node("Sprite2D/AnimationPlayer").queue("idle")
+        right_paddle_character:
+            right_paddle_character.get_node("Sprite2D/AnimationPlayer").play("active")
+            right_paddle_character.get_node("Sprite2D/AnimationPlayer").queue("idle")
 
 
 ## Listens to ball.body_exited(body: Node).
 func _on_ball_body_exited(body: Node) -> void:
-    var left_paddle_hitbox: AnimatableBody2D = left_paddle.get_node("CharacterComponent")
-    var right_paddle_hitbox: AnimatableBody2D = right_paddle.get_node("CharacterComponent")
+    var left_paddle_character: AnimatableBody2D = left_paddle.get_node("CharacterComponent")
+    var right_paddle_character: AnimatableBody2D = right_paddle.get_node("CharacterComponent")
     var new_velocity: Vector2
     match body:
-        left_paddle_hitbox, right_paddle_hitbox:
+        left_paddle_character, right_paddle_character:
             _current_ball_speed *= Global.BALL_SPEED_DIFFICULTY_MULTIPLIER
             new_velocity =\
                     Vector2.from_angle(ball.linear_velocity.angle())\
