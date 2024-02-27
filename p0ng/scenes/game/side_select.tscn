@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://c77ktlmd3rbkb" path="res://scenes/game/world.tscn" id="2_31cx8"]
 [ext_resource type="Script" path="res://scripts/scenes/game/side_select.gd" id="2_od2xv"]
 [ext_resource type="PackedScene" uid="uid://2aqxm1ipras" path="res://scenes/game/spawns.tscn" id="3_6fs7p"]
-[ext_resource type="PackedScene" uid="uid://dyud8dot2715o" path="res://scenes/characters/paddle.tscn" id="4_34vne"]
+[ext_resource type="PackedScene" uid="uid://gq00cx0tahjo" path="res://scenes/characters/paddle/character_component.tscn" id="4_ea1hk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gnqa8"]
 content_margin_left = 12.0
@@ -24,10 +24,9 @@ script = ExtResource("2_od2xv")
 
 [node name="Spawns" parent="Background" instance=ExtResource("3_6fs7p")]
 
-[node name="Paddle" parent="Background/Spawns/LeftPaddleSpawn" index="0" instance=ExtResource("4_34vne")]
-rotation = 3.14159
+[node name="Paddle" parent="Background/Spawns/LeftPaddleSpawn" index="0" instance=ExtResource("4_ea1hk")]
 
-[node name="Paddle" parent="Background/Spawns/RightPaddleSpawn" index="0" instance=ExtResource("4_34vne")]
+[node name="Paddle" parent="Background/Spawns/RightPaddleSpawn" index="0" instance=ExtResource("4_ea1hk")]
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3

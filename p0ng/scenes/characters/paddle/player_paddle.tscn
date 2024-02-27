@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://grwy1k172xsf"]
+
+[ext_resource type="PackedScene" uid="uid://gq00cx0tahjo" path="res://scenes/characters/paddle/character_component.tscn" id="1_sl1ek"]
+[ext_resource type="Script" path="res://scripts/characters/paddle/input_controller.gd" id="2_3dkxk"]
+
+[node name="PlayerPaddle" type="Node2D"]
+
+[node name="CharacterComponent" parent="." instance=ExtResource("1_sl1ek")]
+
+[node name="InputController" type="Node" parent="." node_paths=PackedStringArray("character_component")]
+script = ExtResource("2_3dkxk")
+character_component = NodePath("../CharacterComponent")

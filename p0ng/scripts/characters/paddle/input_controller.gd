@@ -1,7 +1,8 @@
-extends AnimatableBody2D
+extends Node
 
 
 @export var player_control_scheme: Global.ControlScheme
+@export var character_component: AnimatableBody2D
 var _not_controllable_warned: bool
 
 
@@ -9,7 +10,6 @@ var _not_controllable_warned: bool
 #region Godot builtins
 func _init() -> void:
     _not_controllable_warned = false
-    player_control_scheme = Global.ControlScheme.NONE
 
 
 func _physics_process(delta: float) -> void:
@@ -27,7 +27,6 @@ func _physics_process(delta: float) -> void:
 
     var velocity: Vector2 = Vector2.DOWN * direction
     velocity *= Global.PLAYER_SPEED * delta
-
-    move_and_collide(velocity)
+    character_component.move_and_collide(velocity)
 #endregion
 # ============================================================================ #

@@ -9,12 +9,12 @@ enum {
 }
 
 const Ball: PackedScene = preload("res://scenes/characters/ball.tscn")
-const PlayerPaddle: PackedScene = preload("res://scenes/characters/player_paddle.tscn")
-const AIPaddle: PackedScene = preload("res://scenes/characters/player_paddle.tscn")
+const PlayerPaddle: PackedScene = preload("res://scenes/characters/paddle/player_paddle.tscn")
+const AIPaddle: PackedScene = preload("res://scenes/characters/paddle/ai_paddle.tscn")
 
 var ball: RigidBody2D
-var left_paddle: AnimatableBody2D
-var right_paddle: AnimatableBody2D
+var left_paddle: Node2D
+var right_paddle: Node2D
 var left_score: int
 var right_score: int
 var winner: int
@@ -77,6 +77,8 @@ func _physics_process(delta: float) -> void:
 func _on_ball_body_entered(body: Node) -> void:
     var top_bound = $World/TopBound
     var bottom_bound = $World/BottomBound
+    var left_paddle_hitbox: AnimatableBody2D = left_paddle.get_node("CharacterComponent")
+    var right_paddle_hitbox: AnimatableBody2D = right_paddle.get_node("CharacterComponent")
 
     match body:
         top_bound:
@@ -85,19 +87,21 @@ func _on_ball_body_entered(body: Node) -> void:
         bottom_bound:
             bottom_bound.get_node("Sprite2D/AnimationPlayer").play("active")
             bottom_bound.get_node("Sprite2D/AnimationPlayer").queue("idle")
-        left_paddle:
-            left_paddle.get_node("Sprite2D/AnimationPlayer").play("active")
-            left_paddle.get_node("Sprite2D/AnimationPlayer").queue("idle")
-        right_paddle:
-            right_paddle.get_node("Sprite2D/AnimationPlayer").play("active")
-            right_paddle.get_node("Sprite2D/AnimationPlayer").queue("idle")
+        left_paddle_hitbox:
+            left_paddle_hitbox.get_node("Sprite2D/AnimationPlayer").play("active")
+            left_paddle_hitbox.get_node("Sprite2D/AnimationPlayer").queue("idle")
+        right_paddle_hitbox:
+            right_paddle_hitbox.get_node("Sprite2D/AnimationPlayer").play("active")
+            right_paddle_hitbox.get_node("Sprite2D/AnimationPlayer").queue("idle")
 
 
 ## Listens to ball.body_exited(body: Node).
 func _on_ball_body_exited(body: Node) -> void:
+    var left_paddle_hitbox: AnimatableBody2D = left_paddle.get_node("CharacterComponent")
+    var right_paddle_hitbox: AnimatableBody2D = right_paddle.get_node("CharacterComponent")
     var new_velocity: Vector2
     match body:
-        left_paddle, right_paddle:
+        left_paddle_hitbox, right_paddle_hitbox:
             _current_ball_speed *= Global.BALL_SPEED_DIFFICULTY_MULTIPLIER
             new_velocity =\
                     Vector2.from_angle(ball.linear_velocity.angle())\
@@ -148,16 +152,20 @@ func _spawn_paddes() -> void:
         Global.GameMode.GAME_MODE_TWO_PLAYERS:
             left_paddle = PlayerPaddle.instantiate()
             right_paddle = PlayerPaddle.instantiate()
-            left_paddle.player_control_scheme = Global.ControlScheme.MAIN
-            right_paddle.player_control_scheme = Global.ControlScheme.ALT
+            left_paddle.get_node("InputController").player_control_scheme =\
+                Global.ControlScheme.MAIN
+            right_paddle.get_node("InputController").player_control_scheme =\
+                Global.ControlScheme.ALT
         Global.GameMode.GAME_MODE_ONE_PLAYER_LEFT:
             left_paddle = PlayerPaddle.instantiate()
             right_paddle = AIPaddle.instantiate()
-            left_paddle.player_control_scheme = Global.ControlScheme.MAIN
+            left_paddle.get_node("InputController").player_control_scheme =\
+                Global.ControlScheme.MAIN
         Global.GameMode.GAME_MODE_ONE_PLAYER_RIGHT:
             left_paddle = AIPaddle.instantiate()
             right_paddle = PlayerPaddle.instantiate()
-            right_paddle.player_control_scheme = Global.ControlScheme.MAIN
+            right_paddle.get_node("InputController").player_control_scheme =\
+                Global.ControlScheme.MAIN
 
     left_paddle.position = _left_paddle_spawn.position
     left_paddle.rotation = PI

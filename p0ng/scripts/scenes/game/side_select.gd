@@ -1,8 +1,8 @@
 extends GameScene2D
 
 
-@onready var _left_paddle: AnimatableBody2D = $Background/Spawns/LeftPaddleSpawn/Paddle
-@onready var _right_paddle: AnimatableBody2D = $Background/Spawns/RightPaddleSpawn/Paddle
+@onready var _left_paddle: Node2D = $Background/Spawns/LeftPaddleSpawn/Paddle
+@onready var _right_paddle: Node2D = $Background/Spawns/RightPaddleSpawn/Paddle
 @onready var _ui_left_button: Button =\
         $UI/SideSelectContainer/HBoxContainer/LeftButtonContainer/LeftButton
 @onready var _ui_right_button: Button =\
