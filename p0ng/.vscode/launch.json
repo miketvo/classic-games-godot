@@ -22,7 +22,6 @@
             "frame_delay": 0,
             "time_scale": 1.0,
             "disable_vsync": false,
-            "fixed_fps": 60,
             // anything else
             "additional_options": ""
         },
@@ -44,7 +43,6 @@
             "frame_delay": 0,
             "time_scale": 1.0,
             "disable_vsync": false,
-            "fixed_fps": 60,
             // anything else
             "additional_options": ""
         },
@@ -66,7 +64,6 @@
             "frame_delay": 0,
             "time_scale": 1.0,
             "disable_vsync": false,
-            "fixed_fps": 60,
             // anything else
             "additional_options": ""
         }
