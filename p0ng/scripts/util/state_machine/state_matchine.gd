@@ -30,8 +30,11 @@ func _ready() -> void:
     if not initial_state:
         print_debug("State machine has no initial state")
         return
-    elif initial_state not in children:
-        assert(false, "Unassociated initial state: %s" % initial_state.to_string())
+    else:
+        assert(
+                initial_state in children,
+                "Unassociated initial state: %s" % initial_state.to_string()
+        )
 
     _current_state = initial_state
     _current_state._enter()
@@ -78,8 +81,7 @@ func _on_child_state_transitioned(from_state: State, to_state_name: StringName) 
         return
 
     var to_state: State = _states[to_state_name.to_lower()]
-    if not to_state:
-        assert(false, "State machine does not have state %s" % to_state_name)
+    assert(to_state, "State machine does not have state %s" % to_state_name)
 
     _current_state._exit()
     _current_state = to_state
