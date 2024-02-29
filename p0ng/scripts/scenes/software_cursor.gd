@@ -57,7 +57,7 @@ func _input(event: InputEvent) -> void:
 # ============================================================================ #
 #region Signal listeners
 
-## Listens to $IdleTimer.timeout().
+# Listens to $IdleTimer.timeout().
 func _on_idle_timer_timeout() -> void:
     if visibility == Visibility.IDLE_AUTO_HIDE:
         visible = false

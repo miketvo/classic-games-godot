@@ -117,7 +117,7 @@ func game_over(winning_side: int) -> void:
 # ============================================================================ #
 #region Signal listeners
 
-## Listens to _pause_menu.get_node("ResumeButton.pressed().
+# Listens to _pause_menu.get_node("ResumeButton.pressed().
 func _on_resume_request() -> void:
     Global.software_cursor_visibility = SoftwareCursor.Visibility.IDLE_AUTO_HIDE
     for control: Control in _pause_menu.get_node("VBoxContainer").get_children():
@@ -129,27 +129,27 @@ func _on_resume_request() -> void:
             .set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)\
             .connect("finished", _on_tween_transition_finshed)
 
-## Listens to _pause_menu.get_node("QuitToDesktopButton.pressed() and
+# Listens to _pause_menu.get_node("QuitToDesktopButton.pressed() and
 ## $EndGameDialogContainer/MenuContainer/VBoxContainer/QuitToDesktopButton.pressed().
 func _on_quit_to_desktop_request() -> void:
     get_tree().quit()
 
 
-## Listens to _pause_menu.get_node("RestartButton.pressed() and
+# Listens to _pause_menu.get_node("RestartButton.pressed() and
 ## _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").pressed().
 func _on_restart_request() -> void:
     get_tree().paused = false
     button_pressed.emit("restart")
 
 
-## Listens to _pause_menu.get_node("EndGameButton.pressed() and
+# Listens to _pause_menu.get_node("EndGameButton.pressed() and
 ## _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton").pressed().
 func _on_end_game_request() -> void:
     get_tree().paused = false
     button_pressed.emit("end_game")
 
 
-## Listens to tween transition Tween.finished() to re-enable input.
+# Listens to tween transition Tween.finished() to re-enable input.
 func _on_tween_transition_finshed() -> void:
     input_disabled = false
 

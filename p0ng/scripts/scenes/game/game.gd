@@ -42,7 +42,7 @@ var _game_point_state: int
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    _game_mode = Global.game_mode
+    _game_mode = Global.current_game_mode
     _game_ui.connect("button_pressed", _on_game_ui_button_pressed)
     _spawn_paddes()
     _configure_world()
@@ -73,7 +73,7 @@ func _physics_process(delta: float) -> void:
 # ============================================================================ #
 #region Signal listeners
 
-## Listens to ball.body_entered(body: Node).
+# Listens to ball.body_entered(body: Node).
 func _on_ball_body_entered(body: Node) -> void:
     var top_bound = $World/TopBound
     var bottom_bound = $World/BottomBound
@@ -95,7 +95,7 @@ func _on_ball_body_entered(body: Node) -> void:
             right_paddle_character.get_node("Sprite2D/AnimationPlayer").queue("idle")
 
 
-## Listens to ball.body_exited(body: Node).
+# Listens to ball.body_exited(body: Node).
 func _on_ball_body_exited(body: Node) -> void:
     var left_paddle_character: AnimatableBody2D = left_paddle.get_node("CharacterComponent")
     var right_paddle_character: AnimatableBody2D = right_paddle.get_node("CharacterComponent")
@@ -113,26 +113,26 @@ func _on_ball_body_exited(body: Node) -> void:
     ball.linear_velocity = new_velocity
 
 
-## Listens to $World/VerticalSeparator.body_entered(body: Node).
+# Listens to $World/VerticalSeparator.body_entered(body: Node).
 func _on_vertical_separator_body_entered(body: Node) -> void:
     if body == ball:
         $World/VerticalSeparator/Sprite2D/AnimationPlayer.play("active")
         $World/VerticalSeparator/Sprite2D/AnimationPlayer.queue("idle")
 
 
-## Listens to $World/VerticalSeparator.body_entered(body: Node).
+# Listens to $World/VerticalSeparator.body_entered(body: Node).
 func _on_left_bound_body_entered(body: Node) -> void:
     if body == ball:
         _win_round(Global.SIDE_RIGHT)
 
 
-## Listens to $World/VerticalSeparator.body_entered(body: Node).
+# Listens to $World/VerticalSeparator.body_entered(body: Node).
 func _on_right_bound_body_entered(body: Node) -> void:
     if body == ball:
         _win_round(Global.SIDE_LEFT)
 
 
-## Listens to $UI/GameUI.button_pressed(action: StringName).
+# Listens to $UI/GameUI.button_pressed(action: StringName).
 func _on_game_ui_button_pressed(action: StringName) -> void:
     match action:
         "restart":
