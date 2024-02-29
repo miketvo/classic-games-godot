@@ -1,6 +1,7 @@
 extends State
 
 
+@export var tolerance: float = 12.0
 @export var character_component: AnimatableBody2D
 
 
@@ -13,7 +14,11 @@ func _enter() -> void:
 func _physics_update(delta: float, game_state_data: Global.GameStateData) -> void:
     var current_position = character_component.global_position
     var ball_y: float = game_state_data.ball_position.y
-    var at_ball_y: bool = is_equal_approx(character_component.position.y, ball_y)
+    var at_ball_y: bool = Global.is_equal_approx(
+            character_component.position.y,
+            ball_y,
+            tolerance
+    )
 
     if not at_ball_y:
         var direction_to_ball_y: float = ball_y - current_position.y

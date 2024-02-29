@@ -43,6 +43,10 @@ var game_state_data: GameStateData = GameStateData.new()
 
 # ============================================================================ #
 #region Public methods
+func is_equal_approx(a: float, b: float, epsilon: float):
+    return absf(a - b) < epsilon
+
+
 func flip_side(side: int) -> int:
     match side:
         SIDE_LEFT:
