@@ -9,7 +9,7 @@ extends Node
 
 
 ## The starting state of this [StateMachine]. Must be one of its children
-## [State]s.
+## [State].
 @export var initial_state: State
 
 var _current_state: State
