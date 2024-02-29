@@ -10,14 +10,19 @@
 
 [node name="CharacterComponent" parent="." instance=ExtResource("1_vk8ob")]
 
-[node name="BehaviorController" type="Node" parent="."]
+[node name="BehaviorController" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("2_f2d8l")
+initial_state = NodePath("IdleState")
 
-[node name="PrepareState" type="Node" parent="BehaviorController"]
+[node name="PrepareState" type="Node" parent="BehaviorController" node_paths=PackedStringArray("paddle", "character_component")]
 script = ExtResource("3_p0ntc")
+paddle = NodePath("../..")
+character_component = NodePath("../../CharacterComponent")
 
-[node name="InterceptState" type="Node" parent="BehaviorController"]
+[node name="InterceptState" type="Node" parent="BehaviorController" node_paths=PackedStringArray("paddle", "character_component")]
 script = ExtResource("4_xbvhr")
+paddle = NodePath("../..")
+character_component = NodePath("../../CharacterComponent")
 
 [node name="IdleState" type="Node" parent="BehaviorController"]
 script = ExtResource("5_wu5wx")

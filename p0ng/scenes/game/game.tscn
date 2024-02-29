@@ -20,4 +20,3 @@ offset_bottom = 1080.0
 
 [node name="GameUI" parent="UI" instance=ExtResource("2_86o8i")]
 layout_mode = 1
-game_point_text = ""

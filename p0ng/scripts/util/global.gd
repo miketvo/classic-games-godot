@@ -22,7 +22,7 @@ const UNIT_VECTORS: PackedVector2Array = [
     Vector2.DOWN,
     Vector2.RIGHT,
 ]
-const PLAYER_SPEED: float = 600.0 ## Unit: px/s.
+const PADDLE_SPEED: float = 600.0 ## Unit: px/s.
 const BALL_SPEED_INITIAL: float = 450.0 ## Unit: px/s.
 const BALL_SPEED_DIFFICULTY_MULTIPLIER: float = 1.15
 const SERVING_ANGULAR_VARIATION: PackedFloat32Array = [-0.392699, 0.392699] ## Unit: radian.
@@ -60,12 +60,26 @@ func flip_side(side: int) -> int:
 
 ## Game state data. Contains relevant information on the current state of the
 ## game, for use with a state machine.
-class GameStateData:
+class GameStateData extends Node2D:
     var ai_side: int
-    var player_side: int
-    var player_position: Vector2
     var ball_position: Vector2
     var ball_velocity: Vector2
 
+
+    func get_ball_side_location() -> Vector2:
+        if ball_position.x < get_viewport_rect().size.x / 2:
+            return Vector2.LEFT
+        if ball_position.x > get_viewport_rect().size.x / 2:
+            return Vector2.RIGHT
+        return Vector2.ZERO
+
+
+    func get_ball_velocity_direction() -> Vector2:
+        var direction_scalar = Vector2.RIGHT.dot(ball_velocity)
+        return (Vector2.RIGHT * direction_scalar).normalized()
+
+
+    func project_ball_position_at(_y: float) -> Vector2:
+        return Vector2.ZERO
 #endregion
 # ============================================================================ #

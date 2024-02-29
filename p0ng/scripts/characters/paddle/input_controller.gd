@@ -26,7 +26,7 @@ func _physics_process(delta: float) -> void:
             return
 
     var velocity: Vector2 = Vector2.DOWN * direction
-    velocity *= Global.PLAYER_SPEED * delta
+    velocity *= Global.PADDLE_SPEED * delta
     character_component.move_and_collide(velocity)
 #endregion
 # ============================================================================ #

@@ -157,11 +157,13 @@ func _spawn_paddes() -> void:
             right_paddle.get_node("InputController").player_control_scheme =\
                 Global.ControlScheme.ALT
         Global.GameMode.GAME_MODE_ONE_PLAYER_LEFT:
+            Global.game_state_data.ai_side = Global.SIDE_RIGHT
             left_paddle = PlayerPaddle.instantiate()
             right_paddle = AIPaddle.instantiate()
             left_paddle.get_node("InputController").player_control_scheme =\
                 Global.ControlScheme.MAIN
         Global.GameMode.GAME_MODE_ONE_PLAYER_RIGHT:
+            Global.game_state_data.ai_side = Global.SIDE_LEFT
             left_paddle = AIPaddle.instantiate()
             right_paddle = PlayerPaddle.instantiate()
             right_paddle.get_node("InputController").player_control_scheme =\
