@@ -13,7 +13,6 @@ func _enter() -> void:
             character_component.global_position.x,
             character_component.get_viewport_rect().size.y / 2
     )
-    print_debug("Preparing")
 
 
 func _physics_update(delta: float, game_state_data: Global.GameStateData) -> void:
