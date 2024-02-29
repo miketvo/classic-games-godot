@@ -19,6 +19,10 @@ func _physics_process(delta: float) -> void:
             direction = Input.get_axis("p_left_move_up", "p_left_move_down")
         Global.ControlScheme.ALT:
             direction = Input.get_axis("p_right_move_up", "p_right_move_down")
+        Global.ControlScheme.BOTH:
+            direction = Input.get_axis("p_left_move_up", "p_left_move_down")
+            direction += Input.get_axis("p_right_move_up", "p_right_move_down")
+            direction = clampf(direction, -1.0, 1.0)
         _:
             if not _not_controllable_warned:
                 push_warning("PlayerPaddle %s is not controllable" % self.to_string())

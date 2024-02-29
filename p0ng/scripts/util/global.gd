@@ -9,7 +9,7 @@ enum GameMode {
     GAME_MODE_ONE_PLAYER_RIGHT,
     GAME_MODE_TWO_PLAYERS,
 }
-enum ControlScheme { NONE, MAIN, ALT }
+enum ControlScheme { NONE, MAIN, ALT, BOTH }
 #endregion
 # ============================================================================ #
 
