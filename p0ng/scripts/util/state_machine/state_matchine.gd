@@ -20,20 +20,21 @@ var _states: Dictionary
 #region Godot builtins
 func _ready() -> void:
     var children = get_children()
-    if children.is_empty():
+    for child in children:
+        if child is State:
+            child.connect("transitioned", _on_child_state_transitioned)
+            _states[child.name.to_lower()] = child
+    if _states.is_empty():
         print_debug("State machine has no states")
-        return
+
     if not initial_state:
         print_debug("State machine has no initial state")
         return
-    if initial_state not in children:
+    elif initial_state not in children:
         assert(false, "Unassociated initial state: %s" % initial_state.to_string())
 
     _current_state = initial_state
     _current_state._enter()
-    for child in children:
-        child.connect("transitioned", _on_child_state_transitioned)
-        _states[child.name.to_lower()] = child
 
 
 func _process(_delta: float) -> void:
