@@ -44,6 +44,7 @@ func _exit() -> void:
     pass
 
 
+@warning_ignore("unused_parameter")
 ## Called during the processing step of the main loop. Processing happens at
 ## every frame and as fast as possible. See [method Node._process].
 ## [br][br]
@@ -52,6 +53,7 @@ func _update(delta: float, game_state_data: Global.GameStateData) -> void:
     pass
 
 
+@warning_ignore("unused_parameter")
 ## Called during the physics processing step of the main loop. Physics
 ## processing means that the frame rate is synced to the physics. See
 ## [method Node._physics_process].
@@ -61,16 +63,18 @@ func _physics_update(delta: float, game_state_data: Global.GameStateData) -> voi
     pass
 
 
+@warning_ignore("unused_parameter")
 ## Called when there is an input event. See [method Node._input].
 ## [br][br]
 ## Override this method to handle input specific to this state.
 func _input_update(
-        _event: InputEvent,
+        event: InputEvent,
         game_state_data: Global.GameStateData
 ) -> void:
     pass
 
 
+@warning_ignore("unused_parameter")
 ## Called when an [InputEventKey] or [InputEventShortcut] hasn't been consumed
 ## by [method _input_update] or any GUI [Control] item. It is called before
 ## [method _unhandled_key_input_update] and [method _unhandled_input_update].
@@ -78,24 +82,26 @@ func _input_update(
 ## [br][br]
 ## Override this method to handle shortcut input specific to this state.
 func _shortcut_input_update(
-        _event: InputEvent,
+        event: InputEvent,
         game_state_data: Global.GameStateData
 ) -> void:
     pass
 
 
+@warning_ignore("unused_parameter")
 ## Called when an [InputEventKey] hasn't been consumed by [method _input_update]
 ## or any GUI [Control] item. It is called after [method _shortcut_input_update]
 ## but before [method _unhandled_input_update].
 ## [br][br]
 ## Override this method to handle unhandled key input specific to this state.
 func _unhandled_key_input_update(
-        _event: InputEvent,
+        event: InputEvent,
         game_state_data: Global.GameStateData
 ) -> void:
     pass
 
 
+@warning_ignore("unused_parameter")
 ## Called when an [InputEvent] hasn't been consumed by [method _input_update] or
 ## any GUI [Control] item. It is called after [method _shortcut_input_update]
 ## and after [method _unhandled_key_input_update]. See
@@ -103,7 +109,7 @@ func _unhandled_key_input_update(
 ## [br][br]
 ## Override this method to handle unhandled input specific to this state.
 func _unhandled_input_update(
-        _event: InputEvent,
+        event: InputEvent,
         game_state_data: Global.GameStateData
 ) -> void:
     pass
