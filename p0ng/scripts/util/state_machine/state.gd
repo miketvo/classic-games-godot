@@ -48,7 +48,7 @@ func _exit() -> void:
 ## every frame and as fast as possible. See [method Node._process].
 ## [br][br]
 ## Override this method to define custom frame update logic.
-func _update(_delta: float, _game_state_data: Global.GameStateData) -> void:
+func _update(delta: float, game_state_data: Global.GameStateData) -> void:
     pass
 
 
@@ -57,7 +57,7 @@ func _update(_delta: float, _game_state_data: Global.GameStateData) -> void:
 ## [method Node._physics_process].
 ## [br][br]
 ## Override this method to define custom physics frame update logic.
-func _physics_update(_delta: float, _game_state_data: Global.GameStateData) -> void:
+func _physics_update(delta: float, game_state_data: Global.GameStateData) -> void:
     pass
 
 
@@ -66,7 +66,7 @@ func _physics_update(_delta: float, _game_state_data: Global.GameStateData) -> v
 ## Override this method to handle input specific to this state.
 func _input_update(
         _event: InputEvent,
-        _game_state_data: Global.GameStateData
+        game_state_data: Global.GameStateData
 ) -> void:
     pass
 
@@ -79,7 +79,7 @@ func _input_update(
 ## Override this method to handle shortcut input specific to this state.
 func _shortcut_input_update(
         _event: InputEvent,
-        _game_state_data: Global.GameStateData
+        game_state_data: Global.GameStateData
 ) -> void:
     pass
 
@@ -91,7 +91,7 @@ func _shortcut_input_update(
 ## Override this method to handle unhandled key input specific to this state.
 func _unhandled_key_input_update(
         _event: InputEvent,
-        _game_state_data: Global.GameStateData
+        game_state_data: Global.GameStateData
 ) -> void:
     pass
 
@@ -104,7 +104,7 @@ func _unhandled_key_input_update(
 ## Override this method to handle unhandled input specific to this state.
 func _unhandled_input_update(
         _event: InputEvent,
-        _game_state_data: Global.GameStateData
+        game_state_data: Global.GameStateData
 ) -> void:
     pass
 #endregion
