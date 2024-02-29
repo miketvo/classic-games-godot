@@ -41,14 +41,14 @@ func _ready() -> void:
     _current_state._enter()
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
     if _current_state:
-        _current_state._update(_delta, Global.game_state_data)
+        _current_state._update(delta, Global.game_state_data)
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
     if _current_state:
-        _current_state._physics_update(_delta, Global.game_state_data)
+        _current_state._physics_update(delta, Global.game_state_data)
 
 
 func _input(event: InputEvent) -> void:
