@@ -1,3 +1,4 @@
+class_name GameScene2D
 extends Node2D
 
 

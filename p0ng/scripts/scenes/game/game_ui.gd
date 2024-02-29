@@ -105,7 +105,7 @@ func game_over(winning_side: int) -> void:
 
     _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").grab_focus()
     _endgame_dialog.process_mode = Node.PROCESS_MODE_INHERIT
-    UI.tween_transition_fade_appear_container(
+    tween_transition_fade_appear_container(
             _endgame_dialog,
             UI.UI_TRANSITION_DURATION / 4
     ).set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
