@@ -1,3 +1,4 @@
+@icon("res://assets/icons/state_machine.svg")
 class_name StateMachine
 extends Node
 ## Implementation of finite state machine. Automatically recognizes children
@@ -33,7 +34,7 @@ func _ready() -> void:
     else:
         assert(
                 initial_state in children,
-                "Unassociated initial state: %s" % initial_state.to_string()
+                "Initial state %s must be a child of state machine" % initial_state.to_string()
         )
 
     _current_state = initial_state

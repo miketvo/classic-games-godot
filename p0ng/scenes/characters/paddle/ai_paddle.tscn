@@ -1,11 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://dvxpgoq1b84w3"]
+[gd_scene load_steps=4 format=3 uid="uid://dvxpgoq1b84w3"]
 
 [ext_resource type="PackedScene" uid="uid://gq00cx0tahjo" path="res://scenes/characters/paddle/character_component.tscn" id="1_vk8ob"]
 [ext_resource type="Script" path="res://scripts/util/state_machine/state_matchine.gd" id="2_f2d8l"]
+[ext_resource type="Script" path="res://scripts/util/state_machine/state.gd" id="3_l04v5"]
 
-[node name="AiPaddle" type="Node2D"]
+[node name="AIPaddle" type="Node2D"]
 
 [node name="CharacterComponent" parent="." instance=ExtResource("1_vk8ob")]
 
-[node name="StateMachine" type="Node" parent="."]
+[node name="BehaviorController" type="Node" parent="."]
 script = ExtResource("2_f2d8l")
+
+[node name="State2" type="Node" parent="BehaviorController"]
+script = ExtResource("3_l04v5")
+
+[node name="State" type="Node" parent="BehaviorController"]
+script = ExtResource("3_l04v5")

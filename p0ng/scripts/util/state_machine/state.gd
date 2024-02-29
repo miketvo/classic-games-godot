@@ -1,3 +1,4 @@
+@icon("res://assets/icons/state.svg")
 class_name State
 extends Node
 ## Represents a state in a state machine. Does not allow nesting of states. Must
