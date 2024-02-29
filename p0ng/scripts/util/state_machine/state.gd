@@ -1,6 +1,7 @@
 class_name State
 extends Node
-## Represents a state in a state machine.
+## Represents a state in a state machine. Does not allow nesting of states. Must
+## be a top-level child of a [StateMachine].
 
 
 ## Transitioning logic is implemented by the user by overriding the state's
@@ -16,6 +17,17 @@ extends Node
 ## the current state, i.e. the next state must belong to the same [StateMachine]
 ## that the current state belongs to.
 signal transitioned(from_state: State, to_state_name: StringName)
+
+
+# ============================================================================ #
+#region Godot builtins
+func _enter_tree() -> void:
+    if get_parent() is State:
+        assert(false, "Nested States is not allowed")
+    if not get_parent() is StateMachine:
+        assert(false, "State must be a child of StateMachine")
+#endregion
+# ============================================================================ #
 
 
 # ============================================================================ #

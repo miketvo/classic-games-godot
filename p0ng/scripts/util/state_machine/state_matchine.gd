@@ -1,14 +1,15 @@
 class_name StateMachine
 extends Node
 ## Implementation of finite state machine. Automatically recognizes children
-## [States] and execute their logic.
+## [States] and execute their logic. Has no effect if contain no [State] or if
+## [member initial_state] is not set.
 ##
 ## @tutorial(Finite State Machine on Wikipedia): https://en.wikipedia.org/wiki/Finite-state_machine
 ## @tutorial(State Pattern on Wikipedia): https://en.wikipedia.org/wiki/State_pattern
 
 
 ## The starting state of this [StateMachine]. Must be one of its children
-## [State] for this state machine to have any effect.
+## [State]s.
 @export var initial_state: State
 
 var _current_state: State
