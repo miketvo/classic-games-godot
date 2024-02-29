@@ -35,7 +35,7 @@ const TARGET_SCORE: int = 7
 #region Public variables
 var software_cursor_visibility: SoftwareCursor.Visibility\
         = SoftwareCursor.Visibility.ALWAYS_VISIBLE
-var curent_game_mode: GameMode
+var current_game_mode: GameMode
 var game_state_data: GameStateData = GameStateData.new()
 #endregion
 # ============================================================================ #
