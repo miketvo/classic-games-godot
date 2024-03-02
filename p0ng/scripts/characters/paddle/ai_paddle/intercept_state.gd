@@ -52,9 +52,9 @@ func _physics_update(delta: float, game_state_data: Global.GameStateData) -> voi
     else:
         character_component.move_and_collide(Vector2.ZERO)
 
-    var ai_side: int = game_state_data.get_side_of_point(character_component.global_position)
+    var current_side: int = game_state_data.get_side_of_point(character_component.global_position)
     var ball_heading: Vector2 = game_state_data.get_ball_velocity_direction()
-    match [ ai_side, ball_heading ]:
+    match [ current_side, ball_heading ]:
         [ Global.SIDE_LEFT, Vector2.RIGHT ], [ Global.SIDE_RIGHT, Vector2.LEFT ]:
             transitioned.emit(self, "PrepareState")
 # ============================================================================ #

@@ -150,12 +150,12 @@ func _spawn_paddes() -> void:
 
     match _game_mode:
         Global.GameMode.GAME_MODE_TWO_PLAYERS:
-            left_paddle = PlayerPaddle.instantiate()
-            right_paddle = PlayerPaddle.instantiate()
-            left_paddle.get_node("InputController").player_control_scheme =\
-                Global.ControlScheme.MAIN
-            right_paddle.get_node("InputController").player_control_scheme =\
-                Global.ControlScheme.ALT
+            left_paddle = AIPaddle.instantiate()
+            right_paddle = AIPaddle.instantiate()
+            # left_paddle.get_node("InputController").player_control_scheme =\
+            #     Global.ControlScheme.MAIN
+            # right_paddle.get_node("InputController").player_control_scheme =\
+            #     Global.ControlScheme.ALT
         Global.GameMode.GAME_MODE_ONE_PLAYER_LEFT:
             left_paddle = PlayerPaddle.instantiate()
             right_paddle = AIPaddle.instantiate()
