@@ -1,9 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dyud8dot2715o"]
+[gd_scene load_steps=6 format=3 uid="uid://b1sxxtnr6xah8"]
 
-[ext_resource type="PhysicsMaterial" uid="uid://da80ome7jpr3a" path="res://assets/materials/paddle.tres" id="1_0uetc"]
-[ext_resource type="Texture2D" uid="uid://btu8cwupgi6d3" path="res://assets/objects/paddle.png" id="1_brd5l"]
+[ext_resource type="Texture2D" uid="uid://dqfpuk0uj1ox8" path="res://assets/ui/cursor.png" id="1_d4c6o"]
+[ext_resource type="Script" path="res://scripts/scenes/software_cursor.gd" id="2_3xk1i"]
 
-[sub_resource type="Animation" id="Animation_fbvie"]
+[sub_resource type="Animation" id="Animation_liwy8"]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -30,7 +30,7 @@ tracks/1/keys = {
 "values": [1]
 }
 
-[sub_resource type="Animation" id="Animation_cw7nb"]
+[sub_resource type="Animation" id="Animation_vflyu"]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -57,39 +57,35 @@ tracks/1/keys = {
 "values": [0]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_jos0x"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_a4mwl"]
 _data = {
-"active": SubResource("Animation_fbvie"),
-"idle": SubResource("Animation_cw7nb")
+"click": SubResource("Animation_liwy8"),
+"idle": SubResource("Animation_vflyu")
 }
 
-[node name="Paddle" type="AnimatableBody2D"]
-collision_layer = 3
-collision_mask = 2
-physics_material_override = ExtResource("1_0uetc")
-sync_to_physics = false
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="SoftwareCursor" type="Sprite2D"]
+z_index = 4096
 texture_filter = 1
-texture = ExtResource("1_brd5l")
+texture = ExtResource("1_d4c6o")
+offset = Vector2(15, 21)
 hframes = 2
+script = ExtResource("2_3xk1i")
 metadata/_aseprite_wizard_config_ = {
 "i_mode": -1,
 "keep_anim_length": false,
 "layer": "",
 "o_ex_p": "",
-"o_folder": "res://assets/objects",
-"o_name": "paddle",
+"o_folder": "res://assets/ui",
+"o_name": "cursor",
 "only_visible": false,
 "op_exp": false,
-"player": "Sprite2D/AnimationPlayer",
-"source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/p0ng/objects/paddle.ase"
+"player": "Cursor/AnimationPlayer",
+"source": "~/Projects/Godot/classic-games-godot-art/p0ng/cursor.ase"
 }
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_jos0x")
+"": SubResource("AnimationLibrary_a4mwl")
 }
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PackedVector2Array(0, -60, -7, -48, -11, -24, -12, -8, -12, 8, -11, 24, -7, 48, 0, 60, 12, 60, 12, -60)
+[node name="IdleTimer" type="Timer" parent="."]

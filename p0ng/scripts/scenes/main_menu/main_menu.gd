@@ -4,11 +4,7 @@ extends GameScene2D
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    $UI/MainMenuUI/MainMenuContainer/StartButton.grab_focus()
-    $UI/MainMenuUI/StartMenuContainer/OnePlayerButton\
-            .connect("pressed", _on_main_menu_ui_start_menu_one_player_button_pressed)
-    $UI/MainMenuUI/StartMenuContainer/TwoPlayersButton\
-            .connect("pressed", _on_main_menu_ui_start_menu_two_players_button_pressed)
+    $UI/MainMenuUI.connect("button_pressed", _on_main_menu_ui_button_pressed)
 #endregion
 # ============================================================================ #
 
@@ -16,13 +12,14 @@ func _ready() -> void:
 # ============================================================================ #
 #region Signal listeners
 
-## Listens to $UIContainer/MainMenuUI/StartMenuContainer/OnePlayer.pressed()
-func _on_main_menu_ui_start_menu_one_player_button_pressed() -> void:
-    assert(false, "Not implemented")
-
-## Listens to $UIContainer/MainMenuUI/StartMenuContainer/TwoPlayers.pressed()
-func _on_main_menu_ui_start_menu_two_players_button_pressed() -> void:
-    scene_finished.emit(SceneKey.GAME)
+# Listens to $UIContainer/MainMenuUI.button_pressed(action: StringName).
+func _on_main_menu_ui_button_pressed(action: StringName) -> void:
+    match action:
+        "start_one_player":
+            scene_finished.emit(SceneKey.SIDE_SELECT)
+        "start_two_players":
+            Global.current_game_mode = Global.GameMode.GAME_MODE_TWO_PLAYERS
+            scene_finished.emit(SceneKey.GAME)
 
 #endregion
 # ============================================================================ #

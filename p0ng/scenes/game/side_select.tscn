@@ -1,0 +1,77 @@
+[gd_scene load_steps=7 format=3 uid="uid://ck7t4n6n2h4a3"]
+
+[ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_co7gs"]
+[ext_resource type="PackedScene" uid="uid://c77ktlmd3rbkb" path="res://scenes/game/world.tscn" id="2_31cx8"]
+[ext_resource type="Script" path="res://scripts/scenes/game/side_select.gd" id="2_od2xv"]
+[ext_resource type="PackedScene" uid="uid://2aqxm1ipras" path="res://scenes/game/spawns.tscn" id="3_6fs7p"]
+[ext_resource type="PackedScene" uid="uid://gq00cx0tahjo" path="res://scenes/characters/paddle/character_component.tscn" id="4_ea1hk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gnqa8"]
+content_margin_left = 12.0
+content_margin_right = 12.0
+bg_color = Color(0.0941176, 0.0470588, 0.129412, 1)
+border_width_left = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.0941176, 0.0470588, 0.129412, 1)
+
+[node name="SideSelect" type="Node2D"]
+script = ExtResource("2_od2xv")
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="World" parent="Background" instance=ExtResource("2_31cx8")]
+
+[node name="Spawns" parent="Background" instance=ExtResource("3_6fs7p")]
+
+[node name="Paddle" parent="Background/Spawns/LeftPaddleSpawn" index="0" instance=ExtResource("4_ea1hk")]
+
+[node name="Paddle" parent="Background/Spawns/RightPaddleSpawn" index="0" instance=ExtResource("4_ea1hk")]
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme = ExtResource("1_co7gs")
+
+[node name="SideSelectContainer" type="VBoxContainer" parent="UI"]
+z_index = 99
+layout_mode = 0
+offset_top = 260.0
+offset_right = 480.0
+offset_bottom = 365.0
+scale = Vector2(4, 4)
+
+[node name="Label" type="Label" parent="UI/SideSelectContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_type_variation = &"LabelHeading"
+theme_override_styles/normal = SubResource("StyleBoxFlat_gnqa8")
+text = "CHOOSE A SIDE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/SideSelectContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 4.0
+
+[node name="LeftButtonContainer" type="CenterContainer" parent="UI/SideSelectContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LeftButton" type="Button" parent="UI/SideSelectContainer/HBoxContainer/LeftButtonContainer"]
+layout_mode = 2
+text = "left"
+
+[node name="RightButtonContainer" type="CenterContainer" parent="UI/SideSelectContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RightButton" type="Button" parent="UI/SideSelectContainer/HBoxContainer/RightButtonContainer"]
+layout_mode = 2
+text = "right"
+
+[editable path="Background/Spawns"]

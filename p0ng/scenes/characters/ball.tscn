@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://bvj431e37jkc0"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://erimhhryh6gt" path="res://assets/materials/ball.tres" id="1_1t8ao"]
+[ext_resource type="Script" path="res://scripts/characters/ball/ball.gd" id="2_hm4ry"]
 [ext_resource type="Texture2D" uid="uid://deb4d1ukrlrt6" path="res://assets/objects/ball.png" id="2_v5f0i"]
-[ext_resource type="Script" path="res://scripts/characters/ball.gd" id="2_wd0kw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0ye4j"]
 radius = 12.0
@@ -14,23 +14,11 @@ continuous_cd = 1
 max_contacts_reported = 8
 contact_monitor = true
 linear_damp_mode = 1
-script = ExtResource("2_wd0kw")
+script = ExtResource("2_hm4ry")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 texture = ExtResource("2_v5f0i")
-metadata/_aseprite_wizard_config_ = {
-"i_mode": 1,
-"keep_anim_length": false,
-"layer": "",
-"o_ex_p": "",
-"o_folder": "res://assets/objects",
-"o_name": "ball",
-"only_visible": false,
-"op_exp": false,
-"player": "",
-"source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/p0ng/objects/ball.ase"
-}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_0ye4j")

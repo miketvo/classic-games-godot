@@ -8,43 +8,33 @@ enum {
     GAME_STATE_DEUCE,
 }
 
-const Ball: PackedScene = preload("res://scenes/game/ball.tscn")
-const Paddle: PackedScene = preload("res://scenes/game/paddle.tscn")
-const PlayerPaddleScript: Script = preload("res://scripts/characters/player_paddle.gd")
-
-@export var game_point_text: String
+const Ball: PackedScene = preload("res://scenes/characters/ball.tscn")
+const PlayerPaddle: PackedScene = preload("res://scenes/characters/paddle/player_paddle.tscn")
+const AIPaddle: PackedScene = preload("res://scenes/characters/paddle/ai_paddle.tscn")
 
 var ball: RigidBody2D
-var left_paddle: AnimatableBody2D
-var right_paddle: AnimatableBody2D
+var left_paddle: Node2D
+var right_paddle: Node2D
 var left_score: int
 var right_score: int
+var winner: int
 
 var _rng = RandomNumberGenerator.new()
-var _ball_speed: float
+var _current_ball_speed: float
+var _game_mode: Global.GameMode
 var _game_over: bool
 var _round_started: bool
 var _side_served: int
 var _game_state: int
 var _game_round: int
-var _game_point_state: int  ## Bitwise flag, left and right sides correspond to leftmost and rightmost bit
+
+## 2-bit bitwise flag, left and right sides correspond to leftmost and rightmost bit.
+var _game_point_state: int
 
 @onready var _ball_spawn: Node2D = $Spawns/BallSpawn
 @onready var _left_paddle_spawn: Node2D = $Spawns/LeftPaddleSpawn
 @onready var _right_paddle_spawn: Node2D = $Spawns/RightPaddleSpawn
-@onready var _score_label: Dictionary = {
-    Global.SIDE_LEFT: $UI/GameUI/HUDContainer/LeftScore,
-    Global.SIDE_RIGHT: $UI/GameUI/HUDContainer/RightScore,
-}
-@onready var _endgame_dialog: Container = $UI/GameUI/EndGameDialogContainer
-@onready var _win_label: Dictionary = {
-    Global.SIDE_LEFT: $UI/GameUI/EndGameDialogContainer/MessageContainer/LeftContainer/WinLabel,
-    Global.SIDE_RIGHT: $UI/GameUI/EndGameDialogContainer/MessageContainer/RightContainer/WinLabel,
-}
-@onready var _lose_label: Dictionary = {
-    Global.SIDE_LEFT: $UI/GameUI/EndGameDialogContainer/MessageContainer/LeftContainer/LoseLabel,
-    Global.SIDE_RIGHT: $UI/GameUI/EndGameDialogContainer/MessageContainer/RightContainer/LoseLabel,
-}
+@onready var _game_ui: UI = $UI/GameUI
 #endregion
 # ============================================================================ #
 
@@ -52,29 +42,17 @@ var _game_point_state: int  ## Bitwise flag, left and right sides correspond to 
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    _spawn_left_paddle()
-    _spawn_right_paddle()
+    _game_mode = Global.current_game_mode
+    _game_ui.connect("button_pressed", _on_game_ui_button_pressed)
+    _spawn_paddes()
     _configure_world()
-    _configure_ui()
     _configure_game()
 
 
 func _process(_delta: float) -> void:
-    var left_score_label_text: String = "%s%d" %\
-            [ game_point_text + " " if not _game_point_state ^ 0b10 else "", left_score ]
-    _score_label[Global.SIDE_LEFT].text = left_score_label_text
-    var right_score_label_text: String = "%d%s" %\
-            [ right_score, " " + game_point_text if not _game_point_state ^ 0b01 else "" ]
-    _score_label[Global.SIDE_RIGHT].text = right_score_label_text
-
+    _game_ui.update_score_labels(left_score, right_score, _game_point_state)
     if _game_over:
-        _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").grab_focus()
-        _endgame_dialog.process_mode = Node.PROCESS_MODE_INHERIT
-        UI.tween_transition_fade_appear_container(
-                _endgame_dialog,
-                UI.TRANS_DURATION / 4
-        ).set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-        $UI/GameUI.disable_pausing = true
+        _game_ui.game_over(winner)
         get_tree().paused = true
 
 
@@ -95,10 +73,12 @@ func _physics_process(delta: float) -> void:
 # ============================================================================ #
 #region Signal listeners
 
-## Listens to ball.body_entered(body: Node)
+# Listens to ball.body_entered(body: Node).
 func _on_ball_body_entered(body: Node) -> void:
     var top_bound = $World/TopBound
     var bottom_bound = $World/BottomBound
+    var left_paddle_character: AnimatableBody2D = left_paddle.get_node("CharacterComponent")
+    var right_paddle_character: AnimatableBody2D = right_paddle.get_node("CharacterComponent")
 
     match body:
         top_bound:
@@ -107,61 +87,58 @@ func _on_ball_body_entered(body: Node) -> void:
         bottom_bound:
             bottom_bound.get_node("Sprite2D/AnimationPlayer").play("active")
             bottom_bound.get_node("Sprite2D/AnimationPlayer").queue("idle")
-        left_paddle:
-            left_paddle.get_node("Sprite2D/AnimationPlayer").play("active")
-            left_paddle.get_node("Sprite2D/AnimationPlayer").queue("idle")
-        right_paddle:
-            right_paddle.get_node("Sprite2D/AnimationPlayer").play("active")
-            right_paddle.get_node("Sprite2D/AnimationPlayer").queue("idle")
+        left_paddle_character:
+            left_paddle_character.get_node("Sprite2D/AnimationPlayer").play("active")
+            left_paddle_character.get_node("Sprite2D/AnimationPlayer").queue("idle")
+        right_paddle_character:
+            right_paddle_character.get_node("Sprite2D/AnimationPlayer").play("active")
+            right_paddle_character.get_node("Sprite2D/AnimationPlayer").queue("idle")
 
 
-## Listens to ball.body_exited(body: Node)
+# Listens to ball.body_exited(body: Node).
 func _on_ball_body_exited(body: Node) -> void:
+    var left_paddle_character: AnimatableBody2D = left_paddle.get_node("CharacterComponent")
+    var right_paddle_character: AnimatableBody2D = right_paddle.get_node("CharacterComponent")
     var new_velocity: Vector2
     match body:
-        left_paddle, right_paddle:
-            _ball_speed *= Global.BALL_SPEED_DIFFICULTY_MULTIPLIER
+        left_paddle_character, right_paddle_character:
+            _current_ball_speed *= Global.BALL_SPEED_DIFFICULTY_MULTIPLIER
             new_velocity =\
                     Vector2.from_angle(ball.linear_velocity.angle())\
-                    * _ball_speed
+                    * _current_ball_speed
         _:
             new_velocity =\
                     Vector2.from_angle(ball.linear_velocity.angle())\
-                    * _ball_speed
+                    * _current_ball_speed
     ball.linear_velocity = new_velocity
 
 
-## Listens to $World/VerticalSeparator.body_entered(body: Node)
+# Listens to $World/VerticalSeparator.body_entered(body: Node).
 func _on_vertical_separator_body_entered(body: Node) -> void:
     if body == ball:
         $World/VerticalSeparator/Sprite2D/AnimationPlayer.play("active")
         $World/VerticalSeparator/Sprite2D/AnimationPlayer.queue("idle")
 
 
-## Listens to $World/VerticalSeparator.body_entered(body: Node)
+# Listens to $World/VerticalSeparator.body_entered(body: Node).
 func _on_left_bound_body_entered(body: Node) -> void:
     if body == ball:
         _win_round(Global.SIDE_RIGHT)
 
 
-## Listens to $World/VerticalSeparator.body_entered(body: Node)
+# Listens to $World/VerticalSeparator.body_entered(body: Node).
 func _on_right_bound_body_entered(body: Node) -> void:
     if body == ball:
         _win_round(Global.SIDE_LEFT)
 
 
-## Listens to $UI/GameUI/PauseMenuContainer/RestartButton.pressed() and
-## _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").pressed()
-func _on_restart_request() -> void:
-    get_tree().paused = false
-    scene_finished.emit(SceneKey.GAME)
-
-
-## Listens to $UI/GameUI/PauseMenuContainer/EndGameButton.pressed() and
-## _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton").pressed()
-func _on_end_game_request() -> void:
-    get_tree().paused = false
-    scene_finished.emit(SceneKey.MAIN_MENU)
+# Listens to $UI/GameUI.button_pressed(action: StringName).
+func _on_game_ui_button_pressed(action: StringName) -> void:
+    match action:
+        "restart":
+            scene_finished.emit(SceneKey.GAME)
+        "end_game":
+            scene_finished.emit(SceneKey.MAIN_MENU)
 
 #endregion
 # ============================================================================ #
@@ -169,20 +146,34 @@ func _on_end_game_request() -> void:
 
 # ============================================================================ #
 #region Utils
-func _spawn_left_paddle() -> void:
-    left_paddle = Paddle.instantiate()
-    left_paddle.set_script(PlayerPaddleScript)
+func _spawn_paddes() -> void:
+
+    match _game_mode:
+        Global.GameMode.GAME_MODE_TWO_PLAYERS:
+            left_paddle = PlayerPaddle.instantiate()
+            right_paddle = PlayerPaddle.instantiate()
+            left_paddle.get_node("InputController").player_control_scheme =\
+                Global.ControlScheme.MAIN
+            right_paddle.get_node("InputController").player_control_scheme =\
+                Global.ControlScheme.ALT
+        Global.GameMode.GAME_MODE_ONE_PLAYER_LEFT:
+            left_paddle = PlayerPaddle.instantiate()
+            right_paddle = AIPaddle.instantiate()
+            left_paddle.get_node("InputController").player_control_scheme =\
+                Global.ControlScheme.BOTH
+        Global.GameMode.GAME_MODE_ONE_PLAYER_RIGHT:
+            left_paddle = AIPaddle.instantiate()
+            right_paddle = PlayerPaddle.instantiate()
+            right_paddle.get_node("InputController").player_control_scheme =\
+                Global.ControlScheme.BOTH
+
+    left_paddle.name = "LeftPaddle"
     left_paddle.position = _left_paddle_spawn.position
     left_paddle.rotation = PI
-    left_paddle.player_id = PlayerPaddle.PLAYER_LEFT
     add_child(left_paddle)
 
-
-func _spawn_right_paddle() -> void:
-    right_paddle = Paddle.instantiate()
-    right_paddle.set_script(PlayerPaddleScript)
+    right_paddle.name = "RightPaddle"
     right_paddle.position = _right_paddle_spawn.position
-    right_paddle.player_id = PlayerPaddle.PLAYER_RIGHT
     add_child(right_paddle)
 
 
@@ -191,7 +182,7 @@ func _spawn_ball() -> void:
     ball.position = _ball_spawn.position
     ball.connect("body_entered", _on_ball_body_entered)
     ball.connect("body_exited", _on_ball_body_exited)
-    _ball_speed = Global.BALL_SPEED_INITIAL
+    _current_ball_speed = Global.BALL_SPEED_INITIAL
     _round_started = false
     add_child(ball)
 
@@ -240,24 +231,10 @@ func _configure_world() -> void:
             "body_entered",
             _on_right_bound_body_entered
     )
-
-
-func _configure_ui() -> void:
-    _endgame_dialog.process_mode = Node.PROCESS_MODE_DISABLED
-    _endgame_dialog.modulate = Color(1.0, 1.0, 1.0, 0.0)
-    _win_label[Global.SIDE_LEFT].hide()
-    _win_label[Global.SIDE_RIGHT].hide()
-    _lose_label[Global.SIDE_LEFT].hide()
-    _lose_label[Global.SIDE_RIGHT].hide()
-
-    $UI/GameUI/PauseMenuContainer/VBoxContainer/RestartButton\
-            .connect("pressed", _on_restart_request)
-    $UI/GameUI/PauseMenuContainer/VBoxContainer/EndGameButton\
-            .connect("pressed", _on_end_game_request)
-    _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton")\
-            .connect("pressed", _on_restart_request)
-    _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton")\
-            .connect("pressed", _on_end_game_request)
+    $World/VerticalSeparator.connect(
+            "body_entered",
+            _on_vertical_separator_body_entered
+    )
 
 
 func _configure_game() -> void:
@@ -323,16 +300,7 @@ func _win_round(winning_side: int) -> void:
 
 
 func _win_game(winning_side: int) -> void:
-    match winning_side:
-        Global.SIDE_LEFT:
-            _win_label[Global.SIDE_LEFT].show()
-            _lose_label[Global.SIDE_RIGHT].show()
-        Global.SIDE_RIGHT:
-            _win_label[Global.SIDE_RIGHT].show()
-            _lose_label[Global.SIDE_LEFT].show()
-        _:
-            assert(false, "Unrecognized side")
-
+    winner = winning_side
     left_paddle.set_script(null)
     right_paddle.set_script(null)
     _game_over = true
