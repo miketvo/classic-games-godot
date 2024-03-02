@@ -1,7 +1,7 @@
 extends State
 
 
-@export var tolerance: float = 64.0
+@export var tolerance: float = 32.0
 @export var character_component: AnimatableBody2D
 
 var _ball_position_pred: Vector2
@@ -25,17 +25,21 @@ func _physics_update(delta: float, game_state_data: Global.GameStateData) -> voi
             Global.MAX_BALL_PRED_FRAMES,
             delta
     ) if _ball_position_pred == Vector2.INF else _ball_position_pred
+
     var at_ball_y_pred: bool = (_ball_position_pred == Vector2.INF) or Global.is_equal_approx(
-            character_component.position.y,
+            character_component.global_position.y,
             _ball_position_pred.y,
             tolerance
     )
+
     if not at_ball_y_pred:
         var direction_to_ball_y: float = _ball_position_pred.y - current_position.y
         var velocity: Vector2 = (Vector2.DOWN * direction_to_ball_y).normalized()
         velocity *= Global.PADDLE_SPEED * delta
         character_component.move_and_collide(velocity)
+        print("Intercepting")
     else:
+        print("Intercepted")
         character_component.move_and_collide(Vector2.ZERO)
 
     var ai_side: int = game_state_data.ai_side
