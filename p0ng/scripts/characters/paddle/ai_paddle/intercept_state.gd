@@ -23,11 +23,10 @@ func _physics_update(delta: float, game_state_data: Global.GameStateData) -> voi
     _physics_frame_delta = delta
 
     var current_position = character_component.global_position
-    if _ball_position_pred == Vector2.INF:
-        _ball_position_pred = _predict_ball_position_at(
-                current_position.x,
-                Global.MAX_BALL_PRED_FRAMES
-        )
+    _ball_position_pred =  _predict_ball_position_at(
+            current_position.x,
+            Global.MAX_BALL_PRED_FRAMES
+    ) if _ball_position_pred == Vector2.INF else _ball_position_pred
     var at_ball_y_pred: bool = (_ball_position_pred == Vector2.INF) or Global.is_equal_approx(
             character_component.position.y,
             _ball_position_pred.y,
