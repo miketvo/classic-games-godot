@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dyud8dot2715o"]
+[gd_scene load_steps=6 format=3 uid="uid://gq00cx0tahjo"]
 
-[ext_resource type="PhysicsMaterial" uid="uid://da80ome7jpr3a" path="res://assets/materials/paddle.tres" id="1_0uetc"]
-[ext_resource type="Texture2D" uid="uid://btu8cwupgi6d3" path="res://assets/objects/paddle.png" id="1_brd5l"]
+[ext_resource type="PhysicsMaterial" uid="uid://da80ome7jpr3a" path="res://assets/materials/paddle.tres" id="1_weulk"]
+[ext_resource type="Texture2D" uid="uid://btu8cwupgi6d3" path="res://assets/objects/paddle.png" id="2_x84t4"]
 
 [sub_resource type="Animation" id="Animation_fbvie"]
 length = 0.1
@@ -63,18 +63,19 @@ _data = {
 "idle": SubResource("Animation_cw7nb")
 }
 
-[node name="Paddle" type="AnimatableBody2D"]
+[node name="CharacterComponent" type="AnimatableBody2D"]
 collision_layer = 3
 collision_mask = 2
-physics_material_override = ExtResource("1_0uetc")
+physics_material_override = ExtResource("1_weulk")
 sync_to_physics = false
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
-texture = ExtResource("1_brd5l")
+texture = ExtResource("2_x84t4")
 hframes = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+process_mode = 3
 libraries = {
 "": SubResource("AnimationLibrary_jos0x")
 }

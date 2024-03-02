@@ -1,0 +1,61 @@
+[gd_scene load_steps=9 format=3 uid="uid://dvxpgoq1b84w3"]
+
+[ext_resource type="PackedScene" uid="uid://gq00cx0tahjo" path="res://scenes/characters/paddle/character_component.tscn" id="1_vk8ob"]
+[ext_resource type="Script" path="res://scripts/util/state_machine/state_matchine.gd" id="2_f2d8l"]
+[ext_resource type="Script" path="res://scripts/characters/paddle/ai_paddle/prepare_state.gd" id="3_p0ntc"]
+[ext_resource type="Script" path="res://scripts/characters/paddle/ai_paddle/intercept_state.gd" id="4_xbvhr"]
+[ext_resource type="PackedScene" uid="uid://bvj431e37jkc0" path="res://scenes/characters/ball.tscn" id="5_blb4l"]
+[ext_resource type="Script" path="res://scripts/characters/paddle/ai_paddle/idle_state.gd" id="5_wu5wx"]
+[ext_resource type="Script" path="res://scripts/characters/ball/test_ball.gd" id="6_ny0uw"]
+
+[sub_resource type="Gradient" id="Gradient_t4yvx"]
+interpolation_color_space = 1
+colors = PackedColorArray(5.77569e-06, 0.638478, 0.365116, 1, 0.982389, 0.125737, 1.92523e-07, 1)
+
+[node name="AIPaddle" type="Node2D"]
+
+[node name="CharacterComponent" parent="." instance=ExtResource("1_vk8ob")]
+
+[node name="BehaviorController" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_f2d8l")
+initial_state = NodePath("IdleState")
+
+[node name="PrepareState" type="Node" parent="BehaviorController" node_paths=PackedStringArray("character_component")]
+script = ExtResource("3_p0ntc")
+character_component = NodePath("../../CharacterComponent")
+
+[node name="InterceptState" type="Node" parent="BehaviorController" node_paths=PackedStringArray("character_component")]
+script = ExtResource("4_xbvhr")
+character_component = NodePath("../../CharacterComponent")
+
+[node name="TrajectoryPredictor" type="Node2D" parent="BehaviorController/InterceptState"]
+visible = false
+
+[node name="TestBall" parent="BehaviorController/InterceptState/TrajectoryPredictor" instance=ExtResource("5_blb4l")]
+collision_layer = 4
+collision_mask = 4
+script = ExtResource("6_ny0uw")
+
+[node name="Sprite2D" parent="BehaviorController/InterceptState/TrajectoryPredictor/TestBall" index="0"]
+visible = false
+
+[node name="CollisionShape2D" parent="BehaviorController/InterceptState/TrajectoryPredictor/TestBall" index="1"]
+debug_color = Color(0.611765, 0.537255, 0, 0.419608)
+
+[node name="TrajectoryLine" type="Line2D" parent="BehaviorController/InterceptState/TrajectoryPredictor"]
+width = 6.0
+gradient = SubResource("Gradient_t4yvx")
+joint_mode = 1
+begin_cap_mode = 1
+end_cap_mode = 1
+
+[node name="IdleState" type="Node" parent="BehaviorController" node_paths=PackedStringArray("character_component")]
+script = ExtResource("5_wu5wx")
+character_component = NodePath("../../CharacterComponent")
+
+[node name="CooldownTimer" type="Timer" parent="BehaviorController/IdleState"]
+process_callback = 0
+wait_time = 0.1
+one_shot = true
+
+[editable path="BehaviorController/InterceptState/TrajectoryPredictor/TestBall"]

@@ -1,6 +1,8 @@
+class_name UI
 extends Control
 
 
+signal button_pressed(action: StringName)
 const UI_TRANSITION_DURATION: float = 0.5
 
 
@@ -22,12 +24,11 @@ func tween_transition_slide_container(
         direction: Vector2,
         duration: float
 ) -> Tween:
-    if direction not in Global.UNIT_VECTORS:
-        assert(
-                false,
-                "UI.tween_transition_slide_container() "
-                + "only accepts unit vector for `direction`"
-        )
+    assert(
+            direction in Global.UNIT_VECTORS,
+            "UI.tween_transition_slide_container() "
+            + "only accepts unit vector for `direction`"
+    )
 
     var movement_scale: float
     if direction in [ Vector2.LEFT, Vector2.RIGHT ]:

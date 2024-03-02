@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://b1sxxtnr6xah8"]
 
-[ext_resource type="Texture2D" uid="uid://dqfpuk0uj1ox8" path="res://assets/ui/cursor.png" id="1_vfv8c"]
-[ext_resource type="Script" path="res://scripts/scenes/cursor.gd" id="2_q2heb"]
+[ext_resource type="Texture2D" uid="uid://dqfpuk0uj1ox8" path="res://assets/ui/cursor.png" id="1_d4c6o"]
+[ext_resource type="Script" path="res://scripts/scenes/software_cursor.gd" id="2_3xk1i"]
 
 [sub_resource type="Animation" id="Animation_liwy8"]
 length = 0.1
@@ -63,13 +63,13 @@ _data = {
 "idle": SubResource("Animation_vflyu")
 }
 
-[node name="Cursor" type="Sprite2D"]
+[node name="SoftwareCursor" type="Sprite2D"]
 z_index = 4096
 texture_filter = 1
-texture = ExtResource("1_vfv8c")
+texture = ExtResource("1_d4c6o")
 offset = Vector2(15, 21)
 hframes = 2
-script = ExtResource("2_q2heb")
+script = ExtResource("2_3xk1i")
 metadata/_aseprite_wizard_config_ = {
 "i_mode": -1,
 "keep_anim_length": false,
