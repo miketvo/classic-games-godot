@@ -32,7 +32,13 @@ visible = false
 
 [node name="TestBall" parent="BehaviorController/InterceptState/TrajectoryPredictor" instance=ExtResource("5_blb4l")]
 collision_layer = 4
-collision_mask = 0
+collision_mask = 4
+
+[node name="Sprite2D" parent="BehaviorController/InterceptState/TrajectoryPredictor/TestBall" index="0"]
+visible = false
+
+[node name="CollisionShape2D" parent="BehaviorController/InterceptState/TrajectoryPredictor/TestBall" index="1"]
+debug_color = Color(0.611765, 0.537255, 0, 0.419608)
 
 [node name="TrajectoryLine" type="Line2D" parent="BehaviorController/InterceptState/TrajectoryPredictor"]
 width = 6.0
@@ -43,3 +49,5 @@ end_cap_mode = 1
 
 [node name="IdleState" type="Node" parent="BehaviorController"]
 script = ExtResource("5_wu5wx")
+
+[editable path="BehaviorController/InterceptState/TrajectoryPredictor/TestBall"]

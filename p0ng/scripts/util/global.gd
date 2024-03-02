@@ -32,7 +32,7 @@ const TARGET_SCORE: int = 7
 ## higher performance, but the AI paddle will have worse reaction time. Higher
 ## number lowers performance, but the AI paddle will have a better reaction
 ## time.
-const MAX_BALL_PRED_FRAMES: int = 360
+const MAX_BALL_PRED_FRAMES: int = 60
 #endregion
 # ============================================================================ #
 
