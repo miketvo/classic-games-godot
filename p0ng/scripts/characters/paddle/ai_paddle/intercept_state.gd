@@ -4,7 +4,6 @@ extends State
 @export var tolerance: float = 64.0
 @export var character_component: AnimatableBody2D
 
-var _physics_frame_delta: float
 var _ball_position_pred: Vector2
 
 @onready var _trajectory_predictor: Node2D = $TrajectoryPredictor
@@ -21,12 +20,11 @@ func _enter() -> void:
 
 func _physics_update(delta: float, game_state_data: Global.GameStateData) -> void:
     var current_position = character_component.global_position
-    if _ball_position_pred == Vector2.INF:
-        _physics_frame_delta = delta
-        _ball_position_pred =  _predict_ball_position_at(
-                current_position.x,
-                Global.MAX_BALL_PRED_FRAMES
-        )
+    _ball_position_pred = _predict_ball_position_at(
+            current_position.x,
+            Global.MAX_BALL_PRED_FRAMES,
+            delta
+    ) if _ball_position_pred == Vector2.INF else _ball_position_pred
     var at_ball_y_pred: bool = (_ball_position_pred == Vector2.INF) or Global.is_equal_approx(
             character_component.position.y,
             _ball_position_pred.y,
@@ -50,7 +48,7 @@ func _physics_update(delta: float, game_state_data: Global.GameStateData) -> voi
 
 # ============================================================================ #
 #region Utils
-func _predict_ball_position_at(x: float, max_frames: int) -> Vector2:
+func _predict_ball_position_at(x: float, max_frames: int, delta: float) -> Vector2:
     var test_ball: RigidBody2D = _trajectory_predictor.get_node("TestBall")
     var trajectory_line: Line2D = _trajectory_predictor.get_node("TrajectoryLine")
     var current_position: Vector2 = Global.game_state_data.ball_position
@@ -62,13 +60,13 @@ func _predict_ball_position_at(x: float, max_frames: int) -> Vector2:
 
         test_ball.global_position = current_position
         var collision: KinematicCollision2D = test_ball.move_and_collide(
-                current_velocity * _physics_frame_delta,
+                current_velocity * delta,
                 true
         )
         if collision:
             current_velocity = current_velocity.bounce(collision.get_normal())
 
-        current_position += current_velocity * _physics_frame_delta
+        current_position += current_velocity * delta
         if (current_velocity.dot(Vector2.RIGHT) > 0 and current_position.x > x)\
                 or (current_velocity.dot(Vector2.RIGHT) < 0 and current_position.x < x):
             break
