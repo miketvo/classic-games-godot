@@ -1,10 +1,13 @@
 extends State
 
 
-@export var tolerance: float = 32.0
+@export var tolerance: float = 32.0  ## Unit: px.
+@export var variance: float = 16.0  ## Unit: px.
 @export var character_component: AnimatableBody2D
 
+var _rng: RandomNumberGenerator
 var _ball_position_pred: Vector2
+var _variation: float
 
 @onready var _trajectory_predictor: Node2D = $TrajectoryPredictor
 
@@ -13,9 +16,11 @@ var _ball_position_pred: Vector2
 #region State builtins
 func _enter() -> void:
     assert(character_component, "character_component must be assigned")
+    _rng = RandomNumberGenerator.new()
+    _variation = _rng.randfn(0.0, variance)
+    _ball_position_pred = Vector2.INF
     if get_tree().debug_collisions_hint:
         _trajectory_predictor.visible = true
-    _ball_position_pred = Vector2.INF
 
 
 func _physics_update(delta: float, game_state_data: Global.GameStateData) -> void:
@@ -28,7 +33,7 @@ func _physics_update(delta: float, game_state_data: Global.GameStateData) -> voi
 
     var at_ball_y_pred: bool = (_ball_position_pred == Vector2.INF) or Global.is_equal_approx(
             character_component.global_position.y,
-            _ball_position_pred.y,
+            _ball_position_pred.y + _variation,
             tolerance
     )
 

@@ -1,8 +1,9 @@
 extends State
 
 
-@export var tolerance: float = 16.0
+@export var tolerance: float = 16.0  ## Unit: px.
 @export var character_component: AnimatableBody2D
+
 var _middle_position: Vector2
 
 
