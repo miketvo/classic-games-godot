@@ -6,7 +6,6 @@ extends State
 @export var character_component: AnimatableBody2D
 
 var _rng: RandomNumberGenerator
-var _ball_position_pred: Vector2
 var _variation: float
 
 @onready var _trajectory_predictor: Node2D = $TrajectoryPredictor
@@ -17,7 +16,6 @@ var _variation: float
 func _enter() -> void:
     assert(character_component, "character_component must be assigned")
     _rng = RandomNumberGenerator.new()
-    _ball_position_pred = Vector2.INF
     _variation = _rng.randfn(0.0, variance)
     if get_tree().debug_collisions_hint:
         _trajectory_predictor.visible = true
@@ -32,20 +30,20 @@ func _exit() -> void:
 
 func _physics_update(delta: float, game_state_data: Global.GameStateData) -> void:
     var current_position = character_component.global_position
-    _ball_position_pred = _predict_ball_position_at(
+    var ball_position_pred = _predict_ball_position_at(
             current_position.x,
             Global.MAX_BALL_PRED_FRAMES,
             delta
-    ) if _ball_position_pred == Vector2.INF else _ball_position_pred
+    )
 
-    var at_ball_y_pred: bool = (_ball_position_pred == Vector2.INF) or Global.is_equal_approx(
+    var at_ball_y_pred: bool = (ball_position_pred == Vector2.INF) or Global.is_equal_approx(
             character_component.global_position.y,
-            _ball_position_pred.y + _variation,
+            ball_position_pred.y + _variation,
             tolerance
     )
 
     if not at_ball_y_pred:
-        var direction_to_ball_y: float = _ball_position_pred.y - current_position.y
+        var direction_to_ball_y: float = ball_position_pred.y - current_position.y
         var velocity: Vector2 = (Vector2.DOWN * direction_to_ball_y).normalized()
         velocity *= Global.PADDLE_SPEED * delta
         character_component.move_and_collide(velocity)
