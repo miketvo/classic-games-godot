@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dvxpgoq1b84w3"]
+[gd_scene load_steps=9 format=3 uid="uid://dvxpgoq1b84w3"]
 
 [ext_resource type="PackedScene" uid="uid://gq00cx0tahjo" path="res://scenes/characters/paddle/character_component.tscn" id="1_vk8ob"]
 [ext_resource type="Script" path="res://scripts/util/state_machine/state_matchine.gd" id="2_f2d8l"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/characters/paddle/ai_paddle/intercept_state.gd" id="4_xbvhr"]
 [ext_resource type="PackedScene" uid="uid://bvj431e37jkc0" path="res://scenes/characters/ball.tscn" id="5_blb4l"]
 [ext_resource type="Script" path="res://scripts/characters/paddle/ai_paddle/idle_state.gd" id="5_wu5wx"]
+[ext_resource type="Script" path="res://scripts/characters/ball/test_ball.gd" id="6_ny0uw"]
 
 [sub_resource type="Gradient" id="Gradient_t4yvx"]
 interpolation_color_space = 1
@@ -33,6 +34,7 @@ visible = false
 [node name="TestBall" parent="BehaviorController/InterceptState/TrajectoryPredictor" instance=ExtResource("5_blb4l")]
 collision_layer = 4
 collision_mask = 4
+script = ExtResource("6_ny0uw")
 
 [node name="Sprite2D" parent="BehaviorController/InterceptState/TrajectoryPredictor/TestBall" index="0"]
 visible = false

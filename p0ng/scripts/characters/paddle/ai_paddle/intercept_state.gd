@@ -1,8 +1,8 @@
 extends State
 
 
-@export var tolerance: float = 32.0  ## Unit: px.
-@export var variance: float = 10.0  ## Unit: px.
+@export var tolerance: float = 16.0  ## Unit: px.
+@export var variance: float = 8.0  ## Unit: px.
 @export var character_component: AnimatableBody2D
 
 var _rng: RandomNumberGenerator
