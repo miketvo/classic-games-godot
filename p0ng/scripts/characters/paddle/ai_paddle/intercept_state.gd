@@ -17,10 +17,17 @@ var _variation: float
 func _enter() -> void:
     assert(character_component, "character_component must be assigned")
     _rng = RandomNumberGenerator.new()
-    _variation = _rng.randfn(0.0, variance)
     _ball_position_pred = Vector2.INF
+    _variation = _rng.randfn(0.0, variance)
     if get_tree().debug_collisions_hint:
         _trajectory_predictor.visible = true
+
+
+func _exit() -> void:
+    var trajectory_line: Line2D = _trajectory_predictor.get_node("TrajectoryLine")
+    trajectory_line.clear_points()
+    if get_tree().debug_collisions_hint:
+        _trajectory_predictor.visible = false
 
 
 func _physics_update(delta: float, game_state_data: Global.GameStateData) -> void:
