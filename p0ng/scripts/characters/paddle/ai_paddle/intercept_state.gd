@@ -13,15 +13,15 @@ func _enter() -> void:
 
 func _physics_update(delta: float, game_state_data: Global.GameStateData) -> void:
     var current_position = character_component.global_position
-    var ball_y: float = game_state_data.ball_position.y
-    var at_ball_y: bool = Global.is_equal_approx(
+    var ball_y_pred: float = game_state_data.predict_ball_position_at.call(current_position.x).y
+    var at_ball_y_pred: bool = Global.is_equal_approx(
             character_component.position.y,
-            ball_y,
+            ball_y_pred,
             tolerance
     )
 
-    if not at_ball_y:
-        var direction_to_ball_y: float = ball_y - current_position.y
+    if not at_ball_y_pred:
+        var direction_to_ball_y: float = ball_y_pred - current_position.y
         var velocity: Vector2 = (Vector2.DOWN * direction_to_ball_y).normalized()
         velocity *= Global.PADDLE_SPEED * delta
         character_component.move_and_collide(velocity)

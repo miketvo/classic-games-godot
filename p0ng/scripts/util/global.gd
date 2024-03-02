@@ -68,6 +68,7 @@ class GameStateData extends Node2D:
     var ai_side: int
     var ball_position: Vector2
     var ball_velocity: Vector2
+    var predict_ball_position_at: Callable
 
 
     func get_ball_side_location() -> Vector2:
@@ -81,9 +82,5 @@ class GameStateData extends Node2D:
     func get_ball_velocity_direction() -> Vector2:
         var direction_scalar = Vector2.RIGHT.dot(ball_velocity)
         return (Vector2.RIGHT * direction_scalar).normalized()
-
-
-    func project_ball_position_at(_y: float) -> Vector2:
-        return Vector2.ZERO
 #endregion
 # ============================================================================ #

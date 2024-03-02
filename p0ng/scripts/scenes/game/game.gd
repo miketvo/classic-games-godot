@@ -182,6 +182,7 @@ func _spawn_ball() -> void:
     ball.position = _ball_spawn.position
     ball.connect("body_entered", _on_ball_body_entered)
     ball.connect("body_exited", _on_ball_body_exited)
+    Global.game_state_data.predict_ball_position_at = ball.predict_ball_position_at
     _current_ball_speed = Global.BALL_SPEED_INITIAL
     _round_started = false
     add_child(ball)
