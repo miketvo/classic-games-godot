@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 
 
 # ============================================================================ #
@@ -70,7 +70,7 @@ func flip_side(side: int) -> int:
 
 ## Game state data. Contains relevant information on the current state of the
 ## game, for use with a state machine.
-class GameStateData extends Node2D:
+class GameStateData extends Node:
     var ball_position: Vector2
     var ball_velocity: Vector2
 
@@ -81,9 +81,9 @@ class GameStateData extends Node2D:
 
 
     func get_side_of_point(point: Vector2) -> int:
-        if point.x < get_viewport_rect().size.x / 2:
-                return SIDE_LEFT
-        if point.x > get_viewport_rect().size.x / 2:
+        if point.x < Global.get_viewport_rect().size.x / 2:
+            return SIDE_LEFT
+        if point.x > Global.get_viewport_rect().size.x / 2:
             return SIDE_RIGHT
         return SIDE_UNDEFINED
 #endregion
