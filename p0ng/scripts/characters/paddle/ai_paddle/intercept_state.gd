@@ -37,9 +37,7 @@ func _physics_update(delta: float, game_state_data: Global.GameStateData) -> voi
         var velocity: Vector2 = (Vector2.DOWN * direction_to_ball_y).normalized()
         velocity *= Global.PADDLE_SPEED * delta
         character_component.move_and_collide(velocity)
-        print("Intercepting")
     else:
-        print("Intercepted")
         character_component.move_and_collide(Vector2.ZERO)
 
     var ai_side: int = game_state_data.ai_side
