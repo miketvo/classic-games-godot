@@ -167,10 +167,12 @@ func _spawn_paddes() -> void:
             right_paddle.get_node("InputController").player_control_scheme =\
                 Global.ControlScheme.BOTH
 
+    left_paddle.name = "LeftPaddle"
     left_paddle.position = _left_paddle_spawn.position
     left_paddle.rotation = PI
     add_child(left_paddle)
 
+    right_paddle.name = "RightPaddle"
     right_paddle.position = _right_paddle_spawn.position
     add_child(right_paddle)
 
