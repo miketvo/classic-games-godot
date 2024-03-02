@@ -1,16 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bvj431e37jkc0"]
+[gd_scene load_steps=5 format=3 uid="uid://bvj431e37jkc0"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://erimhhryh6gt" path="res://assets/materials/ball.tres" id="1_1t8ao"]
-[ext_resource type="Script" path="res://scripts/characters/ball/ball.gd" id="2_ldyvt"]
+[ext_resource type="Script" path="res://scripts/characters/ball.gd" id="2_ldyvt"]
 [ext_resource type="Texture2D" uid="uid://deb4d1ukrlrt6" path="res://assets/objects/ball.png" id="2_v5f0i"]
-[ext_resource type="Script" path="res://scripts/characters/ball/test_ball.gd" id="4_mn02u"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0ye4j"]
 radius = 12.0
-
-[sub_resource type="Gradient" id="Gradient_qm72h"]
-interpolation_color_space = 1
-colors = PackedColorArray(5.77569e-06, 0.638478, 0.365116, 1, 0.982389, 0.125737, 1.92523e-07, 1)
 
 [node name="Ball" type="RigidBody2D"]
 physics_material_override = ExtResource("1_1t8ao")
@@ -27,24 +22,3 @@ texture = ExtResource("2_v5f0i")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_0ye4j")
-
-[node name="TrajectoryPredictor" type="Node2D" parent="."]
-visible = false
-
-[node name="TestBall" type="RigidBody2D" parent="TrajectoryPredictor"]
-collision_layer = 4
-collision_mask = 4
-physics_material_override = ExtResource("1_1t8ao")
-gravity_scale = 0.0
-script = ExtResource("4_mn02u")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TrajectoryPredictor/TestBall"]
-shape = SubResource("CircleShape2D_0ye4j")
-debug_color = Color(0.65098, 0.517647, 0, 0.419608)
-
-[node name="TrajectoryLine" type="Line2D" parent="TrajectoryPredictor"]
-width = 6.0
-gradient = SubResource("Gradient_qm72h")
-joint_mode = 1
-begin_cap_mode = 1
-end_cap_mode = 1

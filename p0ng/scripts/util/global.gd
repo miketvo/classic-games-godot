@@ -74,7 +74,6 @@ class GameStateData extends Node2D:
     var ai_side: int
     var ball_position: Vector2
     var ball_velocity: Vector2
-    var predict_ball_position_at: Callable
 
 
     func get_ball_side_location() -> Vector2:
