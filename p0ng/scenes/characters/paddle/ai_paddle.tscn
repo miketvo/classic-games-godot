@@ -47,8 +47,9 @@ joint_mode = 1
 begin_cap_mode = 1
 end_cap_mode = 1
 
-[node name="IdleState" type="Node" parent="BehaviorController"]
+[node name="IdleState" type="Node" parent="BehaviorController" node_paths=PackedStringArray("character_component")]
 script = ExtResource("5_wu5wx")
+character_component = NodePath("../../CharacterComponent")
 
 [node name="CooldownTimer" type="Timer" parent="BehaviorController/IdleState"]
 process_callback = 0

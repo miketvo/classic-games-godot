@@ -3,7 +3,7 @@ extends Node
 
 # ============================================================================ #
 #region Enums
-enum { SIDE_LEFT, SIDE_RIGHT }
+enum { SIDE_LEFT, SIDE_RIGHT, SIDE_UNDEFINED }
 enum GameMode {
     GAME_MODE_ONE_PLAYER_LEFT,
     GAME_MODE_ONE_PLAYER_RIGHT,
@@ -71,7 +71,6 @@ func flip_side(side: int) -> int:
 ## Game state data. Contains relevant information on the current state of the
 ## game, for use with a state machine.
 class GameStateData extends Node2D:
-    var ai_side: int
     var ball_position: Vector2
     var ball_velocity: Vector2
 
@@ -79,5 +78,13 @@ class GameStateData extends Node2D:
     func get_ball_velocity_direction() -> Vector2:
         var direction_scalar = Vector2.RIGHT.dot(ball_velocity)
         return (Vector2.RIGHT * direction_scalar).normalized()
+
+
+    func get_side_of_point(point: Vector2) -> int:
+        if point.x < get_viewport_rect().size.x / 2:
+                return SIDE_LEFT
+        if point.x > get_viewport_rect().size.x / 2:
+            return SIDE_RIGHT
+        return SIDE_UNDEFINED
 #endregion
 # ============================================================================ #

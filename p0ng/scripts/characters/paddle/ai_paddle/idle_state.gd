@@ -1,7 +1,10 @@
 extends State
 
 
+@export var character_component: AnimatableBody2D
+
 var _is_ready: bool
+
 @onready var _cooldown_timer: Timer = $CooldownTimer
 
 
@@ -21,7 +24,7 @@ func _enter() -> void:
 
 func _physics_update(_delta: float, game_state_data: Global.GameStateData) -> void:
     if _is_ready:
-        var ai_side: int = game_state_data.ai_side
+        var ai_side: int = game_state_data.get_side_of_point(character_component.global_position)
         var ball_heading: Vector2 = game_state_data.get_ball_velocity_direction()
 
         match [ ai_side, ball_heading ]:
