@@ -27,6 +27,12 @@ const BALL_SPEED_INITIAL: float = 450.0 ## Unit: px/s.
 const BALL_SPEED_DIFFICULTY_MULTIPLIER: float = 1.15
 const SERVING_ANGULAR_VARIATION: PackedFloat32Array = [-0.392699, 0.392699] ## Unit: radian.
 const TARGET_SCORE: int = 7
+
+## How far into the future ball trajectory prediction works. Lower numbers means
+## higher performance, but the AI paddle will have worse reaction time. Higher
+## number lowers performance, but the AI paddle will have a better reaction
+## time.
+const MAX_BALL_PRED_FRAMES: int = 360
 #endregion
 # ============================================================================ #
 
