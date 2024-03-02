@@ -15,7 +15,6 @@ var _variation: float
 # ============================================================================ #
 #region State builtins
 func _enter() -> void:
-    print("Intercepting!")
     assert(character_component, "character_component must be assigned")
     _rng = RandomNumberGenerator.new()
     _ball_position_pred = Vector2.INF
