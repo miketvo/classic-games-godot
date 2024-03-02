@@ -76,14 +76,6 @@ class GameStateData extends Node2D:
     var ball_velocity: Vector2
 
 
-    func get_ball_side_location() -> Vector2:
-        if ball_position.x < get_viewport_rect().size.x / 2:
-            return Vector2.LEFT
-        if ball_position.x > get_viewport_rect().size.x / 2:
-            return Vector2.RIGHT
-        return Vector2.ZERO
-
-
     func get_ball_velocity_direction() -> Vector2:
         var direction_scalar = Vector2.RIGHT.dot(ball_velocity)
         return (Vector2.RIGHT * direction_scalar).normalized()

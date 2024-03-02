@@ -50,4 +50,9 @@ end_cap_mode = 1
 [node name="IdleState" type="Node" parent="BehaviorController"]
 script = ExtResource("5_wu5wx")
 
+[node name="CooldownTimer" type="Timer" parent="BehaviorController/IdleState"]
+process_callback = 0
+wait_time = 0.1
+one_shot = true
+
 [editable path="BehaviorController/InterceptState/TrajectoryPredictor/TestBall"]

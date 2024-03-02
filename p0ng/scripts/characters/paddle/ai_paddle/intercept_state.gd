@@ -2,7 +2,7 @@ extends State
 
 
 @export var tolerance: float = 32.0  ## Unit: px.
-@export var variance: float = 16.0  ## Unit: px.
+@export var variance: float = 12.0  ## Unit: px.
 @export var character_component: AnimatableBody2D
 
 var _rng: RandomNumberGenerator
@@ -15,6 +15,7 @@ var _variation: float
 # ============================================================================ #
 #region State builtins
 func _enter() -> void:
+    print("Intercepting!")
     assert(character_component, "character_component must be assigned")
     _rng = RandomNumberGenerator.new()
     _ball_position_pred = Vector2.INF
