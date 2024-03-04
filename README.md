@@ -4,7 +4,7 @@ My implementation of classic video games I played in my childhood using the Godo
 
 Each folder containing a `project.godot` file is a project meant to be used with [Godot Engine](https://godotengine.org), the open source 2D and 3D game engine.
 
-**Godot version: (4.x release)**
+**Godot version: (4.2.1 release)**
 
 ## Importing all projects
 
