@@ -35,6 +35,7 @@ var _game_point_state: int
 @onready var _left_paddle_spawn: Node2D = $Spawns/LeftPaddleSpawn
 @onready var _right_paddle_spawn: Node2D = $Spawns/RightPaddleSpawn
 @onready var _game_ui: UI = $UI/GameUI
+@onready var _sfx_controller: Node = $SfxController
 #endregion
 # ============================================================================ #
 
@@ -88,9 +89,11 @@ func _on_ball_body_entered(body: Node) -> void:
             bottom_bound.get_node("Sprite2D/AnimationPlayer").play("active")
             bottom_bound.get_node("Sprite2D/AnimationPlayer").queue("idle")
         left_paddle_character:
+            _sfx_controller.play_sound2d("PaddleHitSfx", left_paddle_character.global_position)
             left_paddle_character.get_node("Sprite2D/AnimationPlayer").play("active")
             left_paddle_character.get_node("Sprite2D/AnimationPlayer").queue("idle")
         right_paddle_character:
+            _sfx_controller.play_sound2d("PaddleHitSfx", right_paddle_character.global_position)
             right_paddle_character.get_node("Sprite2D/AnimationPlayer").play("active")
             right_paddle_character.get_node("Sprite2D/AnimationPlayer").queue("idle")
 
@@ -196,6 +199,8 @@ func _serve_ball(
         direction: int,
         angular_variation: PackedFloat32Array = [0.0, 0.0]
 ) -> void:
+    _sfx_controller.play_sound("RoundStartSfx")
+
     var unit_vector: Vector2
     match direction:
         Global.SIDE_LEFT:
@@ -248,6 +253,8 @@ func _configure_game() -> void:
 
 
 func _win_round(winning_side: int) -> void:
+    _sfx_controller.play_sound("RoundEndSfx")
+
     match winning_side:
         Global.SIDE_LEFT:
             left_score += 1

@@ -20,10 +20,12 @@ func _process(_delta: float) -> void:
 
 # ============================================================================ #
 #region Utils
+
 # Listens to $Sprite2D/AnimationPlayer.animation_finished(anim_name: String)
-## unbind(1).
+# unbind(1).
 func _end_splash() -> void:
     _animation_player.stop(true)
     scene_finished.emit(SceneKey.MAIN_MENU)
+
 #endregion
 # ============================================================================ #

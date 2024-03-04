@@ -68,17 +68,17 @@ func tween_transition_slide_container(
 #region UI SFX listeners.
 func _on_ui_container_slider_button_pressed():
     if _sfx_controller:
-        _sfx_controller.play("UISelectedSfx")
+        _sfx_controller.play_sound("UISelectedSfx")
 
 
 func _on_ui_scene_changer_button_pressed():
     if _sfx_controller:
-        _sfx_controller.play("UIAcceptedSfx")
+        _sfx_controller.play_sound("UIAcceptedSfx")
 
 
 func _on_ui_disabled_button_pressed():
     if _sfx_controller:
-        _sfx_controller.play("UIRejectedSfx")
+        _sfx_controller.play_sound("UIRejectedSfx")
 #endregion
 
 #endregion
