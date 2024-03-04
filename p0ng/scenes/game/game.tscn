@@ -38,6 +38,7 @@ bus = &"Gameplay"
 
 [node name="PaddleHitSfx" type="AudioStreamPlayer2D" parent="SfxController"]
 stream = ExtResource("8_5bkqd")
+volume_db = 12.0
 max_polyphony = 8
 panning_strength = 2.0
 bus = &"Gameplay"

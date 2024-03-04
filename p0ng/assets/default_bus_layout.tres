@@ -1,0 +1,37 @@
+[gd_resource type="AudioBusLayout" load_steps=3 format=3 uid="uid://bxat0n1ouwfwc"]
+
+[sub_resource type="AudioEffectLimiter" id="AudioEffectLimiter_js1wn"]
+resource_name = "Limiter"
+ceiling_db = -3.0
+threshold_db = -6.0
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_kb0wx"]
+resource_name = "Reverb"
+predelay_msec = 60.0
+room_size = 0.1
+damping = 0.2
+spread = 0.2
+
+[resource]
+bus/0/effect/0/effect = SubResource("AudioEffectLimiter_js1wn")
+bus/0/effect/0/enabled = true
+bus/1/name = &"GlobalEffects"
+bus/1/solo = false
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = 0.0
+bus/1/send = &"Master"
+bus/1/effect/0/effect = SubResource("AudioEffectReverb_kb0wx")
+bus/1/effect/0/enabled = true
+bus/2/name = &"UI"
+bus/2/solo = false
+bus/2/mute = false
+bus/2/bypass_fx = false
+bus/2/volume_db = -6.0
+bus/2/send = &"GlobalEffects"
+bus/3/name = &"Gameplay"
+bus/3/solo = false
+bus/3/mute = false
+bus/3/bypass_fx = false
+bus/3/volume_db = 0.0
+bus/3/send = &"UI"
