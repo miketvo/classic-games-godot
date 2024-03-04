@@ -111,7 +111,7 @@ size_flags_horizontal = 4
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="RestartButton" type="Button" parent="EndGameDialogContainer/MenuContainer/VBoxContainer"]
+[node name="RestartButton" type="Button" parent="EndGameDialogContainer/MenuContainer/VBoxContainer" groups=["ui_scene_changer_buttons"]]
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
@@ -123,7 +123,7 @@ focus_next = NodePath("../BackToMainMenuButton")
 focus_previous = NodePath("../QuitToDesktopButton")
 text = "rematch"
 
-[node name="BackToMainMenuButton" type="Button" parent="EndGameDialogContainer/MenuContainer/VBoxContainer"]
+[node name="BackToMainMenuButton" type="Button" parent="EndGameDialogContainer/MenuContainer/VBoxContainer" groups=["ui_scene_changer_buttons"]]
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
@@ -193,7 +193,7 @@ text = "paused"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ResumeButton" type="Button" parent="PauseMenuContainer/VBoxContainer"]
+[node name="ResumeButton" type="Button" parent="PauseMenuContainer/VBoxContainer" groups=["ui_container_slider_buttons"]]
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
@@ -205,7 +205,7 @@ focus_next = NodePath("../RestartButton")
 focus_previous = NodePath("../QuitToDesktopButton")
 text = "resume"
 
-[node name="RestartButton" type="Button" parent="PauseMenuContainer/VBoxContainer"]
+[node name="RestartButton" type="Button" parent="PauseMenuContainer/VBoxContainer" groups=["ui_scene_changer_buttons"]]
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0
@@ -217,7 +217,7 @@ focus_next = NodePath("../EndGameButton")
 focus_previous = NodePath("../ResumeButton")
 text = "restart"
 
-[node name="EndGameButton" type="Button" parent="PauseMenuContainer/VBoxContainer"]
+[node name="EndGameButton" type="Button" parent="PauseMenuContainer/VBoxContainer" groups=["ui_scene_changer_buttons"]]
 layout_mode = 2
 size_flags_vertical = 0
 size_flags_stretch_ratio = 0.0

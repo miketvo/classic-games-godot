@@ -21,6 +21,10 @@ config/icon="res://icon.svg"
 config/windows_native_icon="res://icon.ico"
 boot_splash/minimum_display_time=2000
 
+[audio]
+
+buses/default_bus_layout=""
+
 [autoload]
 
 Global="*res://scripts/util/global.gd"
