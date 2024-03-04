@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://fsyym8qkg3qr"]
+[gd_scene load_steps=9 format=3 uid="uid://fsyym8qkg3qr"]
 
 [ext_resource type="Script" path="res://scripts/scenes/game/game.gd" id="1_eisns"]
 [ext_resource type="PackedScene" uid="uid://c77ktlmd3rbkb" path="res://scenes/game/world.tscn" id="2_0ybp3"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://2aqxm1ipras" path="res://scenes/game/spawns.tscn" id="3_skvg6"]
 [ext_resource type="Script" path="res://scripts/util/sfx_controller.gd" id="5_ov3ew"]
 [ext_resource type="AudioStream" uid="uid://bmjt2ui0u5hxe" path="res://assets/sfx/ui_rejected.wav" id="7_sl1dl"]
+[ext_resource type="AudioStream" uid="uid://dntlnsn8jcvpf" path="res://assets/sfx/paddle_hit.wav" id="8_5bkqd"]
 [ext_resource type="AudioStream" uid="uid://ccjwtodmc7cac" path="res://assets/sfx/ui_selected.wav" id="8_svw1p"]
 
 [node name="Game" type="Node2D"]
@@ -36,6 +37,7 @@ stream = ExtResource("8_svw1p")
 bus = &"Gameplay"
 
 [node name="PaddleHitSfx" type="AudioStreamPlayer2D" parent="SfxController"]
+stream = ExtResource("8_5bkqd")
 max_polyphony = 8
 panning_strength = 2.0
 bus = &"Gameplay"
