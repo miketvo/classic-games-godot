@@ -20,7 +20,7 @@ var _states: Dictionary
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    var children = get_children()
+    var children: Array[Node] = get_children()
     for child in children:
         if child is State:
             child.connect("transitioned", _on_child_state_transitioned)

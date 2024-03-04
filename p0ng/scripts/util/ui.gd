@@ -4,7 +4,7 @@ extends Control
 
 signal button_pressed(action: StringName)
 const UI_TRANSITION_DURATION: float = 0.5
-@onready var _sfx_controller: Node
+@onready var _sfx_controller: SfxController
 
 
 # ============================================================================ #

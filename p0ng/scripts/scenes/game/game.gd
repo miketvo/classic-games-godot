@@ -35,7 +35,7 @@ var _game_point_state: int
 @onready var _left_paddle_spawn: Node2D = $Spawns/LeftPaddleSpawn
 @onready var _right_paddle_spawn: Node2D = $Spawns/RightPaddleSpawn
 @onready var _game_ui: UI = $UI/GameUI
-@onready var _sfx_controller: Node = $SfxController
+@onready var _sfx_controller: SfxController = $SfxController
 #endregion
 # ============================================================================ #
 
