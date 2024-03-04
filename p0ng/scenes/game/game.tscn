@@ -5,9 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://dofglbl0ean4l" path="res://scenes/game/game_ui.tscn" id="2_86o8i"]
 [ext_resource type="PackedScene" uid="uid://2aqxm1ipras" path="res://scenes/game/spawns.tscn" id="3_skvg6"]
 [ext_resource type="Script" path="res://scripts/util/sfx_controller.gd" id="5_ov3ew"]
-[ext_resource type="AudioStream" uid="uid://bmjt2ui0u5hxe" path="res://assets/sfx/ui_rejected.wav" id="7_sl1dl"]
+[ext_resource type="AudioStream" uid="uid://b615geswjhsxc" path="res://assets/sfx/round_start.wav" id="6_qb1t3"]
+[ext_resource type="AudioStream" uid="uid://s1u8wxbgl3j2" path="res://assets/sfx/round_end.wav" id="7_4xbrj"]
 [ext_resource type="AudioStream" uid="uid://dntlnsn8jcvpf" path="res://assets/sfx/paddle_hit.wav" id="8_5bkqd"]
-[ext_resource type="AudioStream" uid="uid://ccjwtodmc7cac" path="res://assets/sfx/ui_selected.wav" id="8_svw1p"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_eisns")
@@ -29,11 +29,11 @@ layout_mode = 1
 script = ExtResource("5_ov3ew")
 
 [node name="RoundStartSfx" type="AudioStreamPlayer" parent="SfxController"]
-stream = ExtResource("7_sl1dl")
+stream = ExtResource("6_qb1t3")
 bus = &"Gameplay"
 
 [node name="RoundEndSfx" type="AudioStreamPlayer" parent="SfxController"]
-stream = ExtResource("8_svw1p")
+stream = ExtResource("7_4xbrj")
 bus = &"Gameplay"
 
 [node name="PaddleHitSfx" type="AudioStreamPlayer2D" parent="SfxController"]
