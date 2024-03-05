@@ -273,12 +273,16 @@ func _win_round(winning_side: int) -> void:
     _game_point_state = 0b00
     match [ left_score, right_score, left_score - right_score, _game_state ]:
         [ GAME_SCORE, _, _, GAME_STATE_NORMAL ] when left_score > right_score:
+            _sfx_controller.play_sound("GamePointSfx")
             _game_point_state = 0b10
         [ _, GAME_SCORE, _, GAME_STATE_NORMAL ] when left_score < right_score:
+            _sfx_controller.play_sound("GamePointSfx")
             _game_point_state = 0b01
         [ _, _, 1, GAME_STATE_DEUCE]:
+            _sfx_controller.play_sound("GamePointSfx")
             _game_point_state = 0b10
         [ _, _, -1, GAME_STATE_DEUCE]:
+            _sfx_controller.play_sound("GamePointSfx")
             _game_point_state = 0b01
 
     match _game_state:
@@ -307,6 +311,7 @@ func _win_round(winning_side: int) -> void:
 
 
 func _win_game(winning_side: int) -> void:
+    _sfx_controller.play_sound("GameEndSfx")
     winner = winning_side
     left_paddle.set_script(null)
     right_paddle.set_script(null)

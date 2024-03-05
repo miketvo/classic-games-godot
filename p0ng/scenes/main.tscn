@@ -49,6 +49,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="UISfxController" type="Node" parent="."]
+process_mode = 3
 script = ExtResource("4_m5587")
 
 [node name="UIAcceptedSfx" type="AudioStreamPlayer" parent="UISfxController"]
