@@ -4,8 +4,19 @@ extends Control
 
 signal button_pressed(action: StringName)
 const UI_TRANSITION_DURATION: float = 0.5
+@onready var _sfx_controller: SfxController
 
 
+# ============================================================================ #
+#region Godot builtins
+func _ready() -> void:
+    _sfx_controller = get_tree().root.get_node("Main/UISfxController")
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
+#region Public methods
 func tween_transition_fade_appear_container(
         container: Container,
         duration: float
@@ -26,8 +37,7 @@ func tween_transition_slide_container(
 ) -> Tween:
     assert(
             direction in Global.UNIT_VECTORS,
-            "UI.tween_transition_slide_container() "
-            + "only accepts unit vector for `direction`"
+            "UI.tween_transition_slide_container() only accepts unit vector for `direction`"
     )
 
     var movement_scale: float
@@ -48,3 +58,28 @@ func tween_transition_slide_container(
     ).as_relative().from_current().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 
     return tween
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
+#region Signal listeners
+
+#region UI SFX listeners.
+func _on_ui_container_slider_button_pressed():
+    if _sfx_controller:
+        _sfx_controller.play_sound("UISelectedSfx")
+
+
+func _on_ui_scene_changer_button_pressed():
+    if _sfx_controller:
+        _sfx_controller.play_sound("UIAcceptedSfx")
+
+
+func _on_ui_disabled_button_pressed():
+    if _sfx_controller:
+        _sfx_controller.play_sound("UIRejectedSfx")
+#endregion
+
+#endregion
+# ============================================================================ #

@@ -25,6 +25,8 @@ var disable_pausing: bool
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
+    super()
+
     Global.software_cursor_visibility = SoftwareCursor.Visibility.IDLE_AUTO_HIDE
 
     input_disabled = false
@@ -45,6 +47,13 @@ func _ready() -> void:
             .connect("pressed", _on_end_game_request)
     _endgame_dialog.get_node("MenuContainer/VBoxContainer/QuitToDesktopButton")\
             .connect("pressed", _on_quit_to_desktop_request)
+
+    for child in get_tree().get_nodes_in_group("ui_container_slider_buttons"):
+        assert(child is Button, "ui_container_slider_buttons group must contain only Buttons")
+        child.connect("pressed", _on_ui_container_slider_button_pressed)
+    for child in get_tree().get_nodes_in_group("ui_scene_changer_buttons"):
+        assert(child is Button, "ui_scene_changer_buttons group must contain only Buttons")
+        child.connect("pressed", _on_ui_scene_changer_button_pressed)
 
     _endgame_dialog.process_mode = Node.PROCESS_MODE_DISABLED
     _endgame_dialog.modulate = Color(1.0, 1.0, 1.0, 0.0)

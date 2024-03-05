@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://ck7t4n6n2h4a3"]
+[gd_scene load_steps=8 format=3 uid="uid://ck7t4n6n2h4a3"]
 
 [ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_co7gs"]
 [ext_resource type="PackedScene" uid="uid://c77ktlmd3rbkb" path="res://scenes/game/world.tscn" id="2_31cx8"]
 [ext_resource type="Script" path="res://scripts/scenes/game/side_select.gd" id="2_od2xv"]
 [ext_resource type="PackedScene" uid="uid://2aqxm1ipras" path="res://scenes/game/spawns.tscn" id="3_6fs7p"]
 [ext_resource type="PackedScene" uid="uid://gq00cx0tahjo" path="res://scenes/characters/paddle/character_component.tscn" id="4_ea1hk"]
+[ext_resource type="Script" path="res://scripts/scenes/game/side_select_ui.gd" id="6_ei203"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gnqa8"]
 content_margin_left = 12.0
@@ -34,6 +35,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 theme = ExtResource("1_co7gs")
+script = ExtResource("6_ei203")
 
 [node name="SideSelectContainer" type="VBoxContainer" parent="UI"]
 z_index = 99
@@ -62,7 +64,7 @@ size_flags_stretch_ratio = 4.0
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LeftButton" type="Button" parent="UI/SideSelectContainer/HBoxContainer/LeftButtonContainer"]
+[node name="LeftButton" type="Button" parent="UI/SideSelectContainer/HBoxContainer/LeftButtonContainer" groups=["ui_scene_changer_buttons"]]
 layout_mode = 2
 text = "left"
 
@@ -70,7 +72,7 @@ text = "left"
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="RightButton" type="Button" parent="UI/SideSelectContainer/HBoxContainer/RightButtonContainer"]
+[node name="RightButton" type="Button" parent="UI/SideSelectContainer/HBoxContainer/RightButtonContainer" groups=["ui_scene_changer_buttons"]]
 layout_mode = 2
 text = "right"
 

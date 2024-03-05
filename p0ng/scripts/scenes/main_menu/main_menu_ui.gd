@@ -10,6 +10,7 @@ var input_disabled: bool
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
+    super()
     input_disabled = false
     %StartButton.grab_focus()
     %StartButton.connect("pressed", _on_main_menu_start_button_pressed)
@@ -17,6 +18,16 @@ func _ready() -> void:
     %OnePlayerButton.connect("pressed", _on_start_menu_one_player_button_pressed)
     %TwoPlayersButton.connect("pressed", _on_start_menu_two_players_button_pressed)
     _start_menu.get_node("BackButton").connect("pressed", _on_start_menu_back_button_pressed)
+
+    for child in get_tree().get_nodes_in_group("ui_container_slider_buttons"):
+        assert(child is Button, "ui_container_slider_buttons group must contain only Buttons")
+        child.connect("pressed", _on_ui_container_slider_button_pressed)
+    for child in get_tree().get_nodes_in_group("ui_scene_changer_buttons"):
+        assert(child is Button, "ui_scene_changer_buttons group must contain only Buttons")
+        child.connect("pressed", _on_ui_scene_changer_button_pressed)
+    for child in get_tree().get_nodes_in_group("ui_disabled_buttons"):
+        assert(child is Button, "ui_disabled_buttons group must contain only Buttons")
+        child.connect("pressed", _on_ui_disabled_button_pressed)
 
 
 func _input(_event: InputEvent) -> void:
