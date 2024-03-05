@@ -270,20 +270,19 @@ func _win_round(winning_side: int) -> void:
     if left_score == GAME_SCORE and right_score == GAME_SCORE:
         _game_state = GAME_STATE_DEUCE
 
+    var old_game_point_state: int = _game_point_state
     _game_point_state = 0b00
     match [ left_score, right_score, left_score - right_score, _game_state ]:
         [ GAME_SCORE, _, _, GAME_STATE_NORMAL ] when left_score > right_score:
-            _sfx_controller.play_sound("GamePointSfx")
             _game_point_state = 0b10
         [ _, GAME_SCORE, _, GAME_STATE_NORMAL ] when left_score < right_score:
-            _sfx_controller.play_sound("GamePointSfx")
             _game_point_state = 0b01
         [ _, _, 1, GAME_STATE_DEUCE]:
-            _sfx_controller.play_sound("GamePointSfx")
             _game_point_state = 0b10
         [ _, _, -1, GAME_STATE_DEUCE]:
-            _sfx_controller.play_sound("GamePointSfx")
             _game_point_state = 0b01
+    if (old_game_point_state == 0b00) and (_game_point_state != 0b00):
+        _sfx_controller.play_sound("GamePointSfx")
 
     match _game_state:
         GAME_STATE_NORMAL:

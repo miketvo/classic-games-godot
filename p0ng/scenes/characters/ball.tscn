@@ -26,7 +26,6 @@ shape = SubResource("CircleShape2D_0ye4j")
 
 [node name="HitSfx" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_e7nvb")
-volume_db = 12.0
+volume_db = 8.0
 max_polyphony = 8
-panning_strength = 2.0
 bus = &"Gameplay"
