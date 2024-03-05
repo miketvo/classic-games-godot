@@ -210,6 +210,7 @@ polygon = PackedVector2Array(72, 72, 96, 96, 96, -96, 72, -72)
 
 [node name="Ball" parent="." instance=ExtResource("3_1tn13")]
 position = Vector2(-108, 12)
+sfx_enabled = false
 
 [node name="Sprite2D" parent="Ball" index="0"]
 scale = Vector2(2, 2)

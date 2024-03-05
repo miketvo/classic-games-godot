@@ -119,6 +119,7 @@ func _on_ball_body_exited(body: Node) -> void:
 # Listens to $World/VerticalSeparator.body_entered(body: Node).
 func _on_vertical_separator_body_entered(body: Node) -> void:
     if body == ball:
+        _sfx_controller.play_sound("VSepHitSfx")
         $World/VerticalSeparator/Sprite2D/AnimationPlayer.play("active")
         $World/VerticalSeparator/Sprite2D/AnimationPlayer.queue("idle")
 
