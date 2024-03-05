@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://cm6ghli8pol4j"]
+[gd_scene load_steps=10 format=3 uid="uid://cm6ghli8pol4j"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_pqbot"]
 [ext_resource type="PackedScene" uid="uid://b1sxxtnr6xah8" path="res://scenes/software_cursor.tscn" id="2_75p8a"]
 [ext_resource type="Shader" path="res://assets/shaders/crt.gdshader" id="2_l1nth"]
+[ext_resource type="Environment" uid="uid://cnhcgj7ibb61g" path="res://assets/post_processing.tres" id="3_r2b8h"]
 [ext_resource type="Script" path="res://scripts/util/sfx_controller.gd" id="4_m5587"]
 [ext_resource type="AudioStream" uid="uid://ck837ajdgulwu" path="res://assets/sfx/ui_accepted.wav" id="4_w5o3g"]
 [ext_resource type="AudioStream" uid="uid://bmjt2ui0u5hxe" path="res://assets/sfx/ui_rejected.wav" id="5_hb2br"]
@@ -38,6 +39,9 @@ script = ExtResource("1_pqbot")
 [node name="SoftwareCursor" parent="." instance=ExtResource("2_75p8a")]
 
 [node name="PostProcessingLayer" type="CanvasLayer" parent="."]
+
+[node name="PostProcessing" type="WorldEnvironment" parent="PostProcessingLayer"]
+environment = ExtResource("3_r2b8h")
 
 [node name="CrtEffect" type="ColorRect" parent="PostProcessingLayer"]
 material = SubResource("ShaderMaterial_g3j7g")

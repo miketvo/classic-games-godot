@@ -1,0 +1,21 @@
+[gd_resource type="Environment" format=3 uid="uid://cnhcgj7ibb61g"]
+
+[resource]
+background_mode = 3
+background_energy_multiplier = 0.0
+tonemap_exposure = 0.7
+glow_enabled = true
+glow_levels/1 = 15.84
+glow_levels/2 = 7.52
+glow_levels/3 = 1.01
+glow_levels/5 = 0.0
+glow_normalized = true
+glow_intensity = 1.18
+glow_strength = 0.19
+glow_bloom = 0.65
+glow_blend_mode = 1
+volumetric_fog_density = 0.578
+volumetric_fog_detail_spread = 0.757858
+adjustment_brightness = 4.92
+adjustment_contrast = 5.87
+adjustment_saturation = 3.95
