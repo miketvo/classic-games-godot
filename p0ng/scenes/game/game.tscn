@@ -34,23 +34,27 @@ script = ExtResource("5_ov3ew")
 
 [node name="GameEndSfx" type="AudioStreamPlayer" parent="SfxController"]
 stream = ExtResource("6_mu85n")
+volume_db = -4.0
 bus = &"Gameplay"
 
 [node name="GamePointSfx" type="AudioStreamPlayer" parent="SfxController"]
 stream = ExtResource("7_e48vd")
-volume_db = -6.0
+volume_db = -4.0
 bus = &"Gameplay"
 
 [node name="RoundStartSfx" type="AudioStreamPlayer" parent="SfxController"]
 stream = ExtResource("6_qb1t3")
+volume_db = -4.0
 bus = &"Gameplay"
 
 [node name="RoundEndSfx" type="AudioStreamPlayer" parent="SfxController"]
 stream = ExtResource("7_4xbrj")
+volume_db = -3.0
 bus = &"Gameplay"
 
 [node name="VSepHitSfx" type="AudioStreamPlayer" parent="SfxController"]
 stream = ExtResource("10_x2yq3")
+volume_db = -3.0
 
 [node name="PaddleHitSfx" type="AudioStreamPlayer2D" parent="SfxController"]
 stream = ExtResource("8_5bkqd")
