@@ -6,7 +6,7 @@ Each folder containing a `project.godot` file is a project meant to be used with
 
 **Godot version: (4.2.1 release)**
 
-## Available games:
+## Available games
 
 - [p0ng](p0ng/README.md)
 
