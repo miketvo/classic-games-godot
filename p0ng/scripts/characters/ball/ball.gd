@@ -1,9 +1,6 @@
 extends RigidBody2D
 
 
-@export var sfx_enabled: bool = true
-
-
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
@@ -26,8 +23,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 
 # Listens to self.body_entered(body: Node)
 func _on_body_entered(_body: Node) -> void:
-    if sfx_enabled:
-        $HitSfx.play()
+    $HitSfx.play()
 
 #endregion
 # ============================================================================ #

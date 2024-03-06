@@ -15,7 +15,7 @@ func _ready() -> void:
     $Walls/BottomWall.connect("body_entered", _on_bottom_wall_body_entered)
     $Walls/RightWall.connect("body_entered", _on_right_wall_body_entered)
 
-    var ball_speed = _rng.randf_range(160.0, 180.0)
+    var ball_speed = _rng.randf_range(60.0, 60.0)
     var ball_velocity = Vector2.RIGHT * ball_speed
     ball_velocity = ball_velocity.rotated(_rng.randf_range(0.0, 2.0 * PI))
     _ball.set_linear_velocity(ball_velocity)
