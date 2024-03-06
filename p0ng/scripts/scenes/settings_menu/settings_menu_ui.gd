@@ -26,6 +26,23 @@ func _ready() -> void:
     for child in get_tree().get_nodes_in_group("ui_scene_changer_buttons"):
         assert(child is Button, "ui_scene_changer_buttons group must contain only Buttons")
         child.connect("pressed", _on_ui_scene_changer_button_pressed)
+    for child in get_tree().get_nodes_in_group("ui_selected_buttons"):
+        assert(child is Button, "ui_selected_buttons group must contain only Buttons")
+        child.connect("pressed", _on_ui_selected_button_pressed)
+        if child is OptionButton:
+            child.connect("item_selected", _on_option_button_item_selected)
+    for child in get_tree().get_nodes_in_group("ui_accepted_buttons"):
+        assert(
+                (child is Button) or (child is Slider),
+                "ui_accepted_buttons group must contain only Buttons or Slider"
+        )
+        if child is Slider:
+            child.connect("drag_ended", _on_slider_drag_ended)
+        elif child is Button:
+            child.connect("pressed", _on_ui_accepted_button_pressed)
+    for child in get_tree().get_nodes_in_group("ui_disabled_buttons"):
+        assert(child is Button, "ui_disabled_buttons group must contain only Buttons")
+        child.connect("pressed", _on_ui_disabled_button_pressed)
 
 
 func _input(_event: InputEvent) -> void:
@@ -83,6 +100,19 @@ func _on_sounds_menu_back_button_pressed() -> void:
     tween_transition_slide_container($Main, Vector2.RIGHT, UI_TRANSITION_DURATION)\
             .connect("finished", _on_tween_transition_finshed)
 #endregion
+
+
+# Listens to item_selected(index: int) of ui_scene_changer_buttons that is of
+# type OptionButton.
+func _on_option_button_item_selected(_index: int) -> void:
+    _on_ui_accepted_button_pressed()
+
+
+# Listens to drag_ended(value_changed: bool) of ui_scene_changer_buttons that is
+# of type Slider.
+func _on_slider_drag_ended(value_changed: bool) -> void:
+    if value_changed:
+        _on_ui_accepted_button_pressed()
 
 
 # Listens to tween transition Tween.finished() to re-enable input.

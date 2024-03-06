@@ -40,7 +40,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_j5bjy")
 layout_mode = 2
 alignment = 1
 
-[node name="GraphicsButton" type="Button" parent="Main/Menu/VBoxContainer"]
+[node name="GraphicsButton" type="Button" parent="Main/Menu/VBoxContainer" groups=["ui_container_slider_buttons"]]
 layout_mode = 2
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../BackButton")
@@ -50,7 +50,7 @@ focus_next = NodePath("../SoundsButton")
 focus_previous = NodePath("../BackButton")
 text = "graphics"
 
-[node name="SoundsButton" type="Button" parent="Main/Menu/VBoxContainer"]
+[node name="SoundsButton" type="Button" parent="Main/Menu/VBoxContainer" groups=["ui_container_slider_buttons"]]
 layout_mode = 2
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../GraphicsButton")
@@ -61,7 +61,7 @@ focus_previous = NodePath("../GraphicsButton")
 text = "sounds
 "
 
-[node name="BackButton" type="Button" parent="Main/Menu/VBoxContainer"]
+[node name="BackButton" type="Button" parent="Main/Menu/VBoxContainer" groups=["ui_scene_changer_buttons"]]
 layout_mode = 2
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../SoundsButton")
@@ -93,7 +93,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "resolution"
 
-[node name="OptionButton" type="OptionButton" parent="Graphics/Resolution"]
+[node name="OptionButton" type="OptionButton" parent="Graphics/Resolution" groups=["ui_selected_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_left = NodePath(".")
@@ -133,7 +133,7 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
 text = "fullscreen"
 
-[node name="ToggleButton" type="Button" parent="Graphics/Fullscreen"]
+[node name="ToggleButton" type="Button" parent="Graphics/Fullscreen" groups=["ui_accepted_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_left = NodePath(".")
@@ -154,7 +154,7 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
 text = "post processing"
 
-[node name="ToggleButton" type="Button" parent="Graphics/PostProcessing"]
+[node name="ToggleButton" type="Button" parent="Graphics/PostProcessing" groups=["ui_accepted_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_left = NodePath(".")
@@ -175,7 +175,7 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
 text = "crt effect"
 
-[node name="ToggleButton" type="Button" parent="Graphics/CrtEffect"]
+[node name="ToggleButton" type="Button" parent="Graphics/CrtEffect" groups=["ui_accepted_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_left = NodePath(".")
@@ -190,7 +190,7 @@ text = "NULL"
 [node name="Menu" type="HBoxContainer" parent="Graphics"]
 layout_mode = 2
 
-[node name="SaveButton" type="Button" parent="Graphics/Menu"]
+[node name="SaveButton" type="Button" parent="Graphics/Menu" groups=["ui_disabled_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 2
 focus_neighbor_left = NodePath(".")
@@ -200,13 +200,14 @@ focus_neighbor_bottom = NodePath("../../Resolution/OptionButton")
 focus_next = NodePath("../BackButton")
 focus_previous = NodePath("../BackButton")
 text = "save"
+flat = true
 
 [node name="MessageLabel" type="Label" parent="Graphics/Menu"]
 layout_mode = 2
 text = "NULL"
 horizontal_alignment = 1
 
-[node name="BackButton" type="Button" parent="Graphics/Menu"]
+[node name="BackButton" type="Button" parent="Graphics/Menu" groups=["ui_container_slider_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 10
 focus_neighbor_left = NodePath("../SaveButton")
@@ -228,7 +229,7 @@ scale = Vector2(4, 4)
 [node name="Label" type="Label" parent="Sounds"]
 layout_mode = 2
 theme_type_variation = &"LabelHeading"
-text = "SOUNDS"
+text = "SOUNDS SETTINGS"
 horizontal_alignment = 1
 
 [node name="MasterVolume" type="HBoxContainer" parent="Sounds"]
@@ -241,7 +242,7 @@ size_flags_vertical = 5
 size_flags_stretch_ratio = 0.78
 text = "master"
 
-[node name="HSlider" type="HSlider" parent="Sounds/MasterVolume"]
+[node name="HSlider" type="HSlider" parent="Sounds/MasterVolume" groups=["ui_accepted_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -255,7 +256,7 @@ scrollable = false
 tick_count = 12
 ticks_on_borders = true
 
-[node name="MuteToggleButton" type="Button" parent="Sounds/MasterVolume"]
+[node name="MuteToggleButton" type="Button" parent="Sounds/MasterVolume" groups=["ui_accepted_buttons"]]
 layout_mode = 2
 focus_neighbor_left = NodePath("../HSlider")
 focus_neighbor_top = NodePath("../../Menu/BackButton")
@@ -276,7 +277,7 @@ size_flags_vertical = 5
 size_flags_stretch_ratio = 0.78
 text = "user interface"
 
-[node name="HSlider" type="HSlider" parent="Sounds/UIVolume"]
+[node name="HSlider" type="HSlider" parent="Sounds/UIVolume" groups=["ui_accepted_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -290,7 +291,7 @@ scrollable = false
 tick_count = 12
 ticks_on_borders = true
 
-[node name="MuteToggleButton" type="Button" parent="Sounds/UIVolume"]
+[node name="MuteToggleButton" type="Button" parent="Sounds/UIVolume" groups=["ui_accepted_buttons"]]
 layout_mode = 2
 focus_neighbor_left = NodePath("../HSlider")
 focus_neighbor_top = NodePath("../../MasterVolume/MuteToggleButton")
@@ -311,7 +312,7 @@ size_flags_vertical = 5
 size_flags_stretch_ratio = 0.78
 text = "gameplay"
 
-[node name="HSlider" type="HSlider" parent="Sounds/GameplayVolume"]
+[node name="HSlider" type="HSlider" parent="Sounds/GameplayVolume" groups=["ui_accepted_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -325,7 +326,7 @@ scrollable = false
 tick_count = 12
 ticks_on_borders = true
 
-[node name="MuteToggleButton" type="Button" parent="Sounds/GameplayVolume"]
+[node name="MuteToggleButton" type="Button" parent="Sounds/GameplayVolume" groups=["ui_accepted_buttons"]]
 layout_mode = 2
 focus_neighbor_left = NodePath("../HSlider")
 focus_neighbor_top = NodePath("../../UIVolume/MuteToggleButton")
@@ -339,7 +340,7 @@ text = "mute"
 [node name="Menu" type="HBoxContainer" parent="Sounds"]
 layout_mode = 2
 
-[node name="SaveButton" type="Button" parent="Sounds/Menu"]
+[node name="SaveButton" type="Button" parent="Sounds/Menu" groups=["ui_disabled_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 2
 focus_neighbor_left = NodePath(".")
@@ -349,13 +350,14 @@ focus_neighbor_bottom = NodePath("../../MasterVolume/HSlider")
 focus_next = NodePath("../BackButton")
 focus_previous = NodePath("../BackButton")
 text = "save"
+flat = true
 
 [node name="MessageLabel" type="Label" parent="Sounds/Menu"]
 layout_mode = 2
 text = "NULL"
 horizontal_alignment = 1
 
-[node name="BackButton" type="Button" parent="Sounds/Menu"]
+[node name="BackButton" type="Button" parent="Sounds/Menu" groups=["ui_container_slider_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 10
 focus_neighbor_left = NodePath("../SaveButton")

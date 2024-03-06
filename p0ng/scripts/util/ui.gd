@@ -76,6 +76,16 @@ func _on_ui_scene_changer_button_pressed():
         _sfx_controller.play_sound("UIAcceptedSfx")
 
 
+func _on_ui_selected_button_pressed():
+    if _sfx_controller:
+        _sfx_controller.play_sound("UISelectedSfx")
+
+
+func _on_ui_accepted_button_pressed():
+    if _sfx_controller:
+        _sfx_controller.play_sound("UIAcceptedSfx")
+
+
 func _on_ui_disabled_button_pressed():
     if _sfx_controller:
         _sfx_controller.play_sound("UIRejectedSfx")
