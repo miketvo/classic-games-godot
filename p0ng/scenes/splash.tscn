@@ -95,4 +95,5 @@ libraries = {
 
 [node name="SplashSfx" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_e35yu")
+volume_db = -3.0
 autoplay = true
