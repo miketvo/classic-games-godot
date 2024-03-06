@@ -17,6 +17,60 @@ grow_vertical = 2
 theme = ExtResource("1_apgf5")
 script = ExtResource("1_juwd4")
 
+[node name="Main" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 480.0
+offset_top = 208.0
+offset_right = 720.0
+offset_bottom = 378.0
+scale = Vector2(4, 4)
+theme_override_constants/separation = 9
+
+[node name="Label" type="Label" parent="Main"]
+layout_mode = 2
+theme_type_variation = &"LabelTitle"
+text = "SETTINGS"
+horizontal_alignment = 1
+
+[node name="Menu" type="PanelContainer" parent="Main"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_j5bjy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Main/Menu"]
+layout_mode = 2
+alignment = 1
+
+[node name="GraphicsButton" type="Button" parent="Main/Menu/VBoxContainer"]
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../BackButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../SoundsButton")
+focus_next = NodePath("../SoundsButton")
+focus_previous = NodePath("../BackButton")
+text = "graphics"
+
+[node name="SoundsButton" type="Button" parent="Main/Menu/VBoxContainer"]
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../GraphicsButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../BackButton")
+focus_next = NodePath("../BackButton")
+focus_previous = NodePath("../GraphicsButton")
+text = "sounds
+"
+
+[node name="BackButton" type="Button" parent="Main/Menu/VBoxContainer"]
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../SoundsButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../GraphicsButton")
+focus_next = NodePath("../GraphicsButton")
+focus_previous = NodePath("../SoundsButton")
+text = "back"
+
 [node name="Graphics" type="VBoxContainer" parent="."]
 layout_mode = 2
 offset_left = -1520.0
@@ -28,7 +82,7 @@ scale = Vector2(4, 4)
 [node name="Label" type="Label" parent="Graphics"]
 layout_mode = 2
 theme_type_variation = &"LabelHeading"
-text = "GRAPHICS"
+text = "GRAPHICS SETTINGS"
 horizontal_alignment = 1
 
 [node name="Resolution" type="HBoxContainer" parent="Graphics"]
@@ -42,6 +96,12 @@ text = "resolution"
 [node name="OptionButton" type="OptionButton" parent="Graphics/Resolution"]
 layout_mode = 2
 size_flags_horizontal = 3
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../Menu/BackButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../Fullscreen/ToggleButton")
+focus_next = NodePath("../../Fullscreen/ToggleButton")
+focus_previous = NodePath("../../Menu/BackButton")
 item_count = 10
 popup/item_0/text = "640x360"
 popup/item_0/id = 0
@@ -76,6 +136,12 @@ text = "fullscreen"
 [node name="ToggleButton" type="Button" parent="Graphics/Fullscreen"]
 layout_mode = 2
 size_flags_horizontal = 3
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../Resolution/OptionButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../PostProcessing/ToggleButton")
+focus_next = NodePath("../../PostProcessing/ToggleButton")
+focus_previous = NodePath("../../Resolution/OptionButton")
 toggle_mode = true
 text = "NULL"
 
@@ -91,6 +157,12 @@ text = "post processing"
 [node name="ToggleButton" type="Button" parent="Graphics/PostProcessing"]
 layout_mode = 2
 size_flags_horizontal = 3
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../Fullscreen/ToggleButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../CrtEffect/ToggleButton")
+focus_next = NodePath("../../CrtEffect/ToggleButton")
+focus_previous = NodePath("../../Fullscreen/ToggleButton")
 toggle_mode = true
 text = "NULL"
 
@@ -106,6 +178,12 @@ text = "crt effect"
 [node name="ToggleButton" type="Button" parent="Graphics/CrtEffect"]
 layout_mode = 2
 size_flags_horizontal = 3
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../PostProcessing/ToggleButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../Menu/SaveButton")
+focus_next = NodePath("../../Menu/SaveButton")
+focus_previous = NodePath("../../PostProcessing/ToggleButton")
 toggle_mode = true
 text = "NULL"
 
@@ -115,6 +193,12 @@ layout_mode = 2
 [node name="SaveButton" type="Button" parent="Graphics/Menu"]
 layout_mode = 2
 size_flags_horizontal = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../CrtEffect/ToggleButton")
+focus_neighbor_right = NodePath("../BackButton")
+focus_neighbor_bottom = NodePath("../../Resolution/OptionButton")
+focus_next = NodePath("../BackButton")
+focus_previous = NodePath("../BackButton")
 text = "save"
 
 [node name="MessageLabel" type="Label" parent="Graphics/Menu"]
@@ -125,6 +209,12 @@ horizontal_alignment = 1
 [node name="BackButton" type="Button" parent="Graphics/Menu"]
 layout_mode = 2
 size_flags_horizontal = 10
+focus_neighbor_left = NodePath("../SaveButton")
+focus_neighbor_top = NodePath("../../CrtEffect/ToggleButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../Resolution/OptionButton")
+focus_next = NodePath("../SaveButton")
+focus_previous = NodePath("../SaveButton")
 text = "back"
 
 [node name="Sounds" type="VBoxContainer" parent="."]
@@ -149,18 +239,30 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 5
 size_flags_stretch_ratio = 0.78
-text = "gameplay"
+text = "master"
 
 [node name="HSlider" type="HSlider" parent="Sounds/MasterVolume"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../Menu/SaveButton")
+focus_neighbor_right = NodePath("../MuteToggleButton")
+focus_neighbor_bottom = NodePath("../../UIVolume/HSlider")
+focus_next = NodePath("../../UIVolume/HSlider")
+focus_previous = NodePath("../../Menu/SaveButton")
 scrollable = false
 tick_count = 12
 ticks_on_borders = true
 
 [node name="MuteToggleButton" type="Button" parent="Sounds/MasterVolume"]
 layout_mode = 2
+focus_neighbor_left = NodePath("../HSlider")
+focus_neighbor_top = NodePath("../../Menu/BackButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../UIVolume/MuteToggleButton")
+focus_next = NodePath("../../UIVolume/MuteToggleButton")
+focus_previous = NodePath("../../Menu/BackButton")
 toggle_mode = true
 text = "mute"
 
@@ -178,35 +280,59 @@ text = "user interface"
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../MasterVolume/HSlider")
+focus_neighbor_right = NodePath("../MuteToggleButton")
+focus_neighbor_bottom = NodePath("../../GameplayVolume/HSlider")
+focus_next = NodePath("../../GameplayVolume/HSlider")
+focus_previous = NodePath("../../MasterVolume/HSlider")
 scrollable = false
 tick_count = 12
 ticks_on_borders = true
 
-[node name="MuteToggleB utton" type="Button" parent="Sounds/UIVolume"]
+[node name="MuteToggleButton" type="Button" parent="Sounds/UIVolume"]
 layout_mode = 2
+focus_neighbor_left = NodePath("../HSlider")
+focus_neighbor_top = NodePath("../../MasterVolume/MuteToggleButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../GameplayVolume/MuteToggleButton")
+focus_next = NodePath("../../GameplayVolume/MuteToggleButton")
+focus_previous = NodePath("../../MasterVolume/MuteToggleButton")
 toggle_mode = true
 text = "mute"
 
-[node name="GameplayColume" type="HBoxContainer" parent="Sounds"]
+[node name="GameplayVolume" type="HBoxContainer" parent="Sounds"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Sounds/GameplayColume"]
+[node name="Label" type="Label" parent="Sounds/GameplayVolume"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 5
 size_flags_stretch_ratio = 0.78
 text = "gameplay"
 
-[node name="HSlider" type="HSlider" parent="Sounds/GameplayColume"]
+[node name="HSlider" type="HSlider" parent="Sounds/GameplayVolume"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../UIVolume/HSlider")
+focus_neighbor_right = NodePath("../MuteToggleButton")
+focus_neighbor_bottom = NodePath("../../Menu/SaveButton")
+focus_next = NodePath("../../Menu/SaveButton")
+focus_previous = NodePath("../../UIVolume/HSlider")
 scrollable = false
 tick_count = 12
 ticks_on_borders = true
 
-[node name="MuteToggleButton" type="Button" parent="Sounds/GameplayColume"]
+[node name="MuteToggleButton" type="Button" parent="Sounds/GameplayVolume"]
 layout_mode = 2
+focus_neighbor_left = NodePath("../HSlider")
+focus_neighbor_top = NodePath("../../UIVolume/MuteToggleButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../Menu/BackButton")
+focus_next = NodePath("../../Menu/BackButton")
+focus_previous = NodePath("../../UIVolume/MuteToggleButton")
 toggle_mode = true
 text = "mute"
 
@@ -216,6 +342,12 @@ layout_mode = 2
 [node name="SaveButton" type="Button" parent="Sounds/Menu"]
 layout_mode = 2
 size_flags_horizontal = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../GameplayVolume/HSlider")
+focus_neighbor_right = NodePath("../BackButton")
+focus_neighbor_bottom = NodePath("../../MasterVolume/HSlider")
+focus_next = NodePath("../BackButton")
+focus_previous = NodePath("../BackButton")
 text = "save"
 
 [node name="MessageLabel" type="Label" parent="Sounds/Menu"]
@@ -226,40 +358,10 @@ horizontal_alignment = 1
 [node name="BackButton" type="Button" parent="Sounds/Menu"]
 layout_mode = 2
 size_flags_horizontal = 10
-text = "back"
-
-[node name="Main" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_left = 480.0
-offset_top = 208.0
-offset_right = 720.0
-offset_bottom = 378.0
-scale = Vector2(4, 4)
-theme_override_constants/separation = 9
-
-[node name="Label" type="Label" parent="Main"]
-layout_mode = 2
-theme_type_variation = &"LabelTitle"
-text = "SETTINGS"
-horizontal_alignment = 1
-
-[node name="Menu" type="PanelContainer" parent="Main"]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_j5bjy")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Main/Menu"]
-layout_mode = 2
-alignment = 1
-
-[node name="GraphicsButton" type="Button" parent="Main/Menu/VBoxContainer"]
-layout_mode = 2
-text = "graphics"
-
-[node name="SoundsButton" type="Button" parent="Main/Menu/VBoxContainer"]
-layout_mode = 2
-text = "sounds
-"
-
-[node name="BackButton" type="Button" parent="Main/Menu/VBoxContainer"]
-layout_mode = 2
+focus_neighbor_left = NodePath("../SaveButton")
+focus_neighbor_top = NodePath("../../GameplayVolume/MuteToggleButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../MasterVolume/MuteToggleButton")
+focus_next = NodePath("../SaveButton")
+focus_previous = NodePath("../SaveButton")
 text = "back"

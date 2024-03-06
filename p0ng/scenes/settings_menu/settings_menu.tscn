@@ -9,10 +9,8 @@ script = ExtResource("1_j6t5h")
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 1101.0
-offset_top = 610.0
-offset_right = 1101.0
-offset_bottom = 610.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 
 [node name="SettingsMenuUI" parent="UI" instance=ExtResource("2_n0q8e")]
 layout_mode = 1
