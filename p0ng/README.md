@@ -1,6 +1,6 @@
 # p0ng
 
-The classic [Atari Pong (1972)](https://en.wikipedia.org/wiki/Pong).
+Based on the classic [Atari Pong (1972)](https://en.wikipedia.org/wiki/Pong).
 
 ## Instructions
 
@@ -23,7 +23,7 @@ The classic [Atari Pong (1972)](https://en.wikipedia.org/wiki/Pong).
         - Pause/Menu: Back or Start
 
 
-## Game rules:
+## Game rules
 
 Just like table tennis, but shorter rounds: First to 7 points wins, unless deuce (both players reach 6 point), then play until one player is 2 points ahead, then that player wins.
 
