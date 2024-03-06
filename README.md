@@ -1,8 +1,8 @@
 # Mike's Classic Games using Godot
 
-My implementation of classic video games I played in my childhood using the Godot game engine. For educational purposes.
+My implementation of classic video games I played in my childhood using the Godot game engine. Also an excuse for me to apply my knowledge in software engineering, computing theory, artificial intelligence, pixel art, music theory, and sound engineering. For educational purposes.
 
-Each folder containing a `project.godot` file is a project meant to be used with [Godot Engine](https://godotengine.org), the open source 2D and 3D game engine.
+Each folder containing a `project.godot` file is a project meant to be used with [Godot Engine](https://godotengine.org), the open source 2D and 3D game engine. Check out the `README.md` files in each of these projects for more details.
 
 **Godot version: (4.2.1 release)**
 
