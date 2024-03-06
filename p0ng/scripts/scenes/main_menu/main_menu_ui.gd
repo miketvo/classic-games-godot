@@ -39,7 +39,7 @@ func _input(_event: InputEvent) -> void:
 # ============================================================================ #
 #region Signal listeners
 
-#region Listens to _main_menu.get_node("*")*.
+#region Listens to _main_menu.get_node("*").
 func _on_main_menu_start_button_pressed() -> void:
     input_disabled = true
     _start_menu.get_node("OnePlayerButton").grab_focus()

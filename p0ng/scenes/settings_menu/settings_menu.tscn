@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://dkattldfrhnsv"]
 
-[ext_resource type="Script" path="res://scripts/util/game_scene_2d.gd" id="1_j6t5h"]
+[ext_resource type="Script" path="res://scripts/scenes/settings_menu/settings_menu.gd" id="1_fcfcs"]
 [ext_resource type="PackedScene" uid="uid://bprio2u3m5v2b" path="res://scenes/settings_menu/settings_menu_ui.tscn" id="2_n0q8e"]
 
 [node name="SettingsMenu" type="Node2D"]
-script = ExtResource("1_j6t5h")
+script = ExtResource("1_fcfcs")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3

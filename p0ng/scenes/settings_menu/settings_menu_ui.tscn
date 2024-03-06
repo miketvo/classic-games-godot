@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bprio2u3m5v2b"]
 
 [ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_apgf5"]
-[ext_resource type="Script" path="res://scripts/util/ui.gd" id="1_juwd4"]
+[ext_resource type="Script" path="res://scripts/scenes/settings_menu/settings_menu_ui.gd" id="2_e2d8y"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j5bjy"]
 content_margin_left = 48.0
@@ -15,7 +15,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_apgf5")
-script = ExtResource("1_juwd4")
+script = ExtResource("2_e2d8y")
 
 [node name="Main" type="VBoxContainer" parent="."]
 layout_mode = 0
@@ -181,8 +181,8 @@ size_flags_horizontal = 3
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../../PostProcessing/ToggleButton")
 focus_neighbor_right = NodePath(".")
-focus_neighbor_bottom = NodePath("../../Menu/SaveButton")
-focus_next = NodePath("../../Menu/SaveButton")
+focus_neighbor_bottom = NodePath("../../Menu/BackButton")
+focus_next = NodePath("../../Menu/BackButton")
 focus_previous = NodePath("../../PostProcessing/ToggleButton")
 toggle_mode = true
 text = "NULL"
