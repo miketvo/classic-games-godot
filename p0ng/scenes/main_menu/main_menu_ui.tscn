@@ -43,7 +43,7 @@ focus_next = NodePath("../SettingsButton")
 focus_previous = NodePath("../QuitButton")
 text = "start"
 
-[node name="SettingsButton" type="Button" parent="MainMenuContainer" groups=["ui_disabled_buttons"]]
+[node name="SettingsButton" type="Button" parent="MainMenuContainer" groups=["ui_scene_changer_buttons"]]
 unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_left = NodePath(".")
@@ -52,7 +52,6 @@ focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath("../QuitButton")
 focus_next = NodePath("../QuitButton")
 focus_previous = NodePath("../StartButton")
-disabled = true
 text = "settings"
 
 [node name="QuitButton" type="Button" parent="MainMenuContainer"]

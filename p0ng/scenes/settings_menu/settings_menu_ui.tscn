@@ -1,0 +1,163 @@
+[gd_scene load_steps=3 format=3 uid="uid://bprio2u3m5v2b"]
+
+[ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_apgf5"]
+[ext_resource type="Script" path="res://scripts/util/ui.gd" id="1_juwd4"]
+
+[node name="SettingsMenuUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_apgf5")
+script = ExtResource("1_juwd4")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1440.0
+offset_bottom = -810.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4, 4)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"LabelTitle"
+text = "SETTINGS"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Graphics" type="PanelContainer" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/Graphics"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"LabelHeading"
+text = "GRAPHICS"
+horizontal_alignment = 1
+
+[node name="Resolution" type="HBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Graphics/VBoxContainer/Resolution"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "resolution"
+
+[node name="OptionButton" type="OptionButton" parent="CenterContainer/VBoxContainer/HBoxContainer/Graphics/VBoxContainer/Resolution"]
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 2
+popup/item_0/text = "1920x1080"
+popup/item_0/id = 0
+popup/item_1/text = "3200x1800"
+popup/item_1/id = 1
+
+[node name="Fullscreen" type="HBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Graphics/VBoxContainer/Fullscreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+text = "fullscreen"
+
+[node name="CheckButton" type="CheckButton" parent="CenterContainer/VBoxContainer/HBoxContainer/Graphics/VBoxContainer/Fullscreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PostProcessing" type="HBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Graphics/VBoxContainer/PostProcessing"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+text = "post processing"
+
+[node name="CheckButton" type="CheckButton" parent="CenterContainer/VBoxContainer/HBoxContainer/Graphics/VBoxContainer/PostProcessing"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CrtEffect" type="HBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Graphics/VBoxContainer/CrtEffect"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+text = "crt effect"
+
+[node name="CheckButton" type="CheckButton" parent="CenterContainer/VBoxContainer/HBoxContainer/Graphics/VBoxContainer/CrtEffect"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Sounds" type="PanelContainer" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/Sounds"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Sounds/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"LabelHeading"
+text = "SOUNDS"
+horizontal_alignment = 1
+
+[node name="MasterVolume" type="VBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/Sounds/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Sounds/VBoxContainer/MasterVolume"]
+layout_mode = 2
+text = "master volume"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/Sounds/VBoxContainer/MasterVolume"]
+layout_mode = 2
+
+[node name="MuteToggle" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer/Sounds/VBoxContainer/MasterVolume/HBoxContainer"]
+layout_mode = 2
+toggle_mode = true
+text = "mute"
+
+[node name="HSlider" type="HSlider" parent="CenterContainer/VBoxContainer/HBoxContainer/Sounds/VBoxContainer/MasterVolume/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+scrollable = false
+tick_count = 12
+ticks_on_borders = true
+
+[node name="UIVolume" type="VBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/Sounds/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/Sounds/VBoxContainer/UIVolume"]
+layout_mode = 2
+text = "master volume"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/Sounds/VBoxContainer/UIVolume"]
+layout_mode = 2
+
+[node name="MuteToggle" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer/Sounds/VBoxContainer/UIVolume/HBoxContainer"]
+layout_mode = 2
+toggle_mode = true
+text = "mute"
+
+[node name="HSlider" type="HSlider" parent="CenterContainer/VBoxContainer/HBoxContainer/Sounds/VBoxContainer/UIVolume/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+scrollable = false
+tick_count = 12
+ticks_on_borders = true

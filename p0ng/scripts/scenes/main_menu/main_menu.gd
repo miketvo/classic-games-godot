@@ -20,6 +20,8 @@ func _on_main_menu_ui_button_pressed(action: StringName) -> void:
         "start_two_players":
             Global.current_game_mode = Global.GameMode.GAME_MODE_TWO_PLAYERS
             scene_finished.emit(SceneKey.GAME)
+        "settings":
+            scene_finished.emit(SceneKey.SETTINGS_MENU)
 
 #endregion
 # ============================================================================ #
