@@ -41,7 +41,9 @@ First serve direction is random. Alternate serve direction every 2 rounds, unles
 
 For this mode, using my custom [Finite State Machine](https://en.wikipedia.org/wiki/Finite-state_machine). I have implemented a [Simple Reflex Agent](https://en.wikipedia.org/wiki/Intelligent_agent#Simple_reflex_agents) for the bot paddle. Its behavior follows this state diagram:
 
-![p0ng Bot State Diagram](../assets/p0ng_bot_state_diagram.png)
+<p align="center">
+    <img src="../assets/p0ng_bot_state_diagram.png">
+</p>
 
 - `Idle` is the start state. It detects if the ball is coming away or toward from the bot paddle, then transition to the `Prepare` or `Intercept` state, respectively.
 - `Prepare` moves the bot paddle to the center of the y-axis for maximum ball coverage, then wait until the ball is coming toward the bot paddle to transition to `Intercept` state.
