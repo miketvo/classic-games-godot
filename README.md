@@ -39,6 +39,35 @@ For work, please contact me via [miketvo@outlook.com](mailto:miketvo@outlook.com
 - [Godot Community hub](https://godotengine.org/community)
 - [Godot TPS demo](https://github.com/godotengine/tps-demo)
 
+## Tools used:
+
+### Programming
+
+- Godot Engine
+- Visual Studio Code
+- NeoVim
+
+### Art
+
+- Aseprite
+- Clip Studio Paint
+- Adobe Creative Suite
+
+### Audio
+
+- StudioOne
+- FamiStudio
+- Audacity
+- Novation LaunchKeyMini
+- Zoom H1n
+- Zoom G1Xon
+- Behringer U-Phoria UM2
+
+### Others
+
+- Notion
+- Microsoft Office
+
 ## License
 
 These games are distributed under the terms of the MIT license, as described in the [LICENSE](LICENSE) file.
