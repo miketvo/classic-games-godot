@@ -66,7 +66,8 @@ For work, please contact me via [miketvo@outlook.com](mailto:miketvo@outlook.com
 ### Others
 
 - Notion
-- Microsoft Office
+- draw.io
+- Microsoft Office Suite
 
 ## License
 
