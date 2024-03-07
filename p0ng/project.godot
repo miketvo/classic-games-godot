@@ -28,6 +28,7 @@ buses/default_bus_layout="res://assets/default_bus_layout.tres"
 [autoload]
 
 Global="*res://scripts/util/global.gd"
+GameConfig="*res://scripts/util/game_config.gd"
 
 [display]
 
