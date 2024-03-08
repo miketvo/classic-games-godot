@@ -82,7 +82,7 @@ func _on_main_sounds_button_pressed() -> void:
 func _on_main_reset_button_pressed() -> void:
     input_disabled = true
     _reset_defaults.get_node("Menu/CancelButton").grab_focus()
-    tween_transition_slide_container($Main, Vector2.UP, UI_TRANSITION_DURATION)\
+    tween_transition_slide_container($Main, Vector2.UP, UI_TRANSITION_DURATION, 12.0)\
             .connect("finished", _on_tween_transition_finshed)
     tween_transition_slide_container(_reset_defaults, Vector2.UP, UI_TRANSITION_DURATION)\
             .connect("finished", _on_tween_transition_finshed)
@@ -121,7 +121,7 @@ func _on_reset_defaults_menu_cancel_button_pressed() -> void:
     _main.get_node("ResetButton").grab_focus()
     tween_transition_slide_container(_reset_defaults, Vector2.DOWN, UI_TRANSITION_DURATION)\
             .connect("finished", _on_tween_transition_finshed)
-    tween_transition_slide_container($Main, Vector2.DOWN, UI_TRANSITION_DURATION)\
+    tween_transition_slide_container($Main, Vector2.DOWN, UI_TRANSITION_DURATION, 12.0)\
             .connect("finished", _on_tween_transition_finshed)
 #endregion
 

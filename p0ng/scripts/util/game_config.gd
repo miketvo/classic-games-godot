@@ -30,7 +30,7 @@ const RESOLUTIONS: Dictionary = {
 # ============================================================================ #
 #region Public variables
 
-## 2-level [Dictionary] containing all persistent game configurations. The first
+## 2-level [Dictionary] containing persistent game configuration. The first
 ## level corresponds to sections in the configuration file (i.e. graphics,
 ## sounds, etc.). The second level corresponds to the key-value pair of
 ## configuration name and value within each section.
@@ -40,6 +40,7 @@ const RESOLUTIONS: Dictionary = {
 ## See [method reset_config] for sections, section keys, and their default
 ## values.
 var config: Dictionary
+var _original_config: Dictionary
 
 #endregion
 # ============================================================================ #
@@ -53,6 +54,30 @@ func _ready() -> void:
     if first_play:
         self._save()
     self._load()
+
+    # Set window size and center window. Workaround for:
+    # https://github.com/godotengine/godot-proposals/issues/6247.
+    # TODO: Reimplement this when there is better support for the above issue in
+    # future Godot 4.x versions.
+    var window: Window = get_window()
+    window.size = RESOLUTIONS[config.graphics.resolution]
+    @warning_ignore("integer_division")
+    window.position = Vector2i(
+            int(get_viewport_rect().size.x / 2) - window.size.x / 2,
+            int(get_viewport_rect().size.y / 2) - window.size.y / 2
+    )
+
+
+func _process(_delta: float) -> void:
+    if Input.is_action_just_pressed("toggle_fullscreen"):
+        config.graphics.fullscreen = not config.graphics.fullscreen
+
+    var window: Window = get_window()
+    match [ config.graphics.fullscreen, window.mode ]:
+        [ false, Window.MODE_EXCLUSIVE_FULLSCREEN ]:
+            window.mode = Window.MODE_WINDOWED
+        [ true, _ ] when window.mode != Window.MODE_EXCLUSIVE_FULLSCREEN:
+            window.mode = Window.MODE_EXCLUSIVE_FULLSCREEN
 #endregion
 # ============================================================================ #
 
@@ -66,7 +91,7 @@ func _ready() -> void:
 ## See method body for default values.
 ## [br][br]
 ## See [constant SAVE_PATH] for save location.
-func reset_config():
+func reset_config() -> void:
     config = {
         "graphics": {
             "resolution": _get_best_resolution(),
@@ -83,15 +108,33 @@ func reset_config():
             "gameplay_muted": false,
         },
     }
+    save_config()
 
 
 ## Manually save current game configuration in memory into persistent storage.
 ## [br][br]
 ## See [constant SAVE_PATH] for save location.
-func save_config():
-    self._save()
+## [br][br]
+## Specify [param section] to only save that section in the game configuration.
+## [br][br]
+## See [member config] for game configuration structure.
+func save_config(section: StringName = "") -> void:
+    self._save(section)
     self._load()
 
+
+## Returns true if the current game configuration is different from the content
+## of the game configuration file at [constant SAVE_PATH].
+## [br][br]
+## Specify [param section] to only check for changes in that section in the game
+## configuration.
+## [br][br]
+## See [member config] for game configuration structure.
+func is_modified(section: StringName = "") -> bool:
+    if section == "":
+        return _original_config != config
+    else:
+        return _original_config[section] != config[section]
 #endregion
 # ============================================================================ #
 
@@ -107,12 +150,15 @@ func _load() -> void:
     )
     for section in config_file.get_sections():
         for section_key in config_file.get_section_keys(section):
-            config[section][section_key] = config_file.get_value(section, section_key)
+            _original_config[section][section_key] = config_file.get_value(section, section_key)
+    config = _original_config.duplicate(true)
 
 
-func _save() -> void:
+func _save(target_section: StringName = "") -> void:
     var config_file: ConfigFile = ConfigFile.new()
     for section in config.keys():
+        if (target_section != "") and (target_section != section):
+            continue
         var section_config: Dictionary = config[section]
         for section_key in section_config.keys():
             config_file.set_value(section, section_key, section_config[section_key])
@@ -120,32 +166,34 @@ func _save() -> void:
             config_file.save(SAVE_PATH) == OK,
             "Fatal error: Cannot write to %s" % ProjectSettings.globalize_path(SAVE_PATH)
     )
+    _original_config = config.duplicate(true)
 
 
 # Best resolution is defined as a resolution in [constant RESOLUTIONS] with the
 # second closest area to the current monitor resolution. This is to avoid
 # filling up the whole screen while in windowed mode, which might conflict with
 # any OS task bar, menu bar, or dock.
-func _get_best_resolution() -> Vector2i:
-    var closest_resolution: Vector2i = Vector2i.ZERO
-    var second_closest_resolution: Vector2i = Vector2i.ZERO
+func _get_best_resolution() -> StringName:
+    var closest_resolution: StringName = ""
+    var second_closest_resolution: StringName = ""
     var current_resolution: Vector2i = Vector2i(get_viewport_rect().size)
     var current_resolution_area: int = current_resolution.x * current_resolution.y
     var closest_distance: int = 99999999
 
-    for possible_resolution in RESOLUTIONS.values():
-        if (possible_resolution.x > current_resolution.x)\
-                or (possible_resolution.y > current_resolution.y):
+    for resolution_key in RESOLUTIONS.keys():
+        var resolution = RESOLUTIONS[resolution_key]
+        if (resolution.x > current_resolution.x)\
+                or (resolution.y > current_resolution.y):
             break
 
-        var possible_resolution_area: int = possible_resolution.x * possible_resolution.y
-        var distance: int = abs(possible_resolution_area - current_resolution_area)
+        var resolution_area: int = resolution.x * resolution.y
+        var distance: int = abs(resolution_area - current_resolution_area)
         if distance < closest_distance:
             second_closest_resolution = closest_resolution
-            closest_resolution = possible_resolution
+            closest_resolution = resolution_key
             closest_distance = distance
-        elif distance < closest_distance and possible_resolution != closest_resolution:
-            second_closest_resolution = possible_resolution
+        elif distance < closest_distance and resolution_key != closest_resolution:
+            second_closest_resolution = resolution_key
 
     return second_closest_resolution
 #endregion

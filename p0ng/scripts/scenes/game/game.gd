@@ -58,7 +58,7 @@ func _process(_delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-    if not _round_started and not _game_over:
+    if (not _round_started) and (not _game_over):
         _spawn_ball()
         _serve_ball(
                 delta,

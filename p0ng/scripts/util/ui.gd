@@ -33,7 +33,8 @@ func tween_transition_fade_appear_container(
 func tween_transition_slide_container(
         container: Container,
         direction: Vector2,
-        duration: float
+        duration: float,
+        pad: float = 0.0
 ) -> Tween:
     assert(
             direction in Global.UNIT_VECTORS,
@@ -44,11 +45,13 @@ func tween_transition_slide_container(
     if direction in [ Vector2.LEFT, Vector2.RIGHT ]:
         movement_scale = \
                 get_viewport_rect().size.x / 2 \
-                + container.size.x * container.scale.x / 2
+                + container.size.x * container.scale.x / 2 \
+                + pad
     elif direction in [ Vector2.UP, Vector2. DOWN ]:
         movement_scale = \
                 get_viewport_rect().size.y / 2 \
-                + container.size.y * container.scale.y / 2
+                + container.size.y * container.scale.y / 2 \
+                + pad
 
     var tween: Tween = create_tween()
     tween.tween_property(

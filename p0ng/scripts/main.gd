@@ -9,19 +9,6 @@ var _current_scene: Node
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    # Set window size and center window. Workaround for:
-    # https://github.com/godotengine/godot-proposals/issues/6247.
-    # TODO: Reimplement this when there is better support for the above issue in
-    # future Godot 4.x versions.
-    var window: Window = get_window()
-    window.size = GameConfig.config.graphics.resolution
-    @warning_ignore("integer_division")
-    window.position = Vector2i(
-            int(get_viewport_rect().size.x / 2) - window.size.x / 2,
-            int(get_viewport_rect().size.y / 2) - window.size.y / 2
-    )
-
-    # Initialize scene switching logic
     _current_scene_key = SceneKey.SPLASH
     _current_scene = null
 
@@ -32,15 +19,6 @@ func _process(_delta: float) -> void:
         add_child(_current_scene)
         move_child(_current_scene, 0)
         _current_scene.connect("scene_finished", _on_scene_finished)
-
-    if Input.is_action_just_pressed("toggle_fullscreen"):
-        match get_tree().root.mode:
-            Window.MODE_EXCLUSIVE_FULLSCREEN:
-                get_tree().root.mode = Window.MODE_WINDOWED
-            Window.MODE_MINIMIZED:
-                pass
-            _:
-                get_tree().root.mode = Window.MODE_EXCLUSIVE_FULLSCREEN
 #endregion
 # ============================================================================ #
 
