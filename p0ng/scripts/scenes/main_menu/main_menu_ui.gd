@@ -50,7 +50,7 @@ func _on_main_menu_start_button_pressed() -> void:
 
 
 func _on_main_menu_settings_button_pressed():
-    button_pressed.emit("settings")
+    acted.emit("settings")
 
 
 func _on_main_menu_quit_button_pressed() -> void:
@@ -60,11 +60,11 @@ func _on_main_menu_quit_button_pressed() -> void:
 
 #region Listens to _start_menu.get_node("*").
 func _on_start_menu_one_player_button_pressed() -> void:
-    button_pressed.emit("start_one_player")
+    acted.emit("start_one_player")
 
 
 func _on_start_menu_two_players_button_pressed() -> void:
-    button_pressed.emit("start_two_players")
+    acted.emit("start_two_players")
 
 
 func _on_start_menu_back_button_pressed() -> void:

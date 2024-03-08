@@ -44,7 +44,7 @@ var _game_point_state: int
 #region Godot builtins
 func _ready() -> void:
     _game_mode = Global.current_game_mode
-    _game_ui.connect("button_pressed", _on_game_ui_button_pressed)
+    _game_ui.connect("acted", _on_game_ui_acted)
     _spawn_paddes()
     _configure_world()
     _configure_game()
@@ -136,8 +136,8 @@ func _on_right_bound_body_entered(body: Node) -> void:
         _win_round(Global.SIDE_LEFT)
 
 
-# Listens to $UI/GameUI.button_pressed(action: StringName).
-func _on_game_ui_button_pressed(action: StringName) -> void:
+# Listens to $UI/GameUI.acted(action: StringName).
+func _on_game_ui_acted(action: StringName) -> void:
     match action:
         "restart":
             scene_finished.emit(SceneKey.GAME)

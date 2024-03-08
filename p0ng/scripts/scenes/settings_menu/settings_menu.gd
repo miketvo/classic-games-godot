@@ -7,7 +7,7 @@ extends GameScene2D
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    _ui.connect("button_pressed", _on_main_menu_ui_button_pressed)
+    _ui.connect("acted", _on_main_menu_ui_acted)
     _load_config()
 
 
@@ -20,8 +20,8 @@ func _process(_delta: float) -> void:
 # ============================================================================ #
 #region Signal listeners
 
-# Listens to $UIContainer/MainMenuUI.button_pressed(action: StringName).
-func _on_main_menu_ui_button_pressed(action: StringName) -> void:
+# Listens to $UIContainer/MainMenuUI.acted(action: StringName).
+func _on_main_menu_ui_acted(action: StringName) -> void:
     match action:
         "back_to_main_menu":
             scene_finished.emit(SceneKey.MAIN_MENU)

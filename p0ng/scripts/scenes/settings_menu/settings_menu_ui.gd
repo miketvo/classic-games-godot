@@ -89,7 +89,7 @@ func _on_main_reset_button_pressed() -> void:
 
 
 func _on_main_back_button_pressed() -> void:
-    button_pressed.emit("back_to_main_menu")
+    acted.emit("back_to_main_menu")
 #endregion
 
 
