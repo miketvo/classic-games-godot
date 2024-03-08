@@ -17,6 +17,17 @@ func _ready() -> void:
 
 # ============================================================================ #
 #region Public methods
+
+## Creates a fade-in transition effect for a container node using a Tween node.
+## [br][br]
+## [b]Parameters:[/b][br]
+## - [param container]: The container node to apply the fade-in
+##   transition effect.[br]
+## - [param duration]: The duration of the fade-in transition effect in
+##   seconds.
+## [br][br]
+## [b]Returns:[/b][br]
+## - The [Tween] responsible for the transition effect.
 func tween_transition_fade_appear_container(
         container: Container,
         duration: float
@@ -30,6 +41,22 @@ func tween_transition_fade_appear_container(
     return tween
 
 
+## Creates a slide transition effect for a container node using a Tween node.
+## [br][br]
+## [b]Parameters:[/b][br]
+## - [param container]: The container node to apply the slide
+##   transition effect.[br]
+## - [param direction]: The direction of the slide transition. A unit vector is
+##   expected (e.g., [constant Vector2.LEFT], [constant Vector2.RIGHT],
+##   [constant Vector2.UP], [constant Vector2.DOWN]). An assertion error is
+##   thrown if an invalid value is provided.[br]
+## - [param duration]: The duration of the slide transition effect in
+##   seconds.[br]
+## - [param pad] (optional): Optional padding to adjust the movement scale of
+##   the slide transition. Default value is 0.0.
+## [br][br]
+## [b]Returns:[/b][br]
+## - The [Tween] responsible for the transition effect.
 func tween_transition_slide_container(
         container: Container,
         direction: Vector2,
