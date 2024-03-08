@@ -19,10 +19,10 @@ script = ExtResource("2_e2d8y")
 
 [node name="Main" type="VBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 480.0
-offset_top = 208.0
-offset_right = 720.0
-offset_bottom = 378.0
+offset_left = 448.0
+offset_top = 160.0
+offset_right = 704.0
+offset_bottom = 354.0
 scale = Vector2(4, 4)
 theme_override_constants/separation = 9
 
@@ -40,6 +40,16 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_j5bjy")
 layout_mode = 2
 alignment = 1
 
+[node name="BackButton" type="Button" parent="Main/Menu/VBoxContainer" groups=["ui_scene_changer_buttons"]]
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../ResetButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../GraphicsButton")
+focus_next = NodePath("../GraphicsButton")
+focus_previous = NodePath("../ResetButton")
+text = "back"
+
 [node name="GraphicsButton" type="Button" parent="Main/Menu/VBoxContainer" groups=["ui_container_slider_buttons"]]
 layout_mode = 2
 focus_neighbor_left = NodePath(".")
@@ -55,21 +65,21 @@ layout_mode = 2
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../GraphicsButton")
 focus_neighbor_right = NodePath(".")
-focus_neighbor_bottom = NodePath("../BackButton")
-focus_next = NodePath("../BackButton")
+focus_neighbor_bottom = NodePath("../ResetButton")
+focus_next = NodePath("../ResetButton")
 focus_previous = NodePath("../GraphicsButton")
 text = "sounds
 "
 
-[node name="BackButton" type="Button" parent="Main/Menu/VBoxContainer" groups=["ui_scene_changer_buttons"]]
+[node name="ResetButton" type="Button" parent="Main/Menu/VBoxContainer" groups=["ui_container_slider_buttons"]]
 layout_mode = 2
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../SoundsButton")
 focus_neighbor_right = NodePath(".")
-focus_neighbor_bottom = NodePath("../GraphicsButton")
-focus_next = NodePath("../GraphicsButton")
+focus_neighbor_bottom = NodePath("../BackButton")
+focus_next = NodePath("../BackButton")
 focus_previous = NodePath("../SoundsButton")
-text = "back"
+text = "reset defaults"
 
 [node name="Graphics" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -102,27 +112,6 @@ focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath("../../Fullscreen/ToggleButton")
 focus_next = NodePath("../../Fullscreen/ToggleButton")
 focus_previous = NodePath("../../Menu/BackButton")
-item_count = 10
-popup/item_0/text = "640x360"
-popup/item_0/id = 0
-popup/item_1/text = "854x480"
-popup/item_1/id = 1
-popup/item_2/text = "960x540"
-popup/item_2/id = 2
-popup/item_3/text = "1024x576"
-popup/item_3/id = 3
-popup/item_4/text = "1280x720"
-popup/item_4/id = 4
-popup/item_5/text = "1366x768"
-popup/item_5/id = 5
-popup/item_6/text = "1600x900"
-popup/item_6/id = 6
-popup/item_7/text = "1920x1080"
-popup/item_7/id = 7
-popup/item_8/text = "2560x1440"
-popup/item_8/id = 8
-popup/item_9/text = "3200x1800"
-popup/item_9/id = 9
 
 [node name="Fullscreen" type="HBoxContainer" parent="Graphics"]
 layout_mode = 2
@@ -367,3 +356,51 @@ focus_neighbor_bottom = NodePath("../../MasterVolume/MuteToggleButton")
 focus_next = NodePath("../SaveButton")
 focus_previous = NodePath("../SaveButton")
 text = "back"
+
+[node name="ResetDefaults" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 1080.0
+offset_right = 548.0
+offset_bottom = 1174.0
+scale = Vector2(4, 4)
+theme_override_constants/separation = 36
+
+[node name="Label" type="Label" parent="ResetDefaults"]
+layout_mode = 2
+theme_type_variation = &"LabelHeading"
+text = "RESET DEFAULTS"
+horizontal_alignment = 1
+
+[node name="Message" type="Label" parent="ResetDefaults"]
+layout_mode = 2
+text = "reset all settings to their default values
+warning: this action is irreversible. proceed?"
+horizontal_alignment = 1
+
+[node name="Menu" type="HBoxContainer" parent="ResetDefaults"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 32
+
+[node name="ProceedButton" type="Button" parent="ResetDefaults/Menu" groups=["ui_accepted_buttons"]]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath("../CancelButton")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath("../CancelButton")
+focus_previous = NodePath("../CancelButton")
+text = "proceed"
+
+[node name="CancelButton" type="Button" parent="ResetDefaults/Menu" groups=["ui_container_slider_buttons"]]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+focus_neighbor_left = NodePath("../ProceedButton")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath("../ProceedButton")
+focus_previous = NodePath("../ProceedButton")
+text = "cancel"
