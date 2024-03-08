@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://cm6ghli8pol4j"]
+[gd_scene load_steps=11 format=3 uid="uid://cm6ghli8pol4j"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_pqbot"]
 [ext_resource type="PackedScene" uid="uid://b1sxxtnr6xah8" path="res://scenes/software_cursor.tscn" id="2_75p8a"]
+[ext_resource type="Script" path="res://scripts/util/game_config_controller.gd" id="2_ewawl"]
 [ext_resource type="Shader" path="res://assets/shaders/crt.gdshader" id="2_l1nth"]
 [ext_resource type="Environment" uid="uid://cnhcgj7ibb61g" path="res://assets/post_processing.tres" id="3_r2b8h"]
 [ext_resource type="Script" path="res://scripts/util/sfx_controller.gd" id="4_m5587"]
@@ -35,6 +36,9 @@ shader_parameter/vignette_opacity = 0.51
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_pqbot")
+
+[node name="GameConfigController" type="Node2D" parent="."]
+script = ExtResource("2_ewawl")
 
 [node name="SoftwareCursor" parent="." instance=ExtResource("2_75p8a")]
 

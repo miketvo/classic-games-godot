@@ -54,30 +54,6 @@ func _ready() -> void:
     if first_play:
         self._save()
     self._load()
-
-    # Set window size and center window. Workaround for:
-    # https://github.com/godotengine/godot-proposals/issues/6247.
-    # TODO: Reimplement this when there is better support for the above issue in
-    # future Godot 4.x versions.
-    var window: Window = get_window()
-    window.size = RESOLUTIONS[config.graphics.resolution]
-    @warning_ignore("integer_division")
-    window.position = Vector2i(
-            int(get_viewport_rect().size.x / 2) - window.size.x / 2,
-            int(get_viewport_rect().size.y / 2) - window.size.y / 2
-    )
-
-
-func _process(_delta: float) -> void:
-    if Input.is_action_just_pressed("toggle_fullscreen"):
-        config.graphics.fullscreen = not config.graphics.fullscreen
-
-    var window: Window = get_window()
-    match [ config.graphics.fullscreen, window.mode ]:
-        [ false, Window.MODE_EXCLUSIVE_FULLSCREEN ]:
-            window.mode = Window.MODE_WINDOWED
-        [ true, _ ] when window.mode != Window.MODE_EXCLUSIVE_FULLSCREEN:
-            window.mode = Window.MODE_EXCLUSIVE_FULLSCREEN
 #endregion
 # ============================================================================ #
 
@@ -135,6 +111,36 @@ func is_modified(section: StringName = "") -> bool:
         return _original_config != config
     else:
         return _original_config[section] != config[section]
+
+
+## Closest resolution is defined as a resolution in [constant RESOLUTIONS]; with
+## width and height no larger than those of the monitor resolution, and with the
+## closest area to the current monitor resolution.
+func get_closest_resolution() -> String:
+    var closest_resolution: String = ""
+    var second_closest_resolution: String = ""
+    var current_resolution: Vector2i = Vector2i(get_viewport_rect().size)
+    var current_resolution_area: int = current_resolution.x * current_resolution.y
+    var closest_distance: int = 99999999
+
+    for resolution_key in RESOLUTIONS.keys():
+        var resolution = RESOLUTIONS[resolution_key]
+        if (
+                resolution.x > current_resolution.x
+                or resolution.y > current_resolution.y
+        ):
+            break
+
+        var resolution_area: int = resolution.x * resolution.y
+        var distance: int = abs(resolution_area - current_resolution_area)
+        if distance < closest_distance:
+            second_closest_resolution = closest_resolution
+            closest_resolution = resolution_key
+            closest_distance = distance
+        elif distance < closest_distance and resolution_key != closest_resolution:
+            second_closest_resolution = resolution_key
+
+    return second_closest_resolution
 #endregion
 # ============================================================================ #
 
@@ -169,7 +175,8 @@ func _save(target_section: StringName = "") -> void:
     _original_config = config.duplicate(true)
 
 
-# Best resolution is defined as a resolution in [constant RESOLUTIONS] with the
+# Best resolution is defined as a resolution in [constant RESOLUTIONS]; with
+# width and height no larger than those of the monitor resolution, and with the
 # second closest area to the current monitor resolution. This is to avoid
 # filling up the whole screen while in windowed mode, which might conflict with
 # any OS task bar, menu bar, or dock.
@@ -182,8 +189,10 @@ func _get_best_resolution() -> String:
 
     for resolution_key in RESOLUTIONS.keys():
         var resolution = RESOLUTIONS[resolution_key]
-        if (resolution.x > current_resolution.x)\
-                or (resolution.y > current_resolution.y):
+        if (
+                resolution.x > current_resolution.x
+                or resolution.y > current_resolution.y
+        ):
             break
 
         var resolution_area: int = resolution.x * resolution.y

@@ -1,6 +1,8 @@
 extends UI
 
 
+@export var settings_modified_message: String
+
 var input_disabled: bool
 
 @onready var _main: Container = $Main/Menu/VBoxContainer
@@ -19,10 +21,15 @@ func _ready() -> void:
     _main.get_node("GraphicsButton").connect("pressed", _on_main_graphics_button_pressed)
     _main.get_node("SoundsButton").connect("pressed", _on_main_sounds_button_pressed)
     _main.get_node("ResetButton").connect("pressed", _on_main_reset_button_pressed)
+    _graphics.get_node("Resolution/OptionButton")\
+        .connect("item_selected", _on_graphics_resolution_selected)
     _graphics.get_node("Menu/BackButton").connect("pressed", _on_graphics_menu_back_button_pressed)
     _sounds.get_node("Menu/BackButton").connect("pressed", _on_sounds_menu_back_button_pressed)
     _reset_defaults.get_node("Menu/CancelButton")\
             .connect("pressed", _on_reset_defaults_menu_cancel_button_pressed)
+
+    _graphics.get_node("Menu/MessageLabel").text = ""
+    _sounds.get_node("Menu/MessageLabel").text = ""
 
     for child in get_tree().get_nodes_in_group("ui_container_slider_buttons"):
         assert(child is Button, "ui_container_slider_buttons group must contain only Buttons")
@@ -47,6 +54,19 @@ func _ready() -> void:
     for child in get_tree().get_nodes_in_group("ui_disabled_buttons"):
         assert(child is Button, "ui_disabled_buttons group must contain only Buttons")
         child.connect("pressed", _on_ui_disabled_button_pressed)
+
+
+func _process(_delta: float) -> void:
+    var is_graphics_fullscreen: bool = GameConfig.config.graphics.fullscreen
+    var resolution_option_button = _graphics.get_node("Resolution/OptionButton")
+    match [ is_graphics_fullscreen, resolution_option_button.disabled ]:
+        [ true, false ]:
+            resolution_option_button.disabled = true
+        [ false, true ]:
+            resolution_option_button.disabled = false
+    _update_graphics_save_button()
+
+    _update_sounds_save_button()
 
 
 func _input(_event: InputEvent) -> void:
@@ -94,6 +114,17 @@ func _on_main_back_button_pressed() -> void:
 
 
 #region Listens to _graphics.get_node("*").
+func _on_graphics_resolution_selected(index: int) -> void:
+    acted_with_data.emit(
+            "graphics_resolution_selected",
+            _graphics.get_node("Resolution/OptionButton").get_item_text(index)
+    )
+
+
+func _on_graphics_menu_save_button_pressed() -> void:
+    acted_with_data.emit("save", "graphics")
+
+
 func _on_graphics_menu_back_button_pressed() -> void:
     input_disabled = true
     _main.get_node("GraphicsButton").grab_focus()
@@ -105,6 +136,10 @@ func _on_graphics_menu_back_button_pressed() -> void:
 
 
 #region Listens to _sounds.get_node("*").
+func _on_sounds_menu_save_button_pressed() -> void:
+    acted.emit("save", "sounds")
+
+
 func _on_sounds_menu_back_button_pressed() -> void:
     input_disabled = true
     _main.get_node("SoundsButton").grab_focus()
@@ -142,6 +177,69 @@ func _on_slider_drag_ended(value_changed: bool) -> void:
 # Listens to tween transition Tween.finished() to re-enable input.
 func _on_tween_transition_finshed() -> void:
     input_disabled = false
+
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
+#region Signal listeners
+func _update_graphics_save_button() -> void:
+    var is_config_graphics_modified: bool = GameConfig.is_modified("graphics")
+    var graphics_message_label: Label = _graphics.get_node("Menu/MessageLabel")
+    var graphics_save_button: Button = _graphics.get_node("Menu/SaveButton")
+    match [
+        is_config_graphics_modified,
+        graphics_message_label.text,
+        graphics_save_button.flat,
+    ]:
+        [ true, "", true ]:
+            graphics_message_label.text = settings_modified_message
+            graphics_save_button.flat = false
+            if graphics_save_button.is_in_group("ui_disabled_buttons"):
+                graphics_save_button.disconnect("pressed", _on_ui_disabled_button_pressed)
+                graphics_save_button.remove_from_group("ui_disabled_buttons")
+                graphics_save_button.add_to_group("ui_accepted_buttons")
+                graphics_save_button.connect("pressed", _on_ui_accepted_button_pressed)
+                graphics_save_button.connect("pressed", _on_graphics_menu_save_button_pressed)
+        [ false, _, false ]:
+            graphics_message_label.text = ""
+            graphics_save_button.flat = true
+            if graphics_save_button.is_in_group("ui_accepted_buttons"):
+                graphics_save_button.disconnect("pressed", _on_ui_accepted_button_pressed)
+                graphics_save_button.remove_from_group("ui_accepted_buttons")
+                graphics_save_button.add_to_group("ui_disabled_buttons")
+                graphics_save_button.connect("pressed", _on_ui_disabled_button_pressed)
+                graphics_save_button.disconnect("pressed", _on_graphics_menu_save_button_pressed)
+
+
+func _update_sounds_save_button() -> void:
+    var is_config_sounds_modified: bool = GameConfig.is_modified("sounds")
+    var sounds_message_label: Label = _sounds.get_node("Menu/MessageLabel")
+    var sounds_save_button: Button = _sounds.get_node("Menu/SaveButton")
+    match [
+        is_config_sounds_modified,
+        sounds_message_label.text,
+        sounds_save_button.flat,
+    ]:
+        [ true, "", true ]:
+            sounds_message_label.text = settings_modified_message
+            sounds_save_button.flat = false
+            if sounds_save_button.is_in_group("ui_disabled_buttons"):
+                sounds_save_button.disconnect("pressed", _on_ui_disabled_button_pressed)
+                sounds_save_button.remove_from_group("ui_disabled_buttons")
+                sounds_save_button.add_to_group("ui_accepted_buttons")
+                sounds_save_button.connect("pressed", _on_ui_accepted_button_pressed)
+                sounds_save_button.connect("pressed", _on_sounds_menu_save_button_pressed)
+        [ false, _, false ]:
+            sounds_message_label.text = ""
+            sounds_save_button.flat = true
+            if sounds_save_button.is_in_group("ui_accepted_buttons"):
+                sounds_save_button.disconnect("pressed", _on_ui_accepted_button_pressed)
+                sounds_save_button.remove_from_group("ui_accepted_buttons")
+                sounds_save_button.add_to_group("ui_disabled_buttons")
+                sounds_save_button.connect("pressed", _on_ui_disabled_button_pressed)
+                sounds_save_button.disconnect("pressed", _on_sounds_menu_save_button_pressed)
 
 #endregion
 # ============================================================================ #

@@ -14,3 +14,4 @@ offset_bottom = 1080.0
 
 [node name="SettingsMenuUI" parent="UI" instance=ExtResource("2_n0q8e")]
 layout_mode = 1
+settings_modified_message = "unsaved change(s)"

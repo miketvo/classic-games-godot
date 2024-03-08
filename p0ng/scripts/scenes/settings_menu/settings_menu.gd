@@ -8,11 +8,8 @@ extends GameScene2D
 #region Godot builtins
 func _ready() -> void:
     _ui.connect("acted", _on_main_menu_ui_acted)
+    _ui.connect("acted_with_data", _on_main_menu_ui_acted_with_data)
     _load_config()
-
-
-func _process(_delta: float) -> void:
-    pass
 #endregion
 # ============================================================================ #
 
@@ -26,6 +23,17 @@ func _on_main_menu_ui_acted(action: StringName) -> void:
         "back_to_main_menu":
             scene_finished.emit(SceneKey.MAIN_MENU)
 
+
+# Listens to $UIContainer/MainMenuUI.acted_with_data(action: StringName, data: Variant).
+func _on_main_menu_ui_acted_with_data(action: StringName, data: Variant) -> void:
+    match action:
+        "graphics_resolution_selected":
+            var resolution: String = String(data)
+            GameConfig.config.graphics.resolution = resolution
+        "save":
+            var save_section: StringName = data
+            GameConfig.save_config(save_section)
+
 #endregion
 # ============================================================================ #
 
@@ -34,12 +42,22 @@ func _on_main_menu_ui_acted(action: StringName) -> void:
 #region Utils
 func _load_config() -> void:
     var ui_graphics = _ui.get_node("Graphics")
-    for resolution_name in GameConfig.RESOLUTIONS.keys():
+    for resolution_key in GameConfig.RESOLUTIONS.keys():
+        var current_resolution: Vector2i = Vector2i(get_viewport_rect().size)
+        var resolution: Vector2i = GameConfig.RESOLUTIONS[resolution_key]
         var resolution_option_button: OptionButton =\
                 ui_graphics.get_node("Resolution/OptionButton")
-        resolution_option_button.add_item(resolution_name)
-        if resolution_name == GameConfig.config.graphics.resolution:
-            resolution_option_button.select(resolution_option_button.item_count - 1)
+
+        resolution_option_button.add_item(resolution_key)
+        var current_item_index: int = resolution_option_button.item_count - 1
+
+        if resolution_key == GameConfig.config.graphics.resolution:
+            resolution_option_button.select(current_item_index)
+        if (
+                resolution.x > current_resolution.x
+                or resolution.y > current_resolution.y
+        ):
+            resolution_option_button.set_item_disabled(current_item_index, true)
     ui_graphics.get_node("Fullscreen/ToggleButton").button_pressed =\
             GameConfig.config.graphics.fullscreen
     ui_graphics.get_node("PostProcessing/ToggleButton").button_pressed =\

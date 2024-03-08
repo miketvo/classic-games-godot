@@ -3,6 +3,7 @@ extends Control
 
 
 signal acted(action: StringName)
+signal acted_with_data(action: StringName, data: Variant)
 const UI_TRANSITION_DURATION: float = 0.5
 @onready var _sfx_controller: SfxController
 
