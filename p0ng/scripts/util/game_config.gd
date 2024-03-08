@@ -173,9 +173,9 @@ func _save(target_section: StringName = "") -> void:
 # second closest area to the current monitor resolution. This is to avoid
 # filling up the whole screen while in windowed mode, which might conflict with
 # any OS task bar, menu bar, or dock.
-func _get_best_resolution() -> StringName:
-    var closest_resolution: StringName = ""
-    var second_closest_resolution: StringName = ""
+func _get_best_resolution() -> String:
+    var closest_resolution: String = ""
+    var second_closest_resolution: String = ""
     var current_resolution: Vector2i = Vector2i(get_viewport_rect().size)
     var current_resolution_area: int = current_resolution.x * current_resolution.y
     var closest_distance: int = 99999999
