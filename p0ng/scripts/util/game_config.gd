@@ -1,5 +1,6 @@
 extends Node2D
-## Autoload singleton API for persistent game configuration.
+## Autoload singleton API for persistent game configuration. Stores
+## globally-accessible game configuration. See [member config].
 
 
 # ============================================================================ #
@@ -10,16 +11,16 @@ const SAVE_PATH: StringName = "user://settings.cfg"
 
 ## Available game resolutions.
 const RESOLUTIONS: Dictionary = {
-    "640x360": Vector2(640, 360),
-    "854x480": Vector2(854, 480),
-    "960x540": Vector2(960, 540),
-    "1024x576": Vector2(1024, 576),
-    "1280x720": Vector2(1280, 720),
-    "1366x768": Vector2(1366, 768),
-    "1600x900": Vector2(1600, 900),
-    "1920x1080": Vector2(1920, 1080),
-    "2560x1440": Vector2(2560, 1440),
-    "3200x1800": Vector2(3200, 1800),
+    "640x360": Vector2i(640, 360),
+    "854x480": Vector2i(854, 480),
+    "960x540": Vector2i(960, 540),
+    "1024x576": Vector2i(1024, 576),
+    "1280x720": Vector2i(1280, 720),
+    "1366x768": Vector2i(1366, 768),
+    "1600x900": Vector2i(1600, 900),
+    "1920x1080": Vector2i(1920, 1080),
+    "2560x1440": Vector2i(2560, 1440),
+    "3200x1800": Vector2i(3200, 1800),
 }
 
 #endregion
@@ -47,9 +48,9 @@ var config: Dictionary
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
+    reset_config()
     var first_play: bool = not FileAccess.file_exists(SAVE_PATH)
     if first_play:
-        reset_config()
         self._save()
     self._load()
 #endregion
@@ -125,20 +126,20 @@ func _save() -> void:
 # second closest area to the current monitor resolution. This is to avoid
 # filling up the whole screen while in windowed mode, which might conflict with
 # any OS task bar, menu bar, or dock.
-func _get_best_resolution() -> Vector2:
-    var current_resolution: Vector2 = get_viewport_rect().size
-    var current_resolution_area: float = current_resolution.x * current_resolution.y
-    var closest_distance = 99999999
-    var closest_resolution = Vector2.ZERO
-    var second_closest_resolution = Vector2.ZERO
+func _get_best_resolution() -> Vector2i:
+    var closest_resolution: Vector2i = Vector2i.ZERO
+    var second_closest_resolution: Vector2i = Vector2i.ZERO
+    var current_resolution: Vector2i = Vector2i(get_viewport_rect().size)
+    var current_resolution_area: int = current_resolution.x * current_resolution.y
+    var closest_distance: int = 99999999
 
     for possible_resolution in RESOLUTIONS.values():
         if (possible_resolution.x > current_resolution.x)\
                 or (possible_resolution.y > current_resolution.y):
             break
 
-        var possible_resolution_area: float = possible_resolution.x * possible_resolution.y
-        var distance: float = abs(possible_resolution_area - current_resolution_area)
+        var possible_resolution_area: int = possible_resolution.x * possible_resolution.y
+        var distance: int = abs(possible_resolution_area - current_resolution_area)
         if distance < closest_distance:
             second_closest_resolution = closest_resolution
             closest_resolution = possible_resolution

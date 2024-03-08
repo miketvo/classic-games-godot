@@ -9,6 +9,19 @@ var _current_scene: Node
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
+    # Set window size and center window. Workaround for:
+    # https://github.com/godotengine/godot-proposals/issues/6247.
+    # TODO: Reimplement this when there is better support for the above issue in
+    # future Godot 4.x versions.
+    var window: Window = get_window()
+    window.size = GameConfig.config.graphics.resolution
+    @warning_ignore("integer_division")
+    window.position = Vector2i(
+            int(get_viewport_rect().size.x / 2) - window.size.x / 2,
+            int(get_viewport_rect().size.y / 2) - window.size.y / 2
+    )
+
+    # Initialize scene switching logic
     _current_scene_key = SceneKey.SPLASH
     _current_scene = null
 
