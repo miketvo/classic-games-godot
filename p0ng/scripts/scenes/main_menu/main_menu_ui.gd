@@ -1,8 +1,6 @@
 extends UI
 
 
-var input_disabled: bool
-
 @onready var _main_menu: Container = $MainMenuContainer
 @onready var _start_menu: Container = $StartMenuContainer
 
@@ -39,7 +37,7 @@ func _input(_event: InputEvent) -> void:
 # ============================================================================ #
 #region Signal listeners
 
-#region Listens to _main_menu.get_node("*")*.
+#region Listens to _main_menu.get_node("*").
 func _on_main_menu_start_button_pressed() -> void:
     input_disabled = true
     _start_menu.get_node("OnePlayerButton").grab_focus()
@@ -50,7 +48,7 @@ func _on_main_menu_start_button_pressed() -> void:
 
 
 func _on_main_menu_settings_button_pressed():
-    button_pressed.emit("settings")
+    acted.emit("settings")
 
 
 func _on_main_menu_quit_button_pressed() -> void:
@@ -60,11 +58,11 @@ func _on_main_menu_quit_button_pressed() -> void:
 
 #region Listens to _start_menu.get_node("*").
 func _on_start_menu_one_player_button_pressed() -> void:
-    button_pressed.emit("start_one_player")
+    acted.emit("start_one_player")
 
 
 func _on_start_menu_two_players_button_pressed() -> void:
-    button_pressed.emit("start_two_players")
+    acted.emit("start_two_players")
 
 
 func _on_start_menu_back_button_pressed() -> void:
@@ -75,11 +73,6 @@ func _on_start_menu_back_button_pressed() -> void:
     tween_transition_slide_container(_main_menu, Vector2.RIGHT, UI_TRANSITION_DURATION)\
             .connect("finished", _on_tween_transition_finshed)
 #endregion
-
-
-# Listens to tween transition Tween.finished() to re-enable input.
-func _on_tween_transition_finshed() -> void:
-    input_disabled = false
 
 #endregion
 # ============================================================================ #

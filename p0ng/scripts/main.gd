@@ -19,15 +19,6 @@ func _process(_delta: float) -> void:
         add_child(_current_scene)
         move_child(_current_scene, 0)
         _current_scene.connect("scene_finished", _on_scene_finished)
-
-    if Input.is_action_just_pressed("toggle_fullscreen"):
-        match get_tree().root.mode:
-            Window.MODE_EXCLUSIVE_FULLSCREEN:
-                get_tree().root.mode = Window.MODE_WINDOWED
-            Window.MODE_MINIMIZED:
-                pass
-            _:
-                get_tree().root.mode = Window.MODE_EXCLUSIVE_FULLSCREEN
 #endregion
 # ============================================================================ #
 

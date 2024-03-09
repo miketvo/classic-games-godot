@@ -80,12 +80,16 @@ func _predict_ball_position_at(x: float, max_frames: int, delta: float) -> Vecto
             current_velocity = current_velocity.bounce(collision.get_normal())
 
         current_position += current_velocity * delta
-        if (current_velocity.dot(Vector2.RIGHT) > 0 and current_position.x > x)\
-                or (current_velocity.dot(Vector2.RIGHT) < 0 and current_position.x < x):
+        if (
+                current_velocity.dot(Vector2.RIGHT) > 0 and current_position.x > x
+                or current_velocity.dot(Vector2.RIGHT) < 0 and current_position.x < x
+        ):
             break
 
-    if (current_velocity.dot(Vector2.RIGHT) > 0 and current_position.x < x)\
-            or (current_velocity.dot(Vector2.RIGHT) < 0 and current_position.x > x):
+    if (
+            current_velocity.dot(Vector2.RIGHT) > 0 and current_position.x < x
+            or current_velocity.dot(Vector2.RIGHT) < 0 and current_position.x > x
+    ):
         return Vector2.INF
     return current_position
 # ============================================================================ #

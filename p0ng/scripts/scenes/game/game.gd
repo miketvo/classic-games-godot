@@ -44,7 +44,7 @@ var _game_point_state: int
 #region Godot builtins
 func _ready() -> void:
     _game_mode = Global.current_game_mode
-    _game_ui.connect("button_pressed", _on_game_ui_button_pressed)
+    _game_ui.connect("acted", _on_game_ui_acted)
     _spawn_paddes()
     _configure_world()
     _configure_game()
@@ -58,7 +58,7 @@ func _process(_delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-    if not _round_started and not _game_over:
+    if (not _round_started) and (not _game_over):
         _spawn_ball()
         _serve_ball(
                 delta,
@@ -106,13 +106,15 @@ func _on_ball_body_exited(body: Node) -> void:
     match body:
         left_paddle_character, right_paddle_character:
             _current_ball_speed *= Global.BALL_SPEED_DIFFICULTY_MULTIPLIER
-            new_velocity =\
-                    Vector2.from_angle(ball.linear_velocity.angle())\
+            new_velocity = (
+                    Vector2.from_angle(ball.linear_velocity.angle())
                     * _current_ball_speed
+            )
         _:
-            new_velocity =\
-                    Vector2.from_angle(ball.linear_velocity.angle())\
+            new_velocity = (
+                    Vector2.from_angle(ball.linear_velocity.angle())
                     * _current_ball_speed
+            )
     ball.linear_velocity = new_velocity
 
 
@@ -136,8 +138,8 @@ func _on_right_bound_body_entered(body: Node) -> void:
         _win_round(Global.SIDE_LEFT)
 
 
-# Listens to $UI/GameUI.button_pressed(action: StringName).
-func _on_game_ui_button_pressed(action: StringName) -> void:
+# Listens to $UI/GameUI.acted(action: StringName).
+func _on_game_ui_acted(action: StringName) -> void:
     match action:
         "restart":
             scene_finished.emit(SceneKey.GAME)
@@ -220,7 +222,6 @@ func _serve_ball(
     var impulse = unit_vector * ball.mass * acceleration # F = m * a (Newton)
 
     ball.apply_central_impulse(impulse)
-#endregion
 
 
 func _despawn_ball() -> void:
@@ -316,4 +317,5 @@ func _win_game(winning_side: int) -> void:
     left_paddle.set_script(null)
     right_paddle.set_script(null)
     _game_over = true
+#endregion
 # ============================================================================ #

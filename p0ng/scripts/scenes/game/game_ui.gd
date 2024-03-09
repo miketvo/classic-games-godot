@@ -3,7 +3,6 @@ extends UI
 
 @export var game_point_text: String
 
-var input_disabled: bool
 var disable_pausing: bool
 
 @onready var _score_label: Dictionary = {
@@ -148,19 +147,14 @@ func _on_quit_to_desktop_request() -> void:
 ## _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").pressed().
 func _on_restart_request() -> void:
     get_tree().paused = false
-    button_pressed.emit("restart")
+    acted.emit("restart")
 
 
 # Listens to _pause_menu.get_node("EndGameButton.pressed() and
 ## _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton").pressed().
 func _on_end_game_request() -> void:
     get_tree().paused = false
-    button_pressed.emit("end_game")
-
-
-# Listens to tween transition Tween.finished() to re-enable input.
-func _on_tween_transition_finshed() -> void:
-    input_disabled = false
+    acted.emit("end_game")
 
 #endregion
 # ============================================================================ #
