@@ -26,17 +26,17 @@ func _process(_delta: float) -> void:
     if Input.is_action_just_pressed("toggle_fullscreen"):
         GameConfig.config.graphics.fullscreen = not GameConfig.config.graphics.fullscreen
 
-    _update_window_size()
-    _update_fullscreen_mode()
-    _update_post_processing_mode()
-    _update_crt_effect_mode()
+    _update_graphics_window_size()
+    _update_graphics_fullscreen_mode()
+    _update_graphics_post_processing_mode()
+    _update_graphics_crt_effect_mode()
 #endregion
 # ============================================================================ #
 
 
 # ============================================================================ #
 #region Utils
-func _update_window_size():
+func _update_graphics_window_size():
     var window: Window = get_window()
     if (
             window.size != GameConfig.RESOLUTIONS[GameConfig.config.graphics.resolution]
@@ -45,7 +45,7 @@ func _update_window_size():
         window.size = GameConfig.RESOLUTIONS[GameConfig.config.graphics.resolution]
 
 
-func _update_fullscreen_mode() -> void:
+func _update_graphics_fullscreen_mode() -> void:
     var window: Window = get_window()
     match [ GameConfig.config.graphics.fullscreen, window.mode ]:
         [ false, Window.MODE_EXCLUSIVE_FULLSCREEN ]:
@@ -55,7 +55,7 @@ func _update_fullscreen_mode() -> void:
             window.mode = Window.MODE_EXCLUSIVE_FULLSCREEN
 
 
-func _update_post_processing_mode() -> void:
+func _update_graphics_post_processing_mode() -> void:
     var environment: Environment = post_processing_node.environment
     match [ GameConfig.config.graphics.post_processing, environment.background_mode ]:
         [ false, Environment.BG_CANVAS ]:
@@ -64,7 +64,7 @@ func _update_post_processing_mode() -> void:
             environment.background_mode = Environment.BG_CANVAS
 
 
-func _update_crt_effect_mode() -> void:
+func _update_graphics_crt_effect_mode() -> void:
     match [ GameConfig.config.graphics.crt_effect, crt_effect_node.visible ]:
         [ false, true ]:
             crt_effect_node.visible = false
