@@ -115,7 +115,7 @@ func is_modified(section: StringName = "") -> bool:
 
 ## Closest resolution is defined as a resolution in [constant RESOLUTIONS]; with
 ## width and height no larger than those of the monitor resolution, and with the
-## closest area to the current monitor resolution.
+## closest area to the monitor resolution.
 func get_closest_resolution() -> String:
     var closest_resolution: String = ""
     var second_closest_resolution: String = ""
@@ -177,9 +177,9 @@ func _save(target_section: StringName = "") -> void:
 
 # Best resolution is defined as a resolution in [constant RESOLUTIONS]; with
 # width and height no larger than those of the monitor resolution, and with the
-# second closest area to the current monitor resolution. This is to avoid
-# filling up the whole screen while in windowed mode, which might conflict with
-# any OS task bar, menu bar, or dock.
+# second closest area to the monitor resolution. This is to avoid filling up the
+# whole screen while in windowed mode, which might conflict with any OS task
+# bar, menu bar, or dock.
 func _get_best_resolution() -> String:
     var closest_resolution: String = ""
     var second_closest_resolution: String = ""
