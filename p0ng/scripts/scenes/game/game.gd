@@ -35,6 +35,7 @@ var _game_point_state: int
 @onready var _left_paddle_spawn: Node2D = $Spawns/LeftPaddleSpawn
 @onready var _right_paddle_spawn: Node2D = $Spawns/RightPaddleSpawn
 @onready var _game_ui: UI = $UI/GameUI
+@onready var _sfx_controller: SfxController = $SfxController
 #endregion
 # ============================================================================ #
 
@@ -43,7 +44,7 @@ var _game_point_state: int
 #region Godot builtins
 func _ready() -> void:
     _game_mode = Global.current_game_mode
-    _game_ui.connect("button_pressed", _on_game_ui_button_pressed)
+    _game_ui.connect("acted", _on_game_ui_acted)
     _spawn_paddes()
     _configure_world()
     _configure_game()
@@ -57,7 +58,7 @@ func _process(_delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-    if not _round_started and not _game_over:
+    if (not _round_started) and (not _game_over):
         _spawn_ball()
         _serve_ball(
                 delta,
@@ -88,9 +89,11 @@ func _on_ball_body_entered(body: Node) -> void:
             bottom_bound.get_node("Sprite2D/AnimationPlayer").play("active")
             bottom_bound.get_node("Sprite2D/AnimationPlayer").queue("idle")
         left_paddle_character:
+            _sfx_controller.play_sound2d("PaddleHitSfx", left_paddle_character.global_position)
             left_paddle_character.get_node("Sprite2D/AnimationPlayer").play("active")
             left_paddle_character.get_node("Sprite2D/AnimationPlayer").queue("idle")
         right_paddle_character:
+            _sfx_controller.play_sound2d("PaddleHitSfx", right_paddle_character.global_position)
             right_paddle_character.get_node("Sprite2D/AnimationPlayer").play("active")
             right_paddle_character.get_node("Sprite2D/AnimationPlayer").queue("idle")
 
@@ -103,19 +106,22 @@ func _on_ball_body_exited(body: Node) -> void:
     match body:
         left_paddle_character, right_paddle_character:
             _current_ball_speed *= Global.BALL_SPEED_DIFFICULTY_MULTIPLIER
-            new_velocity =\
-                    Vector2.from_angle(ball.linear_velocity.angle())\
+            new_velocity = (
+                    Vector2.from_angle(ball.linear_velocity.angle())
                     * _current_ball_speed
+            )
         _:
-            new_velocity =\
-                    Vector2.from_angle(ball.linear_velocity.angle())\
+            new_velocity = (
+                    Vector2.from_angle(ball.linear_velocity.angle())
                     * _current_ball_speed
+            )
     ball.linear_velocity = new_velocity
 
 
 # Listens to $World/VerticalSeparator.body_entered(body: Node).
 func _on_vertical_separator_body_entered(body: Node) -> void:
     if body == ball:
+        _sfx_controller.play_sound("VSepHitSfx")
         $World/VerticalSeparator/Sprite2D/AnimationPlayer.play("active")
         $World/VerticalSeparator/Sprite2D/AnimationPlayer.queue("idle")
 
@@ -132,8 +138,8 @@ func _on_right_bound_body_entered(body: Node) -> void:
         _win_round(Global.SIDE_LEFT)
 
 
-# Listens to $UI/GameUI.button_pressed(action: StringName).
-func _on_game_ui_button_pressed(action: StringName) -> void:
+# Listens to $UI/GameUI.acted(action: StringName).
+func _on_game_ui_acted(action: StringName) -> void:
     match action:
         "restart":
             scene_finished.emit(SceneKey.GAME)
@@ -196,6 +202,8 @@ func _serve_ball(
         direction: int,
         angular_variation: PackedFloat32Array = [0.0, 0.0]
 ) -> void:
+    _sfx_controller.play_sound("RoundStartSfx")
+
     var unit_vector: Vector2
     match direction:
         Global.SIDE_LEFT:
@@ -214,7 +222,6 @@ func _serve_ball(
     var impulse = unit_vector * ball.mass * acceleration # F = m * a (Newton)
 
     ball.apply_central_impulse(impulse)
-#endregion
 
 
 func _despawn_ball() -> void:
@@ -248,6 +255,8 @@ func _configure_game() -> void:
 
 
 func _win_round(winning_side: int) -> void:
+    _sfx_controller.play_sound("RoundEndSfx")
+
     match winning_side:
         Global.SIDE_LEFT:
             left_score += 1
@@ -263,6 +272,7 @@ func _win_round(winning_side: int) -> void:
     if left_score == GAME_SCORE and right_score == GAME_SCORE:
         _game_state = GAME_STATE_DEUCE
 
+    var old_game_point_state: int = _game_point_state
     _game_point_state = 0b00
     match [ left_score, right_score, left_score - right_score, _game_state ]:
         [ GAME_SCORE, _, _, GAME_STATE_NORMAL ] when left_score > right_score:
@@ -273,6 +283,8 @@ func _win_round(winning_side: int) -> void:
             _game_point_state = 0b10
         [ _, _, -1, GAME_STATE_DEUCE]:
             _game_point_state = 0b01
+    if (old_game_point_state == 0b00) and (_game_point_state != 0b00):
+        _sfx_controller.play_sound("GamePointSfx")
 
     match _game_state:
         GAME_STATE_NORMAL:
@@ -300,8 +312,10 @@ func _win_round(winning_side: int) -> void:
 
 
 func _win_game(winning_side: int) -> void:
+    _sfx_controller.play_sound("GameEndSfx")
     winner = winning_side
     left_paddle.set_script(null)
     right_paddle.set_script(null)
     _game_over = true
+#endregion
 # ============================================================================ #

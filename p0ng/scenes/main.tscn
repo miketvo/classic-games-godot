@@ -1,8 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://cm6ghli8pol4j"]
+[gd_scene load_steps=11 format=3 uid="uid://cm6ghli8pol4j"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_pqbot"]
 [ext_resource type="PackedScene" uid="uid://b1sxxtnr6xah8" path="res://scenes/software_cursor.tscn" id="2_75p8a"]
+[ext_resource type="Script" path="res://scripts/util/game_config_controller.gd" id="2_ewawl"]
 [ext_resource type="Shader" path="res://assets/shaders/crt.gdshader" id="2_l1nth"]
+[ext_resource type="Environment" uid="uid://cnhcgj7ibb61g" path="res://assets/post_processing.tres" id="3_r2b8h"]
+[ext_resource type="Script" path="res://scripts/util/sfx_controller.gd" id="4_m5587"]
+[ext_resource type="AudioStream" uid="uid://ck837ajdgulwu" path="res://assets/sfx/ui_accepted.wav" id="4_w5o3g"]
+[ext_resource type="AudioStream" uid="uid://bmjt2ui0u5hxe" path="res://assets/sfx/ui_rejected.wav" id="5_hb2br"]
+[ext_resource type="AudioStream" uid="uid://ccjwtodmc7cac" path="res://assets/sfx/ui_selected.wav" id="6_g01ig"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_g3j7g"]
 shader = ExtResource("2_l1nth")
@@ -28,12 +34,20 @@ shader_parameter/clip_warp = false
 shader_parameter/vignette_intensity = 0.4
 shader_parameter/vignette_opacity = 0.51
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node"]
 script = ExtResource("1_pqbot")
+
+[node name="GameConfigController" type="Node2D" parent="." node_paths=PackedStringArray("post_processing_node", "crt_effect_node")]
+script = ExtResource("2_ewawl")
+post_processing_node = NodePath("../PostProcessingLayer/PostProcessing")
+crt_effect_node = NodePath("../PostProcessingLayer/CrtEffect")
 
 [node name="SoftwareCursor" parent="." instance=ExtResource("2_75p8a")]
 
 [node name="PostProcessingLayer" type="CanvasLayer" parent="."]
+
+[node name="PostProcessing" type="WorldEnvironment" parent="PostProcessingLayer"]
+environment = ExtResource("3_r2b8h")
 
 [node name="CrtEffect" type="ColorRect" parent="PostProcessingLayer"]
 material = SubResource("ShaderMaterial_g3j7g")
@@ -43,3 +57,19 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="UISfxController" type="Node" parent="."]
+process_mode = 3
+script = ExtResource("4_m5587")
+
+[node name="UIAcceptedSfx" type="AudioStreamPlayer" parent="UISfxController"]
+stream = ExtResource("4_w5o3g")
+bus = &"UI"
+
+[node name="UIRejectedSfx" type="AudioStreamPlayer" parent="UISfxController"]
+stream = ExtResource("5_hb2br")
+bus = &"UI"
+
+[node name="UISelectedSfx" type="AudioStreamPlayer" parent="UISfxController"]
+stream = ExtResource("6_g01ig")
+bus = &"UI"

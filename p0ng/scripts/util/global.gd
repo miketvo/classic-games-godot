@@ -31,8 +31,8 @@ const TARGET_SCORE: int = 7
 ## How far into the future ball trajectory prediction works. Lower numbers means
 ## higher performance, but the AI paddle will have worse reaction time. Higher
 ## number lowers performance, but the AI paddle will have a better reaction
-## time.
-const MAX_BALL_PRED_FRAMES: int = 60
+## time. Unit: seconds.
+const MAX_BALL_PRED_SECONDS: float = 1.0
 #endregion
 # ============================================================================ #
 

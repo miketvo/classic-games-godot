@@ -11,8 +11,10 @@ config_version=5
 [application]
 
 config/name="p0ng"
-config/version="0.2.2"
+config/version="1.0.0"
 run/main_scene="res://scenes/main.tscn"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="ambientlamp/p0ng"
 config/features=PackedStringArray("4.2", "Forward Plus")
 boot_splash/bg_color=Color(0.0941176, 0.0470588, 0.129412, 1)
 boot_splash/image="res://assets/boot_splash.png"
@@ -21,16 +23,22 @@ config/icon="res://icon.svg"
 config/windows_native_icon="res://icon.ico"
 boot_splash/minimum_display_time=2000
 
+[audio]
+
+buses/default_bus_layout="res://assets/default_bus_layout.tres"
+
 [autoload]
 
 Global="*res://scripts/util/global.gd"
+GameConfig="*res://scripts/util/game_config.gd"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/window_width_override=1280
-window/size/window_height_override=720
+window/size/resizable=false
+window/size/window_width_override=640
+window/size/window_height_override=360
 window/stretch/mode="viewport"
 
 [editor_plugins]

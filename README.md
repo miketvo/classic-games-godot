@@ -1,10 +1,14 @@
 # Mike's Classic Games using Godot
 
-My implementation of classic video games I played in my childhood using the Godot game engine. For educational purposes.
+My implementation of classic video games I played in my childhood using the Godot game engine. Also an excuse for me to apply my knowledge in software engineering, computing theory, artificial intelligence, pixel art, music theory, and sound engineering. For educational purposes.
 
-Each folder containing a `project.godot` file is a project meant to be used with [Godot Engine](https://godotengine.org), the open source 2D and 3D game engine.
+Each folder containing a `project.godot` file is a project meant to be used with [Godot Engine](https://godotengine.org), the open source 2D and 3D game engine. Check out the `README.md` files in each of these projects for more details.
 
-**Godot version: (4.x release)**
+**Godot version: (4.2.1 release)**
+
+## Available games
+
+- p0ng: [README.md](p0ng/README.md) | [Source code](https://github.com/miketvo/classic-games-godot/tree/main/p0ng)
 
 ## Importing all projects
 
@@ -38,6 +42,55 @@ For work, please contact me via [miketvo@outlook.com](mailto:miketvo@outlook.com
 - [Godot Documentation](http://docs.godotengine.org)
 - [Godot Community hub](https://godotengine.org/community)
 - [Godot TPS demo](https://github.com/godotengine/tps-demo)
+
+## Tools used:
+
+<details>
+<summary>Expand</summary>
+
+### Programming
+
+- Godot Engine
+- Visual Studio Code
+- NeoVim
+
+### Art
+
+- Aseprite
+- Clip Studio Paint
+- Adobe Creative Suite
+
+### Audio
+
+- StudioOne
+- FamiStudio
+- Audacity
+- Novation LaunchKeyMini
+- Zoom H1n
+- Zoom G1Xon
+- Behringer U-Phoria UM2
+
+### Others
+
+- Notion (Project Management)
+- draw.io (Diagrams)
+- Microsoft Office Suite (General Documentation)
+
+</details>
+
+## Attribution
+
+### 3rd-party fonts
+
+Thanks [memesbruh03](https://www.dafont.com/profile.php?user=926808) for your awesome 100% free pixel art fonts:
+
+- [3Dventure](https://www.dafont.com/3dventure.font)
+- [Gamer](https://www.dafont.com/gamer-2.font)
+- [Monobit](https://www.dafont.com/monobit.font)
+
+### 3rd-party shaders
+
+- [VHS and CRT monitor effect](https://godotshaders.com/shader/vhs-and-crt-monitor-effect/) by [Peter Höglund](https://godotshaders.com/author/pend00/).
 
 ## License
 

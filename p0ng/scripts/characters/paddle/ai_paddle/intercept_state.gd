@@ -32,7 +32,7 @@ func _physics_update(delta: float, game_state_data: Global.GameStateData) -> voi
     var current_position = character_component.global_position
     var ball_position_pred = _predict_ball_position_at(
             current_position.x,
-            Global.MAX_BALL_PRED_FRAMES,
+            int(Global.MAX_BALL_PRED_SECONDS * Engine.physics_ticks_per_second),
             delta
     )
 
@@ -65,6 +65,7 @@ func _predict_ball_position_at(x: float, max_frames: int, delta: float) -> Vecto
     var trajectory_line: Line2D = _trajectory_predictor.get_node("TrajectoryLine")
     var current_position: Vector2 = Global.game_state_data.ball_position
     var current_velocity: Vector2 = Global.game_state_data.ball_velocity
+    print(max_frames)
 
     trajectory_line.clear_points()
     for i in range(0, max_frames):
@@ -79,12 +80,16 @@ func _predict_ball_position_at(x: float, max_frames: int, delta: float) -> Vecto
             current_velocity = current_velocity.bounce(collision.get_normal())
 
         current_position += current_velocity * delta
-        if (current_velocity.dot(Vector2.RIGHT) > 0 and current_position.x > x)\
-                or (current_velocity.dot(Vector2.RIGHT) < 0 and current_position.x < x):
+        if (
+                current_velocity.dot(Vector2.RIGHT) > 0 and current_position.x > x
+                or current_velocity.dot(Vector2.RIGHT) < 0 and current_position.x < x
+        ):
             break
 
-    if (current_velocity.dot(Vector2.RIGHT) > 0 and current_position.x < x)\
-            or (current_velocity.dot(Vector2.RIGHT) < 0 and current_position.x > x):
+    if (
+            current_velocity.dot(Vector2.RIGHT) > 0 and current_position.x < x
+            or current_velocity.dot(Vector2.RIGHT) < 0 and current_position.x > x
+    ):
         return Vector2.INF
     return current_position
 # ============================================================================ #

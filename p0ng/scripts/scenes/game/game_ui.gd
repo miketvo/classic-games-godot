@@ -3,7 +3,6 @@ extends UI
 
 @export var game_point_text: String
 
-var input_disabled: bool
 var disable_pausing: bool
 
 @onready var _score_label: Dictionary = {
@@ -25,6 +24,8 @@ var disable_pausing: bool
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
+    super()
+
     Global.software_cursor_visibility = SoftwareCursor.Visibility.IDLE_AUTO_HIDE
 
     input_disabled = false
@@ -45,6 +46,13 @@ func _ready() -> void:
             .connect("pressed", _on_end_game_request)
     _endgame_dialog.get_node("MenuContainer/VBoxContainer/QuitToDesktopButton")\
             .connect("pressed", _on_quit_to_desktop_request)
+
+    for child in get_tree().get_nodes_in_group("ui_container_slider_buttons"):
+        assert(child is Button, "ui_container_slider_buttons group must contain only Buttons")
+        child.connect("pressed", _on_ui_container_slider_button_pressed)
+    for child in get_tree().get_nodes_in_group("ui_scene_changer_buttons"):
+        assert(child is Button, "ui_scene_changer_buttons group must contain only Buttons")
+        child.connect("pressed", _on_ui_scene_changer_button_pressed)
 
     _endgame_dialog.process_mode = Node.PROCESS_MODE_DISABLED
     _endgame_dialog.modulate = Color(1.0, 1.0, 1.0, 0.0)
@@ -139,19 +147,14 @@ func _on_quit_to_desktop_request() -> void:
 ## _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").pressed().
 func _on_restart_request() -> void:
     get_tree().paused = false
-    button_pressed.emit("restart")
+    acted.emit("restart")
 
 
 # Listens to _pause_menu.get_node("EndGameButton.pressed() and
 ## _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton").pressed().
 func _on_end_game_request() -> void:
     get_tree().paused = false
-    button_pressed.emit("end_game")
-
-
-# Listens to tween transition Tween.finished() to re-enable input.
-func _on_tween_transition_finshed() -> void:
-    input_disabled = false
+    acted.emit("end_game")
 
 #endregion
 # ============================================================================ #

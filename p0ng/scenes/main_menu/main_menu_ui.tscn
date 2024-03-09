@@ -30,7 +30,7 @@ scale = Vector2(4, 4)
 pivot_offset = Vector2(64, 0)
 alignment = 1
 
-[node name="StartButton" type="Button" parent="MainMenuContainer"]
+[node name="StartButton" type="Button" parent="MainMenuContainer" groups=["ui_container_slider_buttons"]]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
@@ -43,7 +43,7 @@ focus_next = NodePath("../SettingsButton")
 focus_previous = NodePath("../QuitButton")
 text = "start"
 
-[node name="SettingsButton" type="Button" parent="MainMenuContainer"]
+[node name="SettingsButton" type="Button" parent="MainMenuContainer" groups=["ui_scene_changer_buttons"]]
 unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_left = NodePath(".")
@@ -52,7 +52,6 @@ focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath("../QuitButton")
 focus_next = NodePath("../QuitButton")
 focus_previous = NodePath("../StartButton")
-disabled = true
 text = "settings"
 
 [node name="QuitButton" type="Button" parent="MainMenuContainer"]
@@ -82,7 +81,7 @@ text = "start game"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="OnePlayerButton" type="Button" parent="StartMenuContainer"]
+[node name="OnePlayerButton" type="Button" parent="StartMenuContainer" groups=["ui_scene_changer_buttons"]]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
@@ -95,7 +94,7 @@ focus_next = NodePath("../TwoPlayersButton")
 focus_previous = NodePath("../BackButton")
 text = "1 player"
 
-[node name="TwoPlayersButton" type="Button" parent="StartMenuContainer"]
+[node name="TwoPlayersButton" type="Button" parent="StartMenuContainer" groups=["ui_scene_changer_buttons"]]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
@@ -108,7 +107,7 @@ focus_next = NodePath("../BackButton")
 focus_previous = NodePath("../OnePlayerButton")
 text = "2 players"
 
-[node name="BackButton" type="Button" parent="StartMenuContainer"]
+[node name="BackButton" type="Button" parent="StartMenuContainer" groups=["ui_container_slider_buttons"]]
 layout_mode = 2
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../TwoPlayersButton")
