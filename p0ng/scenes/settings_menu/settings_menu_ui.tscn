@@ -372,10 +372,17 @@ theme_type_variation = &"LabelHeading"
 text = "RESET DEFAULTS"
 horizontal_alignment = 1
 
-[node name="Message" type="Label" parent="ResetDefaults"]
+[node name="WarningLabel" type="Label" parent="ResetDefaults"]
 layout_mode = 2
 text = "reset all settings to their default values
 warning: this action is irreversible. proceed?"
+horizontal_alignment = 1
+
+[node name="DoneLabel" type="Label" parent="ResetDefaults"]
+visible = false
+layout_mode = 2
+text = "
+all settings reverted!"
 horizontal_alignment = 1
 
 [node name="Menu" type="HBoxContainer" parent="ResetDefaults"]
@@ -404,3 +411,5 @@ focus_neighbor_bottom = NodePath(".")
 focus_next = NodePath("../ProceedButton")
 focus_previous = NodePath("../ProceedButton")
 text = "cancel"
+
+[node name="ResetCooldownTimer" type="Timer" parent="ResetDefaults"]
