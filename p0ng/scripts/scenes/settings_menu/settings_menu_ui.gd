@@ -3,8 +3,6 @@ extends UI
 
 @export var settings_modified_message: String
 
-var input_disabled: bool
-
 @onready var _main: Container = $Main/Menu/VBoxContainer
 @onready var _graphics: Container = $Graphics
 @onready var _sounds: Container = $Sounds
@@ -44,11 +42,17 @@ func _ready() -> void:
     _sounds.get_node("GameplayVolume/MuteToggleButton")\
             .connect("toggled", _on_sounds_gameplay_volume_mute_toggled)
     _sounds.get_node("Menu/BackButton").connect("pressed", _on_sounds_menu_back_button_pressed)
+    _reset_defaults.get_node("Menu/ProceedButton")\
+            .connect("pressed", _on_reset_defaults_menu_proceed_button_pressed)
     _reset_defaults.get_node("Menu/CancelButton")\
             .connect("pressed", _on_reset_defaults_menu_cancel_button_pressed)
+    _reset_defaults.get_node("ResetCooldownTimer")\
+            .connect("timeout", _on_reset_defaults_reset_cooldown_timer_timeout)
 
     _graphics.get_node("Menu/MessageLabel").text = ""
     _sounds.get_node("Menu/MessageLabel").text = ""
+    _reset_defaults.get_node("WarningLabel").visible = true
+    _reset_defaults.get_node("DoneLabel").visible = false
 
     for child in get_tree().get_nodes_in_group("ui_container_slider_buttons"):
         assert(child is Button, "ui_container_slider_buttons group must contain only Buttons")
@@ -208,6 +212,14 @@ func _on_sounds_menu_back_button_pressed() -> void:
 
 
 #region Listens to _reset_defaults.get_node("*").
+func _on_reset_defaults_menu_proceed_button_pressed() -> void:
+    input_disabled = true
+    _reset_defaults.get_node("ResetCooldownTimer").start()
+    _reset_defaults.get_node("WarningLabel").visible = false
+    _reset_defaults.get_node("DoneLabel").visible = true
+    acted.emit("reset_defaults")
+
+
 func _on_reset_defaults_menu_cancel_button_pressed() -> void:
     input_disabled = true
     _main.get_node("ResetButton").grab_focus()
@@ -215,6 +227,15 @@ func _on_reset_defaults_menu_cancel_button_pressed() -> void:
             .connect("finished", _on_tween_transition_finshed)
     tween_transition_slide_container($Main, Vector2.DOWN, UI_TRANSITION_DURATION, 12.0)\
             .connect("finished", _on_tween_transition_finshed)
+
+
+func _on_reset_defaults_reset_cooldown_timer_timeout() -> void:
+    input_disabled = true
+    _main.get_node("ResetButton").grab_focus()
+    tween_transition_slide_container(_reset_defaults, Vector2.DOWN, UI_TRANSITION_DURATION)\
+            .connect("finished", _on_reset_defaults_tween_transitioned)
+    tween_transition_slide_container($Main, Vector2.DOWN, UI_TRANSITION_DURATION, 12.0)\
+            .connect("finished", _on_reset_defaults_tween_transitioned)
 #endregion
 
 
@@ -231,9 +252,12 @@ func _on_slider_drag_ended(value_changed: bool) -> void:
         _on_ui_accepted_button_pressed()
 
 
-# Listens to tween transition Tween.finished() to re-enable input.
-func _on_tween_transition_finshed() -> void:
-    input_disabled = false
+# Listens to tween transition Tween.finished() from reset_defaults to re-enable
+# input and reset labels.
+func _on_reset_defaults_tween_transitioned():
+    _on_tween_transition_finshed()
+    _reset_defaults.get_node("WarningLabel").visible = true
+    _reset_defaults.get_node("DoneLabel").visible = false
 
 #endregion
 # ============================================================================ #

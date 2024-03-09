@@ -376,7 +376,6 @@ warning: this action is irreversible. proceed?"
 horizontal_alignment = 1
 
 [node name="DoneLabel" type="Label" parent="ResetDefaults"]
-visible = false
 layout_mode = 2
 text = "
 all settings reverted!"
@@ -410,3 +409,5 @@ focus_previous = NodePath("../ProceedButton")
 text = "cancel"
 
 [node name="ResetCooldownTimer" type="Timer" parent="ResetDefaults"]
+process_mode = 3
+one_shot = true

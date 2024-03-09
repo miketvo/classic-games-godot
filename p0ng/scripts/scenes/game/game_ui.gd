@@ -3,7 +3,6 @@ extends UI
 
 @export var game_point_text: String
 
-var input_disabled: bool
 var disable_pausing: bool
 
 @onready var _score_label: Dictionary = {
@@ -156,11 +155,6 @@ func _on_restart_request() -> void:
 func _on_end_game_request() -> void:
     get_tree().paused = false
     acted.emit("end_game")
-
-
-# Listens to tween transition Tween.finished() to re-enable input.
-func _on_tween_transition_finshed() -> void:
-    input_disabled = false
 
 #endregion
 # ============================================================================ #

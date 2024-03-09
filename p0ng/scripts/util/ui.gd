@@ -4,7 +4,11 @@ extends Control
 
 signal acted(action: StringName)
 signal acted_with_data(action: StringName, data: Variant)
+
 const UI_TRANSITION_DURATION: float = 0.5
+
+var input_disabled: bool
+
 @onready var _sfx_controller: SfxController
 
 
@@ -96,6 +100,12 @@ func tween_transition_slide_container(
 
 # ============================================================================ #
 #region Signal listeners
+
+## Listens to tween transition Tween.finished() to re-enable input. Must be
+## connected programmatically.
+func _on_tween_transition_finshed() -> void:
+    input_disabled = false
+
 
 #region UI SFX listeners.
 func _on_ui_container_slider_button_pressed():

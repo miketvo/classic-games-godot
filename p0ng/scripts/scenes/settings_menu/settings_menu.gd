@@ -22,6 +22,9 @@ func _on_main_menu_ui_acted(action: StringName) -> void:
     match action:
         "back_to_main_menu":
             scene_finished.emit(SceneKey.MAIN_MENU)
+        "reset_defaults":
+            GameConfig.reset_config()
+            GameConfig.save_config()
 
 
 # Listens to $UIContainer/MainMenuUI.acted_with_data(action: StringName, data: Variant).

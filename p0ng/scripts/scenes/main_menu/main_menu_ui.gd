@@ -1,8 +1,6 @@
 extends UI
 
 
-var input_disabled: bool
-
 @onready var _main_menu: Container = $MainMenuContainer
 @onready var _start_menu: Container = $StartMenuContainer
 
@@ -75,11 +73,6 @@ func _on_start_menu_back_button_pressed() -> void:
     tween_transition_slide_container(_main_menu, Vector2.RIGHT, UI_TRANSITION_DURATION)\
             .connect("finished", _on_tween_transition_finshed)
 #endregion
-
-
-# Listens to tween transition Tween.finished() to re-enable input.
-func _on_tween_transition_finshed() -> void:
-    input_disabled = false
 
 #endregion
 # ============================================================================ #
