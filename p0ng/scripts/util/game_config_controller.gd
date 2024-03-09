@@ -2,8 +2,14 @@ class_name GameConfigController
 extends Node2D
 
 
+const MIN_VOLUME_DB: float = 0.0
+
 @export var post_processing_node: WorldEnvironment
 @export var crt_effect_node: ColorRect
+
+var _master_bus_max_volume_db: float
+var _ui_bus_max_volume_db: float
+var _gameplay_bus_max_volume_db: float
 
 
 # ============================================================================ #
@@ -21,6 +27,15 @@ func _ready() -> void:
             int(get_viewport_rect().size.y / 2) - window.size.y / 2
     )
 
+    for bus_index in range(AudioServer.bus_count):
+        match AudioServer.get_bus_name(bus_index):
+            "Master":
+                _master_bus_max_volume_db = AudioServer.get_bus_volume_db(bus_index)
+            "UI":
+                _ui_bus_max_volume_db = AudioServer.get_bus_volume_db(bus_index)
+            "Gameplay":
+                _gameplay_bus_max_volume_db = AudioServer.get_bus_volume_db(bus_index)
+
 
 func _process(_delta: float) -> void:
     if Input.is_action_just_pressed("toggle_fullscreen"):
@@ -30,6 +45,8 @@ func _process(_delta: float) -> void:
     _update_graphics_fullscreen_mode()
     _update_graphics_post_processing_mode()
     _update_graphics_crt_effect_mode()
+
+    _update_sounds_master_bus()
 #endregion
 # ============================================================================ #
 
@@ -66,5 +83,13 @@ func _update_graphics_post_processing_mode() -> void:
 
 func _update_graphics_crt_effect_mode() -> void:
     crt_effect_node.visible = GameConfig.config.graphics.crt_effect
+
+
+func _update_sounds_master_bus() -> void:
+    for bus_index in range(AudioServer.bus_count):
+        if AudioServer.get_bus_name(bus_index) == "Master":
+            AudioServer.set_bus_volume_db(bus_index, 0.0)
+            AudioServer.set_bus_mute(bus_index, GameConfig.config.sounds.master_muted)
+            break
 #endregion
 # ============================================================================ #
