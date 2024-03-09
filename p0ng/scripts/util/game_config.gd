@@ -84,7 +84,7 @@ func reset_config() -> void:
             "gameplay_muted": false,
         },
     }
-    save_config()
+    _original_config = config.duplicate(true)
 
 
 ## Manually save current game configuration in memory into persistent storage.
@@ -164,10 +164,13 @@ func _save(target_section: StringName = "") -> void:
     var config_file: ConfigFile = ConfigFile.new()
     for section in config.keys():
         if (target_section != "") and (target_section != section):
-            continue
-        var section_config: Dictionary = config[section]
-        for section_key in section_config.keys():
-            config_file.set_value(section, section_key, section_config[section_key])
+            var section_config: Dictionary = _original_config[section]
+            for section_key in section_config.keys():
+                config_file.set_value(section, section_key, section_config[section_key])
+        else:
+            var section_config: Dictionary = config[section]
+            for section_key in section_config.keys():
+                config_file.set_value(section, section_key, section_config[section_key])
     assert(
             config_file.save(SAVE_PATH) == OK,
             "Fatal error: Cannot write to %s" % ProjectSettings.globalize_path(SAVE_PATH)
