@@ -80,11 +80,17 @@ For work, please contact me via [miketvo@outlook.com](mailto:miketvo@outlook.com
 
 ## Attribution
 
-3rd-party fonts: Thanks [memesbruh03](https://www.dafont.com/profile.php?user=926808) for your awesome 100% free pixel art fonts:
+### 3rd-party fonts
+
+Thanks [memesbruh03](https://www.dafont.com/profile.php?user=926808) for your awesome 100% free pixel art fonts:
 
 - [3Dventure](https://www.dafont.com/3dventure.font)
 - [Gamer](https://www.dafont.com/gamer-2.font)
 - [Monobit](https://www.dafont.com/monobit.font)
+
+### 3rd-party shaders
+
+- [VHS and CRT monitor effect](https://godotshaders.com/shader/vhs-and-crt-monitor-effect/) by [Peter Höglund](https://godotshaders.com/author/pend00/).
 
 ## License
 

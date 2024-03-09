@@ -34,7 +34,7 @@ shader_parameter/clip_warp = false
 shader_parameter/vignette_intensity = 0.4
 shader_parameter/vignette_opacity = 0.51
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node"]
 script = ExtResource("1_pqbot")
 
 [node name="GameConfigController" type="Node2D" parent="." node_paths=PackedStringArray("post_processing_node", "crt_effect_node")]
