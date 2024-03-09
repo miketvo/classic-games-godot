@@ -39,6 +39,24 @@ func _on_main_menu_ui_acted_with_data(action: StringName, data: Variant) -> void
         "graphics_crt_effect_toggled":
             var toggled_on: bool = data
             GameConfig.config.graphics.crt_effect = toggled_on
+        "sounds_master_volume_slider_updated":
+            var new_value: float = data
+            GameConfig.config.sounds.master_volume = new_value
+        "sounds_master_volume_mute_toggled":
+            var toggled_on: bool = data
+            GameConfig.config.sounds.master_muted = toggled_on
+        "sounds_ui_volume_slider_updated":
+            var new_value: float = data
+            GameConfig.config.sounds.ui_volume = new_value
+        "sounds_ui_volume_mute_toggled":
+            var toggled_on: bool = data
+            GameConfig.config.sounds.ui_muted = toggled_on
+        "sounds_gameplay_volume_slider_updated":
+            var new_value: float = data
+            GameConfig.config.sounds.gameplay_volume = new_value
+        "sounds_gameplay_volume_mute_toggled":
+            var toggled_on: bool = data
+            GameConfig.config.sounds.gameplay_muted = toggled_on
         "save":
             var save_section: StringName = data
             GameConfig.save_config(save_section)

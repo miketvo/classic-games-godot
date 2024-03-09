@@ -96,7 +96,6 @@ func reset_config() -> void:
 ## See [member config] for game configuration structure.
 func save_config(section: StringName = "") -> void:
     self._save(section)
-    self._load()
 
 
 ## Returns true if the current game configuration is different from the content
@@ -154,6 +153,7 @@ func _load() -> void:
             err == OK,
             "Fatal error: Cannot read from %s" % ProjectSettings.globalize_path(SAVE_PATH)
     )
+
     for section in config_file.get_sections():
         for section_key in config_file.get_section_keys(section):
             _original_config[section][section_key] = config_file.get_value(section, section_key)
@@ -171,11 +171,16 @@ func _save(target_section: StringName = "") -> void:
             var section_config: Dictionary = config[section]
             for section_key in section_config.keys():
                 config_file.set_value(section, section_key, section_config[section_key])
+
     assert(
             config_file.save(SAVE_PATH) == OK,
             "Fatal error: Cannot write to %s" % ProjectSettings.globalize_path(SAVE_PATH)
     )
-    _original_config = config.duplicate(true)
+
+    if target_section == "":
+        _original_config = config.duplicate(true)
+    else:
+        _original_config[target_section] = config[target_section].duplicate(true)
 
 
 # Best resolution is defined as a resolution in [constant RESOLUTIONS]; with

@@ -16,6 +16,7 @@ var input_disabled: bool
 func _ready() -> void:
     super()
     input_disabled = false
+
     _main.get_node("BackButton").grab_focus()
     _main.get_node("BackButton").connect("pressed", _on_main_back_button_pressed)
     _main.get_node("GraphicsButton").connect("pressed", _on_main_graphics_button_pressed)
@@ -30,6 +31,18 @@ func _ready() -> void:
     _graphics.get_node("CrtEffect/ToggleButton")\
             .connect("toggled", _on_graphics_crt_effect_toggled)
     _graphics.get_node("Menu/BackButton").connect("pressed", _on_graphics_menu_back_button_pressed)
+    _sounds.get_node("MasterVolume/HSlider")\
+            .connect("drag_ended", _on_sounds_master_volume_slider_updated)
+    _sounds.get_node("MasterVolume/MuteToggleButton")\
+            .connect("toggled", _on_sounds_master_volume_mute_toggled)
+    _sounds.get_node("UIVolume/HSlider")\
+            .connect("drag_ended", _on_sounds_ui_volume_slider_updated)
+    _sounds.get_node("UIVolume/MuteToggleButton")\
+            .connect("toggled", _on_sounds_ui_volume_mute_toggled)
+    _sounds.get_node("GameplayVolume/HSlider")\
+            .connect("drag_ended", _on_sounds_gameplay_volume_slider_updated)
+    _sounds.get_node("GameplayVolume/MuteToggleButton")\
+            .connect("toggled", _on_sounds_gameplay_volume_mute_toggled)
     _sounds.get_node("Menu/BackButton").connect("pressed", _on_sounds_menu_back_button_pressed)
     _reset_defaults.get_node("Menu/CancelButton")\
             .connect("pressed", _on_reset_defaults_menu_cancel_button_pressed)
@@ -63,15 +76,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-    var is_graphics_fullscreen: bool = GameConfig.config.graphics.fullscreen
-    var resolution_option_button = _graphics.get_node("Resolution/OptionButton")
-    match [ is_graphics_fullscreen, resolution_option_button.disabled ]:
-        [ true, false ]:
-            resolution_option_button.disabled = true
-        [ false, true ]:
-            resolution_option_button.disabled = false
     _update_graphics_save_button()
-
     _update_sounds_save_button()
 
 
@@ -128,6 +133,7 @@ func _on_graphics_resolution_selected(index: int) -> void:
 
 
 func _on_graphics_fullscreen_toggled(toggled_on: bool) -> void:
+    _graphics.get_node("Resolution/OptionButton").disabled = toggled_on
     acted_with_data.emit("graphics_fullscreen_toggled", toggled_on)
 
 
@@ -154,8 +160,41 @@ func _on_graphics_menu_back_button_pressed() -> void:
 
 
 #region Listens to _sounds.get_node("*").
+func _on_sounds_master_volume_slider_updated(value_changed: bool) -> void:
+    if value_changed:
+        var slider: Range = _sounds.get_node("MasterVolume/HSlider")
+        acted_with_data.emit("sounds_master_volume_slider_updated", slider.value)
+
+
+func _on_sounds_master_volume_mute_toggled(toggled_on: bool) -> void:
+    _sounds.get_node("MasterVolume/HSlider").editable = not toggled_on
+    acted_with_data.emit("sounds_master_volume_mute_toggled", toggled_on)
+
+
+func _on_sounds_ui_volume_slider_updated(value_changed: bool) -> void:
+    if value_changed:
+        var slider: Range = _sounds.get_node("UIVolume/HSlider")
+        acted_with_data.emit("sounds_ui_volume_slider_updated", slider.value)
+
+
+func _on_sounds_ui_volume_mute_toggled(toggled_on: bool) -> void:
+    _sounds.get_node("UIVolume/HSlider").editable = not toggled_on
+    acted_with_data.emit("sounds_ui_volume_mute_toggled", toggled_on)
+
+
+func _on_sounds_gameplay_volume_slider_updated(value_changed: bool) -> void:
+    if value_changed:
+        var slider: Range = _sounds.get_node("GameplayVolume/HSlider")
+        acted_with_data.emit("sounds_gameplay_volume_slider_updated", slider.value)
+
+
+func _on_sounds_gameplay_volume_mute_toggled(toggled_on: bool) -> void:
+    _sounds.get_node("GameplayVolume/HSlider").editable = not toggled_on
+    acted_with_data.emit("sounds_gameplay_volume_mute_toggled", toggled_on)
+
+
 func _on_sounds_menu_save_button_pressed() -> void:
-    acted.emit("save", "sounds")
+    acted_with_data.emit("save", "sounds")
 
 
 func _on_sounds_menu_back_button_pressed() -> void:

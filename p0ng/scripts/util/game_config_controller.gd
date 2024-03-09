@@ -65,10 +65,6 @@ func _update_graphics_post_processing_mode() -> void:
 
 
 func _update_graphics_crt_effect_mode() -> void:
-    match [ GameConfig.config.graphics.crt_effect, crt_effect_node.visible ]:
-        [ false, true ]:
-            crt_effect_node.visible = false
-        [ true, false ]:
-            crt_effect_node.visible = true
+    crt_effect_node.visible = GameConfig.config.graphics.crt_effect
 #endregion
 # ============================================================================ #
