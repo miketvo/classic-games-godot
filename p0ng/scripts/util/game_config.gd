@@ -23,6 +23,13 @@ const RESOLUTIONS: Dictionary = {
     "3200x1800": Vector2i(3200, 1800),
 }
 
+## Maximum value of volume sliders. See [member Range.max_value].
+const VOLUME_SLIDER_MAX_VALUE: float = 100.0
+
+## Number of ticks displayed on the slider, including border ticks. See
+## [member Slider.tick_count].
+const VOLUME_SLIDER_TICK_COUNT: int = 10
+
 #endregion
 # ============================================================================ #
 
@@ -76,11 +83,11 @@ func reset_config() -> void:
             "crt_effect": true,
         },
         "sounds": {
-            "master_volume": 100.0,
+            "master_volume": VOLUME_SLIDER_MAX_VALUE,
             "master_muted": false,
-            "ui_volume": 100.0,
+            "ui_volume": VOLUME_SLIDER_MAX_VALUE,
             "ui_muted": false,
-            "gameplay_volume": 100.0,
+            "gameplay_volume": VOLUME_SLIDER_MAX_VALUE,
             "gameplay_muted": false,
         },
     }

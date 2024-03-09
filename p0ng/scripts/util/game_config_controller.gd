@@ -2,7 +2,7 @@ class_name GameConfigController
 extends Node2D
 
 
-const MIN_VOLUME_DB: float = 0.0
+const MIN_AUDIO_BUS_VOLUME_DB: float = -80.0
 
 @export var post_processing_node: WorldEnvironment
 @export var crt_effect_node: ColorRect
@@ -47,6 +47,8 @@ func _process(_delta: float) -> void:
     _update_graphics_crt_effect_mode()
 
     _update_sounds_master_bus()
+    _update_sounds_ui_bus()
+    _update_sounds_gameplay_bus()
 #endregion
 # ============================================================================ #
 
@@ -88,8 +90,51 @@ func _update_graphics_crt_effect_mode() -> void:
 func _update_sounds_master_bus() -> void:
     for bus_index in range(AudioServer.bus_count):
         if AudioServer.get_bus_name(bus_index) == "Master":
-            AudioServer.set_bus_volume_db(bus_index, 0.0)
+            var volume_range_db: float = abs(
+                    _master_bus_max_volume_db - MIN_AUDIO_BUS_VOLUME_DB
+            )
+            var volume_db: float = (
+                    MIN_AUDIO_BUS_VOLUME_DB
+                    + (volume_range_db / GameConfig.VOLUME_SLIDER_MAX_VALUE)
+                    * GameConfig.config.sounds.master_volume
+            )
+
+            AudioServer.set_bus_volume_db(bus_index, volume_db)
             AudioServer.set_bus_mute(bus_index, GameConfig.config.sounds.master_muted)
+            break
+
+
+func _update_sounds_ui_bus() -> void:
+    for bus_index in range(AudioServer.bus_count):
+        if AudioServer.get_bus_name(bus_index) == "UI":
+            var volume_range_db: float = abs(
+                    _ui_bus_max_volume_db - MIN_AUDIO_BUS_VOLUME_DB
+            )
+            var volume_db: float = (
+                    MIN_AUDIO_BUS_VOLUME_DB
+                    + (volume_range_db / GameConfig.VOLUME_SLIDER_MAX_VALUE)
+                    * GameConfig.config.sounds.ui_volume
+            )
+
+            AudioServer.set_bus_volume_db(bus_index, volume_db)
+            AudioServer.set_bus_mute(bus_index, GameConfig.config.sounds.ui_muted)
+            break
+
+
+func _update_sounds_gameplay_bus() -> void:
+    for bus_index in range(AudioServer.bus_count):
+        if AudioServer.get_bus_name(bus_index) == "Gameplay":
+            var volume_range_db: float = abs(
+                    _gameplay_bus_max_volume_db - MIN_AUDIO_BUS_VOLUME_DB
+            )
+            var volume_db: float = (
+                    MIN_AUDIO_BUS_VOLUME_DB
+                    + (volume_range_db / GameConfig.VOLUME_SLIDER_MAX_VALUE)
+                    * GameConfig.config.sounds.gameplay_volume
+            )
+
+            AudioServer.set_bus_volume_db(bus_index, volume_db)
+            AudioServer.set_bus_mute(bus_index, GameConfig.config.sounds.gameplay_muted)
             break
 #endregion
 # ============================================================================ #

@@ -242,7 +242,6 @@ focus_neighbor_bottom = NodePath("../../UIVolume/HSlider")
 focus_next = NodePath("../../UIVolume/HSlider")
 focus_previous = NodePath("../../Menu/SaveButton")
 scrollable = false
-tick_count = 12
 ticks_on_borders = true
 
 [node name="MuteToggleButton" type="Button" parent="Sounds/MasterVolume" groups=["ui_accepted_buttons"]]
@@ -277,7 +276,6 @@ focus_neighbor_bottom = NodePath("../../GameplayVolume/HSlider")
 focus_next = NodePath("../../GameplayVolume/HSlider")
 focus_previous = NodePath("../../MasterVolume/HSlider")
 scrollable = false
-tick_count = 12
 ticks_on_borders = true
 
 [node name="MuteToggleButton" type="Button" parent="Sounds/UIVolume" groups=["ui_accepted_buttons"]]
@@ -312,7 +310,6 @@ focus_neighbor_bottom = NodePath("../../Menu/SaveButton")
 focus_next = NodePath("../../Menu/SaveButton")
 focus_previous = NodePath("../../UIVolume/HSlider")
 scrollable = false
-tick_count = 12
 ticks_on_borders = true
 
 [node name="MuteToggleButton" type="Button" parent="Sounds/GameplayVolume" groups=["ui_accepted_buttons"]]

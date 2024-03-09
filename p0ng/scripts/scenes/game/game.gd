@@ -106,13 +106,15 @@ func _on_ball_body_exited(body: Node) -> void:
     match body:
         left_paddle_character, right_paddle_character:
             _current_ball_speed *= Global.BALL_SPEED_DIFFICULTY_MULTIPLIER
-            new_velocity =\
-                    Vector2.from_angle(ball.linear_velocity.angle())\
+            new_velocity = (
+                    Vector2.from_angle(ball.linear_velocity.angle())
                     * _current_ball_speed
+            )
         _:
-            new_velocity =\
-                    Vector2.from_angle(ball.linear_velocity.angle())\
+            new_velocity = (
+                    Vector2.from_angle(ball.linear_velocity.angle())
                     * _current_ball_speed
+            )
     ball.linear_velocity = new_velocity
 
 
