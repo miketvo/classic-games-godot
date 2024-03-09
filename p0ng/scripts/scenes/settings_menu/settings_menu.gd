@@ -72,22 +72,8 @@ func _on_main_menu_ui_acted_with_data(action: StringName, data: Variant) -> void
 #region Utils
 func _load_config() -> void:
     var ui_graphics = _ui.get_node("Graphics")
-    for resolution_key in GameConfig.RESOLUTIONS.keys():
-        var current_resolution: Vector2i = Vector2i(get_viewport_rect().size)
-        var resolution: Vector2i = GameConfig.RESOLUTIONS[resolution_key]
-        var resolution_option_button: OptionButton =\
-                ui_graphics.get_node("Resolution/OptionButton")
-
-        resolution_option_button.add_item(resolution_key)
-        var current_item_index: int = resolution_option_button.item_count - 1
-
-        if resolution_key == GameConfig.config.graphics.resolution:
-            resolution_option_button.select(current_item_index)
-        if (
-                resolution.x > current_resolution.x
-                or resolution.y > current_resolution.y
-        ):
-            resolution_option_button.set_item_disabled(current_item_index, true)
+    ui_graphics.get_node("Resolution/OptionButton").text =\
+            GameConfig.config.graphics.resolution
     ui_graphics.get_node("Fullscreen/ToggleButton").button_pressed =\
             GameConfig.config.graphics.fullscreen
     ui_graphics.get_node("PostProcessing/ToggleButton").button_pressed =\

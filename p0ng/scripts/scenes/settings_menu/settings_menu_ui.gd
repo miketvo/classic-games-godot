@@ -3,8 +3,11 @@ extends UI
 
 @export var settings_modified_message: String
 
+var _resolution_option_items: Array = Array()
+
 @onready var _main: Container = $Main/Menu/VBoxContainer
 @onready var _graphics: Container = $Graphics
+@onready var _resolution_popup: Container = $ResolutionPopup
 @onready var _sounds: Container = $Sounds
 @onready var _reset_defaults: Container = $ResetDefaults
 
@@ -21,7 +24,7 @@ func _ready() -> void:
     _main.get_node("SoundsButton").connect("pressed", _on_main_sounds_button_pressed)
     _main.get_node("ResetButton").connect("pressed", _on_main_reset_button_pressed)
     _graphics.get_node("Resolution/OptionButton")\
-            .connect("item_selected", _on_graphics_resolution_selected)
+            .connect("pressed", _on_graphics_resolution_option_button_pressed)
     _graphics.get_node("Fullscreen/ToggleButton")\
             .connect("toggled", _on_graphics_fullscreen_toggled)
     _graphics.get_node("PostProcessing/ToggleButton")\
@@ -54,6 +57,8 @@ func _ready() -> void:
     _reset_defaults.get_node("WarningLabel").visible = true
     _reset_defaults.get_node("DoneLabel").visible = false
 
+    _configure_resolution_popup()
+
     for child in get_tree().get_nodes_in_group("ui_container_slider_buttons"):
         assert(child is Button, "ui_container_slider_buttons group must contain only Buttons")
         child.connect("pressed", _on_ui_container_slider_button_pressed)
@@ -63,8 +68,6 @@ func _ready() -> void:
     for child in get_tree().get_nodes_in_group("ui_selected_buttons"):
         assert(child is Button, "ui_selected_buttons group must contain only Buttons")
         child.connect("pressed", _on_ui_selected_button_pressed)
-        if child is OptionButton:
-            child.connect("item_selected", _on_option_button_item_selected)
     for child in get_tree().get_nodes_in_group("ui_accepted_buttons"):
         assert(
                 (child is Button) or (child is Slider),
@@ -129,11 +132,26 @@ func _on_main_back_button_pressed() -> void:
 
 
 #region Listens to _graphics.get_node("*").
-func _on_graphics_resolution_selected(index: int) -> void:
-    acted_with_data.emit(
-            "graphics_resolution_selected",
-            _graphics.get_node("Resolution/OptionButton").get_item_text(index)
+func _on_graphics_resolution_option_button_pressed() -> void:
+    var resolution_option_button: Button = _graphics.get_node("Resolution/OptionButton")
+    if _resolution_popup.visible:
+        resolution_option_button.button_pressed = true
+        return
+
+    _resolution_popup.visible = true
+    _resolution_popup.global_position = Vector2(
+            resolution_option_button.global_position.x,
+            (
+                    resolution_option_button.global_position.y
+                    + resolution_option_button.size.y
+                    * _resolution_popup.scale.y
+            )
     )
+
+    for resolution_option_item in _resolution_option_items:
+        if resolution_option_item.text == GameConfig.config.graphics.resolution:
+            resolution_option_item.grab_focus()
+            break
 
 
 func _on_graphics_fullscreen_toggled(toggled_on: bool) -> void:
@@ -161,6 +179,19 @@ func _on_graphics_menu_back_button_pressed() -> void:
     tween_transition_slide_container($Main, Vector2.LEFT, UI_TRANSITION_DURATION)\
             .connect("finished", _on_tween_transition_finshed)
 #endregion
+
+
+# Listens to _resolution_option_items.[*].selected().
+func _on_resolution_option_item_selected(text: String) -> void:
+    if text != GameConfig.config.graphics.resolution:
+        var resolution_option_button: Button = _graphics.get_node("Resolution/OptionButton")
+        resolution_option_button.text = text
+        resolution_option_button.button_pressed = false
+        _resolution_popup.visible = false
+        acted_with_data.emit(
+                "graphics_resolution_selected",
+                text
+        )
 
 
 #region Listens to _sounds.get_node("*").
@@ -265,6 +296,59 @@ func _on_reset_defaults_tween_transitioned():
 
 # ============================================================================ #
 #region Utils
+func _configure_resolution_popup() -> void:
+    _resolution_popup.visible = false
+
+    var resolution_popup_button_group: ButtonGroup = ButtonGroup.new()
+    var resolution_popup_container: Container =\
+            _resolution_popup.get_node("ScrollContainer/VBoxContainer")
+    var resolution_keys: Array = GameConfig.RESOLUTIONS.keys()
+
+    var i: int = 0
+    for resolution_key in resolution_keys:
+        var current_resolution: Vector2i = Vector2i(get_viewport_rect().size)
+        var resolution: Vector2i = GameConfig.RESOLUTIONS[resolution_key]
+
+        var resolution_option_item: OptionItem = OptionItem.new(
+                "%sCheckBox" % resolution_key,
+                resolution_key,
+                resolution_popup_button_group
+        )
+        resolution_option_item.connect("selected", _on_resolution_option_item_selected)
+        resolution_option_item.add_to_group("ui_accepted_buttons")
+        resolution_popup_container.add_child(resolution_option_item)
+
+        _resolution_option_items.push_back(resolution_option_item)
+        resolution_option_item.focus_neighbor_left = "."
+        resolution_option_item.focus_neighbor_right = "."
+        if i > 0:
+            var prev_option_item_path: String = "../%s" % _resolution_option_items[i - 1].name
+            var this_option_item_path: String = "../%s" % resolution_option_item.name
+
+            _resolution_option_items[i - 1].focus_neighbor_bottom = NodePath(this_option_item_path)
+            _resolution_option_items[i - 1].focus_next = NodePath(this_option_item_path)
+            resolution_option_item.focus_neighbor_top = NodePath(prev_option_item_path)
+            resolution_option_item.focus_previous = NodePath(prev_option_item_path)
+
+            if i == resolution_keys.size() - 1:
+                var first_option_item = _resolution_option_items[0]
+                var first_option_item_path: String = "../%s" % first_option_item
+                resolution_option_item.focus_neighbor_bottom = NodePath(first_option_item_path)
+                resolution_option_item.focus_next = NodePath(first_option_item_path)
+                first_option_item.focus_neighbor_top = NodePath(this_option_item_path)
+                first_option_item.focus_previous = NodePath(this_option_item_path)
+
+        if resolution_key == GameConfig.config.graphics.resolution:
+            resolution_option_item.button_pressed = true
+        if (
+                resolution.x > current_resolution.x
+                or resolution.y > current_resolution.y
+        ):
+            resolution_option_item.disabled = true
+
+        i += 1
+
+
 func _update_graphics_save_button() -> void:
     var is_config_graphics_modified: bool = GameConfig.is_modified("graphics")
     var graphics_message_label: Label = _graphics.get_node("Menu/MessageLabel")

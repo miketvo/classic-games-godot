@@ -1,11 +1,25 @@
-[gd_scene load_steps=4 format=3 uid="uid://bprio2u3m5v2b"]
+[gd_scene load_steps=7 format=3 uid="uid://bprio2u3m5v2b"]
 
 [ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_apgf5"]
 [ext_resource type="Script" path="res://scripts/scenes/settings_menu/settings_menu_ui.gd" id="2_e2d8y"]
+[ext_resource type="Texture2D" uid="uid://dewam7iq2nbdw" path="res://assets/ui/icons/arrow.png" id="3_ocmwm"]
+[ext_resource type="Script" path="res://scripts/scenes/settings_menu/resolution_popup.gd" id="4_bila8"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j5bjy"]
 content_margin_left = 48.0
 content_margin_right = 48.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tpq7u"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.0941176, 0.0470588, 0.129412, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.435294, 0.196078, 0.305882, 1)
 
 [node name="SettingsMenuUI" type="Control"]
 layout_mode = 3
@@ -103,15 +117,20 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "resolution"
 
-[node name="OptionButton" type="OptionButton" parent="Graphics/Resolution" groups=["ui_selected_buttons"]]
+[node name="OptionButton" type="Button" parent="Graphics/Resolution" groups=["ui_selected_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.74
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../../Menu/BackButton")
 focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath("../../Fullscreen/ToggleButton")
 focus_next = NodePath("../../Fullscreen/ToggleButton")
 focus_previous = NodePath("../../Menu/BackButton")
+toggle_mode = true
+icon = ExtResource("3_ocmwm")
+alignment = 0
+icon_alignment = 2
 
 [node name="Fullscreen" type="HBoxContainer" parent="Graphics"]
 layout_mode = 2
@@ -415,3 +434,25 @@ text = "cancel"
 [node name="ResetCooldownTimer" type="Timer" parent="ResetDefaults"]
 process_mode = 3
 one_shot = true
+
+[node name="ResolutionPopup" type="PanelContainer" parent="." node_paths=PackedStringArray("option_button")]
+layout_mode = 0
+offset_left = 1920.0
+offset_top = 1080.0
+offset_right = 2080.0
+offset_bottom = 1240.0
+scale = Vector2(4, 4)
+theme_override_styles/panel = SubResource("StyleBoxFlat_tpq7u")
+script = ExtResource("4_bila8")
+option_button = NodePath("../Graphics/Resolution/OptionButton")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ResolutionPopup"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ResolutionPopup/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/separation = -6
