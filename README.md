@@ -8,7 +8,8 @@ Each folder containing a `project.godot` file is a project meant to be used with
 
 ## Available games
 
-- p0ng: [README.md](p0ng/README.md) | [Source code](https://github.com/miketvo/classic-games-godot/tree/main/p0ng)
+- p0ng: [README.md](p0ng/README.md) | [Source code](https://github.com/miketvo/classic-games-godot/tree/main/p0ng) | <a href="https://github.com/miketvo/classic-games-godot/releases/latest/download/p0ng-desktop-windows-x86_64.zip"><img src="https://img.shields.io/badge/DOWNLOAD-CE6B40?style=flat-square"></a>
+
 
 ## Importing all projects
 
