@@ -98,6 +98,10 @@ func _load_config() -> void:
     var ui_sounds = _ui.get_node("Sounds")
     ui_sounds.get_node("MasterVolume/HSlider").max_value = GameConfig.VOLUME_SLIDER_MAX_VALUE
     ui_sounds.get_node("MasterVolume/HSlider").tick_count = GameConfig.VOLUME_SLIDER_TICK_COUNT
+    ui_sounds.get_node("MasterVolume/HSlider").step = (
+            GameConfig.VOLUME_SLIDER_MAX_VALUE
+            / (GameConfig.VOLUME_SLIDER_TICK_COUNT - 1)
+    )
     ui_sounds.get_node("MasterVolume/HSlider").set_value_no_signal(
             GameConfig.config.sounds.master_volume
     )
@@ -105,6 +109,10 @@ func _load_config() -> void:
             GameConfig.config.sounds.master_muted
     ui_sounds.get_node("UIVolume/HSlider").max_value = GameConfig.VOLUME_SLIDER_MAX_VALUE
     ui_sounds.get_node("UIVolume/HSlider").tick_count = GameConfig.VOLUME_SLIDER_TICK_COUNT
+    ui_sounds.get_node("UIVolume/HSlider").step = (
+            GameConfig.VOLUME_SLIDER_MAX_VALUE
+            / (GameConfig.VOLUME_SLIDER_TICK_COUNT - 1)
+    )
     ui_sounds.get_node("UIVolume/HSlider").set_value_no_signal(
             GameConfig.config.sounds.ui_volume
     )
@@ -112,6 +120,10 @@ func _load_config() -> void:
             GameConfig.config.sounds.ui_muted
     ui_sounds.get_node("GameplayVolume/HSlider").max_value = GameConfig.VOLUME_SLIDER_MAX_VALUE
     ui_sounds.get_node("GameplayVolume/HSlider").tick_count = GameConfig.VOLUME_SLIDER_TICK_COUNT
+    ui_sounds.get_node("GameplayVolume/HSlider").step = (
+            GameConfig.VOLUME_SLIDER_MAX_VALUE
+            / (GameConfig.VOLUME_SLIDER_TICK_COUNT - 1)
+    )
     ui_sounds.get_node("GameplayVolume/HSlider").set_value_no_signal(
             GameConfig.config.sounds.gameplay_volume
     )

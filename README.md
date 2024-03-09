@@ -45,6 +45,9 @@ For work, please contact me via [miketvo@outlook.com](mailto:miketvo@outlook.com
 
 ## Tools used:
 
+<details>
+<summary>Expand</summary>
+
 ### Programming
 
 - Godot Engine
@@ -69,9 +72,19 @@ For work, please contact me via [miketvo@outlook.com](mailto:miketvo@outlook.com
 
 ### Others
 
-- Notion
-- draw.io
-- Microsoft Office Suite
+- Notion (Project Management)
+- draw.io (Diagrams)
+- Microsoft Office Suite (General Documentation)
+
+</details>
+
+## Attribution
+
+3rd-party fonts: Thanks [memesbruh03](https://www.dafont.com/profile.php?user=926808) for your awesome 100% free pixel art fonts:
+
+- [3Dventure](https://www.dafont.com/3dventure.font)
+- [Gamer](https://www.dafont.com/gamer-2.font)
+- [Monobit](https://www.dafont.com/monobit.font)
 
 ## License
 

@@ -211,7 +211,7 @@ text = "back"
 layout_mode = 2
 offset_left = 1920.0
 offset_top = 208.0
-offset_right = 2300.0
+offset_right = 2330.0
 offset_bottom = 378.0
 scale = Vector2(4, 4)
 
@@ -223,6 +223,7 @@ horizontal_alignment = 1
 
 [node name="MasterVolume" type="HBoxContainer" parent="Sounds"]
 layout_mode = 2
+theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="Sounds/MasterVolume"]
 layout_mode = 2
@@ -257,6 +258,7 @@ text = "mute"
 
 [node name="UIVolume" type="HBoxContainer" parent="Sounds"]
 layout_mode = 2
+theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="Sounds/UIVolume"]
 layout_mode = 2
@@ -291,6 +293,7 @@ text = "mute"
 
 [node name="GameplayVolume" type="HBoxContainer" parent="Sounds"]
 layout_mode = 2
+theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="Sounds/GameplayVolume"]
 layout_mode = 2
@@ -325,6 +328,7 @@ text = "mute"
 
 [node name="Menu" type="HBoxContainer" parent="Sounds"]
 layout_mode = 2
+theme_override_constants/separation = 6
 
 [node name="SaveButton" type="Button" parent="Sounds/Menu" groups=["ui_disabled_buttons"]]
 layout_mode = 2
