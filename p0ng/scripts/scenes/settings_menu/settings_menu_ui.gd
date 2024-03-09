@@ -22,7 +22,13 @@ func _ready() -> void:
     _main.get_node("SoundsButton").connect("pressed", _on_main_sounds_button_pressed)
     _main.get_node("ResetButton").connect("pressed", _on_main_reset_button_pressed)
     _graphics.get_node("Resolution/OptionButton")\
-        .connect("item_selected", _on_graphics_resolution_selected)
+            .connect("item_selected", _on_graphics_resolution_selected)
+    _graphics.get_node("Fullscreen/ToggleButton")\
+            .connect("toggled", _on_graphics_fullscreen_toggled)
+    _graphics.get_node("PostProcessing/ToggleButton")\
+            .connect("toggled", _on_graphics_post_processing_toggled)
+    _graphics.get_node("CrtEffect/ToggleButton")\
+            .connect("toggled", _on_graphics_crt_effect_toggled)
     _graphics.get_node("Menu/BackButton").connect("pressed", _on_graphics_menu_back_button_pressed)
     _sounds.get_node("Menu/BackButton").connect("pressed", _on_sounds_menu_back_button_pressed)
     _reset_defaults.get_node("Menu/CancelButton")\
@@ -121,6 +127,18 @@ func _on_graphics_resolution_selected(index: int) -> void:
     )
 
 
+func _on_graphics_fullscreen_toggled(toggled_on: bool) -> void:
+    acted_with_data.emit("graphics_fullscreen_toggled", toggled_on)
+
+
+func _on_graphics_post_processing_toggled(toggled_on: bool) -> void:
+    acted_with_data.emit("graphics_post_processing_toggled", toggled_on)
+
+
+func _on_graphics_crt_effect_toggled(toggled_on: bool) -> void:
+    acted_with_data.emit("graphics_crt_effect_toggled", toggled_on)
+
+
 func _on_graphics_menu_save_button_pressed() -> void:
     acted_with_data.emit("save", "graphics")
 
@@ -183,7 +201,7 @@ func _on_tween_transition_finshed() -> void:
 
 
 # ============================================================================ #
-#region Signal listeners
+#region Utils
 func _update_graphics_save_button() -> void:
     var is_config_graphics_modified: bool = GameConfig.is_modified("graphics")
     var graphics_message_label: Label = _graphics.get_node("Menu/MessageLabel")

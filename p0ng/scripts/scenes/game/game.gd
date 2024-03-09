@@ -220,7 +220,6 @@ func _serve_ball(
     var impulse = unit_vector * ball.mass * acceleration # F = m * a (Newton)
 
     ball.apply_central_impulse(impulse)
-#endregion
 
 
 func _despawn_ball() -> void:
@@ -316,4 +315,5 @@ func _win_game(winning_side: int) -> void:
     left_paddle.set_script(null)
     right_paddle.set_script(null)
     _game_over = true
+#endregion
 # ============================================================================ #

@@ -30,6 +30,15 @@ func _on_main_menu_ui_acted_with_data(action: StringName, data: Variant) -> void
         "graphics_resolution_selected":
             var resolution: String = String(data)
             GameConfig.config.graphics.resolution = resolution
+        "graphics_fullscreen_toggled":
+            var toggled_on: bool = data
+            GameConfig.config.graphics.fullscreen = toggled_on
+        "graphics_post_processing_toggled":
+            var toggled_on: bool = data
+            GameConfig.config.graphics.post_processing = toggled_on
+        "graphics_crt_effect_toggled":
+            var toggled_on: bool = data
+            GameConfig.config.graphics.crt_effect = toggled_on
         "save":
             var save_section: StringName = data
             GameConfig.save_config(save_section)

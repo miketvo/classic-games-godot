@@ -2,6 +2,10 @@ class_name GameConfigController
 extends Node2D
 
 
+@export var post_processing_node: WorldEnvironment
+@export var crt_effect_node: ColorRect
+
+
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
@@ -24,6 +28,8 @@ func _process(_delta: float) -> void:
 
     _update_window_size()
     _update_fullscreen_mode()
+    _update_post_processing_mode()
+    _update_crt_effect_mode()
 #endregion
 # ============================================================================ #
 
@@ -47,5 +53,22 @@ func _update_fullscreen_mode() -> void:
         [ true, _ ] when window.mode != Window.MODE_EXCLUSIVE_FULLSCREEN:
             window.size = GameConfig.RESOLUTIONS[GameConfig.get_closest_resolution()]
             window.mode = Window.MODE_EXCLUSIVE_FULLSCREEN
+
+
+func _update_post_processing_mode() -> void:
+    var environment: Environment = post_processing_node.environment
+    match [ GameConfig.config.graphics.post_processing, environment.background_mode ]:
+        [ false, Environment.BG_CANVAS ]:
+            environment.background_mode = Environment.BG_CLEAR_COLOR
+        [ true, Environment.BG_CLEAR_COLOR ]:
+            environment.background_mode = Environment.BG_CANVAS
+
+
+func _update_crt_effect_mode() -> void:
+    match [ GameConfig.config.graphics.crt_effect, crt_effect_node.visible ]:
+        [ false, true ]:
+            crt_effect_node.visible = false
+        [ true, false ]:
+            crt_effect_node.visible = true
 #endregion
 # ============================================================================ #

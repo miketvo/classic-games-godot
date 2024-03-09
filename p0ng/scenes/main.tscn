@@ -37,8 +37,10 @@ shader_parameter/vignette_opacity = 0.51
 [node name="Main" type="Node2D"]
 script = ExtResource("1_pqbot")
 
-[node name="GameConfigController" type="Node2D" parent="."]
+[node name="GameConfigController" type="Node2D" parent="." node_paths=PackedStringArray("post_processing_node", "crt_effect_node")]
 script = ExtResource("2_ewawl")
+post_processing_node = NodePath("../PostProcessingLayer/PostProcessing")
+crt_effect_node = NodePath("../PostProcessingLayer/CrtEffect")
 
 [node name="SoftwareCursor" parent="." instance=ExtResource("2_75p8a")]
 
