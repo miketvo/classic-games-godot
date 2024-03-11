@@ -3,7 +3,9 @@ extends UI
 
 @export var settings_modified_message: String
 
-var _resolution_option_items: Array = Array()
+## Contains the [OptionItem] resolution buttons in the
+## [code]$ResolutionPopup[/code].
+var resolution_option_items: Array = Array()
 
 @onready var _main: Container = $Main/Menu/VBoxContainer
 @onready var _graphics: Container = $Graphics
@@ -148,7 +150,7 @@ func _on_graphics_resolution_option_button_pressed() -> void:
             )
     )
 
-    for resolution_option_item in _resolution_option_items:
+    for resolution_option_item in resolution_option_items:
         if resolution_option_item.text == GameConfig.config.graphics.resolution:
             resolution_option_item.grab_focus()
             break
@@ -181,7 +183,7 @@ func _on_graphics_menu_back_button_pressed() -> void:
 #endregion
 
 
-# Listens to _resolution_option_items.[*].selected().
+# Listens to resolution_option_items.[*].selected().
 func _on_resolution_option_item_selected(text: String) -> void:
     if text != GameConfig.config.graphics.resolution:
         var resolution_option_button: Button = _graphics.get_node("Resolution/OptionButton")
@@ -318,28 +320,26 @@ func _configure_resolution_popup() -> void:
         resolution_option_item.add_to_group("ui_accepted_buttons")
         resolution_popup_container.add_child(resolution_option_item)
 
-        _resolution_option_items.push_back(resolution_option_item)
+        resolution_option_items.push_back(resolution_option_item)
         resolution_option_item.focus_neighbor_left = "."
         resolution_option_item.focus_neighbor_right = "."
         if i > 0:
-            var prev_option_item_path: String = "../%s" % _resolution_option_items[i - 1].name
+            var prev_option_item_path: String = "../%s" % resolution_option_items[i - 1].name
             var this_option_item_path: String = "../%s" % resolution_option_item.name
 
-            _resolution_option_items[i - 1].focus_neighbor_bottom = NodePath(this_option_item_path)
-            _resolution_option_items[i - 1].focus_next = NodePath(this_option_item_path)
+            resolution_option_items[i - 1].focus_neighbor_bottom = NodePath(this_option_item_path)
+            resolution_option_items[i - 1].focus_next = NodePath(this_option_item_path)
             resolution_option_item.focus_neighbor_top = NodePath(prev_option_item_path)
             resolution_option_item.focus_previous = NodePath(prev_option_item_path)
 
             if i == resolution_keys.size() - 1:
-                var first_option_item = _resolution_option_items[0]
+                var first_option_item = resolution_option_items[0]
                 var first_option_item_path: String = "../%s" % first_option_item
                 resolution_option_item.focus_neighbor_bottom = NodePath(first_option_item_path)
                 resolution_option_item.focus_next = NodePath(first_option_item_path)
                 first_option_item.focus_neighbor_top = NodePath(this_option_item_path)
                 first_option_item.focus_previous = NodePath(this_option_item_path)
 
-        if resolution_key == GameConfig.config.graphics.resolution:
-            resolution_option_item.button_pressed = true
         if (
                 resolution.x > current_resolution.x
                 or resolution.y > current_resolution.y

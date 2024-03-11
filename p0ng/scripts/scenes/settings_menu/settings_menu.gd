@@ -7,7 +7,7 @@ extends GameScene2D
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    _load_config()
+    _ui_load_config()
     _ui.connect("acted", _on_main_menu_ui_acted)
     _ui.connect("acted_with_data", _on_main_menu_ui_acted_with_data)
 #endregion
@@ -25,6 +25,7 @@ func _on_main_menu_ui_acted(action: StringName) -> void:
         "reset_defaults":
             GameConfig.reset_config()
             GameConfig.save_config()
+            _ui_load_config()
 
 
 # Listens to $UIContainer/MainMenuUI.acted_with_data(action: StringName, data: Variant).
@@ -70,10 +71,14 @@ func _on_main_menu_ui_acted_with_data(action: StringName, data: Variant) -> void
 
 # ============================================================================ #
 #region Utils
-func _load_config() -> void:
+func _ui_load_config() -> void:
     var ui_graphics = _ui.get_node("Graphics")
     ui_graphics.get_node("Resolution/OptionButton").text =\
             GameConfig.config.graphics.resolution
+    for resolution_option_item: OptionItem in _ui.resolution_option_items:
+        if resolution_option_item.text == GameConfig.config.graphics.resolution:
+            resolution_option_item.button_pressed = true
+            break
     ui_graphics.get_node("Fullscreen/ToggleButton").button_pressed =\
             GameConfig.config.graphics.fullscreen
     ui_graphics.get_node("PostProcessing/ToggleButton").button_pressed =\
