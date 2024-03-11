@@ -94,7 +94,7 @@ foreach ($project in $godotProjects) {
         if (Test-Path -Path $zipFilePath) {
             Remove-Item -Path $zipFilePath -Force
         }
-        Compress-Archive -Path $zipFileSource -DestinationPath $zipFilePath
+        Compress-Archive -Path $zipFileSource -DestinationPath $zipFilePath -CompressionLevel NoCompression
         Write-Output "Packed $zipFileSource into $zipFilePath"
     }
 }
