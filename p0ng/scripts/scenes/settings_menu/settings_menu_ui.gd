@@ -197,10 +197,9 @@ func _on_resolution_option_item_selected(text: String) -> void:
 
 
 #region Listens to _sounds.get_node("*").
-func _on_sounds_master_volume_slider_updated(value_changed: bool) -> void:
-    if value_changed:
-        var slider: Range = _sounds.get_node("MasterVolume/HSlider")
-        acted_with_data.emit("sounds_master_volume_slider_updated", slider.value)
+func _on_sounds_master_volume_slider_updated(_value_changed: bool) -> void:
+    var slider: Range = _sounds.get_node("MasterVolume/HSlider")
+    acted_with_data.emit("sounds_master_volume_slider_updated", slider.value)
 
 
 func _on_sounds_master_volume_mute_toggled(toggled_on: bool) -> void:
@@ -208,10 +207,9 @@ func _on_sounds_master_volume_mute_toggled(toggled_on: bool) -> void:
     acted_with_data.emit("sounds_master_volume_mute_toggled", toggled_on)
 
 
-func _on_sounds_ui_volume_slider_updated(value_changed: bool) -> void:
-    if value_changed:
-        var slider: Range = _sounds.get_node("UIVolume/HSlider")
-        acted_with_data.emit("sounds_ui_volume_slider_updated", slider.value)
+func _on_sounds_ui_volume_slider_updated(_value_changed: bool) -> void:
+    var slider: Range = _sounds.get_node("UIVolume/HSlider")
+    acted_with_data.emit("sounds_ui_volume_slider_updated", slider.value)
 
 
 func _on_sounds_ui_volume_mute_toggled(toggled_on: bool) -> void:
@@ -219,10 +217,9 @@ func _on_sounds_ui_volume_mute_toggled(toggled_on: bool) -> void:
     acted_with_data.emit("sounds_ui_volume_mute_toggled", toggled_on)
 
 
-func _on_sounds_gameplay_volume_slider_updated(value_changed: bool) -> void:
-    if value_changed:
-        var slider: Range = _sounds.get_node("GameplayVolume/HSlider")
-        acted_with_data.emit("sounds_gameplay_volume_slider_updated", slider.value)
+func _on_sounds_gameplay_volume_slider_updated(_value_changed: bool) -> void:
+    var slider: Range = _sounds.get_node("GameplayVolume/HSlider")
+    acted_with_data.emit("sounds_gameplay_volume_slider_updated", slider.value)
 
 
 func _on_sounds_gameplay_volume_mute_toggled(toggled_on: bool) -> void:
@@ -280,9 +277,8 @@ func _on_option_button_item_selected(_index: int) -> void:
 
 # Listens to drag_ended(value_changed: bool) of ui_scene_changer_buttons that is
 # of type Slider.
-func _on_slider_drag_ended(value_changed: bool) -> void:
-    if value_changed:
-        _on_ui_accepted_button_pressed()
+func _on_slider_drag_ended(_value_changed: bool) -> void:
+    _on_ui_accepted_button_pressed()
 
 
 # Listens to tween transition Tween.finished() from reset_defaults to re-enable
