@@ -10,6 +10,7 @@ extends UI
 func _ready() -> void:
     super()
     input_disabled = false
+    %GameVersionLabel.text += ProjectSettings.get_setting("application/config/version")
     %StartButton.grab_focus()
     %StartButton.connect("pressed", _on_main_menu_start_button_pressed)
     %QuitButton.connect("pressed", _on_main_menu_quit_button_pressed)
@@ -24,6 +25,16 @@ func _ready() -> void:
     for child in get_tree().get_nodes_in_group("ui_scene_changer_buttons"):
         assert(child is Button, "ui_scene_changer_buttons group must contain only Buttons")
         child.connect("pressed", _on_ui_scene_changer_button_pressed)
+
+
+func _process(_delta: float) -> void:
+    %GameVersionLabel.global_position = Vector2(
+            (
+                    get_viewport_rect().size.x / 2
+                    - (%GameVersionLabel.size.x * %GameVersionLabel.scale.x) / 2
+            ),
+            %GameVersionLabel.global_position.y
+    )
 
 
 func _input(_event: InputEvent) -> void:
