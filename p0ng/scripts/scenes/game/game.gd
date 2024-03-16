@@ -226,7 +226,6 @@ func _serve_ball(
 
 func _despawn_ball() -> void:
     ball.queue_free()
-    remove_child(ball)
 
 
 func _configure_world() -> void:

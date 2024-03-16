@@ -16,10 +16,6 @@ var input_disabled: bool
 #region Godot builtins
 func _ready() -> void:
     _sfx_controller = get_tree().root.get_node("Main/UISfxController")
-
-
-func _exit_tree() -> void:
-    queue_free()
 #endregion
 # ============================================================================ #
 
