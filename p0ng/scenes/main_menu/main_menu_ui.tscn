@@ -21,9 +21,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 896.0
-offset_top = 516.0
+offset_top = 495.0
 offset_right = -896.0
-offset_bottom = -460.0
+offset_bottom = -481.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(4, 4)
@@ -68,9 +68,9 @@ text = "quit"
 [node name="StartMenuContainer" type="VBoxContainer" parent="."]
 layout_mode = 0
 offset_left = 2112.0
-offset_top = 420.0
+offset_top = 407.0
 offset_right = 2240.0
-offset_bottom = 554.0
+offset_bottom = 541.0
 scale = Vector2(4, 4)
 pivot_offset = Vector2(64, 0)
 
@@ -116,3 +116,13 @@ focus_neighbor_bottom = NodePath("../OnePlayerButton")
 focus_next = NodePath("../OnePlayerButton")
 focus_previous = NodePath("../TwoPlayersButton")
 text = "back"
+
+[node name="GameVersionLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 967.0
+offset_right = 78.0
+offset_bottom = 995.0
+scale = Vector2(4, 4)
+text = "version "
+horizontal_alignment = 2

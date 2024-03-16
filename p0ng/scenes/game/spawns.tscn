@@ -2,11 +2,14 @@
 
 [node name="Spawns" type="Node2D"]
 
-[node name="LeftPaddleSpawn" type="Node2D" parent="."]
+[node name="LeftPaddleSpawn" type="Marker2D" parent="."]
 position = Vector2(216, 540)
+gizmo_extents = 120.0
 
-[node name="RightPaddleSpawn" type="Node2D" parent="."]
+[node name="RightPaddleSpawn" type="Marker2D" parent="."]
 position = Vector2(1704, 540)
+gizmo_extents = 120.0
 
-[node name="BallSpawn" type="Node2D" parent="."]
+[node name="BallSpawn" type="Marker2D" parent="."]
 position = Vector2(960, 540)
+gizmo_extents = 120.0

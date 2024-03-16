@@ -75,15 +75,17 @@ func tween_transition_slide_container(
 
     var movement_scale: float
     if direction in [ Vector2.LEFT, Vector2.RIGHT ]:
-        movement_scale = \
-                get_viewport_rect().size.x / 2 \
-                + container.size.x * container.scale.x / 2 \
+        movement_scale = (
+                get_viewport_rect().size.x / 2
+                + container.size.x * container.scale.x / 2
                 + pad
+        )
     elif direction in [ Vector2.UP, Vector2. DOWN ]:
-        movement_scale = \
-                get_viewport_rect().size.y / 2 \
-                + container.size.y * container.scale.y / 2 \
+        movement_scale = (
+                get_viewport_rect().size.y / 2
+                + container.size.y * container.scale.y / 2
                 + pad
+        )
 
     var tween: Tween = create_tween()
     tween.tween_property(

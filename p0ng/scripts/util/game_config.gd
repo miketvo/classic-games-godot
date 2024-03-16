@@ -156,10 +156,10 @@ func get_closest_resolution() -> String:
 func _load() -> void:
     var config_file: ConfigFile = ConfigFile.new()
     var err: int = config_file.load(SAVE_PATH)
-    assert(
-            err == OK,
-            "Fatal error: Cannot read from %s" % ProjectSettings.globalize_path(SAVE_PATH)
-    )
+    if err != OK:
+        printerr("Fatal error: Cannot read from %s" % ProjectSettings.globalize_path(SAVE_PATH))
+        get_tree().quit(err)
+
 
     for section in config_file.get_sections():
         for section_key in config_file.get_section_keys(section):
@@ -179,10 +179,10 @@ func _save(target_section: StringName = "") -> void:
             for section_key in section_config.keys():
                 config_file.set_value(section, section_key, section_config[section_key])
 
-    assert(
-            config_file.save(SAVE_PATH) == OK,
-            "Fatal error: Cannot write to %s" % ProjectSettings.globalize_path(SAVE_PATH)
-    )
+    var err: int = config_file.save(SAVE_PATH)
+    if err != OK:
+        printerr("Fatal error: Cannot write to %s" % ProjectSettings.globalize_path(SAVE_PATH))
+        get_tree().quit(err)
 
     if target_section == "":
         _original_config = config.duplicate(true)
