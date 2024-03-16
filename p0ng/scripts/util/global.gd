@@ -48,6 +48,14 @@ var game_state_data: GameStateData = GameStateData.new()
 
 
 # ============================================================================ #
+#region Godot builtins
+func _exit_tree() -> void:
+    game_state_data.queue_free()
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
 #region Public methods
 func is_equal_approx(a: float, b: float, epsilon: float):
     return absf(a - b) < epsilon

@@ -31,9 +31,9 @@ var _game_round: int
 ## 2-bit bitwise flag, left and right sides correspond to leftmost and rightmost bit.
 var _game_point_state: int
 
-@onready var _ball_spawn: Node2D = $Spawns/BallSpawn
-@onready var _left_paddle_spawn: Node2D = $Spawns/LeftPaddleSpawn
-@onready var _right_paddle_spawn: Node2D = $Spawns/RightPaddleSpawn
+@onready var _ball_spawn: Marker2D = $Spawns/BallSpawn
+@onready var _left_paddle_spawn: Marker2D = $Spawns/LeftPaddleSpawn
+@onready var _right_paddle_spawn: Marker2D = $Spawns/RightPaddleSpawn
 @onready var _game_ui: UI = $UI/GameUI
 @onready var _sfx_controller: SfxController = $SfxController
 #endregion
@@ -226,7 +226,6 @@ func _serve_ball(
 
 func _despawn_ball() -> void:
     ball.queue_free()
-    remove_child(ball)
 
 
 func _configure_world() -> void:
