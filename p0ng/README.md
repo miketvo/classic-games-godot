@@ -52,7 +52,7 @@ For this mode, using my custom [Finite State Machine](https://en.wikipedia.org/w
 ## Gallery
 
 <div align="center" style="display: -webkit-box; display: -moz-box; display: -ms-flexbox; display: -webkit-flex; display: flex; flex-flow: row wrap; gap: 12px; align-content: center; align-items: center; justify-content: center;">
-    <img src="../assets/p0ng/p0ng_gameplay1.png" width=512>
-    <img src="../assets/p0ng/p0ng_gameplay2.png" width=512>
-    <img src="../assets/p0ng/p0ng_gameplay3.png" width=512>
+    <img src="../assets/p0ng/p0ng_gameplay1.png" width=480>
+    <img src="../assets/p0ng/p0ng_gameplay2.png" width=480>
+    <img src="../assets/p0ng/p0ng_gameplay3.png" width=480>
 </div>
