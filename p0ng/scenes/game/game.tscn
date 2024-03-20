@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://fsyym8qkg3qr"]
+[gd_scene load_steps=13 format=3 uid="uid://fsyym8qkg3qr"]
 
 [ext_resource type="Script" path="res://scripts/scenes/game/game.gd" id="1_eisns"]
 [ext_resource type="PackedScene" uid="uid://c77ktlmd3rbkb" path="res://scenes/game/world.tscn" id="2_0ybp3"]
 [ext_resource type="PackedScene" uid="uid://dofglbl0ean4l" path="res://scenes/game/game_ui.tscn" id="2_86o8i"]
 [ext_resource type="PackedScene" uid="uid://2aqxm1ipras" path="res://scenes/game/spawns.tscn" id="3_skvg6"]
+[ext_resource type="PackedScene" uid="uid://nfaha1jh03hj" path="res://scenes/game/game_hud.tscn" id="4_b4d4o"]
 [ext_resource type="Script" path="res://scripts/util/sfx_controller.gd" id="5_ov3ew"]
 [ext_resource type="AudioStream" uid="uid://dyefqfvbyudml" path="res://assets/sfx/game_end.wav" id="6_mu85n"]
 [ext_resource type="AudioStream" uid="uid://b615geswjhsxc" path="res://assets/sfx/round_start.wav" id="6_qb1t3"]
@@ -18,6 +19,11 @@ script = ExtResource("1_eisns")
 [node name="World" parent="." instance=ExtResource("2_0ybp3")]
 
 [node name="Spawns" parent="." instance=ExtResource("3_skvg6")]
+
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="GameHUD" parent="HUD" instance=ExtResource("4_b4d4o")]
 
 [node name="UI" type="CanvasLayer" parent="."]
 

@@ -34,6 +34,7 @@ var _game_point_state: int
 @onready var _ball_spawn: Marker2D = $Spawns/BallSpawn
 @onready var _left_paddle_spawn: Marker2D = $Spawns/LeftPaddleSpawn
 @onready var _right_paddle_spawn: Marker2D = $Spawns/RightPaddleSpawn
+@onready var _game_hud: UI = $HUD/GameHUD
 @onready var _game_ui: UI = $UI/GameUI
 @onready var _sfx_controller: SfxController = $SfxController
 #endregion
@@ -51,7 +52,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-    _game_ui.update_score_labels(left_score, right_score, _game_point_state)
+    _game_hud.update_score_labels(left_score, right_score, _game_point_state)
     if _game_over:
         _game_ui.game_over(winner)
         get_tree().paused = true
