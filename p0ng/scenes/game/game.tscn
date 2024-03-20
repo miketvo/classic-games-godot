@@ -19,14 +19,9 @@ script = ExtResource("1_eisns")
 
 [node name="Spawns" parent="." instance=ExtResource("3_skvg6")]
 
-[node name="UI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
+[node name="UI" type="CanvasLayer" parent="."]
 
 [node name="GameUI" parent="UI" instance=ExtResource("2_86o8i")]
-layout_mode = 1
 
 [node name="SfxController" type="Node" parent="."]
 process_mode = 3

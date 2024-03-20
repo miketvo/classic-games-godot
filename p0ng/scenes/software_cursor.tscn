@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://b1sxxtnr6xah8"]
+[gd_scene load_steps=6 format=3 uid="uid://b8ju5udggl7d5"]
 
 [ext_resource type="Texture2D" uid="uid://dqfpuk0uj1ox8" path="res://assets/ui/cursor.png" id="1_d4c6o"]
 [ext_resource type="Script" path="res://scripts/scenes/software_cursor.gd" id="2_3xk1i"]
@@ -63,13 +63,15 @@ _data = {
 "idle": SubResource("Animation_vflyu")
 }
 
-[node name="SoftwareCursor" type="Sprite2D"]
-z_index = 4096
+[node name="SoftwareCursor" type="CanvasLayer"]
+layer = 2
+script = ExtResource("2_3xk1i")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 texture = ExtResource("1_d4c6o")
 offset = Vector2(15, 21)
 hframes = 2
-script = ExtResource("2_3xk1i")
 metadata/_aseprite_wizard_config_ = {
 "i_mode": -1,
 "keep_anim_length": false,
@@ -83,7 +85,7 @@ metadata/_aseprite_wizard_config_ = {
 "source": "~/Projects/Godot/classic-games-godot-art/p0ng/cursor.ase"
 }
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
 libraries = {
 "": SubResource("AnimationLibrary_a4mwl")
 }

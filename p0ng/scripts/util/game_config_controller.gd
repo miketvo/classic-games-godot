@@ -16,17 +16,19 @@ var _gameplay_bus_max_volume_db: float
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    # Set window size and center window. Workaround for:
-    # https://github.com/godotengine/godot-proposals/issues/6247.
-    # TODO: Reimplement this when there is better support for the above issue in
-    # future Godot 4.x versions.
-    var window: Window = get_window()
-    window.size = GameConfig.RESOLUTIONS[GameConfig.config.graphics.resolution]
-    @warning_ignore("integer_division")
-    window.position = Vector2i(
-            int(get_viewport_rect().size.x / 2) - window.size.x / 2,
-            int(get_viewport_rect().size.y / 2) - window.size.y / 2
-    )
+    # Set window size and center window for desktop devices.
+    if not OS.get_name() in [ "Android", "iOS", "Web" ]:
+        # Workaround for:
+        # https://github.com/godotengine/godot-proposals/issues/6247.
+        # TODO: Reimplement this when there is better support for the above
+        # issue in future Godot 4.x versions.
+        var window: Window = get_window()
+        window.size = GameConfig.RESOLUTIONS[GameConfig.config.graphics.resolution]
+        @warning_ignore("integer_division")
+        window.position = Vector2i(
+                int(get_viewport_rect().size.x / 2) - window.size.x / 2,
+                int(get_viewport_rect().size.y / 2) - window.size.y / 2
+        )
 
     for bus_index in range(AudioServer.bus_count):
         match AudioServer.get_bus_name(bus_index):

@@ -42,7 +42,6 @@ script = ExtResource("2_5qob0")
 game_point_text = "GAME!"
 
 [node name="EndGameDialogContainer" type="VBoxContainer" parent="."]
-z_index = 99
 layout_mode = 2
 offset_right = 480.0
 offset_bottom = 258.0
@@ -174,7 +173,6 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_basa2")
 text = "NaN"
 
 [node name="PauseMenuContainer" type="PanelContainer" parent="."]
-z_index = 999
 layout_mode = 0
 offset_left = 874.0
 offset_top = 1080.0

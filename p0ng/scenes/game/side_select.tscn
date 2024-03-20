@@ -29,23 +29,17 @@ script = ExtResource("2_od2xv")
 
 [node name="Paddle" parent="Background/Spawns/RightPaddleSpawn" index="0" instance=ExtResource("4_ea1hk")]
 
-[node name="UI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-theme = ExtResource("1_co7gs")
-script = ExtResource("6_ei203")
+[node name="UI" type="CanvasLayer" parent="."]
 
-[node name="SideSelectContainer" type="VBoxContainer" parent="UI"]
-z_index = 99
-layout_mode = 0
+[node name="SideSelectUI" type="VBoxContainer" parent="UI"]
 offset_top = 260.0
 offset_right = 480.0
 offset_bottom = 365.0
 scale = Vector2(4, 4)
+theme = ExtResource("1_co7gs")
+script = ExtResource("6_ei203")
 
-[node name="Label" type="Label" parent="UI/SideSelectContainer"]
+[node name="Label" type="Label" parent="UI/SideSelectUI"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
@@ -55,24 +49,24 @@ text = "CHOOSE A SIDE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/SideSelectContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/SideSelectUI"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 4.0
 
-[node name="LeftButtonContainer" type="CenterContainer" parent="UI/SideSelectContainer/HBoxContainer"]
+[node name="LeftButtonContainer" type="CenterContainer" parent="UI/SideSelectUI/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LeftButton" type="Button" parent="UI/SideSelectContainer/HBoxContainer/LeftButtonContainer" groups=["ui_scene_changer_buttons"]]
+[node name="LeftButton" type="Button" parent="UI/SideSelectUI/HBoxContainer/LeftButtonContainer" groups=["ui_scene_changer_buttons"]]
 layout_mode = 2
 text = "left"
 
-[node name="RightButtonContainer" type="CenterContainer" parent="UI/SideSelectContainer/HBoxContainer"]
+[node name="RightButtonContainer" type="CenterContainer" parent="UI/SideSelectUI/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="RightButton" type="Button" parent="UI/SideSelectContainer/HBoxContainer/RightButtonContainer" groups=["ui_scene_changer_buttons"]]
+[node name="RightButton" type="Button" parent="UI/SideSelectUI/HBoxContainer/RightButtonContainer" groups=["ui_scene_changer_buttons"]]
 layout_mode = 2
 text = "right"
 
