@@ -59,22 +59,24 @@ func _process(_delta: float) -> void:
 # ============================================================================ #
 #region Utils
 func _update_graphics_window_size():
-    var window: Window = get_window()
-    if (
-            window.size != GameConfig.RESOLUTIONS[GameConfig.config.graphics.resolution]
-            and not GameConfig.config.graphics.fullscreen
-    ):
-        window.size = GameConfig.RESOLUTIONS[GameConfig.config.graphics.resolution]
+    if Global.os_platform == "Desktop":
+        var window: Window = get_window()
+        if (
+                window.size != GameConfig.RESOLUTIONS[GameConfig.config.graphics.resolution]
+                and not GameConfig.config.graphics.fullscreen
+        ):
+            window.size = GameConfig.RESOLUTIONS[GameConfig.config.graphics.resolution]
 
 
 func _update_graphics_fullscreen_mode() -> void:
-    var window: Window = get_window()
-    match [ GameConfig.config.graphics.fullscreen, window.mode ]:
-        [ false, Window.MODE_EXCLUSIVE_FULLSCREEN ]:
-            window.mode = Window.MODE_WINDOWED
-        [ true, _ ] when window.mode != Window.MODE_EXCLUSIVE_FULLSCREEN:
-            window.size = GameConfig.RESOLUTIONS[GameConfig.get_closest_resolution()]
-            window.mode = Window.MODE_EXCLUSIVE_FULLSCREEN
+    if Global.os_platform == "Desktop":
+        var window: Window = get_window()
+        match [ GameConfig.config.graphics.fullscreen, window.mode ]:
+            [ false, Window.MODE_EXCLUSIVE_FULLSCREEN ]:
+                window.mode = Window.MODE_WINDOWED
+            [ true, _ ] when window.mode != Window.MODE_EXCLUSIVE_FULLSCREEN:
+                window.size = GameConfig.RESOLUTIONS[GameConfig.get_closest_resolution()]
+                window.mode = Window.MODE_EXCLUSIVE_FULLSCREEN
 
 
 func _update_graphics_post_processing_mode() -> void:
