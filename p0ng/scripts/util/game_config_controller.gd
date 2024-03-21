@@ -17,7 +17,7 @@ var _gameplay_bus_max_volume_db: float
 #region Godot builtins
 func _ready() -> void:
     # Set window size and center window for desktop devices.
-    if not OS.get_name() in [ "Android", "iOS", "Web" ]:
+    if Global.os_platform == "Desktop":
         # Workaround for:
         # https://github.com/godotengine/godot-proposals/issues/6247.
         # TODO: Reimplement this when there is better support for the above

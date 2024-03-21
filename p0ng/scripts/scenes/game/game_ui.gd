@@ -28,8 +28,11 @@ func _ready() -> void:
 
     _pause_menu.get_node("VBoxContainer/ResumeButton")\
             .connect("pressed", _on_resume_request)
-    _pause_menu.get_node("VBoxContainer/QuitToDesktopButton")\
-            .connect("pressed", _on_quit_to_desktop_request)
+    if Global.os_platform in [ "Mobile", "Web" ]:
+        _pause_menu.get_node("VBoxContainer/QuitToDesktopButton").hide()
+    else:
+        _pause_menu.get_node("VBoxContainer/QuitToDesktopButton")\
+                .connect("pressed", _on_quit_to_desktop_request)
     _pause_menu.get_node("VBoxContainer/RestartButton")\
             .connect("pressed", _on_restart_request)
     _pause_menu.get_node("VBoxContainer/EndGameButton")\
@@ -38,7 +41,10 @@ func _ready() -> void:
             .connect("pressed", _on_restart_request)
     _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton")\
             .connect("pressed", _on_end_game_request)
-    _endgame_dialog.get_node("MenuContainer/VBoxContainer/QuitToDesktopButton")\
+    if Global.os_platform in [ "Mobile", "Web" ]:
+        _endgame_dialog.get_node("MenuContainer/VBoxContainer/QuitToDesktopButton").hide()
+    else:
+        _endgame_dialog.get_node("MenuContainer/VBoxContainer/QuitToDesktopButton")\
             .connect("pressed", _on_quit_to_desktop_request)
 
     for child in get_tree().get_nodes_in_group("ui_container_slider_buttons"):

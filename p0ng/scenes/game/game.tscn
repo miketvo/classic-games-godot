@@ -24,6 +24,7 @@ script = ExtResource("1_eisns")
 layer = -1
 
 [node name="GameHUD" parent="HUD" instance=ExtResource("4_b4d4o")]
+game_point_text = "GAME!"
 
 [node name="UI" type="CanvasLayer" parent="."]
 
