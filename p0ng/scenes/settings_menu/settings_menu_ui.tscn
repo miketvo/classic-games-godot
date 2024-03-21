@@ -26,6 +26,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -3.0
+offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_apgf5")
@@ -145,7 +147,7 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
 text = "fullscreen"
 
-[node name="ToggleButton" type="Button" parent="Graphics/Fullscreen" groups=["ui_accepted_buttons"]]
+[node name="ToggleButton" type="CheckButton" parent="Graphics/Fullscreen" groups=["ui_accepted_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_left = NodePath(".")
@@ -154,8 +156,6 @@ focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath("../../PostProcessing/ToggleButton")
 focus_next = NodePath("../../PostProcessing/ToggleButton")
 focus_previous = NodePath("../../Resolution/OptionButton")
-toggle_mode = true
-text = "toggle"
 
 [node name="PostProcessing" type="HBoxContainer" parent="Graphics"]
 layout_mode = 2
@@ -167,7 +167,7 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
 text = "post processing"
 
-[node name="ToggleButton" type="Button" parent="Graphics/PostProcessing" groups=["ui_accepted_buttons"]]
+[node name="ToggleButton" type="CheckButton" parent="Graphics/PostProcessing" groups=["ui_accepted_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_left = NodePath(".")
@@ -176,8 +176,6 @@ focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath("../../CrtEffect/ToggleButton")
 focus_next = NodePath("../../CrtEffect/ToggleButton")
 focus_previous = NodePath("../../Fullscreen/ToggleButton")
-toggle_mode = true
-text = "toggle"
 
 [node name="CrtEffect" type="HBoxContainer" parent="Graphics"]
 layout_mode = 2
@@ -189,7 +187,7 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 5.0
 text = "crt effect"
 
-[node name="ToggleButton" type="Button" parent="Graphics/CrtEffect" groups=["ui_accepted_buttons"]]
+[node name="ToggleButton" type="CheckButton" parent="Graphics/CrtEffect" groups=["ui_accepted_buttons"]]
 layout_mode = 2
 size_flags_horizontal = 3
 focus_neighbor_left = NodePath(".")
@@ -198,8 +196,6 @@ focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath("../../Menu/BackButton")
 focus_next = NodePath("../../Menu/BackButton")
 focus_previous = NodePath("../../PostProcessing/ToggleButton")
-toggle_mode = true
-text = "toggle"
 
 [node name="Menu" type="HBoxContainer" parent="Graphics"]
 layout_mode = 2
