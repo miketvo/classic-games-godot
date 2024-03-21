@@ -142,12 +142,13 @@ layout_mode = 0
 offset_left = 874.0
 offset_top = 1080.0
 offset_right = 1054.0
-offset_bottom = 1262.0
+offset_bottom = 1226.0
 scale = Vector2(4, 4)
 pivot_offset = Vector2(90, 0)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PauseMenuContainer"]
 layout_mode = 2
+size_flags_vertical = 4
 
 [node name="Heading" type="Label" parent="PauseMenuContainer/VBoxContainer"]
 layout_mode = 2
