@@ -1,5 +1,5 @@
 class_name SoftwareCursor
-extends Sprite2D
+extends CanvasLayer
 ## Software cursor
 
 
@@ -16,14 +16,17 @@ enum Visibility {
 var idle_timeout: float = 1.0
 var visibility: Visibility = Visibility.ALWAYS_VISIBLE
 
+@onready var sprite: Sprite2D = $Sprite2D
+@onready var idle_timer: Timer = $IdleTimer
+
 
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
     Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
     process_mode = Node.PROCESS_MODE_ALWAYS
-    $IdleTimer.autostart = true
-    $IdleTimer.connect("timeout", _on_idle_timer_timeout)
+    idle_timer.autostart = true
+    idle_timer.connect("timeout", _on_idle_timer_timeout)
 
 
 func _process(_delta: float) -> void:
@@ -36,18 +39,18 @@ func _process(_delta: float) -> void:
         visible = false
 
     if visible:
-        position = get_viewport().get_mouse_position()
+        sprite.global_position = get_viewport().get_mouse_position()
         var mouse_left_clicked: bool = Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
         var mouse_middle_clicked: bool = Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE)
         var mouse_right_clicked: bool = Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
         if mouse_left_clicked or mouse_middle_clicked or mouse_right_clicked:
-            $AnimationPlayer.play("click")
-            $AnimationPlayer.queue("idle")
+            sprite.get_node("AnimationPlayer").play("click")
+            sprite.get_node("AnimationPlayer").queue("idle")
 
 
 func _input(event: InputEvent) -> void:
     if event is InputEventMouse:
-        $IdleTimer.start(idle_timeout)
+        idle_timer.start(idle_timeout)
         if not visible:
             visible = true
 #endregion
@@ -57,7 +60,7 @@ func _input(event: InputEvent) -> void:
 # ============================================================================ #
 #region Signal listeners
 
-# Listens to $IdleTimer.timeout().
+# Listens to idle_timer.timeout().
 func _on_idle_timer_timeout() -> void:
     if visibility == Visibility.IDLE_AUTO_HIDE:
         visible = false

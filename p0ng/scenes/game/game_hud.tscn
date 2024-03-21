@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://nfaha1jh03hj"]
+
+[ext_resource type="Script" path="res://scripts/scenes/game/game_hud.gd" id="1_ecjxp"]
+[ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="2_j20jo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ik6sa"]
+content_margin_right = 12.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fe5bj"]
+content_margin_left = 12.0
+
+[node name="GameHUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ecjxp")
+
+[node name="ScoreContainer" type="HBoxContainer" parent="."]
+z_as_relative = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 48.0
+offset_right = -1440.0
+offset_bottom = 76.0
+grow_horizontal = 2
+scale = Vector2(4, 4)
+theme = ExtResource("2_j20jo")
+alignment = 1
+
+[node name="LeftScore" type="Label" parent="ScoreContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"LabelHeading"
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ik6sa")
+text = "NaN"
+horizontal_alignment = 2
+
+[node name="RightScore" type="Label" parent="ScoreContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"LabelHeading"
+theme_override_styles/normal = SubResource("StyleBoxEmpty_fe5bj")
+text = "NaN"

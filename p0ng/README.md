@@ -1,5 +1,19 @@
 # p0ng
 
+<img height="28" src="icon.svg">&nbsp;
+<a href="https://github.com/miketvo/classic-games-godot/releases/latest/download/p0ng-desktop-windows-x86_64.zip">
+    <img src="https://img.shields.io/badge/Download-CE6B40?style=for-the-badge">
+</a>
+<a href="https://ambientlamp.itch.io/p0ng">
+    <img src="https://img.shields.io/badge/Play-6f324e?style=for-the-badge&logo=Itch.io&logoColor=ffffff">
+</a>
+<a href="./p0ng/README.md">
+    <img src="https://img.shields.io/badge/README-555555?style=for-the-badge&logo=markdown">
+</a>
+<a href="./p0ng">
+    <img src="https://img.shields.io/badge/Source%20Code-555555?style=for-the-badge&logo=github">
+</a>
+
 Based on the classic [Atari Pong (1972)](https://en.wikipedia.org/wiki/Pong).
 
 ## Instructions
@@ -42,9 +56,17 @@ First serve direction is random. Alternate serve direction every 2 rounds, unles
 For this mode, using my custom [Finite State Machine](https://en.wikipedia.org/wiki/Finite-state_machine). I have implemented a [Simple Reflex Agent](https://en.wikipedia.org/wiki/Intelligent_agent#Simple_reflex_agents) for the bot paddle. Its behavior follows this state diagram:
 
 <p align="center">
-    <img src="../assets/p0ng_bot_state_diagram.png">
+    <img src="../assets/p0ng/p0ng_bot_state_diagram.png">
 </p>
 
 - `Idle` is the start state. It detects if the ball is coming away or toward from the bot paddle, then transition to the `Prepare` or `Intercept` state, respectively.
 - `Prepare` moves the bot paddle to the center of the y-axis for maximum ball coverage, then wait until the ball is coming toward the bot paddle to transition to `Intercept` state.
 - `Intercept` predicts where the ball will be in the next 60 physics frames, then tries to intercept the projected ball's y-coordinate if its x-coordinate matches that of the bot paddle. Transitions to `Prepare` immediately when the ball bounces away.
+
+## Gallery
+
+<div align="center" style="display: -webkit-box; display: -moz-box; display: -ms-flexbox; display: -webkit-flex; display: flex; flex-flow: row wrap; gap: 12px; align-content: center; align-items: center; justify-content: center;">
+    <img src="../assets/p0ng/p0ng_gameplay1.png" width=480>
+    <img src="../assets/p0ng/p0ng_gameplay2.png" width=480>
+    <img src="../assets/p0ng/p0ng_gameplay3.png" width=480>
+</div>

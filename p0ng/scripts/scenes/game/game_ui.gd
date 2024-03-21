@@ -1,14 +1,8 @@
 extends UI
 
 
-@export var game_point_text: String
-
 var disable_pausing: bool
 
-@onready var _score_label: Dictionary = {
-    Global.SIDE_LEFT: $HUDContainer/LeftScore,
-    Global.SIDE_RIGHT: $HUDContainer/RightScore,
-}
 @onready var _pause_menu: Container = $PauseMenuContainer
 @onready var _endgame_dialog: Container = $EndGameDialogContainer
 @onready var _win_label: Dictionary = {
@@ -34,8 +28,11 @@ func _ready() -> void:
 
     _pause_menu.get_node("VBoxContainer/ResumeButton")\
             .connect("pressed", _on_resume_request)
-    _pause_menu.get_node("VBoxContainer/QuitToDesktopButton")\
-            .connect("pressed", _on_quit_to_desktop_request)
+    if Global.os_platform in [ "Mobile", "Web" ]:
+        _pause_menu.get_node("VBoxContainer/QuitToDesktopButton").hide()
+    else:
+        _pause_menu.get_node("VBoxContainer/QuitToDesktopButton")\
+                .connect("pressed", _on_quit_to_desktop_request)
     _pause_menu.get_node("VBoxContainer/RestartButton")\
             .connect("pressed", _on_restart_request)
     _pause_menu.get_node("VBoxContainer/EndGameButton")\
@@ -44,7 +41,10 @@ func _ready() -> void:
             .connect("pressed", _on_restart_request)
     _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton")\
             .connect("pressed", _on_end_game_request)
-    _endgame_dialog.get_node("MenuContainer/VBoxContainer/QuitToDesktopButton")\
+    if Global.os_platform in [ "Mobile", "Web" ]:
+        _endgame_dialog.get_node("MenuContainer/VBoxContainer/QuitToDesktopButton").hide()
+    else:
+        _endgame_dialog.get_node("MenuContainer/VBoxContainer/QuitToDesktopButton")\
             .connect("pressed", _on_quit_to_desktop_request)
 
     for child in get_tree().get_nodes_in_group("ui_container_slider_buttons"):
@@ -89,15 +89,6 @@ func _input(_event: InputEvent) -> void:
 
 # ============================================================================ #
 #region Public methods
-func update_score_labels(left_score: int, right_score: int, game_point_state) -> void:
-    var left_score_label_text: String = "%s%d" %\
-            [ game_point_text + " " if not game_point_state ^ 0b10 else "", left_score ]
-    _score_label[Global.SIDE_LEFT].text = left_score_label_text
-    var right_score_label_text: String = "%d%s" %\
-            [ right_score, " " + game_point_text if not game_point_state ^ 0b01 else "" ]
-    _score_label[Global.SIDE_RIGHT].text = right_score_label_text
-
-
 func game_over(winning_side: int) -> void:
     Global.software_cursor_visibility = SoftwareCursor.Visibility.ALWAYS_VISIBLE
 
