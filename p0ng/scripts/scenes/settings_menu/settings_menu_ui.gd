@@ -21,7 +21,10 @@ func _ready() -> void:
     _main.get_node("GraphicsButton").connect("pressed", _on_main_graphics_button_pressed)
     _main.get_node("SoundsButton").connect("pressed", _on_main_sounds_button_pressed)
     _main.get_node("ResetButton").connect("pressed", _on_main_reset_button_pressed)
-    _resolution_popup.connect("resolution_selected", _on_resolution_popup_resolution_selected)
+    if Global.os_platform == "Desktop":
+        _resolution_popup.connect("resolution_selected", _on_resolution_popup_resolution_selected)
+    else:
+        _graphics.get_node("Resolution").hide()
     _graphics.get_node("Fullscreen/ToggleButton")\
             .connect("toggled", _on_graphics_fullscreen_toggled)
     _graphics.get_node("PostProcessing/ToggleButton")\
