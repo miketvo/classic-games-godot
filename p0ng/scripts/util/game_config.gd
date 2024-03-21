@@ -47,8 +47,17 @@ const VOLUME_SLIDER_TICK_COUNT: int = 10
 ## See [method reset_config] for sections, section keys, and their default
 ## values.
 var config: Dictionary
-var _original_config: Dictionary
 
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
+#region Private variables
+var _original_config: Dictionary
+var _game_version: String = ProjectSettings.get_setting("application/config/version")
+var _engine_version: String = "Godot %s" % Engine.get_version_info().string
+var _engine_git_commit_hash: String = Engine.get_version_info().hash
 #endregion
 # ============================================================================ #
 
@@ -61,6 +70,19 @@ func _ready() -> void:
     if first_play:
         self._save()
     self._load()
+
+    var metadata_updated: bool = false
+    if config.metadata.game_version != _game_version:
+        config.metadata.game_version = _game_version
+        metadata_updated = true
+    if config.metadata.engine_version != _engine_version:
+        config.metadata.engine_version = _game_version
+        metadata_updated = true
+    if config.metadata.engine_git_commit_hash != _engine_git_commit_hash:
+        config.metadata.engine_git_commit_hash = _engine_git_commit_hash
+        metadata_updated = true
+    if metadata_updated:
+        self._save()
 #endregion
 # ============================================================================ #
 
@@ -77,9 +99,9 @@ func _ready() -> void:
 func reset_config() -> void:
     config = {
         "metadata": {
-            "game_version": ProjectSettings.get_setting("application/config/version"),
-            "engine_version": "Godot %s" % Engine.get_version_info().string,
-            "engine_git_commit_hash": Engine.get_version_info().hash
+            "game_version": _game_version,
+            "engine_version": _engine_version,
+            "engine_git_commit_hash": _engine_git_commit_hash
         },
         "graphics": {
             "resolution": _get_best_resolution(),
