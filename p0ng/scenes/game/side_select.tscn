@@ -32,9 +32,9 @@ script = ExtResource("2_od2xv")
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="SideSelectUI" type="VBoxContainer" parent="UI"]
-offset_top = 260.0
+offset_top = 312.0
 offset_right = 480.0
-offset_bottom = 365.0
+offset_bottom = 492.0
 scale = Vector2(4, 4)
 theme = ExtResource("1_co7gs")
 script = ExtResource("6_ei203")
@@ -59,6 +59,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="LeftButton" type="Button" parent="UI/SideSelectUI/HBoxContainer/LeftButtonContainer" groups=["ui_scene_changer_buttons"]]
+unique_name_in_owner = true
 layout_mode = 2
 text = "left"
 
@@ -67,7 +68,24 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="RightButton" type="Button" parent="UI/SideSelectUI/HBoxContainer/RightButtonContainer" groups=["ui_scene_changer_buttons"]]
+unique_name_in_owner = true
 layout_mode = 2
 text = "right"
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/SideSelectUI"]
+layout_mode = 2
+theme_override_constants/margin_top = 54
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/SideSelectUI/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="BackButton" type="Button" parent="UI/SideSelectUI/MarginContainer/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "back"
 
 [editable path="Background/Spawns"]
