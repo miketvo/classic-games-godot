@@ -8,26 +8,35 @@ Each folder containing a `project.godot` file is a project meant to be used with
 
 ## Available games
 
+**Note:** The performance of Godot games in a browser is lower than natively on desktop. For the best performance, consider downloading the games from their itch.io page or the [Latest Release](https://github.com/miketvo/classic-games-godot/releases/latest/).
+
 <ul>
-  <li><img height="28" src="./p0ng/icon.svg"> <a href="https://github.com/miketvo/classic-games-godot/releases/latest/download/p0ng-desktop-windows-x86_64.zip"><img src="https://img.shields.io/badge/p0ng-DOWNLOAD-CE6B40?style=for-the-badge"></a> <a href="./p0ng/README.md"><img src="https://img.shields.io/badge/README-555555?style=for-the-badge&logo=markdown"></a> <a href="./p0ng"><img src="https://img.shields.io/badge/Source%20Code-555555?style=for-the-badge&logo=github"></a></li>
+  <li>
+    <img height="28" src="./p0ng/icon.svg">&nbsp;
+    <a href="https://github.com/miketvo/classic-games-godot/releases/latest/download/p0ng-desktop-windows-x86_64.zip">
+      <img src="https://img.shields.io/badge/p0ng-Download-CE6B40?style=for-the-badge">
+    </a>
+    <a href="https://ambientlamp.itch.io/p0ng">
+      <img src="https://img.shields.io/badge/Play-6f324e?style=for-the-badge&logo=Itch.io&logoColor=ffffff">
+    </a>
+    <a href="./p0ng/README.md">
+      <img src="https://img.shields.io/badge/README-555555?style=for-the-badge&logo=markdown">
+    </a>
+    <a href="./p0ng">
+      <img src="https://img.shields.io/badge/Source%20Code-555555?style=for-the-badge&logo=github">
+    </a>
+    </li>
 </ul>
 
+## Importing all projects in Godot
 
-## Importing all projects
-
-To import all projects at once in the project manager:
+To import all projects at once in the Godot project manager:
 
 - Clone this repository or [download a ZIP archive](https://github.com/miketvo/classic-games-godot/archive/main.zip).
   - If you've downloaded a ZIP archive, extract it somewhere.
 - Open the Godot project manager and click the **Scan** button on the right.
 - Choose the path to the folder containing all projects.
 - All projects should now appear in the project manager.
-
-## Try the games in your browser (Work-in-progress)
-
-These games are hosted on [my personal blog](http://miketvo.github.io) with GitHub Pages. They can be viewed [here](https://miketvo.github.io/classic-games-godot/).
-
-**Note:** The performance of Godot in a browser is lower than natively on desktop. For the best performance, consider downloading the games from the [Latest Release](https://github.com/miketvo/classic-games-godot/releases/latest/).
 
 ## My links
 
