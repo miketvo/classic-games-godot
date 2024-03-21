@@ -33,15 +33,15 @@ func _ready() -> void:
             .connect("toggled", _on_graphics_crt_effect_toggled)
     _graphics.get_node("Menu/BackButton").connect("pressed", _on_graphics_menu_back_button_pressed)
     _sounds.get_node("MasterVolume/HSlider")\
-            .connect("drag_ended", _on_sounds_master_volume_slider_updated)
+            .connect("value_changed", _on_sounds_master_volume_slider_updated)
     _sounds.get_node("MasterVolume/MuteToggleButton")\
             .connect("toggled", _on_sounds_master_volume_mute_toggled)
     _sounds.get_node("UIVolume/HSlider")\
-            .connect("drag_ended", _on_sounds_ui_volume_slider_updated)
+            .connect("value_changed", _on_sounds_ui_volume_slider_updated)
     _sounds.get_node("UIVolume/MuteToggleButton")\
             .connect("toggled", _on_sounds_ui_volume_mute_toggled)
     _sounds.get_node("GameplayVolume/HSlider")\
-            .connect("drag_ended", _on_sounds_gameplay_volume_slider_updated)
+            .connect("value_changed", _on_sounds_gameplay_volume_slider_updated)
     _sounds.get_node("GameplayVolume/MuteToggleButton")\
             .connect("toggled", _on_sounds_gameplay_volume_mute_toggled)
     _sounds.get_node("Menu/BackButton").connect("pressed", _on_sounds_menu_back_button_pressed)
@@ -72,8 +72,8 @@ func _ready() -> void:
                 "ui_accepted_buttons group must contain only Buttons or Slider"
         )
         if child is Slider:
-            child.connect("drag_ended", _on_slider_drag_ended)
-        elif child is Button:
+            child.connect("value_changed", _on_slider_updated)
+        else:
             child.connect("pressed", _on_ui_accepted_button_pressed)
     for child in get_tree().get_nodes_in_group("ui_disabled_buttons"):
         assert(child is Button, "ui_disabled_buttons group must contain only Buttons")
@@ -166,9 +166,8 @@ func _on_resolution_popup_resolution_selected(resolution: String) -> void:
 
 
 #region Listens to _sounds.get_node("*").
-func _on_sounds_master_volume_slider_updated(_value_changed: bool) -> void:
-    var slider: Range = _sounds.get_node("MasterVolume/HSlider")
-    acted_with_data.emit("sounds_master_volume_slider_updated", slider.value)
+func _on_sounds_master_volume_slider_updated(value: float) -> void:
+    acted_with_data.emit("sounds_master_volume_slider_updated", value)
 
 
 func _on_sounds_master_volume_mute_toggled(toggled_on: bool) -> void:
@@ -176,9 +175,8 @@ func _on_sounds_master_volume_mute_toggled(toggled_on: bool) -> void:
     acted_with_data.emit("sounds_master_volume_mute_toggled", toggled_on)
 
 
-func _on_sounds_ui_volume_slider_updated(_value_changed: bool) -> void:
-    var slider: Range = _sounds.get_node("UIVolume/HSlider")
-    acted_with_data.emit("sounds_ui_volume_slider_updated", slider.value)
+func _on_sounds_ui_volume_slider_updated(value: float) -> void:
+    acted_with_data.emit("sounds_ui_volume_slider_updated", value)
 
 
 func _on_sounds_ui_volume_mute_toggled(toggled_on: bool) -> void:
@@ -186,9 +184,8 @@ func _on_sounds_ui_volume_mute_toggled(toggled_on: bool) -> void:
     acted_with_data.emit("sounds_ui_volume_mute_toggled", toggled_on)
 
 
-func _on_sounds_gameplay_volume_slider_updated(_value_changed: bool) -> void:
-    var slider: Range = _sounds.get_node("GameplayVolume/HSlider")
-    acted_with_data.emit("sounds_gameplay_volume_slider_updated", slider.value)
+func _on_sounds_gameplay_volume_slider_updated(value: float) -> void:
+    acted_with_data.emit("sounds_gameplay_volume_slider_updated", value)
 
 
 func _on_sounds_gameplay_volume_mute_toggled(toggled_on: bool) -> void:
@@ -244,9 +241,9 @@ func _on_option_button_item_selected(_index: int) -> void:
     _on_ui_accepted_button_pressed()
 
 
-# Listens to drag_ended(value_changed: bool) of ui_scene_changer_buttons that is
-# of type Slider.
-func _on_slider_drag_ended(_value_changed: bool) -> void:
+# Listens to value_changed(value: float) signal of ui_scene_changer_buttons that
+# is of type Slider.
+func _on_slider_updated(_value: float) -> void:
     _on_ui_accepted_button_pressed()
 
 
