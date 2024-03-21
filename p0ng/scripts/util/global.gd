@@ -39,6 +39,7 @@ const MAX_BALL_PRED_SECONDS: float = 1.0
 
 # ============================================================================ #
 #region Public variables
+var os_platform: StringName
 var software_cursor_visibility: SoftwareCursor.Visibility\
         = SoftwareCursor.Visibility.ALWAYS_VISIBLE
 var current_game_mode: GameMode
@@ -49,6 +50,20 @@ var game_state_data: GameStateData = GameStateData.new()
 
 # ============================================================================ #
 #region Godot builtins
+func _ready() -> void:
+    var os_name: String = OS.get_name()
+    match os_name:
+        "Windows", "macOS", "Linux", "FreeBSD", "NetBSD", "OpenBSD", "BSD":
+            os_platform = "Desktop"
+        "Android", "iOS":
+            os_platform = "Mobile"
+        "Web":
+            os_platform = "Web"
+        _:
+            printerr("Platform not supported: %s", os_name)
+            get_tree().quit()
+
+
 func _exit_tree() -> void:
     game_state_data.queue_free()
 #endregion

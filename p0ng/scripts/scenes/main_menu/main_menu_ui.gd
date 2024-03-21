@@ -13,7 +13,10 @@ func _ready() -> void:
     %GameVersionLabel.text += ProjectSettings.get_setting("application/config/version")
     %StartButton.grab_focus()
     %StartButton.connect("pressed", _on_main_menu_start_button_pressed)
-    %QuitButton.connect("pressed", _on_main_menu_quit_button_pressed)
+    if Global.os_platform in [ "Mobile", "Web" ]:
+        %QuitButton.hide()
+    else:
+        %QuitButton.connect("pressed", _on_main_menu_quit_button_pressed)
     %SettingsButton.connect("pressed", _on_main_menu_settings_button_pressed)
     %OnePlayerButton.connect("pressed", _on_start_menu_one_player_button_pressed)
     %TwoPlayersButton.connect("pressed", _on_start_menu_two_players_button_pressed)

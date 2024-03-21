@@ -76,6 +76,11 @@ func _ready() -> void:
 ## See [constant SAVE_PATH] for save location.
 func reset_config() -> void:
     config = {
+        "metadata": {
+            "game_version": ProjectSettings.get_setting("application/config/version"),
+            "engine_version": "Godot %s" % Engine.get_version_info().string,
+            "engine_git_commit_hash": Engine.get_version_info().hash
+        },
         "graphics": {
             "resolution": _get_best_resolution(),
             "fullscreen": false,
