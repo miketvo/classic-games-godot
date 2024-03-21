@@ -3,10 +3,6 @@ extends UI
 
 @export var settings_modified_message: String
 
-## Contains the [OptionItem] resolution buttons in the
-## [code]$ResolutionPopup[/code].
-var resolution_option_items: Array = Array()
-
 @onready var _main: Container = $Main/Menu/VBoxContainer
 @onready var _graphics: Container = $Graphics
 @onready var _resolution_popup: Container = $ResolutionPopup
@@ -25,8 +21,7 @@ func _ready() -> void:
     _main.get_node("GraphicsButton").connect("pressed", _on_main_graphics_button_pressed)
     _main.get_node("SoundsButton").connect("pressed", _on_main_sounds_button_pressed)
     _main.get_node("ResetButton").connect("pressed", _on_main_reset_button_pressed)
-    _graphics.get_node("Resolution/OptionButton")\
-            .connect("pressed", _on_graphics_resolution_option_button_pressed)
+    _resolution_popup.connect("resolution_selected", _on_resolution_popup_resolution_selected)
     _graphics.get_node("Fullscreen/ToggleButton")\
             .connect("toggled", _on_graphics_fullscreen_toggled)
     _graphics.get_node("PostProcessing/ToggleButton")\
@@ -58,8 +53,6 @@ func _ready() -> void:
     _sounds.get_node("Menu/MessageLabel").text = ""
     _reset_defaults.get_node("WarningLabel").visible = true
     _reset_defaults.get_node("DoneLabel").visible = false
-
-    _configure_resolution_popup()
 
     for child in get_tree().get_nodes_in_group("ui_container_slider_buttons"):
         assert(child is Button, "ui_container_slider_buttons group must contain only Buttons")
@@ -134,28 +127,6 @@ func _on_main_back_button_pressed() -> void:
 
 
 #region Listens to _graphics.get_node("*").
-func _on_graphics_resolution_option_button_pressed() -> void:
-    var resolution_option_button: Button = _graphics.get_node("Resolution/OptionButton")
-    if _resolution_popup.visible:
-        resolution_option_button.button_pressed = true
-        return
-
-    _resolution_popup.visible = true
-    _resolution_popup.global_position = Vector2(
-            resolution_option_button.global_position.x,
-            (
-                    resolution_option_button.global_position.y
-                    + resolution_option_button.size.y
-                    * _resolution_popup.scale.y
-            )
-    )
-
-    for resolution_option_item in resolution_option_items:
-        if resolution_option_item.text == GameConfig.config.graphics.resolution:
-            resolution_option_item.grab_focus()
-            break
-
-
 func _on_graphics_fullscreen_toggled(toggled_on: bool) -> void:
     _graphics.get_node("Resolution/OptionButton").disabled = toggled_on
     acted_with_data.emit("graphics_fullscreen_toggled", toggled_on)
@@ -184,16 +155,11 @@ func _on_graphics_menu_back_button_pressed() -> void:
 
 
 # Listens to resolution_option_items.[*].selected().
-func _on_resolution_option_item_selected(text: String) -> void:
-    if text != GameConfig.config.graphics.resolution:
-        var resolution_option_button: Button = _graphics.get_node("Resolution/OptionButton")
-        resolution_option_button.text = text
-        resolution_option_button.button_pressed = false
-        _resolution_popup.visible = false
-        acted_with_data.emit(
-                "graphics_resolution_selected",
-                text
-        )
+func _on_resolution_popup_resolution_selected(resolution: String) -> void:
+    acted_with_data.emit(
+            "graphics_resolution_selected",
+            resolution
+    )
 
 
 #region Listens to _sounds.get_node("*").
@@ -294,57 +260,6 @@ func _on_reset_defaults_tween_transitioned():
 
 # ============================================================================ #
 #region Utils
-func _configure_resolution_popup() -> void:
-    _resolution_popup.visible = false
-
-    var resolution_popup_button_group: ButtonGroup = ButtonGroup.new()
-    var resolution_popup_container: Container =\
-            _resolution_popup.get_node("ScrollContainer/VBoxContainer")
-    var resolution_keys: Array = GameConfig.RESOLUTIONS.keys()
-
-    var i: int = 0
-    for resolution_key in resolution_keys:
-        var current_resolution: Vector2i = Vector2i(get_viewport_rect().size)
-        var resolution: Vector2i = GameConfig.RESOLUTIONS[resolution_key]
-
-        var resolution_option_item: OptionItem = OptionItem.new(
-                "%sCheckBox" % resolution_key,
-                resolution_key,
-                resolution_popup_button_group
-        )
-        resolution_option_item.connect("selected", _on_resolution_option_item_selected)
-        resolution_option_item.add_to_group("ui_accepted_buttons")
-        resolution_popup_container.add_child(resolution_option_item)
-
-        resolution_option_items.push_back(resolution_option_item)
-        resolution_option_item.focus_neighbor_left = "."
-        resolution_option_item.focus_neighbor_right = "."
-        if i > 0:
-            var prev_option_item_path: String = "../%s" % resolution_option_items[i - 1].name
-            var this_option_item_path: String = "../%s" % resolution_option_item.name
-
-            resolution_option_items[i - 1].focus_neighbor_bottom = NodePath(this_option_item_path)
-            resolution_option_items[i - 1].focus_next = NodePath(this_option_item_path)
-            resolution_option_item.focus_neighbor_top = NodePath(prev_option_item_path)
-            resolution_option_item.focus_previous = NodePath(prev_option_item_path)
-
-            if i == resolution_keys.size() - 1:
-                var first_option_item = resolution_option_items[0]
-                var first_option_item_path: String = "../%s" % first_option_item
-                resolution_option_item.focus_neighbor_bottom = NodePath(first_option_item_path)
-                resolution_option_item.focus_next = NodePath(first_option_item_path)
-                first_option_item.focus_neighbor_top = NodePath(this_option_item_path)
-                first_option_item.focus_previous = NodePath(this_option_item_path)
-
-        if (
-                resolution.x > current_resolution.x
-                or resolution.y > current_resolution.y
-        ):
-            resolution_option_item.disabled = true
-
-        i += 1
-
-
 func _update_graphics_save_button() -> void:
     var is_config_graphics_modified: bool = GameConfig.is_modified("graphics")
     var graphics_message_label: Label = _graphics.get_node("Menu/MessageLabel")
@@ -401,6 +316,5 @@ func _update_sounds_save_button() -> void:
                 sounds_save_button.add_to_group("ui_disabled_buttons")
                 sounds_save_button.connect("pressed", _on_ui_disabled_button_pressed)
                 sounds_save_button.disconnect("pressed", _on_sounds_menu_save_button_pressed)
-
 #endregion
 # ============================================================================ #

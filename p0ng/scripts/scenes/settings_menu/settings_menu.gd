@@ -72,10 +72,11 @@ func _on_main_menu_ui_acted_with_data(action: StringName, data: Variant) -> void
 # ============================================================================ #
 #region Utils
 func _ui_load_config() -> void:
-    var ui_graphics = _ui.get_node("Graphics")
+    var ui_graphics: Container = _ui.get_node("Graphics")
+    var ui_resolution_popup: Container = _ui.get_node("ResolutionPopup")
     ui_graphics.get_node("Resolution/OptionButton").text =\
             GameConfig.config.graphics.resolution
-    for resolution_option_item: OptionItem in _ui.resolution_option_items:
+    for resolution_option_item: OptionItem in ui_resolution_popup.resolution_option_items:
         if resolution_option_item.text == GameConfig.config.graphics.resolution:
             resolution_option_item.button_pressed = true
             break
