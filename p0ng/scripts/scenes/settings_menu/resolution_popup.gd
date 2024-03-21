@@ -23,5 +23,6 @@ func _input(event: InputEvent) -> void:
         ):
             visible = false
             option_button.button_pressed = false
+            option_button.grab_focus()
 #endregion
 # ============================================================================ #
