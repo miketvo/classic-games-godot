@@ -48,7 +48,7 @@ First serve direction is random. Alternate serve direction every 2 rounds, unles
 ## Features
 
 - One Player mode (versus bot).
-- Two Player mode (local versus).
+- Two Players mode (local versus).
 - Full Keyboard+Mouse/Controller support.
 - Custom-made SFX.
 - Custom-made art and animation.
