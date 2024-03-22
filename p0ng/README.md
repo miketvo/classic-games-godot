@@ -49,6 +49,7 @@ First serve direction is random. Alternate serve direction every 2 rounds, unles
 
 - One Player mode (versus bot).
 - Two Player mode (local versus).
+- Full Keyboard+Mouse/Controller support.
 - Custom-made SFX.
 - Custom-made art and animation.
 - [Finite State Machine](https://en.wikipedia.org/wiki/Finite-state_machine) implementation.
