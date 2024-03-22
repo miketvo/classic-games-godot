@@ -1,8 +1,9 @@
-# p0ng
+![p0ng banner](../assets/p0ng/itch_io_banner.png)
 
+<center>
 <img height="28" src="icon.svg">&nbsp;
 <a href="https://github.com/miketvo/classic-games-godot/releases/latest/download/p0ng-desktop-windows-x86_64.zip">
-    <img src="https://img.shields.io/badge/Download-CE6B40?style=for-the-badge">
+    <img src="https://img.shields.io/badge/p0ng-Download-CE6B40?style=for-the-badge">
 </a>
 <a href="https://ambientlamp.itch.io/p0ng">
     <img src="https://img.shields.io/badge/Play-6f324e?style=for-the-badge&logo=Itch.io&logoColor=ffffff">
@@ -15,6 +16,7 @@
 </a>
 
 Based on the classic [Atari Pong (1972)](https://en.wikipedia.org/wiki/Pong).
+</center>
 
 ## Instructions
 
