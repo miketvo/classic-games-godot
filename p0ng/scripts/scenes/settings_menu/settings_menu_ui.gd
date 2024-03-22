@@ -100,7 +100,10 @@ func _input(_event: InputEvent) -> void:
 #region Listens to _main.get_node("*").
 func _on_main_graphics_button_pressed() -> void:
     input_disabled = true
-    _graphics.get_node("Resolution/OptionButton").grab_focus()
+    if Global.os_platform == "Desktop":
+        _graphics.get_node("Resolution/OptionButton").grab_focus()
+    else:
+        _graphics.get_node("PostProcessing/ToggleButton").grab_focus()
     tween_transition_slide_container($Main, Vector2.RIGHT, UI_TRANSITION_DURATION)\
             .connect("finished", _on_tween_transition_finshed)
     tween_transition_slide_container(_graphics, Vector2.RIGHT, UI_TRANSITION_DURATION)\
