@@ -18,23 +18,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Toolchain
+      - name: Setup
         run: |
           Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
           Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
           scoop bucket add extras
           scoop install extras/godot@$env:GODOT_VERSION
           scoop install main/rcedit
-      - name: Download Export Templates
-        run: |
-          Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
           New-Item -ItemType Directory -Force ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable
           $url = "https://github.com/godotengine/godot/releases/download/$env:GODOT_VERSION-stable/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
           $target = "~/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
           Invoke-WebRequest -Uri $url -OutFile $target
           Expand-Archive -Path $target -DestinationPath ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable -Force
       - name: Export Projects
-        run: ./build.ps1 -c -m debug
+        run: |
+          refreshenv
+          ./build.ps1 -c -m debug
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
