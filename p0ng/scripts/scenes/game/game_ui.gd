@@ -18,11 +18,8 @@ var disable_pausing: bool
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    super()
-
     Global.software_cursor_visibility = SoftwareCursor.Visibility.IDLE_AUTO_HIDE
 
-    input_disabled = false
     disable_pausing = false
     process_mode = Node.PROCESS_MODE_ALWAYS
 
@@ -94,6 +91,7 @@ func _input(_event: InputEvent) -> void:
 # ============================================================================ #
 #region Public methods
 func game_over(winning_side: int) -> void:
+    disable_pausing = true
     Global.software_cursor_visibility = SoftwareCursor.Visibility.ALWAYS_VISIBLE
 
     match winning_side:
@@ -112,7 +110,6 @@ func game_over(winning_side: int) -> void:
             _endgame_dialog,
             UI.UI_TRANSITION_DURATION / 4
     ).set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-    disable_pausing = true
 #endregion
 # ============================================================================ #
 

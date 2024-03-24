@@ -13,9 +13,6 @@ extends UI
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    super()
-    input_disabled = false
-
     _main.get_node("BackButton").grab_focus()
     _main.get_node("BackButton").connect("pressed", _on_main_back_button_pressed)
     _main.get_node("GraphicsButton").connect("pressed", _on_main_graphics_button_pressed)
@@ -86,12 +83,6 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
     _update_graphics_save_button()
     _update_sounds_save_button()
-
-
-func _input(_event: InputEvent) -> void:
-    if input_disabled:
-        # Stops event propagation to child nodes, effectively disabling inputs
-        accept_event()
 #endregion
 # ============================================================================ #
 

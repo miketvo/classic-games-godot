@@ -8,8 +8,6 @@ extends UI
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    super()
-    input_disabled = false
     %GameVersionLabel.text += ProjectSettings.get_setting("application/config/version")
     %StartButton.grab_focus()
     %StartButton.connect("pressed", _on_main_menu_start_button_pressed)
@@ -38,12 +36,6 @@ func _process(_delta: float) -> void:
             ),
             %GameVersionLabel.global_position.y
     )
-
-
-func _input(_event: InputEvent) -> void:
-    if input_disabled:
-        # Stops event propagation to child nodes, effectively disabling inputs
-        accept_event()
 #endregion
 # ============================================================================ #
 

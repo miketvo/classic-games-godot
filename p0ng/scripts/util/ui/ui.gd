@@ -7,15 +7,17 @@ signal acted_with_data(action: StringName, data: Variant)
 
 const UI_TRANSITION_DURATION: float = 0.5
 
-var input_disabled: bool
+var input_disabled: bool = false
 
-@onready var _sfx_controller: SfxController
+@onready var _sfx_controller: SfxController = get_tree().root.get_node("Main/UISfxController")
 
 
 # ============================================================================ #
 #region Godot builtins
-func _ready() -> void:
-    _sfx_controller = get_tree().root.get_node("Main/UISfxController")
+func _input(_event: InputEvent) -> void:
+    if input_disabled:
+        # Stops event propagation to child nodes, effectively disabling inputs
+        accept_event()
 #endregion
 # ============================================================================ #
 
