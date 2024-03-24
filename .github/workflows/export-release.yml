@@ -39,5 +39,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: release_build
-          path: ./build/release
+          path: ./build/release/*
           compression-level: 0
