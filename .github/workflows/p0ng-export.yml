@@ -1,0 +1,74 @@
+name: "p0ng Export"
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    branches:
+      - main
+
+env:
+  GODOT_VERSION: 4.2.1
+  EXPORT_NAME: p0ng
+  PROJECT_PATH: p0ng
+
+jobs:
+  export-windows:
+    name: Windows Export
+    runs-on: windows-2022
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install Build Toolchain
+        run: |
+          choco install godot --version=$env:GODOT_VERSION
+          choco install rcedit
+      - name: Download Export Templates
+        run: |
+          Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
+          New-Item -ItemType Directory -Force ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable
+          $url = "https://github.com/godotengine/godot/releases/download/$env:GODOT_VERSION-stable/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
+          $target = "~/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
+          Invoke-WebRequest -Uri $url -OutFile $target
+          Expand-Archive -Path $target -DestinationPath ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable -Force
+      - name: Windows Build
+        run: |
+          Set-Location $env:PROJECT_PATH
+          mkdir -Force ./build/desktop_windows_x86_64
+          godot --headless --verbose --export-release "desktop_windows_x86_64" ./build/desktop_windows_x86_64/$env:EXPORT_NAME.exe
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: $env:EXPORT_NAME_desktop_windows_x86_64
+          path: $env:PROJECT_PATH/build/desktop_windows_x86_64
+
+  export-web:
+    name: Web Export
+    runs-on: windows-2022
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Install Build Toolchain
+        run: |
+          choco install godot --version=$env:GODOT_VERSION
+      - name: Download Export Templates
+        run: |
+          Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
+          New-Item -ItemType Directory -Force ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable
+          $url = "https://github.com/godotengine/godot/releases/download/$env:GODOT_VERSION-stable/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
+          $target = "~/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
+          Invoke-WebRequest -Uri $url -OutFile $target
+          Expand-Archive -Path $target -DestinationPath ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable -Force
+      - name: Web Build
+        run: |
+          Set-Location $env:PROJECT_PATH
+          mkdir -Force ./build/web
+          godot --headless --verbose --export-release "web" ./build/web/$env:EXPORT_NAME.exe
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: $env:EXPORT_NAME_web
+          path: $env:PROJECT_PATH/build/web
