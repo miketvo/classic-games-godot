@@ -31,9 +31,7 @@ jobs:
           Invoke-WebRequest -Uri $url -OutFile $target
           Expand-Archive -Path $target -DestinationPath ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable -Force
       - name: Export Projects
-        run: |
-          refreshenv
-          ./build.ps1 -c -m debug
+        run: powershell -Command "& { ./build.ps1 -c -m release }" 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
