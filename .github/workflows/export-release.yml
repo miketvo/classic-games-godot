@@ -22,9 +22,12 @@ jobs:
         run: |
           Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
           Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+          Join-Path (Resolve-Path ~).Path "scoop\shims" >> $Env:GITHUB_PATH
+          
           scoop bucket add extras
           scoop install extras/godot@$env:GODOT_VERSION
           scoop install main/rcedit
+
           New-Item -ItemType Directory -Force ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable
           $url = "https://github.com/godotengine/godot/releases/download/$env:GODOT_VERSION-stable/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
           $target = "~/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
