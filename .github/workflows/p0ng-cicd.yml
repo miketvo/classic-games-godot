@@ -9,6 +9,7 @@ on:
       - main
 
 env:
+  GODOT_VERSION: 4.2.1
   EXPORT_NAME: p0ng
   PROJECT_PATH: p0ng
 
@@ -21,15 +22,16 @@ jobs:
         uses: actions/checkout@v2
       - name: Install Build Toolchain
         run: |
-          choco install godot --version=4.2.1
+          choco install godot --version=$env:GODOT_VERSION
           choco install rcedit
       - name: Download Export Templates
         run: |
-          powershell -ExecutionPolicy Bypass -Command "& { New-Item -ItemType Directory -Force ~/AppData/Roaming/Godot/export_templates }"
-          $url = "https://github.com/godotengine/godot/releases/download/4.2.1-stable/Godot_v4.2.1-stable_export_templates.tpz"
-          $target = "~/Godot_v4.2.1-stable_export_templates.tpz"
-          powershell -ExecutionPolicy Bypass -Command "&Invoke-WebRequest -Uri $url -OutFile $target"
-          Expand-Archive -Path $target -DestinationPath ~/AppData/Roaming/Godot/export_templates -Force
+          Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
+          New-Item -ItemType Directory -Force ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable
+          $url = "https://github.com/godotengine/godot/releases/download/$env:GODOT_VERSION-stable/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
+          $target = "~/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
+          Invoke-WebRequest -Uri $url -OutFile $target
+          Expand-Archive -Path $target -DestinationPath ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable -Force
       - name: Windows Build
         run: |
           Set-Location $env:PROJECT_PATH
@@ -51,14 +53,15 @@ jobs:
           lfs: true
       - name: Install Build Toolchain
         run: |
-          choco install godot --version=4.2.1
+          choco install godot --version=$env:GODOT_VERSION
       - name: Download Export Templates
         run: |
-          powershell -ExecutionPolicy Bypass -Command "& { New-Item -ItemType Directory -Force ~/AppData/Roaming/Godot/export_templates }"
-          $url = "https://github.com/godotengine/godot/releases/download/4.2.1-stable/Godot_v4.2.1-stable_export_templates.tpz"
-          $target = "~/Godot_v4.2.1-stable_export_templates.tpz"
-          powershell -ExecutionPolicy Bypass -Command "&Invoke-WebRequest -Uri $url -OutFile $target"
-          Expand-Archive -Path $target -DestinationPath ~/AppData/Roaming/Godot/export_templates -Force
+          Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
+          New-Item -ItemType Directory -Force ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable
+          $url = "https://github.com/godotengine/godot/releases/download/$env:GODOT_VERSION-stable/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
+          $target = "~/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
+          Invoke-WebRequest -Uri $url -OutFile $target
+          Expand-Archive -Path $target -DestinationPath ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable -Force
       - name: Web Build
         run: |
           Set-Location $env:PROJECT_PATH
