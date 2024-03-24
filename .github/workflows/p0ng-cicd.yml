@@ -30,8 +30,8 @@ jobs:
           mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
       - name: Windows Build
         run: |
-          mkdir -v -p build/windows
           cd $PROJECT_PATH
+          mkdir -v -p ./build/desktop_windows_x86_64
           godot --headless --verbose --export-release "desktop_windows_x86_64" ./build/desktop_windows_x86_64/$EXPORT_NAME.exe
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
@@ -55,8 +55,8 @@ jobs:
           mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
       - name: Web Build
         run: |
-          mkdir -v -p build/web
           cd $PROJECT_PATH
+          mkdir ./build/web
           godot --headless --verbose --export-release "web" ./build/web/$EXPORT_NAME.exe
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
