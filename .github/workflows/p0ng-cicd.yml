@@ -35,8 +35,8 @@ jobs:
       - name: Windows Build
         run: |
           Set-Location $env:PROJECT_PATH
-          mkdir -p -Force ./build/desktop_windows_x86_64
-          godot.exe --verbose --export-release "desktop_windows_x86_64" ./build/desktop_windows_x86_64/$env:EXPORT_NAME.exe
+          mkdir -Force ./build/desktop_windows_x86_64
+          godot --verbose --export-release "desktop_windows_x86_64" ./build/desktop_windows_x86_64/$env:EXPORT_NAME.exe
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
@@ -65,8 +65,8 @@ jobs:
       - name: Web Build
         run: |
           Set-Location $env:PROJECT_PATH
-          mkdir -p -Force ./build/web
-          godot.exe --verbose --export-release "web" ./build/web/$env:EXPORT_NAME.exe
+          mkdir -Force ./build/web
+          godot --verbose --export-release "web" ./build/web/$env:EXPORT_NAME.exe
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
