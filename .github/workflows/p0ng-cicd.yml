@@ -17,50 +17,56 @@ jobs:
   export-windows:
     name: Windows Export
     runs-on: windows-latest
-    container:
-      image: barichello/godot-ci:4.2.1
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          lfs: true
-      - name: Setup
+      - name: Install build toolchain
         run: |
-          mkdir -v -p ~/.local/share/godot/export_templates/
-          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+          choco install godot --version=${GODOT_VERSION}
           choco install rcedit
+      - name: Download Export Templates
+        run: |
+          powershell -ExecutionPolicy Bypass -Command "& { New-Item -ItemType Directory -Force ($env:APPDATA)/Godot/export_templates }"
+          $url = "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          $target = "${$env:APPDATA}\Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          Invoke-WebRequest -Uri $url -OutFile $target
+          Expand-Archive -Path $target -DestinationPath ($env:APPDATA)/Godot/export_templates -Force
       - name: Windows Build
         run: |
-          cd $PROJECT_PATH
-          mkdir -v -p ./build/desktop_windows_x86_64
-          godot --headless --verbose --export-release "desktop_windows_x86_64" ./build/desktop_windows_x86_64/$EXPORT_NAME.exe
+          Set-Location $env:PROJECT_PATH
+          mkdir -p -Force ./build/desktop_windows_x86_64
+          godot.exe --headless --verbose --export-release "desktop_windows_x86_64" ./build/desktop_windows_x86_64/$env:EXPORT_NAME.exe
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: $EXPORT_NAME_desktop_windows_x86_64
-          path: $PROJECT_PATH/build/desktop_windows_x86_64
+          name: $env:EXPORT_NAME_desktop_windows_x86_64
+          path: $env:PROJECT_PATH/build/desktop_windows_x86_64
 
   export-web:
     name: Web Export
     runs-on: windows-latest
-    container:
-      image: barichello/godot-ci:4.2.1
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           lfs: true
-      - name: Setup
+      - name: Install build toolchain
         run: |
-          mkdir -v -p ~/.local/share/godot/export_templates/
-          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+          choco install godot --version=${GODOT_VERSION}
+      - name: Download Export Templates
+        run: |
+          powershell -ExecutionPolicy Bypass -Command "& { New-Item -ItemType Directory -Force ($env:APPDATA)/Godot/export_templates }"
+          $url = "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          $target = "${$env:APPDATA}\Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          Invoke-WebRequest -Uri $url -OutFile $target
+          Expand-Archive -Path $target -DestinationPath ($env:APPDATA)/Godot/export_templates -Force
       - name: Web Build
         run: |
-          cd $PROJECT_PATH
-          mkdir -v -p ./build/web
-          godot --headless --verbose --export-release "web" ./build/web/$EXPORT_NAME.exe
+          Set-Location $env:PROJECT_PATH
+          mkdir -p -Force ./build/web
+          godot.exe --headless --verbose --export-release "web" ./build/web/$env:EXPORT_NAME.exe
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: $EXPORT_NAME_web
-          path: $PROJECT_PATH/build/web
+          name: $env:EXPORT_NAME_web
+          path: $env:PROJECT_PATH/build/web
