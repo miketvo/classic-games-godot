@@ -10,7 +10,7 @@ env:
 
 jobs:
   deploy:
-    name: Deploy on Itch
+    name: Deploy on itch.io
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true

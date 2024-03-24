@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  GODOT_VERSION: 4.2.1
+  GODOT_VERSION: "4.2.1"
   EXPORT_NAME: p0ng
   PROJECT_PATH: p0ng
 
@@ -28,14 +28,14 @@ jobs:
         run: |
           powershell -ExecutionPolicy Bypass -Command "& { New-Item -ItemType Directory -Force ~/AppData/Roaming/Godot/export_templates }"
           $url = "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
-          $target = "~/AppData/Roaming/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          $target = "~/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
           powershell -ExecutionPolicy Bypass -Command "&Invoke-WebRequest -Uri $url -OutFile $target"
           Expand-Archive -Path $target -DestinationPath ~/AppData/Roaming/Godot/export_templates -Force
       - name: Windows Build
         run: |
           Set-Location $env:PROJECT_PATH
           mkdir -p -Force ./build/desktop_windows_x86_64
-          godot.exe --headless --verbose --export-release "desktop_windows_x86_64" ./build/desktop_windows_x86_64/$env:EXPORT_NAME.exe
+          godot.exe --verbose --export-release "desktop_windows_x86_64" ./build/desktop_windows_x86_64/$env:EXPORT_NAME.exe
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
@@ -57,14 +57,14 @@ jobs:
         run: |
           powershell -ExecutionPolicy Bypass -Command "& { New-Item -ItemType Directory -Force ~/AppData/Roaming/Godot/export_templates }"
           $url = "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
-          $target = "~/AppData/Roaming/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          $target = "~/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
           powershell -ExecutionPolicy Bypass -Command "&Invoke-WebRequest -Uri $url -OutFile $target"
           Expand-Archive -Path $target -DestinationPath ~/AppData/Roaming/Godot/export_templates -Force
       - name: Web Build
         run: |
           Set-Location $env:PROJECT_PATH
           mkdir -p -Force ./build/web
-          godot.exe --headless --verbose --export-release "web" ./build/web/$env:EXPORT_NAME.exe
+          godot.exe --verbose --export-release "web" ./build/web/$env:EXPORT_NAME.exe
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
