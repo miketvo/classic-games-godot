@@ -1,0 +1,42 @@
+name: "Export Release"
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    branches:
+      - main
+  push:
+    branches: main
+
+env:
+  GODOT_VERSION: 4.2.1
+
+jobs:
+  export:
+    name: Export
+    runs-on: windows-2022
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Build Toolchain
+        run: |
+          choco install godot --version=$env:GODOT_VERSION
+          choco install rcedit
+      - name: Download Export Templates
+        run: |
+          Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
+          New-Item -ItemType Directory -Force ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable
+          $url = "https://github.com/godotengine/godot/releases/download/$env:GODOT_VERSION-stable/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
+          $target = "~/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
+          Invoke-WebRequest -Uri $url -OutFile $target
+          Expand-Archive -Path $target -DestinationPath ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable -Force
+      - name: Export Projects
+        run: ./build.ps1 -c -m release
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release_build
+          path: ./build/release
+          compression-level: 0
