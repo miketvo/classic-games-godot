@@ -16,7 +16,7 @@ jobs:
       fail-fast: true
       matrix:
         template:
-          - desktop-windows-x86_64
+          - desktop_windows_x86_64
           - web
         channel:
           - windows
@@ -33,3 +33,4 @@ jobs:
           itchUsername: ${{env.ITCH_USERNAME}}
           itchGameId: ${{ env.ITCH_GAME_ID }}
           buildChannel: ${{ matrix.channel }}
+          buildNumber: 1.1.3
