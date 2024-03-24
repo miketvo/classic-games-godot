@@ -29,7 +29,7 @@ jobs:
           powershell -ExecutionPolicy Bypass -Command "& { New-Item -ItemType Directory -Force ~/AppData/Roaming/Godot/export_templates }"
           $url = "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
           $target = "~/AppData/Roaming/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
-          Invoke-WebRequest -Uri $url -OutFile $target
+          powershell -ExecutionPolicy Bypass -Command "&Invoke-WebRequest -Uri $url -OutFile $target"
           Expand-Archive -Path $target -DestinationPath ~/AppData/Roaming/Godot/export_templates -Force
       - name: Windows Build
         run: |
@@ -58,7 +58,7 @@ jobs:
           powershell -ExecutionPolicy Bypass -Command "& { New-Item -ItemType Directory -Force ~/AppData/Roaming/Godot/export_templates }"
           $url = "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
           $target = "~/AppData/Roaming/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
-          Invoke-WebRequest -Uri $url -OutFile $target
+          powershell -ExecutionPolicy Bypass -Command "&Invoke-WebRequest -Uri $url -OutFile $target"
           Expand-Archive -Path $target -DestinationPath ~/AppData/Roaming/Godot/export_templates -Force
       - name: Web Build
         run: |
