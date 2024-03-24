@@ -18,10 +18,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install Build Toolchain
+      - name: Setup Toolchain
         run: |
-          choco install godot --version=$env:GODOT_VERSION
-          choco install rcedit
+          Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+          Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+          scoop bucket add extras
+          scoop install extras/godot@$env:GODOT_VERSION
+          scoop install main/rcedit
       - name: Download Export Templates
         run: |
           Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
