@@ -41,12 +41,12 @@ static func deactivate_control(control: Control) -> void:
         "previous": control.get_node(control.focus_previous),
     }
 
-    focus_links.left.focus_neighbor_right = focus_links.right
-    focus_links.right.focus_neighbor_left = focus_links.left
-    focus_links.top.focus_neighbor_bottom = focus_links.bottom
-    focus_links.bottom.focus_neighbor_top = focus_links.top
-    focus_links.next.focus_previous = focus_links.previous
-    focus_links.previous.focus_next = focus_links.next
+    focus_links.left.focus_neighbor_right = focus_links.left.get_path_to(focus_links.right)
+    focus_links.right.focus_neighbor_left = focus_links.right.get_path_to(focus_links.left)
+    focus_links.top.focus_neighbor_bottom = focus_links.top.get_path_to(focus_links.bottom)
+    focus_links.bottom.focus_neighbor_top = focus_links.bottom.get_path_to(focus_links.top)
+    focus_links.next.focus_previous = focus_links.next.get_path_to(focus_links.previous)
+    focus_links.previous.focus_next = focus_links.previous.get_path_to(focus_links.next)
     control.hide()
 
 

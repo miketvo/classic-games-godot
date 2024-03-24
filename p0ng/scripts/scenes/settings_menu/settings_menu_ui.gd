@@ -26,8 +26,10 @@ func _ready() -> void:
         _graphics.get_node("Fullscreen/ToggleButton")\
                 .connect("toggled", _on_graphics_fullscreen_toggled)
     else:
-        _graphics.get_node("Fullscreen").hide()
+        UI.deactivate_control(_graphics.get_node("Resolution/OptionButton"))
         _graphics.get_node("Resolution").hide()
+        UI.deactivate_control(_graphics.get_node("Fullscreen/ToggleButton"))
+        _graphics.get_node("Fullscreen").hide()
     _graphics.get_node("PostProcessing/ToggleButton")\
             .connect("toggled", _on_graphics_post_processing_toggled)
     _graphics.get_node("CrtEffect/ToggleButton")\

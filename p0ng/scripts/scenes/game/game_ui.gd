@@ -29,7 +29,9 @@ func _ready() -> void:
     _pause_menu.get_node("VBoxContainer/ResumeButton")\
             .connect("pressed", _on_resume_request)
     if Global.os_platform in [ "Mobile", "Web" ]:
-        _pause_menu.get_node("VBoxContainer/QuitToDesktopButton").hide()
+        UI.deactivate_control(_pause_menu.get_node(
+                "VBoxContainer/QuitToDesktopButton"
+        ))
     else:
         _pause_menu.get_node("VBoxContainer/QuitToDesktopButton")\
                 .connect("pressed", _on_quit_to_desktop_request)
@@ -42,7 +44,9 @@ func _ready() -> void:
     _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton")\
             .connect("pressed", _on_end_game_request)
     if Global.os_platform in [ "Mobile", "Web" ]:
-        _endgame_dialog.get_node("MenuContainer/VBoxContainer/QuitToDesktopButton").hide()
+        UI.deactivate_control(_endgame_dialog.get_node(
+                "MenuContainer/VBoxContainer/QuitToDesktopButton"
+        ))
     else:
         _endgame_dialog.get_node("MenuContainer/VBoxContainer/QuitToDesktopButton")\
             .connect("pressed", _on_quit_to_desktop_request)

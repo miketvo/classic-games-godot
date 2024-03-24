@@ -14,7 +14,7 @@ func _ready() -> void:
     %StartButton.grab_focus()
     %StartButton.connect("pressed", _on_main_menu_start_button_pressed)
     if Global.os_platform in [ "Mobile", "Web" ]:
-        %QuitButton.hide()
+        UI.deactivate_control(%QuitButton)
     else:
         %QuitButton.connect("pressed", _on_main_menu_quit_button_pressed)
     %SettingsButton.connect("pressed", _on_main_menu_settings_button_pressed)
