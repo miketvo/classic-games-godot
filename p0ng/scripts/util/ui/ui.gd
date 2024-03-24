@@ -7,21 +7,50 @@ signal acted_with_data(action: StringName, data: Variant)
 
 const UI_TRANSITION_DURATION: float = 0.5
 
-var input_disabled: bool
+var input_disabled: bool = false
 
-@onready var _sfx_controller: SfxController
+@onready var _sfx_controller: SfxController = get_tree().root.get_node("Main/UISfxController")
 
 
 # ============================================================================ #
 #region Godot builtins
-func _ready() -> void:
-    _sfx_controller = get_tree().root.get_node("Main/UISfxController")
+func _input(_event: InputEvent) -> void:
+    if input_disabled:
+        # Stops event propagation to child nodes, effectively disabling inputs
+        accept_event()
 #endregion
 # ============================================================================ #
 
 
 # ============================================================================ #
 #region Public methods
+
+## Hides the [param control] and re-routes surrounding focus neighbor left, top,
+## right, bottom, next, and previous.
+## [br][br]
+## This effectively quiet-remove the [param control] node from the [SceneTree],
+## without affecting UI navigation behavior.
+## [br][br]
+## Intended for hiding desktop/web/mobile-only [Control]s. See
+## [member NamespaceGlobal.os_platform].
+static func deactivate_control(control: Control) -> void:
+    var focus_links: Dictionary = {
+        "left": control.get_node(control.focus_neighbor_left),
+        "top": control.get_node(control.focus_neighbor_top),
+        "right": control.get_node(control.focus_neighbor_right),
+        "bottom": control.get_node(control.focus_neighbor_bottom),
+        "next": control.get_node(control.focus_next),
+        "previous": control.get_node(control.focus_previous),
+    }
+
+    focus_links.left.focus_neighbor_right = focus_links.left.get_path_to(focus_links.right)
+    focus_links.right.focus_neighbor_left = focus_links.right.get_path_to(focus_links.left)
+    focus_links.top.focus_neighbor_bottom = focus_links.top.get_path_to(focus_links.bottom)
+    focus_links.bottom.focus_neighbor_top = focus_links.bottom.get_path_to(focus_links.top)
+    focus_links.next.focus_previous = focus_links.next.get_path_to(focus_links.previous)
+    focus_links.previous.focus_next = focus_links.previous.get_path_to(focus_links.next)
+    control.hide()
+
 
 ## Creates a fade-in transition effect for a container node using a Tween node.
 ## [br][br]

@@ -13,9 +13,6 @@ extends UI
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    super()
-    input_disabled = false
-
     _main.get_node("BackButton").grab_focus()
     _main.get_node("BackButton").connect("pressed", _on_main_back_button_pressed)
     _main.get_node("GraphicsButton").connect("pressed", _on_main_graphics_button_pressed)
@@ -25,11 +22,15 @@ func _ready() -> void:
         _resolution_popup.connect("resolution_selected", _on_resolution_popup_resolution_selected)
         _graphics.get_node("Fullscreen/ToggleButton")\
                 .connect("toggled", _on_graphics_fullscreen_toggled)
-    else:
-        _graphics.get_node("Fullscreen").hide()
-        _graphics.get_node("Resolution").hide()
-    _graphics.get_node("PostProcessing/ToggleButton")\
+        _graphics.get_node("PostProcessing/ToggleButton")\
             .connect("toggled", _on_graphics_post_processing_toggled)
+    else:
+        UI.deactivate_control(_graphics.get_node("Resolution/OptionButton"))
+        _graphics.get_node("Resolution").hide()
+        UI.deactivate_control(_graphics.get_node("Fullscreen/ToggleButton"))
+        _graphics.get_node("Fullscreen").hide()
+        UI.deactivate_control(_graphics.get_node("PostProcessing/ToggleButton"))
+        _graphics.get_node("PostProcessing").hide()
     _graphics.get_node("CrtEffect/ToggleButton")\
             .connect("toggled", _on_graphics_crt_effect_toggled)
     _graphics.get_node("Menu/BackButton").connect("pressed", _on_graphics_menu_back_button_pressed)
@@ -84,12 +85,6 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
     _update_graphics_save_button()
     _update_sounds_save_button()
-
-
-func _input(_event: InputEvent) -> void:
-    if input_disabled:
-        # Stops event propagation to child nodes, effectively disabling inputs
-        accept_event()
 #endregion
 # ============================================================================ #
 
@@ -100,7 +95,10 @@ func _input(_event: InputEvent) -> void:
 #region Listens to _main.get_node("*").
 func _on_main_graphics_button_pressed() -> void:
     input_disabled = true
-    _graphics.get_node("Resolution/OptionButton").grab_focus()
+    if Global.os_platform == "Desktop":
+        _graphics.get_node("Resolution/OptionButton").grab_focus()
+    else:
+        _graphics.get_node("PostProcessing/ToggleButton").grab_focus()
     tween_transition_slide_container($Main, Vector2.RIGHT, UI_TRANSITION_DURATION)\
             .connect("finished", _on_tween_transition_finshed)
     tween_transition_slide_container(_graphics, Vector2.RIGHT, UI_TRANSITION_DURATION)\

@@ -28,7 +28,8 @@ game_point_text = "GAME!"
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="GameUI" parent="UI" instance=ExtResource("2_86o8i")]
+[node name="GameUI" parent="UI" node_paths=PackedStringArray("game") instance=ExtResource("2_86o8i")]
+game = NodePath("../..")
 
 [node name="SfxController" type="Node" parent="."]
 process_mode = 3
