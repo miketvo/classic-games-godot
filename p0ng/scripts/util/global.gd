@@ -1,3 +1,4 @@
+class_name NamespaceGlobal
 extends Node2D
 
 
@@ -39,11 +40,16 @@ const MAX_BALL_PRED_SECONDS: float = 1.0
 
 # ============================================================================ #
 #region Public variables
+
+## The platform that the game is running on. Can be either
+## [code]"Desktop"[/code], [code]"Mobile"[/code], or [code]"Web"[/code].
 var os_platform: StringName
+
 var software_cursor_visibility: SoftwareCursor.Visibility\
         = SoftwareCursor.Visibility.ALWAYS_VISIBLE
 var current_game_mode: GameMode
 var game_state_data: GameStateData = GameStateData.new()
+
 #endregion
 # ============================================================================ #
 
@@ -92,7 +98,7 @@ func flip_side(side: int) -> int:
 #region Inner classes
 
 ## Game state data. Contains relevant information on the current state of the
-## game, for use with a state machine.
+## game, for use with a [StateMachine] and its [State]s.
 class GameStateData extends Node:
     var ball_position: Vector2
     var ball_velocity: Vector2
