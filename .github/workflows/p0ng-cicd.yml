@@ -1,11 +1,10 @@
-name: "build"
+name: "p0ng CI/CD"
 on: 
   pull_request:
     types:
       - opened
     branches:
       - main
-      - dev
 
 env:
   GODOT_VERSION: 4.2.1
