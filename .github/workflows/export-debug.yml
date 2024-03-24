@@ -1,4 +1,4 @@
-name: "Export Release"
+name: "Export Debug"
 on:
   pull_request:
     types:
