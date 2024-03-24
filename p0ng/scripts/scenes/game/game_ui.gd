@@ -1,7 +1,9 @@
 extends UI
 
 
-var disable_pausing: bool
+@export var game: GameScene2D
+
+var _disable_pausing: bool
 
 @onready var _pause_menu: Container = $PauseMenuContainer
 @onready var _endgame_dialog: Container = $EndGameDialogContainer
@@ -20,8 +22,7 @@ var disable_pausing: bool
 func _ready() -> void:
     Global.software_cursor_visibility = SoftwareCursor.Visibility.IDLE_AUTO_HIDE
 
-    disable_pausing = false
-    process_mode = Node.PROCESS_MODE_ALWAYS
+    _disable_pausing = false
 
     _pause_menu.get_node("VBoxContainer/ResumeButton")\
             .connect("pressed", _on_resume_request)
@@ -55,7 +56,6 @@ func _ready() -> void:
         assert(child is Button, "ui_scene_changer_buttons group must contain only Buttons")
         child.connect("pressed", _on_ui_scene_changer_button_pressed)
 
-    _endgame_dialog.process_mode = Node.PROCESS_MODE_DISABLED
     _endgame_dialog.modulate = Color(1.0, 1.0, 1.0, 0.0)
     _win_label[Global.SIDE_LEFT].hide()
     _win_label[Global.SIDE_RIGHT].hide()
@@ -64,19 +64,18 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-    if not input_disabled and not disable_pausing:
-        if Input.is_action_just_released("pause") and not get_tree().paused:
+    if not input_disabled and not _disable_pausing:
+        if Input.is_action_just_released("pause") and not game.is_paused():
             Global.software_cursor_visibility = SoftwareCursor.Visibility.ALWAYS_VISIBLE
+            acted.emit("pause")
             input_disabled = true
-            get_tree().paused = true
             _pause_menu.get_node("VBoxContainer/ResumeButton").grab_focus()
             tween_transition_slide_container(
                     $PauseMenuContainer,
                     Vector2.UP,
                     UI_TRANSITION_DURATION
-            ).set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)\
-                    .connect("finished", _on_tween_transition_finshed)
-        elif Input.is_action_just_released("pause") and get_tree().paused:
+            ).connect("finished", _on_tween_transition_finshed)
+        elif Input.is_action_just_released("pause") and game.is_paused():
             _on_resume_request()
 
 
@@ -91,7 +90,7 @@ func _input(_event: InputEvent) -> void:
 # ============================================================================ #
 #region Public methods
 func game_over(winning_side: int) -> void:
-    disable_pausing = true
+    _disable_pausing = true
     Global.software_cursor_visibility = SoftwareCursor.Visibility.ALWAYS_VISIBLE
 
     match winning_side:
@@ -105,11 +104,10 @@ func game_over(winning_side: int) -> void:
             assert(false, "Unrecognized side")
 
     _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").grab_focus()
-    _endgame_dialog.process_mode = Node.PROCESS_MODE_INHERIT
     tween_transition_fade_appear_container(
             _endgame_dialog,
-            UI.UI_TRANSITION_DURATION / 4
-    ).set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+            UI.UI_TRANSITION_DURATION / 8
+    )
 #endregion
 # ============================================================================ #
 
@@ -123,10 +121,9 @@ func _on_resume_request() -> void:
     for control: Control in _pause_menu.get_node("VBoxContainer").get_children():
         control.release_focus()
 
+    acted.emit("resume")
     input_disabled = true
-    get_tree().paused = false
     tween_transition_slide_container($PauseMenuContainer, Vector2.DOWN, UI_TRANSITION_DURATION)\
-            .set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)\
             .connect("finished", _on_tween_transition_finshed)
 
 # Listens to _pause_menu.get_node("QuitToDesktopButton.pressed() and
@@ -138,14 +135,12 @@ func _on_quit_to_desktop_request() -> void:
 # Listens to _pause_menu.get_node("RestartButton.pressed() and
 ## _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").pressed().
 func _on_restart_request() -> void:
-    get_tree().paused = false
     acted.emit("restart")
 
 
 # Listens to _pause_menu.get_node("EndGameButton.pressed() and
 ## _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton").pressed().
 func _on_end_game_request() -> void:
-    get_tree().paused = false
     acted.emit("end_game")
 
 #endregion

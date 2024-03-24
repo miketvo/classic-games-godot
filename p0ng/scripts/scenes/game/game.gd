@@ -19,6 +19,7 @@ var left_score: int
 var right_score: int
 var winner: int
 
+var _paused: bool
 var _rng = RandomNumberGenerator.new()
 var _current_ball_speed: float
 var _game_mode: Global.GameMode
@@ -55,7 +56,7 @@ func _process(_delta: float) -> void:
     _game_hud.update_score_labels(left_score, right_score, _game_point_state)
     if _game_over:
         _game_ui.game_over(winner)
-        get_tree().paused = true
+        pause()
 
 
 func _physics_process(delta: float) -> void:
@@ -68,6 +69,30 @@ func _physics_process(delta: float) -> void:
                 Global.SERVING_ANGULAR_VARIATION
         )
         _round_started = true
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
+#region Public methods
+func pause() -> void:
+    _paused = true
+    if is_instance_valid(ball) and not ball.is_queued_for_deletion():
+        ball.process_mode = Node.PROCESS_MODE_DISABLED
+    left_paddle.process_mode = Node.PROCESS_MODE_DISABLED
+    right_paddle.process_mode = Node.PROCESS_MODE_DISABLED
+
+
+func unpause() -> void:
+    _paused = false
+    if is_instance_valid(ball) and not ball.is_queued_for_deletion():
+        ball.process_mode = Node.PROCESS_MODE_INHERIT
+    left_paddle.process_mode = Node.PROCESS_MODE_INHERIT
+    right_paddle.process_mode = Node.PROCESS_MODE_INHERIT
+
+
+func is_paused() -> bool:
+    return _paused
 #endregion
 # ============================================================================ #
 
@@ -142,6 +167,10 @@ func _on_right_bound_body_entered(body: Node) -> void:
 # Listens to $UI/GameUI.acted(action: StringName).
 func _on_game_ui_acted(action: StringName) -> void:
     match action:
+        "pause":
+            pause()
+        "resume":
+            unpause()
         "restart":
             scene_finished.emit(SceneKey.GAME)
         "end_game":
@@ -154,7 +183,6 @@ func _on_game_ui_acted(action: StringName) -> void:
 # ============================================================================ #
 #region Utils
 func _spawn_paddes() -> void:
-
     match _game_mode:
         Global.GameMode.GAME_MODE_TWO_PLAYERS:
             left_paddle = PlayerPaddle.instantiate()
@@ -314,8 +342,6 @@ func _win_round(winning_side: int) -> void:
 func _win_game(winning_side: int) -> void:
     _sfx_controller.play_sound("GameEndSfx")
     winner = winning_side
-    left_paddle.set_script(null)
-    right_paddle.set_script(null)
     _game_over = true
 #endregion
 # ============================================================================ #
