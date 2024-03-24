@@ -1,8 +1,5 @@
 name: "p0ng CI/CD"
 on:
-  push:
-    branches:
-      - dev
   pull_request:
     types:
       - opened
