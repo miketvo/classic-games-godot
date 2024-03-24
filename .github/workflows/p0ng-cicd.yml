@@ -1,8 +1,13 @@
 name: "p0ng CI/CD"
-on: 
+on:
+  push:
+    branches:
+      - dev
   pull_request:
     types:
       - opened
+      - reopened
+      - synchronize
     branches:
       - main
 
@@ -10,8 +15,6 @@ env:
   GODOT_VERSION: 4.2.1
   EXPORT_NAME: p0ng
   PROJECT_PATH: p0ng
-  ITCH_USERNAME: ambientlamp
-  ITCH_GAME_ID: p0ng
 
 jobs:
   export-windows:
@@ -63,11 +66,3 @@ jobs:
         with:
           name: $EXPORT_NAME_web
           path: $PROJECT_PATH/build/web
-      - name: Deploy to itch.io
-        uses: KikimoraGames/itch-publish@v0.0.3
-        with:
-          butlerApiKey: ${{secrets.BUTLER_API_KEY}}
-          gameData: $PROJECT_PATH/build/web
-          itchUsername: ${{env.ITCH_USERNAME}}
-          itchGameId: ${{ env.ITCH_GAME_ID }}
-          buildChannel: webgl
