@@ -258,18 +258,9 @@ func _despawn_ball() -> void:
 
 
 func _configure_world() -> void:
-    $World/LeftBound.connect(
-            "body_entered",
-            _on_left_bound_body_entered
-    )
-    $World/RightBound.connect(
-            "body_entered",
-            _on_right_bound_body_entered
-    )
-    $World/VerticalSeparator.connect(
-            "body_entered",
-            _on_vertical_separator_body_entered
-    )
+    $World/LeftBound.connect("body_entered", _on_left_bound_body_entered)
+    $World/RightBound.connect("body_entered", _on_right_bound_body_entered)
+    $World/VerticalSeparator.connect("body_entered", _on_vertical_separator_body_entered)
 
 
 func _configure_game() -> void:
@@ -340,8 +331,8 @@ func _win_round(winning_side: int) -> void:
 
 
 func _win_game(winning_side: int) -> void:
-    _sfx_controller.play_sound("GameEndSfx")
     winner = winning_side
+    _sfx_controller.play_sound("GameEndSfx")
     _game_over = true
 #endregion
 # ============================================================================ #
