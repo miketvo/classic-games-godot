@@ -23,7 +23,7 @@ jobs:
           Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
           Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
           Join-Path (Resolve-Path ~).Path "scoop\shims" >> $Env:GITHUB_PATH
-          
+
           scoop bucket add extras
           scoop install extras/godot@$env:GODOT_VERSION
           scoop install main/rcedit
@@ -34,7 +34,7 @@ jobs:
           Invoke-WebRequest -Uri $url -OutFile $target
           Expand-Archive -Path $target -DestinationPath ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable -Force
       - name: Export Projects
-        run: powershell -Command "& { ./build.ps1 -c -m release }" 
+        run: ./build.ps1 -c -m release
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
