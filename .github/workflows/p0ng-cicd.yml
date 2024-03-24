@@ -32,7 +32,7 @@ jobs:
         run: |
           mkdir -v -p build/windows
           cd $PROJECT_PATH
-          godot --verbose --export-release "desktop_windows_x86_64" ./build/desktop_windows_x86_64/$EXPORT_NAME.exe
+          godot --headless --verbose --export-release "desktop_windows_x86_64" ./build/desktop_windows_x86_64/$EXPORT_NAME.exe
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
@@ -57,7 +57,7 @@ jobs:
         run: |
           mkdir -v -p build/web
           cd $PROJECT_PATH
-          godot --verbose --export-release "web" ./build/web/$EXPORT_NAME.exe
+          godot --headless --verbose --export-release "web" ./build/web/$EXPORT_NAME.exe
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
