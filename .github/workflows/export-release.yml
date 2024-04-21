@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  GODOT_VERSION: 4.1
+  GODOT_VERSION: 4.2.2
 
 jobs:
   export:
