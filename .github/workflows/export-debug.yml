@@ -13,8 +13,11 @@ env:
 
 jobs:
   export:
-    name: Export
+    name: Export (Debug)
     runs-on: windows-2022
+    defaults:
+      run:
+        working-directory: ./
     steps:
       - name: Checkout
         uses: actions/checkout@v4
