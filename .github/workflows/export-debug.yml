@@ -35,10 +35,11 @@ jobs:
           Expand-Archive -Path $target -DestinationPath ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable -Force
       - name: Export Projects
         run: ./build.ps1 -c -m debug
+      - run: pwd
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: debug_build
-          path: ./build/debug/p0ng-web.zip
+          path: build/debug/*
           compression-level: 0
           if-no-files-found: error
