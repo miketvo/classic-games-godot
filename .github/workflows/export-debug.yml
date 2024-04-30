@@ -39,6 +39,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: debug_build
-          path: build\debug\*
+          path: ./build/debug/p0ng-web.zip
           compression-level: 0
           if-no-files-found: error
