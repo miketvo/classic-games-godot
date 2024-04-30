@@ -36,8 +36,9 @@ jobs:
       - name: Export Projects
         run: ./build.ps1 -c -m debug
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: debug_build
-          path: ./classic-games-godot/build/debug/*
+          path: build/debug/*
+          compression-level: 0
           if-no-files-found: error
