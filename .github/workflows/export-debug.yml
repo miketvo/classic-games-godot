@@ -36,6 +36,7 @@ jobs:
       - name: Export Projects
         run: ./build.ps1 -c -m debug
       - run: pwd
+      - run: tree /F
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
