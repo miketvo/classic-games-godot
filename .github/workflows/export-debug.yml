@@ -39,7 +39,7 @@ jobs:
       - name: Export Projects
         run: ./build.ps1 -c -m debug
       - name: Debug print
-        run: ls build/debug
+        run: Get-Children build/debug
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
