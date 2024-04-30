@@ -35,9 +35,6 @@ jobs:
           Expand-Archive -Path $target -DestinationPath ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable -Force
       - name: Export Projects
         run: ./build.ps1 -c -m debug
-      - run: pwd
-      - name: Tree
-        run: tree /F /A
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
