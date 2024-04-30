@@ -15,9 +15,6 @@ jobs:
   export:
     name: Export (Release)
     runs-on: windows-2022
-    defaults:
-      run:
-        working-directory: ./
     steps:
       - name: Checkout
         uses: actions/checkout@v4
