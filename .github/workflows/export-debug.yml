@@ -39,5 +39,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: debug_build
-          path: ./build/debug/*
+          path: ./classic-games-godot/build/debug/*
           if-no-files-found: error
