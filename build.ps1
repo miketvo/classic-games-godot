@@ -85,7 +85,7 @@ foreach ($project in $godotProjects) {
         $godotExportProcess = @{
             FilePath = $godotExecutable
             ArgumentList = "--headless","--verbose",$godotExportFlag,$exportPreset
-            WorkingDirectory = @project
+            WorkingDirectory = $project
             NoNewWindow = $true
             Wait = $true
         }
