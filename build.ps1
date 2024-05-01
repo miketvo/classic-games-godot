@@ -79,9 +79,9 @@ foreach ($project in $godotProjects) {
             New-Item -ItemType Directory -Path $exportDirectory | Out-Null
         }
 
-        Write-Output "Exporting $projectName ($exportPreset)..."
+        Write-Output "Exporting $projectName ($exportPreset) ..."
         Set-Location -Path $project
-        godot --headless --verbose $godotExportFlag $exportPreset | Out-Null
+        godot --headless --verbose $godotExportFlag $exportPreset | Out-Default
         Set-Location -Path $PSScriptRoot
 
         $zipFileName = "$projectName-$exportPreset.zip"
@@ -93,7 +93,7 @@ foreach ($project in $godotProjects) {
             Remove-Item -Path $zipFilePath -Force
         }
         $archiveCommand = "zip -jr -0 $zipFilePath $exportDirectory"
-        Write-Output "Archiving $projectName ($exportPreset)..."
+        Write-Output "Archiving $projectName ($exportPreset) ..."
         Invoke-Expression -Command $archiveCommand
     }
 }
