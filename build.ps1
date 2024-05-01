@@ -82,6 +82,10 @@ foreach ($project in $godotProjects) {
         Write-Output "Exporting $projectName ($exportPreset) ..."
         Set-Location -Path $project
         godot --headless --verbose $godotExportFlag $exportPreset | Out-Host
+        # Because godot command-line runs asynchronously since 4.2.2, and there is no other way to
+        # wait for it programmatically that will work with Github Actions. This is stupid. Fix at
+        # earliest possible chance. 
+        Start-Sleep -Seconds 60.0
         Set-Location -Path $PSScriptRoot
 
         $zipFileName = "$projectName-$exportPreset.zip"
