@@ -81,7 +81,15 @@ foreach ($project in $godotProjects) {
 
         Write-Output "Exporting $projectName ($exportPreset) ..."
         Set-Location -Path $project
-        godot --headless --verbose $godotExportFlag $exportPreset | Out-Default
+        $godotExecutable = which godot | Out-String
+        $godotExportProcess = @{
+            FilePath = $godotExecutable
+            ArgumentList = "--headless","--verbose",$godotExportFlag,$exportPreset
+            WorkingDirectory = @project
+            NoNewWindow = $true
+            Wait = $true
+        }
+        Start-Process @godotExportProcess
         Set-Location -Path $PSScriptRoot
 
         $zipFileName = "$projectName-$exportPreset.zip"

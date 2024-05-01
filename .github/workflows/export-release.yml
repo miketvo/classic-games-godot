@@ -28,6 +28,7 @@ jobs:
           scoop install extras/godot@$env:GODOT_VERSION
           scoop install main/rcedit
           scoop install main/zip
+          scoop install main/which
 
           New-Item -ItemType Directory -Force ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable
           $url = "https://github.com/godotengine/godot/releases/download/$env:GODOT_VERSION-stable/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
