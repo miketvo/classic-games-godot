@@ -85,7 +85,6 @@ foreach ($project in $godotProjects) {
         Invoke-Expression -Command $godotExportCommand
         Set-Location -Path $PSScriptRoot
 
-        $zipFileSource = Join-Path -Path $exportDirectory -ChildPath "*"
         $zipFileName = "$projectName-$exportPreset.zip"
         $zipFilePath = Join-Path -Path $releaseFolderPath -ChildPath $zipFileName
         if (-not (Test-Path -Path $releaseFolderPath)) {
@@ -94,8 +93,9 @@ foreach ($project in $godotProjects) {
         if (Test-Path -Path $zipFilePath) {
             Remove-Item -Path $zipFilePath -Force
         }
-        Compress-Archive -Path $zipFileSource -DestinationPath $zipFilePath -CompressionLevel NoCompression
-        Write-Output "Packed $zipFileSource into $zipFilePath"
+        $archiveCommand = "zip -jr -0 $zipFilePath $exportDirectory"
+        Write-Output $archiveCommand
+        Invoke-Expression -Command $archiveCommand
     }
 }
 Write-Host "[ DONE ]" -ForegroundColor Magenta
