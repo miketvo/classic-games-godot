@@ -9,11 +9,11 @@ on:
       - dev
 
 env:
-  GODOT_VERSION: 4.2.1
+  GODOT_VERSION: 4.2.2
 
 jobs:
   export:
-    name: Export
+    name: Export (Debug)
     runs-on: windows-2022
     steps:
       - name: Checkout
@@ -27,6 +27,8 @@ jobs:
           scoop bucket add extras
           scoop install extras/godot@$env:GODOT_VERSION
           scoop install main/rcedit
+          scoop install main/zip
+          scoop install main/which
 
           New-Item -ItemType Directory -Force ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable
           $url = "https://github.com/godotengine/godot/releases/download/$env:GODOT_VERSION-stable/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
@@ -39,5 +41,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: debug_build
-          path: ./build/debug/*
+          path: build/debug/*
           compression-level: 0
+          if-no-files-found: error
