@@ -97,4 +97,4 @@ foreach ($project in $godotProjects) {
         Invoke-Expression -Command $archiveCommand
     }
 }
-Write-Host "[ DONE ]" -ForegroundColor Magenta
+Write-Host "[ DONE ]" -ForegroundColor Black -BackgroundColor Magenta
