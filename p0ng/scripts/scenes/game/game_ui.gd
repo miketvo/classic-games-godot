@@ -57,6 +57,7 @@ func _ready() -> void:
         child.connect("pressed", _on_ui_scene_changer_button_pressed)
 
     _endgame_dialog.modulate = Color(1.0, 1.0, 1.0, 0.0)
+    _endgame_dialog.visible = false
     _win_label[Global.SIDE_LEFT].hide()
     _win_label[Global.SIDE_RIGHT].hide()
     _lose_label[Global.SIDE_LEFT].hide()
@@ -103,6 +104,7 @@ func game_over(winning_side: int) -> void:
         _:
             assert(false, "Unrecognized side")
 
+    _endgame_dialog.visible = true
     _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").grab_focus()
     tween_transition_fade_appear_container(
             _endgame_dialog,
