@@ -60,7 +60,7 @@ foreach ($project in $godotProjects) {
     $projectName = $project.BaseName
 
     Write-Host "Importing $projectName ..." -ForegroundColor Yellow
-    godot --headless --import --path $project --quit-after 2 | Out-Default
+    godot --headless --import --path $project --quit | Out-Default
 
     Write-Host "Exporting $project" -ForegroundColor Magenta
     $exportPresetsFile = Join-Path -Path $project -ChildPath "export_presets.cfg"
