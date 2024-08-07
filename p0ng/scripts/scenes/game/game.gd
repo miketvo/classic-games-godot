@@ -53,10 +53,8 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-    _game_hud.update_score_labels(left_score, right_score, _game_point_state)
-    if _game_over:
-        _game_ui.game_over(winner)
-        pause()
+    if not _game_over:
+        _game_hud.update_score_labels(left_score, right_score, _game_point_state)
 
 
 func _physics_process(delta: float) -> void:
@@ -333,6 +331,8 @@ func _win_round(winning_side: int) -> void:
 func _win_game(winning_side: int) -> void:
     winner = winning_side
     _sfx_controller.play_sound("GameEndSfx")
+    _game_ui.game_over(winner)
     _game_over = true
+    pause()
 #endregion
 # ============================================================================ #
