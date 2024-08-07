@@ -21,8 +21,6 @@ if ($h.IsPresent) {
     exit 0
 }
 
-which rcedit
-
 if ($c.IsPresent) {
     Write-Host " =====[ CLEANING BUILD DIRS ]===== " -ForegroundColor Black -BackgroundColor Magenta
     git clean -dxf -e ".godot"

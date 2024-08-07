@@ -18,5 +18,5 @@ export/web/http_port = 8060
 export/web/use_tls = false
 export/web/tls_key = ""
 export/web/tls_certificate = ""
-export/windows/rcedit = "~/scoop/shims/rcedit.exe"
+export/windows/rcedit = "C:\Users\runneradmin\scoop\shims\rcedit.exe"
 export/windows/signtool = ""

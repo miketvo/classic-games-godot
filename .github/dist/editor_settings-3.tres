@@ -15,5 +15,5 @@ export/uwp/signtool = ""
 export/uwp/debug_certificate = ""
 export/uwp/debug_password = ""
 export/uwp/debug_algorithm = 2
-export/windows/rcedit = "~/scoop/shims/rcedit.exe"
+export/windows/rcedit = "C:\Users\runneradmin\scoop\shims\rcedit.exe"
 export/windows/signtool = ""
