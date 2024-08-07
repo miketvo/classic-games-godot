@@ -1,7 +1,6 @@
 ![ssssss banner](../assets/ssssss/itch_io_banner.png)
 
 <center>
-<img height="28" src="icon.svg">&nbsp;
 <a href="https://github.com/miketvo/classic-games-godot/releases/latest/download/ssssss-desktop-windows-x86_64.zip">
     <img src="https://img.shields.io/badge/ssssss-Download-CE6B40?style=for-the-badge">
 </a>

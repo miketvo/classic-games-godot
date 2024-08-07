@@ -1,7 +1,6 @@
 ![p0ng banner](../assets/p0ng/banner.png)
 
 <center>
-<img height="28" src="icon.svg">&nbsp;
 <a href="https://github.com/miketvo/classic-games-godot/releases/latest/download/p0ng-desktop-windows-x86_64.zip">
     <img src="https://img.shields.io/badge/p0ng-Download-CE6B40?style=for-the-badge">
 </a>
