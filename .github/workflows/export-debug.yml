@@ -9,11 +9,11 @@ on:
       - dev
 
 env:
-  GODOT_VERSION: 4.2.1
+  GODOT_VERSION: 4.2.2
 
 jobs:
   export:
-    name: Export
+    name: Export (Debug)
     runs-on: windows-2022
     steps:
       - name: Checkout
@@ -27,17 +27,25 @@ jobs:
           scoop bucket add extras
           scoop install extras/godot@$env:GODOT_VERSION
           scoop install main/rcedit
+          scoop install main/zip
 
-          New-Item -ItemType Directory -Force ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable
+          Write-Output "Installing Godot Export Templates"
           $url = "https://github.com/godotengine/godot/releases/download/$env:GODOT_VERSION-stable/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
           $target = "~/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
+          $templates_dir = "~/AppData/Roaming/Godot/export_templates"
+          New-Item -ItemType Directory -Force $templates_dir | Out-Null
           Invoke-WebRequest -Uri $url -OutFile $target
-          Expand-Archive -Path $target -DestinationPath ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable -Force
+          Expand-Archive -Path $target -DestinationPath $templates_dir -Force
+          Rename-Item -Path $templates_dir/templates -NewName "$($env:GODOT_VERSION).stable" -Force
+
+          Write-Output "Installing Godot editor configuration"
+          Copy-Item ./.github/dist/editor_settings-4.tres -Destination ~/AppData/Roaming/Godot
       - name: Export Projects
         run: ./build.ps1 -c -m debug
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: debug_build
-          path: ./build/debug/*
+          path: build/debug/*
           compression-level: 0
+          if-no-files-found: error

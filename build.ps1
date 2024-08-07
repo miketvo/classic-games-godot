@@ -57,8 +57,12 @@ Write-Output $godotProjects
 $buildModeText = $m.ToUpper()
 Write-Host " =====[ EXPORTING PROJECTS (MODE: $buildModeText) ]===== " -ForegroundColor Black -BackgroundColor Magenta
 foreach ($project in $godotProjects) {
-    Write-Host "Exporting $project" -ForegroundColor Magenta
     $projectName = $project.BaseName
+
+    Write-Host "Importing $projectName ..." -ForegroundColor Yellow
+    godot --headless --import --path $project --quit | Out-Default
+
+    Write-Host "Exporting $project" -ForegroundColor Magenta
     $exportPresetsFile = Join-Path -Path $project -ChildPath "export_presets.cfg"
     $exportPresetsCfg = Get-Content -Path $exportPresetsFile -Raw
     $exportPresets = ($exportPresetsCfg | Select-String -Pattern '\n\nname="(.*)"' -AllMatches).Matches | ForEach-Object {
@@ -79,13 +83,9 @@ foreach ($project in $godotProjects) {
             New-Item -ItemType Directory -Path $exportDirectory | Out-Null
         }
 
-        Set-Location -Path $project
-        $godotExportCommand = "godot --headless --verbose $godotExportFlag ""$exportPreset"""
-        Write-Output($godotExportCommand)
-        Invoke-Expression -Command $godotExportCommand
-        Set-Location -Path $PSScriptRoot
+        Write-Host "Exporting $projectName ($exportPreset) ..." -ForegroundColor Yellow
+        godot --headless --path $project $godotExportFlag $exportPreset | Out-Default
 
-        $zipFileSource = Join-Path -Path $exportDirectory -ChildPath "*"
         $zipFileName = "$projectName-$exportPreset.zip"
         $zipFilePath = Join-Path -Path $releaseFolderPath -ChildPath $zipFileName
         if (-not (Test-Path -Path $releaseFolderPath)) {
@@ -94,8 +94,10 @@ foreach ($project in $godotProjects) {
         if (Test-Path -Path $zipFilePath) {
             Remove-Item -Path $zipFilePath -Force
         }
-        Compress-Archive -Path $zipFileSource -DestinationPath $zipFilePath -CompressionLevel NoCompression
-        Write-Output "Packed $zipFileSource into $zipFilePath"
+        Write-Host "Archiving $projectName ($exportPreset) from $exportDirectory into $zipFilePath" -ForegroundColor Yellow
+        Write-Host "- Source: $exportDirectory" -ForegroundColor Yellow
+        Write-Host "- Target: $zipFilePath" -ForegroundColor Yellow
+        Invoke-Expression -Command "zip -jr -0 $zipFilePath $exportDirectory"
     }
 }
-Write-Host "[ DONE ]" -ForegroundColor Magenta
+Write-Host "[ DONE ]" -ForegroundColor Black -BackgroundColor Magenta
