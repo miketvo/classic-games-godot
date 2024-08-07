@@ -57,6 +57,9 @@ Write-Output $godotProjects
 $buildModeText = $m.ToUpper()
 Write-Host " =====[ EXPORTING PROJECTS (MODE: $buildModeText) ]===== " -ForegroundColor Black -BackgroundColor Magenta
 foreach ($project in $godotProjects) {
+    Write-Host "Importing $projectName ..." -ForegroundColor Yellow
+    godot --headless --import --path $project --quit-after 2 | Out-Default
+
     Write-Host "Exporting $project" -ForegroundColor Magenta
     $projectName = $project.BaseName
     $exportPresetsFile = Join-Path -Path $project -ChildPath "export_presets.cfg"
@@ -80,7 +83,6 @@ foreach ($project in $godotProjects) {
         }
 
         Write-Host "Exporting $projectName ($exportPreset) ..." -ForegroundColor Yellow
-        godot --import --path $project | Out-Default
         godot --headless --path $project $godotExportFlag $exportPreset | Out-Default
 
         $zipFileName = "$projectName-$exportPreset.zip"

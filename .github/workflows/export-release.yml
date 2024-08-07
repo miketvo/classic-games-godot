@@ -29,14 +29,16 @@ jobs:
           scoop install main/rcedit
           scoop install main/zip
 
+          Write-Output "Installing Godot Export Templates"
           $url = "https://github.com/godotengine/godot/releases/download/$env:GODOT_VERSION-stable/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
           $target = "~/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
           $templates_dir = "~/AppData/Roaming/Godot/export_templates"
-          New-Item -ItemType Directory -Force $templates_dir
+          New-Item -ItemType Directory -Force $templates_dir | Out-Null
           Invoke-WebRequest -Uri $url -OutFile $target
           Expand-Archive -Path $target -DestinationPath $templates_dir -Force
           Rename-Item -Path $templates_dir/templates -NewName "$($env:GODOT_VERSION).stable" -Force
 
+          Write-Output "Installing Godot editor configuration"
           Copy-Item ./.github/dist/editor_settings-4.tres -Destination ~/AppData/Roaming/Godot
       - name: Export Projects
         run: ./build.ps1 -c -m release
