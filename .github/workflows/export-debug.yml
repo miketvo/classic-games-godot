@@ -34,6 +34,7 @@ jobs:
           $target = "~/Godot_v$env:GODOT_VERSION-stable_export_templates.tpz"
           Invoke-WebRequest -Uri $url -OutFile $target
           Expand-Archive -Path $target -DestinationPath ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable -Force
+          ls ~/AppData/Roaming/Godot/export_templates/$env:GODOT_VERSION.stable
 
           Copy-Item ./.github/dist/editor_settings-4.tres -Destination ~/AppData/Roaming/Godot
       - name: Export Projects
