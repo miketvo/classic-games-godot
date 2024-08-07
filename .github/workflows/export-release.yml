@@ -7,6 +7,10 @@ on:
       - synchronize
     branches:
       - main
+      - dev
+  push:
+    tags:
+      - '*'
 
 env:
   GODOT_VERSION: 4.2.2
