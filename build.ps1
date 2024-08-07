@@ -21,7 +21,7 @@ if ($h.IsPresent) {
     exit 0
 }
 
-ls ~\AppData\Roaming\Godot
+which rcedit
 
 if ($c.IsPresent) {
     Write-Host " =====[ CLEANING BUILD DIRS ]===== " -ForegroundColor Black -BackgroundColor Magenta
