@@ -92,11 +92,10 @@ foreach ($project in $godotProjects) {
         if (Test-Path -Path $zipFilePath) {
             Remove-Item -Path $zipFilePath -Force
         }
-        $archiveCommand = "zip -jr -0 $zipFilePath $exportDirectory"
         Write-Host "Archiving $projectName ($exportPreset) from $exportDirectory into $zipFilePath" -ForegroundColor Yellow
         Write-Host "- Source: $exportDirectory" -ForegroundColor Yellow
         Write-Host "- Target: $zipFilePath" -ForegroundColor Yellow
-        Invoke-Expression -Command $archiveCommand
+        Invoke-Expression -Command "zip -jr -0 $zipFilePath $exportDirectory"
     }
 }
 Write-Host "[ DONE ]" -ForegroundColor Black -BackgroundColor Magenta
