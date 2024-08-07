@@ -21,6 +21,8 @@ if ($h.IsPresent) {
     exit 0
 }
 
+cat ~\AppData\Roaming\Godot\editor_settings-4.tres
+
 if ($c.IsPresent) {
     Write-Host " =====[ CLEANING BUILD DIRS ]===== " -ForegroundColor Black -BackgroundColor Magenta
     git clean -dxf -e ".godot"
