@@ -1,0 +1,464 @@
+[gd_scene load_steps=7 format=3 uid="uid://bprio2u3m5v2b"]
+
+[ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_apgf5"]
+[ext_resource type="Script" path="res://scripts/scenes/settings_menu/settings_menu_ui.gd" id="2_e2d8y"]
+[ext_resource type="Texture2D" uid="uid://dewam7iq2nbdw" path="res://assets/ui/icons/arrow.png" id="3_ocmwm"]
+[ext_resource type="Script" path="res://scripts/scenes/settings_menu/resolution_popup.gd" id="4_bila8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j5bjy"]
+content_margin_left = 48.0
+content_margin_right = 48.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tpq7u"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.0941176, 0.0470588, 0.129412, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.435294, 0.196078, 0.305882, 1)
+
+[node name="SettingsMenuUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -3.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_apgf5")
+script = ExtResource("2_e2d8y")
+
+[node name="Main" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 448.0
+offset_top = 160.0
+offset_right = 704.0
+offset_bottom = 354.0
+scale = Vector2(4, 4)
+theme_override_constants/separation = 9
+alignment = 1
+
+[node name="Label" type="Label" parent="Main"]
+layout_mode = 2
+theme_type_variation = &"LabelTitle"
+text = "SETTINGS"
+horizontal_alignment = 1
+
+[node name="Menu" type="PanelContainer" parent="Main"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_j5bjy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Main/Menu"]
+layout_mode = 2
+alignment = 1
+
+[node name="BackButton" type="Button" parent="Main/Menu/VBoxContainer" groups=["ui_scene_changer_buttons"]]
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../ResetButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../GraphicsButton")
+focus_next = NodePath("../GraphicsButton")
+focus_previous = NodePath("../ResetButton")
+text = "back"
+
+[node name="GraphicsButton" type="Button" parent="Main/Menu/VBoxContainer" groups=["ui_container_slider_buttons"]]
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../BackButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../SoundsButton")
+focus_next = NodePath("../SoundsButton")
+focus_previous = NodePath("../BackButton")
+text = "graphics"
+
+[node name="SoundsButton" type="Button" parent="Main/Menu/VBoxContainer" groups=["ui_container_slider_buttons"]]
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../GraphicsButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../ResetButton")
+focus_next = NodePath("../ResetButton")
+focus_previous = NodePath("../GraphicsButton")
+text = "sounds
+"
+
+[node name="ResetButton" type="Button" parent="Main/Menu/VBoxContainer" groups=["ui_container_slider_buttons"]]
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../SoundsButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../BackButton")
+focus_next = NodePath("../BackButton")
+focus_previous = NodePath("../SoundsButton")
+text = "reset defaults"
+
+[node name="Graphics" type="VBoxContainer" parent="."]
+layout_mode = 2
+offset_left = -1520.0
+offset_top = 136.0
+offset_right = -1140.0
+offset_bottom = 342.0
+scale = Vector2(4, 4)
+alignment = 1
+
+[node name="Label" type="Label" parent="Graphics"]
+layout_mode = 2
+theme_type_variation = &"LabelHeading"
+text = "GRAPHICS SETTINGS"
+horizontal_alignment = 1
+
+[node name="Resolution" type="HBoxContainer" parent="Graphics"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="Graphics/Resolution"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "resolution"
+
+[node name="OptionButton" type="Button" parent="Graphics/Resolution" groups=["ui_selected_buttons"]]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.74
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../Menu/BackButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../Fullscreen/ToggleButton")
+focus_next = NodePath("../../Fullscreen/ToggleButton")
+focus_previous = NodePath("../../Menu/SaveButton")
+toggle_mode = true
+icon = ExtResource("3_ocmwm")
+alignment = 0
+icon_alignment = 2
+
+[node name="Fullscreen" type="HBoxContainer" parent="Graphics"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="Graphics/Fullscreen"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 5.0
+text = "fullscreen"
+
+[node name="ToggleButton" type="CheckButton" parent="Graphics/Fullscreen" groups=["ui_accepted_buttons"]]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../Resolution/OptionButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../PostProcessing/ToggleButton")
+focus_next = NodePath("../../PostProcessing/ToggleButton")
+focus_previous = NodePath("../../Resolution/OptionButton")
+
+[node name="PostProcessing" type="HBoxContainer" parent="Graphics"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="Graphics/PostProcessing"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 5.0
+text = "post processing"
+
+[node name="ToggleButton" type="CheckButton" parent="Graphics/PostProcessing" groups=["ui_accepted_buttons"]]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../Fullscreen/ToggleButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../CrtEffect/ToggleButton")
+focus_next = NodePath("../../CrtEffect/ToggleButton")
+focus_previous = NodePath("../../Fullscreen/ToggleButton")
+
+[node name="CrtEffect" type="HBoxContainer" parent="Graphics"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="Graphics/CrtEffect"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 5.0
+text = "crt effect"
+
+[node name="ToggleButton" type="CheckButton" parent="Graphics/CrtEffect" groups=["ui_accepted_buttons"]]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../PostProcessing/ToggleButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../Menu/BackButton")
+focus_next = NodePath("../../Menu/BackButton")
+focus_previous = NodePath("../../PostProcessing/ToggleButton")
+
+[node name="Menu" type="HBoxContainer" parent="Graphics"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="SaveButton" type="Button" parent="Graphics/Menu" groups=["ui_disabled_buttons"]]
+layout_mode = 2
+size_flags_horizontal = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../CrtEffect/ToggleButton")
+focus_neighbor_right = NodePath("../BackButton")
+focus_neighbor_bottom = NodePath("../../Resolution/OptionButton")
+focus_next = NodePath("../../Resolution/OptionButton")
+focus_previous = NodePath("../BackButton")
+text = "save"
+flat = true
+
+[node name="MessageLabel" type="Label" parent="Graphics/Menu"]
+layout_mode = 2
+text = "NULL"
+horizontal_alignment = 1
+
+[node name="BackButton" type="Button" parent="Graphics/Menu" groups=["ui_container_slider_buttons"]]
+layout_mode = 2
+size_flags_horizontal = 10
+focus_neighbor_left = NodePath("../SaveButton")
+focus_neighbor_top = NodePath("../../CrtEffect/ToggleButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../Resolution/OptionButton")
+focus_next = NodePath("../SaveButton")
+focus_previous = NodePath("../../CrtEffect/ToggleButton")
+text = "back"
+
+[node name="Sounds" type="VBoxContainer" parent="."]
+layout_mode = 2
+offset_left = 1920.0
+offset_top = 208.0
+offset_right = 2330.0
+offset_bottom = 378.0
+scale = Vector2(4, 4)
+alignment = 1
+
+[node name="Label" type="Label" parent="Sounds"]
+layout_mode = 2
+theme_type_variation = &"LabelHeading"
+text = "SOUNDS SETTINGS"
+horizontal_alignment = 1
+
+[node name="MasterVolume" type="HBoxContainer" parent="Sounds"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="Sounds/MasterVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+size_flags_stretch_ratio = 0.78
+text = "master"
+
+[node name="HSlider" type="HSlider" parent="Sounds/MasterVolume" groups=["ui_accepted_buttons"]]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../Menu/SaveButton")
+focus_neighbor_right = NodePath("../MuteToggleButton")
+focus_neighbor_bottom = NodePath("../../UIVolume/HSlider")
+focus_next = NodePath("../MuteToggleButton")
+focus_previous = NodePath("../../Menu/BackButton")
+scrollable = false
+ticks_on_borders = true
+
+[node name="MuteToggleButton" type="Button" parent="Sounds/MasterVolume" groups=["ui_accepted_buttons"]]
+layout_mode = 2
+focus_neighbor_left = NodePath("../HSlider")
+focus_neighbor_top = NodePath("../../Menu/BackButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../UIVolume/MuteToggleButton")
+focus_next = NodePath("../../UIVolume/HSlider")
+focus_previous = NodePath("../HSlider")
+toggle_mode = true
+text = "mute"
+
+[node name="UIVolume" type="HBoxContainer" parent="Sounds"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="Sounds/UIVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+size_flags_stretch_ratio = 0.78
+text = "user interface"
+
+[node name="HSlider" type="HSlider" parent="Sounds/UIVolume" groups=["ui_accepted_buttons"]]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../MasterVolume/HSlider")
+focus_neighbor_right = NodePath("../MuteToggleButton")
+focus_neighbor_bottom = NodePath("../../GameplayVolume/HSlider")
+focus_next = NodePath("../MuteToggleButton")
+focus_previous = NodePath("../../MasterVolume/MuteToggleButton")
+scrollable = false
+ticks_on_borders = true
+
+[node name="MuteToggleButton" type="Button" parent="Sounds/UIVolume" groups=["ui_accepted_buttons"]]
+layout_mode = 2
+focus_neighbor_left = NodePath("../HSlider")
+focus_neighbor_top = NodePath("../../MasterVolume/MuteToggleButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../GameplayVolume/MuteToggleButton")
+focus_next = NodePath("../../GameplayVolume/HSlider")
+focus_previous = NodePath("../HSlider")
+toggle_mode = true
+text = "mute"
+
+[node name="GameplayVolume" type="HBoxContainer" parent="Sounds"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="Sounds/GameplayVolume"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+size_flags_stretch_ratio = 0.78
+text = "gameplay"
+
+[node name="HSlider" type="HSlider" parent="Sounds/GameplayVolume" groups=["ui_accepted_buttons"]]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../UIVolume/HSlider")
+focus_neighbor_right = NodePath("../MuteToggleButton")
+focus_neighbor_bottom = NodePath("../../Menu/SaveButton")
+focus_next = NodePath("../MuteToggleButton")
+focus_previous = NodePath("../../UIVolume/MuteToggleButton")
+scrollable = false
+ticks_on_borders = true
+
+[node name="MuteToggleButton" type="Button" parent="Sounds/GameplayVolume" groups=["ui_accepted_buttons"]]
+layout_mode = 2
+focus_neighbor_left = NodePath("../HSlider")
+focus_neighbor_top = NodePath("../../UIVolume/MuteToggleButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../Menu/BackButton")
+focus_next = NodePath("../../Menu/SaveButton")
+focus_previous = NodePath("../HSlider")
+toggle_mode = true
+text = "mute"
+
+[node name="Menu" type="HBoxContainer" parent="Sounds"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="SaveButton" type="Button" parent="Sounds/Menu" groups=["ui_disabled_buttons"]]
+layout_mode = 2
+size_flags_horizontal = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../GameplayVolume/HSlider")
+focus_neighbor_right = NodePath("../BackButton")
+focus_neighbor_bottom = NodePath("../../MasterVolume/HSlider")
+focus_next = NodePath("../BackButton")
+focus_previous = NodePath("../../GameplayVolume/MuteToggleButton")
+text = "save"
+flat = true
+
+[node name="MessageLabel" type="Label" parent="Sounds/Menu"]
+layout_mode = 2
+text = "NULL"
+horizontal_alignment = 1
+
+[node name="BackButton" type="Button" parent="Sounds/Menu" groups=["ui_container_slider_buttons"]]
+layout_mode = 2
+size_flags_horizontal = 10
+focus_neighbor_left = NodePath("../SaveButton")
+focus_neighbor_top = NodePath("../../GameplayVolume/MuteToggleButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../../MasterVolume/MuteToggleButton")
+focus_next = NodePath("../../MasterVolume/HSlider")
+focus_previous = NodePath("../SaveButton")
+text = "back"
+
+[node name="ResetDefaults" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 1080.0
+offset_right = 548.0
+offset_bottom = 1174.0
+scale = Vector2(4, 4)
+theme_override_constants/separation = 36
+alignment = 1
+
+[node name="Label" type="Label" parent="ResetDefaults"]
+layout_mode = 2
+theme_type_variation = &"LabelHeading"
+text = "RESET DEFAULTS"
+horizontal_alignment = 1
+
+[node name="WarningLabel" type="Label" parent="ResetDefaults"]
+layout_mode = 2
+text = "reset all settings to their default values
+warning: this action is irreversible. proceed?"
+horizontal_alignment = 1
+
+[node name="DoneLabel" type="Label" parent="ResetDefaults"]
+layout_mode = 2
+text = "
+all settings reverted!"
+horizontal_alignment = 1
+
+[node name="Menu" type="HBoxContainer" parent="ResetDefaults"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 32
+
+[node name="ProceedButton" type="Button" parent="ResetDefaults/Menu" groups=["ui_accepted_buttons"]]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath("../CancelButton")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath("../CancelButton")
+focus_previous = NodePath("../CancelButton")
+text = "proceed"
+
+[node name="CancelButton" type="Button" parent="ResetDefaults/Menu" groups=["ui_container_slider_buttons"]]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+focus_neighbor_left = NodePath("../ProceedButton")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath(".")
+focus_next = NodePath("../ProceedButton")
+focus_previous = NodePath("../ProceedButton")
+text = "cancel"
+
+[node name="ResetCooldownTimer" type="Timer" parent="ResetDefaults"]
+process_mode = 3
+one_shot = true
+
+[node name="ResolutionPopup" type="PanelContainer" parent="." node_paths=PackedStringArray("option_button")]
+layout_mode = 0
+offset_left = 1920.0
+offset_top = 1080.0
+offset_right = 2080.0
+offset_bottom = 1240.0
+scale = Vector2(4, 4)
+theme_override_styles/panel = SubResource("StyleBoxFlat_tpq7u")
+script = ExtResource("4_bila8")
+option_button = NodePath("../Graphics/Resolution/OptionButton")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ResolutionPopup"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ResolutionPopup/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/separation = -6
+alignment = 1
