@@ -13,7 +13,7 @@ Each folder containing a `project.godot` file is a project meant to be used with
 <ul>
   <li>
     <img height="28" src="./p0ng/icon.svg">&nbsp;
-    <a href="https://github.com/miketvo/classic-games-godot/releases/latest/download/p0ng-desktop-windows-x86_64.zip">
+    <a href="https://github.com/miketvo/classic-games-godot/releases/latest/download/p0ng-desktop_windows_x86_64.zip">
       <img src="https://img.shields.io/badge/p0ng-Download-CE6B40?style=for-the-badge">
     </a>
     <a href="https://ambientlamp.itch.io/p0ng">
