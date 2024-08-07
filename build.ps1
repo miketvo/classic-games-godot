@@ -81,7 +81,8 @@ foreach ($project in $godotProjects) {
 
         Write-Host "Exporting $projectName ($exportPreset) ..." -ForegroundColor Yellow
         Set-Location -Path $project
-        Invoke-Expression -Command "godot --headless $godotExportFlag $exportPreset | Out-Default"
+        godot --headless $godotExportFlag $exportPreset | Out-Default
+        Wait-Process -Name "godot"
         Set-Location -Path $PSScriptRoot
 
         $zipFileName = "$projectName-$exportPreset.zip"
