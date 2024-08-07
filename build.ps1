@@ -93,7 +93,7 @@ foreach ($project in $godotProjects) {
             Remove-Item -Path $zipFilePath -Force
         }
         $archiveCommand = "zip -jr -0 $zipFilePath $exportDirectory"
-        Write-Output "Archiving $projectName ($exportPreset) ..."
+        Write-Output "Archiving $projectName ($exportPreset) from $exportDirectory into $zipFilePath ..."
         Invoke-Expression -Command $archiveCommand
     }
 }
