@@ -1,4 +1,4 @@
-![p0ng banner](../assets/p0ng/itch_io_banner.png)
+![p0ng banner](../assets/p0ng/banner.png)
 
 <center>
 <img height="28" src="icon.svg">&nbsp;
@@ -8,10 +8,10 @@
 <a href="https://ambientlamp.itch.io/p0ng">
     <img src="https://img.shields.io/badge/Play-6f324e?style=for-the-badge&logo=Itch.io&logoColor=ffffff">
 </a>
-<a href="./p0ng/README.md">
+<a href="./README.md">
     <img src="https://img.shields.io/badge/README-555555?style=for-the-badge&logo=markdown">
 </a>
-<a href="./p0ng">
+<a href="./">
     <img src="https://img.shields.io/badge/Source%20Code-555555?style=for-the-badge&logo=github">
 </a>
 
