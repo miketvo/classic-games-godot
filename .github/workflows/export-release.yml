@@ -35,7 +35,6 @@ jobs:
           New-Item -ItemType Directory -Force $templates_dir
           Invoke-WebRequest -Uri $url -OutFile $target
           Expand-Archive -Path $target -DestinationPath $templates_dir -Force
-          Rename-Item -Path $template_dir/templates -NewName $env:GODOT_VERSION.stable -Force
 
           Copy-Item ./.github/dist/editor_settings-4.tres -Destination ~/AppData/Roaming/Godot
       - name: Export Projects
