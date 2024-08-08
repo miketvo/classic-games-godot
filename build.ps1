@@ -8,6 +8,7 @@
 
 [CmdletBinding()] param(
     [string]$m,
+    [string]$e,
     [switch]$c,
     [switch]$h
 )
@@ -16,6 +17,7 @@ if ($h.IsPresent) {
     Write-Output "Syntax: build.ps1 [Options] -m <build-mode>"
     Write-Output "Options:"
     Write-Output "  -m Specify build mode. Accepted values are 'release' and 'debug'."
+    Write-Output "  -e (Optional) Exclude projects (regex pattern, case sensitive). Defaults '^template$'."
     Write-Output "  -c (Optional) Clean build folders."
     Write-Output "  -h (Optional) Display this help and exit."
     exit 0
@@ -46,7 +48,13 @@ switch ($m) {
         exit 1
     }
 }
+
 $godotProjects = Get-ChildItem -Path $repositoryPath -Filter "project.godot" -Recurse | Select-Object -ExpandProperty Directory
+if ($e -eq "") {
+    $godotProjects = $godotProjects | Where-Object {$_.Name -cnotmatch "^template$"}
+} else {
+    $godotProjects = $godotProjects | Where-Object {$_.Name -cnotmatch $e}
+}
 
 Write-Host " =====[ GODOT PROJECTS REPOSITORY INFORMATION ]===== " -ForegroundColor Black -BackgroundColor Yellow
 Write-Host "- Repository path: $repositoryPath" -ForegroundColor Yellow
