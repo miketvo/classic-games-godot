@@ -11,20 +11,35 @@ Each folder containing a `project.godot` file is a project meant to be used with
 **Note:** The performance of Godot games in a browser is lower than natively on desktop. For the best performance, consider downloading the games from the [Latest Release](https://github.com/miketvo/classic-games-godot/releases/latest/).
 
 <ul>
-  <li>
-    <img height="28" src="./p0ng/icon.svg">&nbsp;
-    <a href="https://github.com/miketvo/classic-games-godot/releases/latest/download/p0ng-desktop_windows_x86_64.zip">
-      <img src="https://img.shields.io/badge/p0ng-Download-CE6B40?style=for-the-badge">
-    </a>
-    <a href="https://ambientlamp.itch.io/p0ng">
-      <img src="https://img.shields.io/badge/Play%20Online-6f324e?style=for-the-badge&logo=Itch.io&logoColor=ffffff">
-    </a>
-    <a href="./p0ng/README.md">
-      <img src="https://img.shields.io/badge/README-555555?style=for-the-badge&logo=markdown">
-    </a>
-    <a href="./p0ng">
-      <img src="https://img.shields.io/badge/Source%20Code-555555?style=for-the-badge&logo=github">
-    </a>
+    <li>
+        <img height="28" src="./p0ng/icon.svg">&nbsp;
+        <a href="https://github.com/miketvo/classic-games-godot/releases/latest/download/p0ng-desktop_windows_x86_64.zip">
+        <img src="https://img.shields.io/badge/p0ng-Download-CE6B40?style=for-the-badge">
+        </a>
+        <a href="https://ambientlamp.itch.io/p0ng">
+        <img src="https://img.shields.io/badge/Play%20Online-6f324e?style=for-the-badge&logo=Itch.io&logoColor=ffffff">
+        </a>
+        <a href="./p0ng/README.md">
+        <img src="https://img.shields.io/badge/README-555555?style=for-the-badge&logo=markdown">
+        </a>
+        <a href="./p0ng">
+        <img src="https://img.shields.io/badge/Source%20Code-555555?style=for-the-badge&logo=github">
+        </a>
+    </li>
+    <li>
+        <img height="28" src="./ssssss/icon.svg">&nbsp;
+        <a href="https://github.com/miketvo/classic-games-godot/releases/latest/download/ssssss-desktop_windows_x86_64.zip">
+        <img src="https://img.shields.io/badge/ssssss-Download-CE6B40?style=for-the-badge">
+        </a>
+        <a href="https://ambientlamp.itch.io/ssssss">
+        <img src="https://img.shields.io/badge/Play%20Online-6f324e?style=for-the-badge&logo=Itch.io&logoColor=ffffff">
+        </a>
+        <a href="./ssssss/README.md">
+        <img src="https://img.shields.io/badge/README-555555?style=for-the-badge&logo=markdown">
+        </a>
+        <a href="./ssssss">
+        <img src="https://img.shields.io/badge/Source%20Code-555555?style=for-the-badge&logo=github">
+        </a>
     </li>
 </ul>
 
