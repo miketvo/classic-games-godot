@@ -4,6 +4,7 @@ extends GameScene2D
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
+    %GameTitle/Sprite2D/AnimationPlayer.play("default")
     $UI/MainMenuUI.connect("acted", _on_main_menu_ui_acted)
 #endregion
 # ============================================================================ #
