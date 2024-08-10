@@ -35,10 +35,12 @@ extends Node
 ## Should be set if this matrix is meant to store instances of a custom class.
 @export var class_script: Script = null
 
-var _cells: Array
-var _width: int
-var _height: int
-var _numel: int
+# DO NOT modify these private variables with the Inspector during debugging. The
+# grid behavior for doing so is undefined, and may crash the game.
+var _cells: Array  # Internal data structure. Cells MUST be get or set using [method get_at] and [method set_at].
+var _width: int    # The width of the grid. Read-only.
+var _height: int   # The height of the grid. Read-only.
+var _numel: int    # Total number of cell in the grid. Read-only.
 
 
 # ============================================================================ #
@@ -63,25 +65,34 @@ func _ready() -> void:
 
 # ============================================================================ #
 #region Public methods
-func size(dim: int) -> int:
-    match dim:
+
+## Returns the size of the specified [param axis].
+## [br][br]
+## [code]size(Vector2i.AXIS_X)[/code] returns the width of the grid.
+## [br][br]
+## [code]size(Vector2i.AXIS_Y)[/code] returns the height of the grid.
+func size(axis: int) -> int:
+    match axis:
         Vector2i.AXIS_X:
             return _width
         Vector2i.AXIS_Y:
             return _height
         _:
-            assert(false, "Invalid value: dim: %d" % dim)
+            assert(false, "Invalid value: axis: %d" % axis)
             return -1
 
 
+## Returns the total number of cells in the grid.
 func numel() -> int:
     return _numel
 
 
+## Get the cell value at [param coords].
 func get_at(coords: Vector2i) -> Variant:
     return _cells[coords.x + _width * coords.y]
 
 
+## Set the cell value at [param coords].
 func set_at(coords: Vector2i, value: Variant) -> void:
     _cells[coords.x + _width * coords.y] = value
 #endregion

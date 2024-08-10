@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://scripts/scenes/main_menu/main_menu.gd" id="1_kt8cq"]
 [ext_resource type="PackedScene" uid="uid://dw130mw8nfytq" path="res://scenes/main_menu/main_menu_ui.tscn" id="1_rs3e2"]
 [ext_resource type="Texture2D" uid="uid://cgx0wqxo2m12y" path="res://assets/title.png" id="2_uc04x"]
-[ext_resource type="Script" path="res://scripts/core/world_grid_2d.gd" id="4_dbpw1"]
-[ext_resource type="Script" path="res://scripts/util/state_machine/state.gd" id="5_pvtrv"]
+[ext_resource type="Script" path="res://scripts/core/world/world_grid_2d.gd" id="4_dbpw1"]
+[ext_resource type="Script" path="res://scripts/core/state_machine/state.gd" id="5_pvtrv"]
 
 [sub_resource type="Animation" id="Animation_5uhe1"]
 length = 0.3

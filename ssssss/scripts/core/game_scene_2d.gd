@@ -16,7 +16,6 @@ enum SceneKey {
     MAIN_MENU,
     SETTINGS_MENU,
     SIDE_SELECT,
-    GAME,
     NONE,
 }
 

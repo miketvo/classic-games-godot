@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dofglbl0ean4l" path="res://scenes/game/game_ui.tscn" id="2_86o8i"]
 [ext_resource type="PackedScene" uid="uid://2aqxm1ipras" path="res://scenes/game/spawns.tscn" id="3_skvg6"]
 [ext_resource type="PackedScene" uid="uid://nfaha1jh03hj" path="res://scenes/game/game_hud.tscn" id="4_b4d4o"]
-[ext_resource type="Script" path="res://scripts/util/sfx_controller.gd" id="5_ov3ew"]
+[ext_resource type="Script" path="res://scripts/core/sfx_controller.gd" id="5_ov3ew"]
 [ext_resource type="AudioStream" uid="uid://dyefqfvbyudml" path="res://assets/sfx/game_end.wav" id="6_mu85n"]
 [ext_resource type="AudioStream" uid="uid://b615geswjhsxc" path="res://assets/sfx/round_start.wav" id="6_qb1t3"]
 [ext_resource type="AudioStream" uid="uid://s1u8wxbgl3j2" path="res://assets/sfx/round_end.wav" id="7_4xbrj"]
