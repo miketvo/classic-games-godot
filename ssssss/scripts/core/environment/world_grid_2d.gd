@@ -20,6 +20,9 @@ extends Node
 ## Set this in the Inspector. Modifying this value during runtime has no effect.
 ## Use [method size] to safely access this value during runtime.
 @export_range(1, 1, 1, "or_greater", "suffix:cells") var height: int = 1
+## Set this in the Inspector. Modifying this value during runtime has no effect.
+## Use [method is_wraparound] to safely access this value during runtime.
+@export var wraparound: bool = false
 
 @export_group("Data")
 ## Set this in the Inspector. Modifying this value during runtime has no effect.
@@ -34,7 +37,7 @@ extends Node
 @export var data_class: StringName = &""
 ## Set this in the Inspector. Modifying this value during runtime has no effect.
 ##
-## Should be set if this matrix is meant to store instances of a custom class.
+## Should be set if this grid is meant to store instances of a custom class.
 @export var class_script: Script = null
 
 # WARN: DO NOT modify these private variables with the Inspector in debugging
