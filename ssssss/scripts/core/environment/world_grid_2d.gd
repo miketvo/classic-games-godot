@@ -14,38 +14,60 @@ extends Node
 
 
 @export_group("Dimensions")
-## Set this in the Inspector. Modifying this value during runtime has no effect.
-## Use [method size] to safely access this value during runtime.
+## Set this in the [url=https://docs.godotengine.org/en/stable/tutorials/editor/inspector_dock.html]Inspector[/url].
+## Modifying this value during runtime has no effect. Use [method size] to
+## safely access this value during runtime.
 @export_range(1, 1, 1, "or_greater", "suffix:cells") var width: int = 1
-## Set this in the Inspector. Modifying this value during runtime has no effect.
-## Use [method size] to safely access this value during runtime.
+## Set this in the [url=https://docs.godotengine.org/en/stable/tutorials/editor/inspector_dock.html]Inspector[/url].
+## Modifying this value during runtime has no effect. Use [method size] to
+## safely access this value during runtime.
 @export_range(1, 1, 1, "or_greater", "suffix:cells") var height: int = 1
-## Set this in the Inspector. Modifying this value during runtime has no effect.
-## Use [method is_wraparound] to safely access this value during runtime.
+## Determines whether the grid represents a wrap-around space, i.e. the opposite
+## edges' cells are connected
+## ([url=https://en.wikipedia.org/wiki/Clifford_torus]Euclidean 2-torus / Clifford torus[/url]).
+## Affects distance calculation and pathfinding algorithms.
+## [br][br]
+## Below is an example of such a space, where anything that moves off an edge or
+## corner cell A, B, or C, "reappears" on the opposite A, B, or C cell with its
+## orientation, velocity, angular speed, etc. preserved:
+## [codeblock]
+## C A A A A C
+## B . . . . B
+## B . . . . B
+## B . . . . B
+## C A A A A C
+## [/codeblock]
+## Set this in the [url=https://docs.godotengine.org/en/stable/tutorials/editor/inspector_dock.html]Inspector[/url].
+## Modifying this value during runtime has no effect. Use [method is_wraparound]
+## to safely access this value during runtime.
 @export var wraparound: bool = false
 
 @export_group("Data")
-## Set this in the Inspector. Modifying this value during runtime has no effect.
-##
+## Set this in the [url=https://docs.godotengine.org/en/stable/tutorials/editor/inspector_dock.html]Inspector[/url].
+## Modifying this value during runtime has no effect.
+## [br][br]
 ## Setting this as [constant TYPE_NIL] or [constant TYPE_MAX] would throw an
 ## Invalid Value error during runtime.
 @export var data_type: Variant.Type = TYPE_NIL
-## Set this in the Inspector. Modifying this value during runtime has no effect.
-##
+## Set this in the [url=https://docs.godotengine.org/en/stable/tutorials/editor/inspector_dock.html]Inspector[/url].
+## Modifying this value during runtime has no effect.
+## [br][br]
 ## Set this as any [b]native[/b] class name, for example [code]Node[/code]. If
 ## [member data_type] is not [const TYPE_OBJECT], must be an empty string.
 @export var data_class: StringName = &""
-## Set this in the Inspector. Modifying this value during runtime has no effect.
-##
+## Set this in the [url=https://docs.godotengine.org/en/stable/tutorials/editor/inspector_dock.html]Inspector[/url].
+## Modifying this value during runtime has no effect.
+## [br][br]
 ## Should be set if this grid is meant to store instances of a custom class.
 @export var class_script: Script = null
 
 # WARN: DO NOT modify these private variables with the Inspector in debugging
-# runs. The grid behavior when doing so is undefined, and may crash the game.
-var _cells: Array  # Internal data structure. Cells MUST be get or set using [method get_at] and [method set_at].
-var _width: int    # The width of the grid. Read-only.
-var _height: int   # The height of the grid. Read-only.
-var _numel: int    # Total number of cell in the grid. Read-only.
+# runs. The grid behavior when doing so is UNDEFINED, and may crash the game.
+var _cells: Array      # Internal data structure. Cells MUST be get or set using [method get_at] and [method set_at].
+var _width: int        # The width of the grid. Read-only.
+var _height: int       # The height of the grid. Read-only.
+var _numel: int        # Total number of cell in the grid. Read-only.
+var _wraparound: bool  # See [member wraparound].
 
 
 # ============================================================================ #
@@ -64,6 +86,7 @@ func _ready() -> void:
     _cells = Array([], data_type, data_class, class_script)
     _cells.resize(_numel)
     _cells.fill(get_cell_default(data_type))
+    _wraparound = wraparound
 #endregion
 # ============================================================================ #
 
@@ -143,9 +166,11 @@ func set_at(coords: Vector2i, value: Variant) -> void:
 ## [br][br]
 ## Optionally, the [class Rect2i] search range [param where] can be passed. By
 ## convention, coordinates on the right and bottom edges of this range are
-## [b]not[/b] included. [b]Note:[/b] [param where] does not accept
-## [class Rect2i] with negative [member Rect2i.size]. Use [method Rect2i.abs]
-## first to get a valid rectangle.
+## [b]not[/b] included. [b]Note:[/b] Regardless of [member wraparound],
+## [param where] does not accept [class Rect2i] with negative
+## [member Rect2i.size]. Use [method Rect2i.abs] first to get a valid rectangle.
+## It also does not accept any rectangle with [param Rect2i.end] outside of the
+## grid width and height range.
 func find(what: Variant, where: Rect2i = Rect2i()) -> Vector2i:
     assert(
             (
@@ -282,7 +307,16 @@ func l1_distance(c1: Vector2i, c2: Vector2i) -> int:
     assert(0 >= c1.y and c1.y < _height, "c1.y (%d) out of bounds" % c1.y)
     assert(0 >= c2.x and c2.x < _width, "c2.x (%d) out of bounds" % c2.x)
     assert(0 >= c2.y and c2.y < _height, "c2.y (%d) out of bounds" % c2.y)
-    return abs(c1.x - c2.x) + abs(c1.y - c2.y)
+
+    var dx: int = abs(c1.x - c2.x)
+    if is_wraparound() and dx > .5 * _width:
+        dx = _width - dx
+
+    var dy: int = abs(c1.y - c2.y)
+    if is_wraparound() and dy > .5 * _height:
+        dy = _height - dy
+
+    return dx + dy
 
 
 ## Returns the traverse distance (L1 Norm) between two cell coordinates, taking
@@ -311,8 +345,12 @@ func t_distance(
     for i in range(_numel):
         traverse_map[i] = not (get_at(Vector2i(0, 0)) in traversible)
 
-    assert(false, "Not implemented")  # TODO: Implement this.
-    return 0
+    if is_wraparound():
+        assert(false, "Not implemented")  # TODO: Implement this.
+        return 0
+    else:
+        assert(false, "Not implemented")  # TODO: Implement this.
+        return 0
 
 
 ## Returns the Euclidean (L2 Norm) distance between two cell coordinates.
@@ -321,7 +359,11 @@ func l2_distance(c1: Vector2i, c2: Vector2i) -> float:
     assert(0 >= c1.y and c1.y < _height, "c1.y (%d) out of bounds" % c1.y)
     assert(0 >= c2.x and c2.x < _width, "c2.x (%d) out of bounds" % c2.x)
     assert(0 >= c2.y and c2.y < _height, "c2.y (%d) out of bounds" % c2.y)
-    return Vector2(c1).distance_to(Vector2(c2))
+
+    if is_wraparound():
+        return sqrt(l2_distance_squared(c1, c2))
+    else:
+        return Vector2(c1).distance_to(Vector2(c2))
 
 
 ## Returns the squared Euclidean (L2 Norm) distance between two cell
@@ -329,12 +371,30 @@ func l2_distance(c1: Vector2i, c2: Vector2i) -> float:
 ## [br][br]
 ## This method runs faster than [method l2_distance], so prefer it if you need
 ## to compare vectors or need the squared distance for some formula.
-func l2_distance_squeared(c1: Vector2i, c2: Vector2i) -> float:
+func l2_distance_squared(c1: Vector2i, c2: Vector2i) -> float:
     assert(0 >= c1.x and c1.x < _width, "c1.x (%d) out of bounds" % c1.x)
     assert(0 >= c1.y and c1.y < _height, "c1.y (%d) out of bounds" % c1.y)
     assert(0 >= c2.x and c2.x < _width, "c2.x (%d) out of bounds" % c2.x)
     assert(0 >= c2.y and c2.y < _height, "c2.y (%d) out of bounds" % c2.y)
-    return Vector2(c1).distance_squared_to(Vector2(c2))
+
+    if is_wraparound():
+        var dx: float = abs(c1.x - c2.x)
+        if dx > .5 * _width:
+            dx = _width - dx
+
+        var dy: float = abs(c1.y - c2.y)
+        if dy > .5 * _height:
+            dy = _height - dy
+
+        return dx * dx + dy * dy
+    else:
+        return Vector2(c1).distance_squared_to(Vector2(c2))
+
+
+## Returns [code]true[/code] if the grid represents an Euclidean 2-torus. See
+## [member wraparound].
+func is_wraparound() -> bool:
+    return _wraparound
 
 
 ## Returns the default cell value for the corresponding [param type].
