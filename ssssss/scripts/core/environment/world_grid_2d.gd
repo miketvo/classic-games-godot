@@ -481,7 +481,7 @@ func get_cell_default(type: Variant.Type) -> Variant:
         TYPE_PACKED_COLOR_ARRAY: PackedColorArray(),
     }
 
-    if type in defaults:
+    if type in defaults.keys():
         return defaults[type]
     elif type == TYPE_MAX:
         assert(false, "Invalid value: TYPE_MAX (%d) is not allowed" % TYPE_MAX)
