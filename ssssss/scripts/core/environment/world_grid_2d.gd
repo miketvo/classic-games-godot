@@ -330,6 +330,7 @@ func l1_distance(c1: Vector2i, c2: Vector2i) -> int:
 ## [br][br]
 ## Use [method l1_distance] instead when all cells in the grid should be
 ## traversable.
+## @experimental
 func t_distance(
         c1: Vector2i, c2: Vector2i,
         traversible: Array[Variant] = [get_cell_default(_cells.get_typed_builtin())]

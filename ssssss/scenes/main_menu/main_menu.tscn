@@ -82,3 +82,4 @@ speed_scale = 0.25
 
 [node name="WorldGrid2D" type="Node" parent="."]
 script = ExtResource("4_dbpw1")
+data_type = 2
