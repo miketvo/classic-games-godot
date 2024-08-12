@@ -66,7 +66,6 @@ extends Node
 var _cells: Array      # Internal data structure. Cells MUST be get or set using [method get_at] and [method set_at].
 var _width: int        # The width of the grid. Read-only.
 var _height: int       # The height of the grid. Read-only.
-var _numel: int        # Total number of cell in the grid. Read-only.
 var _wraparound: bool  # See [member wraparound].
 
 
@@ -82,9 +81,8 @@ func _ready() -> void:
 
     _width = width
     _height = height
-    _numel = _width * _height
     _cells = Array([], data_type, data_class, class_script)
-    _cells.resize(_numel)
+    _cells.resize(_width * _height)
     _cells.fill(get_cell_default(data_type))
     _wraparound = wraparound
 #endregion
@@ -112,7 +110,7 @@ func size(axis: int) -> int:
 
 ## Returns the total number of cells in the grid.
 func numel() -> int:
-    return _numel
+    return _cells.size()
 
 
 ## Returns [code]true[/code] if the grid contains the given [param value].
@@ -187,7 +185,7 @@ func find(what: Variant, where: Rect2i = Rect2i()) -> Vector2i:
     if not find_range.has_area():
         find_range = Rect2i(Vector2i(0, 0), Vector2i(_width, _height))
 
-    for i in range(_numel):
+    for i in range(numel()):
         @warning_ignore("integer_division")
         var y: int = i / _width
         var x: int = i % _width
@@ -267,7 +265,7 @@ func map(method: Callable) -> void:
 ## See also [method any], [method all], [method map], and [method reduce].
 func filter(method: Callable) -> Array[Vector2i]:
     var filtered_coords: Array[Vector2i] = []
-    for i in range(_numel):
+    for i in range(numel()):
         @warning_ignore("integer_division")
         var y: int = i / _width
         var x: int = i % _width
@@ -341,9 +339,9 @@ func t_distance(
     assert(0 >= c2.y and c2.y < _height, "c2.y (%d) out of bounds" % c2.y)
 
     var traverse_map: Array[bool] = []
-    traverse_map.resize(_numel)
+    traverse_map.resize(numel())
     traverse_map.fill(false)
-    for i in range(_numel):
+    for i in range(numel()):
         traverse_map[i] = not (get_at(Vector2i(0, 0)) in traversible)
 
     if is_wraparound():
