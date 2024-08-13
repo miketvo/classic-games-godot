@@ -7,7 +7,7 @@ extends RefCounted
 ## [br][br]
 ## For usage, see [method _init].
 ## [br][br]
-## [b]Note:[/b] The internal data structure is stored using row-major order, with
+## [b]Note:[/b] The internal cell data layout is in row-major order, with
 ## 0-based indexing.
 
 
@@ -52,6 +52,9 @@ var _height: int  # The height of the grid. Read-only.
 ## print(wall_grid.l1_distance(Vector2i(0, 1), Vector2i(2, 2)))
 ## [/codeblock]
 ## The available [i]optional[/i] constructor parameters are:[br]
+##  - [param dimensions] is the width and height of the grid. Both the
+##    [code]x[/code] (width) and [code]y[/code] (height) components must be
+##    non-zero positive integers.[br]
 ##  - [param data_type] is the data type that the grid is assigned to store in
 ##    its cells, for example [const TYPE_INT]. [b]Note:[/b] Passing
 ##    [constant TYPE_NIL] or [constant TYPE_MAX] would throw an Invalid Value
@@ -64,8 +67,6 @@ var _height: int  # The height of the grid. Read-only.
 ##    [param data_type] is [const TYPE_OBJECT], must be set along with
 ##    [param data_class], and must be [code]null[/code] otherwise. Should be set
 ##    if this grid is meant to store instances of a custom class.[br]
-##  - [param dimensions] is the width and height of the grid. Both the x (width)
-##    and y (height) components must be non-zero positive integers.[br]
 ##  - [param base] is the base array to be loaded into the grid cells. Its
 ##    elements must be of matching type/class/script with [param data_type],
 ##    [param data_class], and [param class_script].[br]
@@ -75,10 +76,10 @@ var _height: int  # The height of the grid. Read-only.
 ## [method get_cell_default] for all default values.
 @warning_ignore("shadowed_variable")
 func _init(
+        dimensions: Vector2i = Vector2i.ONE,
         data_type: Variant.Type = TYPE_BOOL,
         data_class: StringName = &"",
         class_script: Script = null,
-        dimensions: Vector2i = Vector2i.ONE,
         base: Array[Variant] = [],
         wraparound: bool = false
 ) -> void:
@@ -104,8 +105,8 @@ func _init(
     _width = dimensions.x
     _height = dimensions.y
     _cells = Array([], data_type, data_class, class_script)
-    _cells.resize(_width * _height)
     if base.is_empty():
+        _cells.resize(_width * _height)
         _cells.fill(get_cell_default(data_type))
     else:
         load_array(base)
@@ -151,6 +152,7 @@ func load_array(from: Array[Variant]) -> void:
                         ),
                         "Array element typed script mismatch with grid"
                 )
+
     _cells = from.duplicate()  # Import data.
 
 
@@ -377,41 +379,6 @@ func l1_distance(c1: Vector2i, c2: Vector2i) -> int:
         dy = _height - dy
 
     return dx + dy
-
-
-## Returns the traverse distance (L1 Norm) between two cell coordinates, taking
-## into account non-traversable cells (i.e. obstacles).
-## [br][br]
-## Set the traversible cell values with [param traversible]. Defaults to empty
-## cells (cells that contains the default value for its type).
-## [br][br]
-## Returns -1 when either [param c1] or [param c2] is a non-traversible cell, or
-## if there is no possible path between the two cells.
-## [br][br]
-## Use [method l1_distance] instead when all cells in the grid should be
-## traversable.
-## @experimental
-func t_distance(
-        c1: Vector2i, c2: Vector2i,
-        traversible: Array[Variant] = [get_cell_default(_cells.get_typed_builtin())]
-) -> int:
-    assert(0 >= c1.x and c1.x < _width, "c1.x (%d) out of bounds" % c1.x)
-    assert(0 >= c1.y and c1.y < _height, "c1.y (%d) out of bounds" % c1.y)
-    assert(0 >= c2.x and c2.x < _width, "c2.x (%d) out of bounds" % c2.x)
-    assert(0 >= c2.y and c2.y < _height, "c2.y (%d) out of bounds" % c2.y)
-
-    var traverse_map: Array[bool] = []
-    traverse_map.resize(numel())
-    traverse_map.fill(false)
-    for i in range(numel()):
-        traverse_map[i] = not (get_at(Vector2i(0, 0)) in traversible)
-
-    if wraparound:
-        assert(false, "Not implemented")  # TODO: Implement this.
-        return 0
-    else:
-        assert(false, "Not implemented")  # TODO: Implement this.
-        return 0
 
 
 ## Returns the Euclidean (L2 Norm) distance between two cell coordinates.
