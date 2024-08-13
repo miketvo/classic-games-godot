@@ -15,8 +15,6 @@ enum SceneKey {
     SPLASH,
     MAIN_MENU,
     SETTINGS_MENU,
-    SIDE_SELECT,
-    GAME,
     NONE,
 }
 
