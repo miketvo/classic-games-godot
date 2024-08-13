@@ -1,35 +1,23 @@
 class_name WorldGrid2D
-extends Node
-## 2D matrix of cells to represent game state/environment.
+extends RefCounted
+## Specialized typed 2D matrix of cells to represent game state/environment.
 ##
-## Each cell can contain any type of data. Meant to be a flexible medium to be
+## The cells can contain any type of data. Meant to be a flexible medium to be
 ## accessed and updated by children nodes/controller/logic.
 ## [br][br]
-## For possible data types, see: [enum Variant.Type] and [member data_type]. The
-## default value for all cells in the grid is the default value for their type
-## (i.e. empty cells). See [method get_cell_default] for all default values.
+## For usage, see [method _init].
 ## [br][br]
-## [b]Note:[\b] The internal data structure is stored using row-major order, with
+## [b]Note:[/b] The internal data structure is stored using row-major order, with
 ## 0-based indexing.
 
 
-@export_group("Dimensions")
-## Set this in the [url=https://docs.godotengine.org/en/stable/tutorials/editor/inspector_dock.html]Inspector[/url].
-## Modifying this value during runtime has no effect. Use [method size] to
-## safely access this value during runtime.
-@export_range(1, 1, 1, "or_greater", "suffix:cells") var width: int = 1
-## Set this in the [url=https://docs.godotengine.org/en/stable/tutorials/editor/inspector_dock.html]Inspector[/url].
-## Modifying this value during runtime has no effect. Use [method size] to
-## safely access this value during runtime.
-@export_range(1, 1, 1, "or_greater", "suffix:cells") var height: int = 1
 ## Determines whether the grid represents a wrap-around space, i.e. the opposite
 ## edges' cells are connected
-## ([url=https://en.wikipedia.org/wiki/Clifford_torus]Euclidean 2-torus / Clifford torus[/url]).
-## Affects distance calculation and pathfinding algorithms.
-## [br][br]
-## Below is an example of such a space, where anything that moves off an edge or
-## corner cell A, B, or C, "reappears" on the opposite A, B, or C cell with its
-## orientation, velocity, angular speed, etc. preserved:
+## ([url=https://en.wikipedia.org/wiki/Clifford_torus]Euclidean 2-torus /
+## Clifford torus[/url]). Affects distance calculation and pathfinding
+## algorithms. Below is an example of such a space, where anything that moves
+## off an edge or corner cell A, B, or C, "reappears" on the opposite A, B, or C
+## cell with its orientation, velocity, angular speed, etc. preserved:
 ## [codeblock]
 ## C A A A A C
 ## B . . . . B
@@ -37,60 +25,134 @@ extends Node
 ## B . . . . B
 ## C A A A A C
 ## [/codeblock]
-## Set this in the [url=https://docs.godotengine.org/en/stable/tutorials/editor/inspector_dock.html]Inspector[/url].
-## Modifying this value during runtime has no effect. Use [method is_wraparound]
-## to safely access this value during runtime.
-@export var wraparound: bool = false
+var wraparound: bool
 
-@export_group("Data")
-## Set this in the [url=https://docs.godotengine.org/en/stable/tutorials/editor/inspector_dock.html]Inspector[/url].
-## Modifying this value during runtime has no effect.
-## [br][br]
-## Setting this as [constant TYPE_NIL] or [constant TYPE_MAX] would throw an
-## Invalid Value error during runtime.
-@export var data_type: Variant.Type = TYPE_NIL
-## Set this in the [url=https://docs.godotengine.org/en/stable/tutorials/editor/inspector_dock.html]Inspector[/url].
-## Modifying this value during runtime has no effect.
-## [br][br]
-## Set this as any [b]native[/b] class name, for example [code]Node[/code]. If
-## [member data_type] is not [const TYPE_OBJECT], must be an empty string.
-@export var data_class: StringName = &""
-## Set this in the [url=https://docs.godotengine.org/en/stable/tutorials/editor/inspector_dock.html]Inspector[/url].
-## Modifying this value during runtime has no effect.
-## [br][br]
-## Should be set if this grid is meant to store instances of a custom class.
-@export var class_script: Script = null
-
-# WARN: DO NOT modify these private variables with the Inspector in debugging
-# runs. The grid behavior when doing so is UNDEFINED, and may crash the game.
-var _cells: Array      # Internal data structure. Cells MUST be get or set using [method get_at] and [method set_at].
-var _width: int        # The width of the grid. Read-only.
-var _height: int       # The height of the grid. Read-only.
-var _wraparound: bool  # See [member wraparound].
+# Internal data structure representing the cell grid. Cells MUST be get or set
+# using [method get_at] and [method set_at].
+var _cells: Array
+var _width: int   # The width of the grid. Read-only.
+var _height: int  # The height of the grid. Read-only.
 
 
 # ============================================================================ #
 #region Godot builtins
-func _ready() -> void:
+
+## To use [b]WorldGrid2D[/b], you need to create a new instance of the class
+## with the correct parameters for your use case:
+## [codeblock]
+## var wall_grid = WorldGrid2D.new(TYPE_INT, &"", null, Vector2i(6, 7))  # Create an empty 6x7 grid.
+## var maze_walls = [
+##    1, 1, 1, 1, 1, 1, 1,
+##    0, 0, 1, 0, 1, 0, 1,
+##    1, 0, 0, 0, 0, 0, 0,
+##    1, 0, 1, 0, 1, 1, 1,
+##    1, 0, 1, 0, 0, 0, 1,
+##    1, 1, 1, 1, 1, 1, 1,
+## ]
+## print(wall_grid.l1_distance(Vector2i(0, 1), Vector2i(2, 2)))
+## [/codeblock]
+## The available [i]optional[/i] constructor parameters are:[br]
+##  - [param data_type] is the data type that the grid is assigned to store in
+##    its cells, for example [const TYPE_INT]. [b]Note:[/b] Passing
+##    [constant TYPE_NIL] or [constant TYPE_MAX] would throw an Invalid Value
+##    error during runtime.[br]
+##  - [param data_class] is the [b]native[/b] class name, for example
+##    [class Node]. If type is not [const TYPE_OBJECT], must be an empty string.
+##    [br]
+##  - [param class_script] is the associated script with the [param data_class].
+##    Must be a [class Script] instance or [code]null[/code] when
+##    [param data_type] is [const TYPE_OBJECT], must be set along with
+##    [param data_class], and must be [code]null[/code] otherwise. Should be set
+##    if this grid is meant to store instances of a custom class.[br]
+##  - [param dimensions] is the width and height of the grid. Both the x (width)
+##    and y (height) components must be non-zero positive integers.[br]
+##  - [param base] is the base array to be loaded into the grid cells. Its
+##    elements must be of matching type/class/script with [param data_type],
+##    [param data_class], and [param class_script].[br]
+##  - [param wraparound] - see [member wraparound].[br]
+## For possible data types, see: [enum Variant.Type]. The default value for all
+## cells in the grid is the default value for their type (i.e. empty cells). See
+## [method get_cell_default] for all default values.
+@warning_ignore("shadowed_variable")
+func _init(
+        data_type: Variant.Type = TYPE_BOOL,
+        data_class: StringName = &"",
+        class_script: Script = null,
+        dimensions: Vector2i = Vector2i.ONE,
+        base: Array[Variant] = [],
+        wraparound: bool = false
+) -> void:
     assert(
-            not (data_type != TYPE_OBJECT and data_class != &""),
-            "Invalid value: data_class must be an empty string when " + \
-            "data_type is not TYPE_OBJECT (%d)" \
-            % TYPE_OBJECT
+            data_type == TYPE_OBJECT or data_class == &"",
+            "Invalid value: data_class must be an empty string when data_type is not TYPE_OBJECT"
+    )
+    assert(
+            data_type == TYPE_OBJECT or not class_script,
+            "Invalid value: class_script must be null when data_type is not TYPE_OBJECT"
+    )
+    assert(
+            data_class != &"" or not class_script,
+            "class_script can only be set together with data_class"
+    )
+    assert(
+            dimensions.x > 0 and dimensions.y > 0,
+            "Invalid WorldGrid2D dimensions: %d by %d cells" \
+            % [dimensions.x, dimensions.y]
     )
 
-    _width = width
-    _height = height
+    self.wraparound = wraparound
+    _width = dimensions.x
+    _height = dimensions.y
     _cells = Array([], data_type, data_class, class_script)
     _cells.resize(_width * _height)
-    _cells.fill(get_cell_default(data_type))
-    _wraparound = wraparound
+    if base.is_empty():
+        _cells.fill(get_cell_default(data_type))
+    else:
+        load_array(base)
+
 #endregion
 # ============================================================================ #
 
 
 # ============================================================================ #
 #region Public methods
+
+## Populate/overwrite all cells in the grid with values from an array. The input
+## parameter [param from] must be non-empty, and have the correct
+## [method Array.size] matching the dimensions of the grid. Its elements also
+## need to be of the correct type/class/script.
+func load_array(from: Array[Variant]) -> void:
+    assert(not from.is_empty(), "Cannot populate grid using empty array")
+    assert(
+            _width * _height == from.size(),
+            "Dimensions mismatch: %d-element array does not match %d by %d grid" \
+            % [from.size(), _width, _height]
+    )
+    for element: Variant in from:  # Exhaustive type checking.
+        assert(
+                _cells.get_typed_builtin() == typeof(element),
+                "Array element type mismatch with grid: element type does not match %s" \
+                % type_string(_cells.get_typed_builtin())
+        )
+        if (
+                _cells.get_typed_builtin() == TYPE_OBJECT and
+                _cells.get_typed_class_name() != &""
+        ):
+            assert(
+                    element.is_class(_cells.get_typed_class_name()),
+                    "Array element class mismatch with grid: element does not inherit from %s" \
+                    % _cells.get_typed_class_name()
+            )
+            if _cells.get_typed_script():
+                assert(
+                        (
+                                element.get_script() and
+                                element.get_script() == _cells.get_typed_script()
+                        ),
+                        "Array element typed script mismatch with grid"
+                )
+    _cells = from.duplicate()  # Import data.
+
 
 ## Returns the size of the specified [param axis].
 ## [codeblock]
@@ -173,7 +235,7 @@ func find(what: Variant, where: Rect2i = Rect2i()) -> Vector2i:
     assert(
             (
                     (where.position.x >= 0 and where.position.y > 0) and
-                    (where.end.x <= width and where.end.y <= height)
+                    (where.end.x <= _width and where.end.y <= _height)
             ),
             "where rectangle (%d, %d, %d, %d) out of bounds" % [
                 where.position.x, where.position.y,
@@ -307,11 +369,11 @@ func l1_distance(c1: Vector2i, c2: Vector2i) -> int:
     assert(0 >= c2.y and c2.y < _height, "c2.y (%d) out of bounds" % c2.y)
 
     var dx: int = abs(c1.x - c2.x)
-    if is_wraparound() and dx > .5 * _width:
+    if wraparound and dx > .5 * _width:
         dx = _width - dx
 
     var dy: int = abs(c1.y - c2.y)
-    if is_wraparound() and dy > .5 * _height:
+    if wraparound and dy > .5 * _height:
         dy = _height - dy
 
     return dx + dy
@@ -344,7 +406,7 @@ func t_distance(
     for i in range(numel()):
         traverse_map[i] = not (get_at(Vector2i(0, 0)) in traversible)
 
-    if is_wraparound():
+    if wraparound:
         assert(false, "Not implemented")  # TODO: Implement this.
         return 0
     else:
@@ -359,7 +421,7 @@ func l2_distance(c1: Vector2i, c2: Vector2i) -> float:
     assert(0 >= c2.x and c2.x < _width, "c2.x (%d) out of bounds" % c2.x)
     assert(0 >= c2.y and c2.y < _height, "c2.y (%d) out of bounds" % c2.y)
 
-    if is_wraparound():
+    if wraparound:
         return sqrt(l2_distance_squared(c1, c2))
     else:
         return Vector2(c1).distance_to(Vector2(c2))
@@ -376,7 +438,7 @@ func l2_distance_squared(c1: Vector2i, c2: Vector2i) -> float:
     assert(0 >= c2.x and c2.x < _width, "c2.x (%d) out of bounds" % c2.x)
     assert(0 >= c2.y and c2.y < _height, "c2.y (%d) out of bounds" % c2.y)
 
-    if is_wraparound():
+    if wraparound:
         var dx: float = abs(c1.x - c2.x)
         if dx > .5 * _width:
             dx = _width - dx
@@ -388,12 +450,6 @@ func l2_distance_squared(c1: Vector2i, c2: Vector2i) -> float:
         return dx * dx + dy * dy
     else:
         return Vector2(c1).distance_squared_to(Vector2(c2))
-
-
-## Returns [code]true[/code] if the grid represents an Euclidean 2-torus. See
-## [member wraparound].
-func is_wraparound() -> bool:
-    return _wraparound
 
 
 ## Returns the default cell value for the corresponding [param type].

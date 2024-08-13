@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://0h88hlpf41jq"]
+[gd_scene load_steps=6 format=3 uid="uid://0h88hlpf41jq"]
 
 [ext_resource type="Script" path="res://scripts/scenes/main_menu/main_menu.gd" id="1_kt8cq"]
 [ext_resource type="PackedScene" uid="uid://dw130mw8nfytq" path="res://scenes/main_menu/main_menu_ui.tscn" id="1_rs3e2"]
 [ext_resource type="Texture2D" uid="uid://cgx0wqxo2m12y" path="res://assets/title.png" id="2_uc04x"]
-[ext_resource type="Script" path="res://scripts/core/environment/world_grid_2d.gd" id="4_dbpw1"]
 
 [sub_resource type="Animation" id="Animation_5uhe1"]
 length = 0.3
@@ -79,7 +78,3 @@ speed_scale = 0.25
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="MainMenuUI" parent="UI" instance=ExtResource("1_rs3e2")]
-
-[node name="WorldGrid2D" type="Node" parent="."]
-script = ExtResource("4_dbpw1")
-data_type = 2
