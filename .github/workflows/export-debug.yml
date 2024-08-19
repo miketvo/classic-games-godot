@@ -12,7 +12,7 @@ on:
       - '*'
 
 env:
-  GODOT_VERSION: 4.2.2
+  GODOT_VERSION: 4.3
 
 jobs:
   export:
