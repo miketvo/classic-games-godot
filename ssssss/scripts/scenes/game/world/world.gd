@@ -50,7 +50,7 @@ func _debug_grid_setup() -> void:
         for y in range(Global.WORLD_SIZE.y):
             debug_layer.set_cell(
                     Vector2i(x, y),
-                    _tile_map.get_tile_set_source_id("DebugLayer", "debug_tileset"),
+                    _tile_map.get_source_id("DebugLayer", "debug_tileset"),
                     Vector2i((x + y) % 2, 0)
             )
     debug_layer.visible = debug_grid
