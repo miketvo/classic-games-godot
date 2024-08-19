@@ -10,7 +10,7 @@ var _wall_grid: WorldGrid2D
 var _food_grid: WorldGrid2D
 
 @onready
-var _tilemap: Node2D = %TileMap
+var _tile_map: Node2D = %TileMap
 
 
 # ============================================================================ #
@@ -45,12 +45,13 @@ func _ready() -> void:
 # ============================================================================ #
 #region Utils
 func _debug_grid_setup() -> void:
-    var debug_layer: TileMapLayer = _tilemap.get_node("DebugLayer")
+    var debug_layer: TileMapLayer = _tile_map.get_node("DebugLayer")
     for x in range(Global.WORLD_SIZE.x):
         for y in range(Global.WORLD_SIZE.y):
             debug_layer.set_cell(
                     Vector2i(x, y),
-                    0, Vector2i((x + y) % 2, 0)
+                    _tile_map.get_tile_set_source_id("DebugLayer", "debug_tileset"),
+                    Vector2i((x + y) % 2, 0)
             )
     debug_layer.visible = debug_grid
 #endregion

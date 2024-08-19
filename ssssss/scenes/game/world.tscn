@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://cfa4iywspm65h" path="res://assets/tilesets/food_tileset.png" id="6_mi63g"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_uvbc0"]
+resource_name = "debug_tileset"
 texture = ExtResource("2_u2aod")
 texture_region_size = Vector2i(30, 30)
 0:0/0 = 0
