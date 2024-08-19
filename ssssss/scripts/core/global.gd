@@ -16,6 +16,7 @@ const UNIT_VECTORS: PackedVector2Array = [
     Vector2.DOWN,
     Vector2.RIGHT,
 ]
+const WORLD_SIZE: Vector2i = Vector2i(62, 32)
 #endregion
 # ============================================================================ #
 

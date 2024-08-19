@@ -40,16 +40,27 @@ var _height: int  # The height of the grid. Read-only.
 ## To use [b]WorldGrid2D[/b], you need to create a new instance of the class
 ## with the correct parameters for your use case:
 ## [codeblock]
-## var wall_grid = WorldGrid2D.new(TYPE_INT, &"", null, Vector2i(6, 7))  # Create an empty 6x7 grid.
-## var maze_walls = [
-##    1, 1, 1, 1, 1, 1, 1,
-##    0, 0, 1, 0, 1, 0, 1,
-##    1, 0, 0, 0, 0, 0, 0,
-##    1, 0, 1, 0, 1, 1, 1,
-##    1, 0, 1, 0, 0, 0, 1,
-##    1, 1, 1, 1, 1, 1, 1,
-## ]
-## print(wall_grid.l1_distance(Vector2i(0, 1), Vector2i(2, 2)))
+## class_name GameWorld
+## extends Node2D
+##
+## class Powerup:
+##     ...
+##
+## func _ready():
+##     var wall_grid = WorldGrid2D.new(Vector2i(6, 7), TYPE_INT, &"", null)
+##     var maze_walls = [
+##        1, 1, 1, 1, 1, 1, 1,
+##        0, 0, 1, 0, 1, 0, 1,
+##        1, 0, 0, 0, 0, 0, 0,
+##        1, 0, 1, 0, 1, 1, 1,
+##        1, 0, 1, 0, 0, 0, 1,
+##        1, 1, 1, 1, 1, 1, 1,
+##     ]
+##     wall_grid.load_array(maze_walls)
+##     print(wall_grid.l1_distance(Vector2i(0, 1), Vector2i(2, 2)))
+##     var coin_grid = WorldGrid2D.new(Vector2i(6, 7), TYPE_OBJECT, &"Node2D", Coin
+##     var powerup_grid = WorldGrid2D.new(Vector2i(6, 7), TYPE_OBJECT, &"RefCounted", Powerup)
+##     ...
 ## [/codeblock]
 ## The available [i]optional[/i] constructor parameters are:[br]
 ##  - [param dimensions] is the width and height of the grid. Both the
