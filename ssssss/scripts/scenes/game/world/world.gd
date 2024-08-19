@@ -5,9 +5,9 @@ extends Node2D
 @export var debug_grid: bool = false
 
 var _snake_grid: WorldGrid2D
-var _food_grid: WorldGrid2D
-var _wall_grid: WorldGrid2D
 var _enemy_grid: WorldGrid2D
+var _wall_grid: WorldGrid2D
+var _food_grid: WorldGrid2D
 
 @onready
 var _tilemap: Node2D = %TileMap
@@ -50,7 +50,7 @@ func _debug_grid_setup() -> void:
         for y in range(Global.WORLD_SIZE.y):
             debug_layer.set_cell(
                     Vector2i(x, y),
-                    1, Vector2i((x + y) % 2, 0)
+                    0, Vector2i((x + y) % 2, 0)
             )
     debug_layer.visible = debug_grid
 #endregion
