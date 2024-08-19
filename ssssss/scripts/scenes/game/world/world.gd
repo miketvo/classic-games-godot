@@ -46,12 +46,18 @@ func _ready() -> void:
 #region Utils
 func _debug_grid_setup() -> void:
     var debug_layer: TileMapLayer = _tile_map.get_node("DebugLayer")
+    var debug_tileset_source_id: int = _tile_map\
+            .get_source_id("DebugLayer", "debug_tileset")
     for x in range(Global.WORLD_SIZE.x):
         for y in range(Global.WORLD_SIZE.y):
+            var tile_name: StringName = &"%d" % [(x + y) % 2]
             debug_layer.set_cell(
                     Vector2i(x, y),
-                    _tile_map.get_source_id("DebugLayer", "debug_tileset"),
-                    Vector2i((x + y) % 2, 0)
+                    debug_tileset_source_id,
+                    _tile_map.get_tile_id(
+                            debug_tileset_source_id,
+                            tile_name
+                    )["coords"]
             )
     debug_layer.visible = debug_grid
 #endregion

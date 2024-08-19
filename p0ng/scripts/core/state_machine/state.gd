@@ -23,7 +23,7 @@ signal transitioned(from_state: State, to_state_name: StringName)
 # ============================================================================ #
 #region Godot builtins
 func _enter_tree() -> void:
-    assert(not (get_parent() is State), "Nested States is not allowed")
+    assert(get_parent() is not State, "Nested States is not allowed")
     assert(get_parent() is StateMachine, "State must be a child of StateMachine")
 #endregion
 # ============================================================================ #
