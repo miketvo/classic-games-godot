@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cwh5oliy2k7wa"
-path="res://.godot/imported/grid_debug.png-df2aa9afebe00d1fa81bb6cdf817347b.ctex"
+uid="uid://cfa4iywspm65h"
+path="res://.godot/imported/food_tileset.png-d2b44a17e2a2cd61da4f927fdf300a38.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tilesets/grid_debug.png"
-dest_files=["res://.godot/imported/grid_debug.png-df2aa9afebe00d1fa81bb6cdf817347b.ctex"]
+source_file="res://assets/tilesets/food_tileset.png"
+dest_files=["res://.godot/imported/food_tileset.png-d2b44a17e2a2cd61da4f927fdf300a38.ctex"]
 
 [params]
 

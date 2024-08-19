@@ -1,18 +1,88 @@
-[gd_scene load_steps=5 format=3 uid="uid://wjw02a5opby"]
+[gd_scene load_steps=14 format=3 uid="uid://wjw02a5opby"]
 
 [ext_resource type="Script" path="res://scripts/game/world.gd" id="1_06iba"]
-[ext_resource type="Texture2D" uid="uid://cwh5oliy2k7wa" path="res://assets/tilesets/grid_debug.png" id="2_u2aod"]
+[ext_resource type="Texture2D" uid="uid://cwh5oliy2k7wa" path="res://assets/tilesets/debug_tileset.png" id="2_u2aod"]
+[ext_resource type="Texture2D" uid="uid://bx0hrrg6jykwe" path="res://assets/tilesets/snake_tileset.png" id="3_ebtdu"]
+[ext_resource type="Texture2D" uid="uid://du5yheibrsk0p" path="res://assets/tilesets/enemy_tileset.png" id="4_bm38x"]
+[ext_resource type="Texture2D" uid="uid://dwh3bho0oetcw" path="res://assets/tilesets/wall_tileset.png" id="5_rpj3e"]
+[ext_resource type="Texture2D" uid="uid://cfa4iywspm65h" path="res://assets/tilesets/food_tileset.png" id="6_mi63g"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2kw5s"]
-resource_name = "grid_debug"
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vc8tj"]
+resource_name = "debug_tileset"
 texture = ExtResource("2_u2aod")
 texture_region_size = Vector2i(30, 30)
 0:0/0 = 0
 1:0/0 = 0
 
-[sub_resource type="TileSet" id="TileSet_tw8cx"]
+[sub_resource type="TileSet" id="TileSet_mttf8"]
 tile_size = Vector2i(30, 30)
-sources/1 = SubResource("TileSetAtlasSource_2kw5s")
+sources/1 = SubResource("TileSetAtlasSource_vc8tj")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_erv6w"]
+resource_name = "snake_tileset"
+texture = ExtResource("3_ebtdu")
+texture_region_size = Vector2i(30, 30)
+1:2/0 = 0
+3:3/0 = 0
+4:3/0 = 0
+4:2/0 = 0
+4:1/0 = 0
+1:0/next_alternative_id = 5
+1:0/0 = 0
+3:2/0 = 0
+0:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:0/0 = 0
+2:3/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+2:2/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i4krh"]
+texture = ExtResource("4_bm38x")
+texture_region_size = Vector2i(30, 30)
+1:0/0 = 0
+2:0/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+3:2/0 = 0
+4:2/0 = 0
+4:3/0 = 0
+3:3/0 = 0
+2:3/0 = 0
+1:3/0 = 0
+0:3/0 = 0
+0:2/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+4:1/0 = 0
+4:0/0 = 0
+3:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kcr28"]
+texture = ExtResource("5_rpj3e")
+texture_region_size = Vector2i(30, 30)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yraow"]
+texture = ExtResource("6_mi63g")
+texture_region_size = Vector2i(30, 30)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_kq75h"]
+sources/2 = SubResource("TileSetAtlasSource_erv6w")
+sources/4 = SubResource("TileSetAtlasSource_kcr28")
+sources/3 = SubResource("TileSetAtlasSource_i4krh")
+sources/5 = SubResource("TileSetAtlasSource_yraow")
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_06iba")
@@ -24,5 +94,8 @@ position = Vector2(30, 90)
 [node name="DebugLayer" type="TileMapLayer" parent="TileMap"]
 modulate = Color(1, 1, 1, 0.188235)
 use_parent_material = true
-tile_set = SubResource("TileSet_tw8cx")
+tile_set = SubResource("TileSet_mttf8")
 navigation_enabled = false
+
+[node name="EnvironmentLayer" type="TileMapLayer" parent="TileMap"]
+tile_set = SubResource("TileSet_kq75h")
