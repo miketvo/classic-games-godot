@@ -2,7 +2,9 @@ class_name UI
 extends Control
 
 
+@warning_ignore("unused_signal")
 signal acted(action: StringName)
+@warning_ignore("unused_signal")
 signal acted_with_data(action: StringName, data: Variant)
 
 const UI_TRANSITION_DURATION: float = 0.5

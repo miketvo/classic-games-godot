@@ -12,4 +12,3 @@ script = ExtResource("1_y2h2x")
 [node name="GameHUD" parent="HUD" instance=ExtResource("3_0sgvk")]
 
 [node name="World" parent="." instance=ExtResource("1_r6hut")]
-debug_grid = true

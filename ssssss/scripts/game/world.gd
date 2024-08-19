@@ -10,7 +10,7 @@ var _wall_grid: WorldGrid2D
 var _enemy_grid: WorldGrid2D
 
 @onready
-var _tilemap: TileMap = %TileMap
+var _tilemap: Node2D = %TileMap
 
 
 # ============================================================================ #
@@ -37,9 +37,7 @@ func _ready() -> void:
             true
     )
 
-    if debug_grid:
-        _debug_grid_setup()
-        _tilemap.set_layer_enabled(0, debug_grid)
+    _debug_grid_setup()
 #endregion
 # ============================================================================ #
 
@@ -47,11 +45,13 @@ func _ready() -> void:
 # ============================================================================ #
 #region Utils
 func _debug_grid_setup() -> void:
+    var debug_layer: TileMapLayer = _tilemap.get_node("DebugLayer")
     for x in range(Global.WORLD_SIZE.x):
         for y in range(Global.WORLD_SIZE.y):
-            _tilemap.set_cell(
-                    0, Vector2i(x, y),
+            debug_layer.set_cell(
+                    Vector2i(x, y),
                     1, Vector2i((x + y) % 2, 0)
             )
+    debug_layer.visible = debug_grid
 #endregion
 # ============================================================================ #

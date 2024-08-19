@@ -17,11 +17,12 @@ sources/1 = SubResource("TileSetAtlasSource_2kw5s")
 [node name="World" type="Node2D"]
 script = ExtResource("1_06iba")
 
-[node name="TileMap" type="TileMap" parent="."]
+[node name="TileMap" type="Node2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(30, 90)
+
+[node name="DebugLayer" type="TileMapLayer" parent="TileMap"]
+modulate = Color(1, 1, 1, 0.188235)
+use_parent_material = true
 tile_set = SubResource("TileSet_tw8cx")
-format = 2
-layer_0/name = "debug"
-layer_0/modulate = Color(1, 1, 1, 0.188235)
-layer_0/navigation_enabled = false
+navigation_enabled = false

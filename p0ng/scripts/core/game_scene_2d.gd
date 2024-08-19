@@ -9,6 +9,7 @@ extends Node2D
 ## [br][br]
 ## This signal is connected to [Main]. If [param next_scene_key] is used for the
 ## next scene change.
+@warning_ignore("unused_signal")
 signal scene_finished(next_scene_key: SceneKey)
 
 enum SceneKey {
