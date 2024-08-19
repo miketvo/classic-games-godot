@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://dpy8k0nhdaw8i"]
+
+[ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_1nijk"]
+[ext_resource type="Script" path="res://scripts/game/game_hud.gd" id="1_2id7g"]
+[ext_resource type="Texture2D" uid="uid://ctnpg4labkw18" path="res://assets/hud/game_bound.png" id="2_wot7v"]
+
+[node name="GameHUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_1nijk")
+script = ExtResource("1_2id7g")
+
+[node name="BoundRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_wot7v")
+expand_mode = 2
+stretch_mode = 2
+
+[node name="StatContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = -6.0
+offset_right = -1274.0
+offset_bottom = -1058.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3, 3)
+alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="StatContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "NaN"

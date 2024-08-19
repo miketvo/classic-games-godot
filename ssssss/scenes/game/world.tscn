@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://wjw02a5opby"]
+
+[ext_resource type="Script" path="res://scripts/game/world.gd" id="1_06iba"]
+[ext_resource type="Texture2D" uid="uid://cwh5oliy2k7wa" path="res://assets/tilesets/grid_debug.png" id="2_u2aod"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2kw5s"]
+resource_name = "grid_debug"
+texture = ExtResource("2_u2aod")
+texture_region_size = Vector2i(30, 30)
+0:0/0 = 0
+1:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_tw8cx"]
+tile_size = Vector2i(30, 30)
+sources/1 = SubResource("TileSetAtlasSource_2kw5s")
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_06iba")
+
+[node name="TileMap" type="TileMap" parent="."]
+unique_name_in_owner = true
+position = Vector2(30, 90)
+tile_set = SubResource("TileSet_tw8cx")
+format = 2
+layer_0/name = "debug"
+layer_0/modulate = Color(1, 1, 1, 0.188235)
+layer_0/navigation_enabled = false
