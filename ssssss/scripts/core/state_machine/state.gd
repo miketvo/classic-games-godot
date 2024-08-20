@@ -17,6 +17,7 @@ extends Node
 ## [param to_state_name] must be the [member Node.name] of a sibbling state to
 ## the current state, i.e. the next state must belong to the same [StateMachine]
 ## that the current state belongs to.
+@warning_ignore("unused_signal")
 signal transitioned(from_state: State, to_state_name: StringName)
 
 

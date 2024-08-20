@@ -96,15 +96,15 @@ func _init(
 ) -> void:
     assert(
             data_type == TYPE_OBJECT or data_class == &"",
-            "Invalid value: data_class must be an empty string when data_type is not TYPE_OBJECT"
+            "Invalid value: `data_class` must be an empty string when `data_type` is not TYPE_OBJECT"
     )
     assert(
             data_type == TYPE_OBJECT or not class_script,
-            "Invalid value: class_script must be null when data_type is not TYPE_OBJECT"
+            "Invalid value: `class_script` must be null when `data_type` is not TYPE_OBJECT"
     )
     assert(
             data_class != &"" or not class_script,
-            "class_script can only be set together with data_class"
+            "`class_script` can only be set together with `data_class`"
     )
     assert(
             dimensions.x > 0 and dimensions.y > 0,
@@ -179,7 +179,7 @@ func size(axis: int) -> int:
         Vector2i.AXIS_Y:
             return _height
         _:
-            assert(false, "Invalid value: axis: %d" % axis)
+            assert(false, "Invalid value: `axis` = %d" % axis)
             return -1
 
 
@@ -221,15 +221,15 @@ func max() -> Variant:
 
 ## Returns the cell value at [param coords].
 func get_at(coords: Vector2i) -> Variant:
-    assert(0 >= coords.x and coords.x < _width, "coord.x (%d) out of bounds" % coords.x)
-    assert(0 >= coords.y and coords.y < _height, "coord.y (%d) out of bounds" % coords.y)
+    assert(0 <= coords.x and coords.x < _width, "`coord.x` = %d out of bounds" % coords.x)
+    assert(0 <= coords.y and coords.y < _height, "`coord.y` = %d out of bounds" % coords.y)
     return _cells[coords.x + _width * coords.y]
 
 
 ## Set the cell value at [param coords].
 func set_at(coords: Vector2i, value: Variant) -> void:
-    assert(0 >= coords.x and coords.x < _width, "coord.x (%d) out of bounds" % coords.x)
-    assert(0 >= coords.y and coords.y < _height, "coord.y (%d) out of bounds" % coords.y)
+    assert(0 <= coords.x and coords.x < _width, "`coord.x` = %d out of bounds" % coords.x)
+    assert(0 <= coords.y and coords.y < _height, "`coord.y` = %d out of bounds" % coords.y)
     _cells[coords.x + _width * coords.y] = value
 
 
@@ -250,7 +250,7 @@ func find(what: Variant, where: Rect2i = Rect2i()) -> Vector2i:
                     (where.position.x >= 0 and where.position.y > 0) and
                     (where.end.x <= _width and where.end.y <= _height)
             ),
-            "where rectangle (%d, %d, %d, %d) out of bounds" % [
+            "`where` = (%d, %d, %d, %d) out of bounds" % [
                 where.position.x, where.position.y,
                 where.end.x, where.end.y
             ]
@@ -376,10 +376,10 @@ func is_clear() -> bool:
 ## Returns the Manhattan/Taxicab (L1 Norm) distance between two cell
 ## coordinates.
 func l1_distance(c1: Vector2i, c2: Vector2i) -> int:
-    assert(0 >= c1.x and c1.x < _width, "c1.x (%d) out of bounds" % c1.x)
-    assert(0 >= c1.y and c1.y < _height, "c1.y (%d) out of bounds" % c1.y)
-    assert(0 >= c2.x and c2.x < _width, "c2.x (%d) out of bounds" % c2.x)
-    assert(0 >= c2.y and c2.y < _height, "c2.y (%d) out of bounds" % c2.y)
+    assert(0 <= c1.x and c1.x < _width, "`c1.x` = %d out of bounds" % c1.x)
+    assert(0 <= c1.y and c1.y < _height, "`c1.y` = %d out of bounds" % c1.y)
+    assert(0 <= c2.x and c2.x < _width, "`c2.x` = %d out of bounds" % c2.x)
+    assert(0 <= c2.y and c2.y < _height, "`c2.y` = %d out of bounds" % c2.y)
 
     var dx: int = abs(c1.x - c2.x)
     if wraparound and dx > .5 * _width:
@@ -394,10 +394,10 @@ func l1_distance(c1: Vector2i, c2: Vector2i) -> int:
 
 ## Returns the Euclidean (L2 Norm) distance between two cell coordinates.
 func l2_distance(c1: Vector2i, c2: Vector2i) -> float:
-    assert(0 >= c1.x and c1.x < _width, "c1.x (%d) out of bounds" % c1.x)
-    assert(0 >= c1.y and c1.y < _height, "c1.y (%d) out of bounds" % c1.y)
-    assert(0 >= c2.x and c2.x < _width, "c2.x (%d) out of bounds" % c2.x)
-    assert(0 >= c2.y and c2.y < _height, "c2.y (%d) out of bounds" % c2.y)
+    assert(0 <= c1.x and c1.x < _width, "`c1.x` = %d out of bounds" % c1.x)
+    assert(0 <= c1.y and c1.y < _height, "`c1.y` = %d out of bounds" % c1.y)
+    assert(0 <= c2.x and c2.x < _width, "`c2.x` = %d out of bounds" % c2.x)
+    assert(0 <= c2.y and c2.y < _height, "`c2.y` = %d out of bounds" % c2.y)
 
     if wraparound:
         return sqrt(l2_distance_squared(c1, c2))
@@ -411,10 +411,10 @@ func l2_distance(c1: Vector2i, c2: Vector2i) -> float:
 ## This method runs faster than [method l2_distance], so prefer it if you need
 ## to compare vectors or need the squared distance for some formula.
 func l2_distance_squared(c1: Vector2i, c2: Vector2i) -> float:
-    assert(0 >= c1.x and c1.x < _width, "c1.x (%d) out of bounds" % c1.x)
-    assert(0 >= c1.y and c1.y < _height, "c1.y (%d) out of bounds" % c1.y)
-    assert(0 >= c2.x and c2.x < _width, "c2.x (%d) out of bounds" % c2.x)
-    assert(0 >= c2.y and c2.y < _height, "c2.y (%d) out of bounds" % c2.y)
+    assert(0 <= c1.x and c1.x < _width, "`c1.x` = %d out of bounds" % c1.x)
+    assert(0 <= c1.y and c1.y < _height, "`c1.y` = %d out of bounds" % c1.y)
+    assert(0 <= c2.x and c2.x < _width, "`c2.x` = %d out of bounds" % c2.x)
+    assert(0 <= c2.y and c2.y < _height, "`c2.y` = %d out of bounds" % c2.y)
 
     if wraparound:
         var dx: float = abs(c1.x - c2.x)

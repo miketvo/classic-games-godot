@@ -1,64 +1,58 @@
+@tool
+class_name World
 extends Node2D
 
 
-## Shows the debug tilemap overlay.
-@export var debug_grid: bool = false
-
-var _snake_grid: WorldGrid2D
-var _enemy_grid: WorldGrid2D
-var _wall_grid: WorldGrid2D
-var _food_grid: WorldGrid2D
-
-@onready
-var _tile_map: Node2D = %TileMap
+signal configuration_changed
 
 
 # ============================================================================ #
-#region Godot builtins
-func _ready() -> void:
-    _snake_grid = WorldGrid2D.new(
-            Global.WORLD_SIZE,
-            TYPE_VECTOR2I, &"", null, [],
-            true
-    )
-    _food_grid = WorldGrid2D.new(
-            Global.WORLD_SIZE,
-            TYPE_INT, &"", null, [],
-            true
-    )
-    _wall_grid = WorldGrid2D.new(
-            Global.WORLD_SIZE,
-            TYPE_BOOL, &"", null, [],
-            true
-    )
-    _enemy_grid = WorldGrid2D.new(
-            Global.WORLD_SIZE,
-            TYPE_VECTOR2I, &"", null, [],
-            true
-    )
+#region World configuration
 
-    _debug_grid_setup()
+@export_group("Player", "player")
+
+## The x-coordinate of the player snake head.
+@warning_ignore("integer_division")
+@export_range(0, Global.WORLD_SIZE.x, 1) var player_spawn_x: int = Global.WORLD_SIZE.x / 2:
+    set(value):
+        player_spawn_x = value
+        configuration_changed.emit()
+
+## The y-coordinate of the player snake head.
+@warning_ignore("integer_division")
+@export_range(0, Global.WORLD_SIZE.y, 1) var player_spawn_y: int = Global.WORLD_SIZE.y / 2 - 2:
+    set(value):
+        player_spawn_y = value
+        configuration_changed.emit()
+
+## The direction that the player snake faces upon spawning.
+@export var player_spawn_direction: Global.Direction = Global.Direction.UP:
+    set(value):
+        player_spawn_direction = value
+        configuration_changed.emit()
+
+## The initial length of the player snake upon spawning.
+@export_range(2, 2, 1, "or_greater") var player_initial_length: int = 3:
+    set(value):
+        player_initial_length = value
+        configuration_changed.emit()
+
+
+@export_group("Rendering", "draw")
+
+## If [code]true[/code], the outline and direction (if applicable) of each cell
+## is drawn.
+@export var draw_debug_grid: bool = false
+
 #endregion
 # ============================================================================ #
 
 
 # ============================================================================ #
-#region Utils
-func _debug_grid_setup() -> void:
-    var debug_layer: TileMapLayer = _tile_map.get_node("DebugLayer")
-    var debug_tileset_source_id: int = _tile_map\
-            .get_source_id("DebugLayer", "debug_tileset")
-    for x in range(Global.WORLD_SIZE.x):
-        for y in range(Global.WORLD_SIZE.y):
-            var tile_name: StringName = &"%d" % [(x + y) % 2]
-            debug_layer.set_cell(
-                    Vector2i(x, y),
-                    debug_tileset_source_id,
-                    _tile_map.get_tile_id(
-                            debug_tileset_source_id,
-                            tile_name
-                    )["coords"]
-            )
-    debug_layer.visible = debug_grid
+#region Internal world state representation
+@export_storage var snake_grid: WorldGrid2D
+@export_storage var enemy_grid: WorldGrid2D
+@export_storage var wall_grid: WorldGrid2D
+@export_storage var food_grid: WorldGrid2D
 #endregion
 # ============================================================================ #

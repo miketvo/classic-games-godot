@@ -4,6 +4,7 @@ extends Node2D
 
 # ============================================================================ #
 #region Enums
+enum Direction { UP, LEFT, DOWN, RIGHT }
 #endregion
 # ============================================================================ #
 
@@ -16,6 +17,12 @@ const UNIT_VECTORS: PackedVector2Array = [
     Vector2.DOWN,
     Vector2.RIGHT,
 ]
+const DIRECTIONS: Dictionary = {
+    Direction.UP: Vector2.UP,
+    Direction.LEFT: Vector2.LEFT,
+    Direction.DOWN: Vector2.DOWN,
+    Direction.RIGHT: Vector2.RIGHT,
+}
 const WORLD_SIZE: Vector2i = Vector2i(62, 32)
 #endregion
 # ============================================================================ #

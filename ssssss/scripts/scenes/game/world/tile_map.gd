@@ -1,8 +1,12 @@
+@tool
 extends Node2D
 
 
+signal map_changed
+
+
 var _source_ids: Dictionary
-var _tile_atlas_coords: Dictionary
+var _tile_id: Dictionary
 
 
 # ============================================================================ #
@@ -10,17 +14,18 @@ var _tile_atlas_coords: Dictionary
 func _ready() -> void:
     var children: Array[Node] = get_children()
     for child in children:
-        assert(child is TileMapLayer, "TileMap must contain only TileMapLayers")
+        if child is not TileMapLayer: continue
 
         var layer: TileMapLayer = child
+        layer.connect("changed", func (): map_changed.emit())
+
         var layer_sources: Dictionary
         for source_index in range(layer.tile_set.get_source_count()):
             var source_id: int = layer.tile_set.get_source_id(source_index)
             var source: TileSetSource = layer.tile_set.get_source(source_id)
-            if source is not TileSetAtlasSource:
-                continue
+            if source is not TileSetAtlasSource: continue
 
-            # Populate _tile_atlas_coords
+            # Populate _tile_id
             var source_tiles: Dictionary
             for tile_index in range(source.get_tiles_count()):
                 var atlas_coords: Vector2i = source.get_tile_id(tile_index)
@@ -40,14 +45,14 @@ func _ready() -> void:
                             "coords": atlas_coords,
                             "alt_id": alt_tile_id
                         }
-            _tile_atlas_coords[source_id] = source_tiles
+            _tile_id[source_id] = source_tiles
 
             # Populate _source_ids
             layer_sources[source.resource_name] = source_id
         _source_ids[layer.name] = layer_sources
 
     _source_ids.make_read_only()
-    _tile_atlas_coords.make_read_only()
+    _tile_id.make_read_only()
 
 #endregion
 # ============================================================================ #
@@ -65,7 +70,7 @@ func get_source_id(layer: String, source_name: String) -> int:
 ## Returns the tile atlast coordinates of within the [param source_id], given
 ## its [param tile_name].
 func get_tile_id(source_id: int, tile_name: StringName) -> Dictionary:
-    return _tile_atlas_coords[source_id][tile_name]
+    return _tile_id[source_id][tile_name]
 
 #endregion
 # ============================================================================ #
