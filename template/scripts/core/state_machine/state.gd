@@ -11,7 +11,7 @@ extends Node
 ## methods. Should be emitted when a transition should occurs from
 ## [param from_state] to [param to_state_name].
 ## [br][br]
-## [param from_state] should always be self. Otherwise the behavior of the
+## [param from_state] should always be [code]self[/code]. Otherwise the behavior of the
 ## [StateMachine] containing this state is undefined.
 ## [br][br]
 ## [param to_state_name] must be the [member Node.name] of a sibbling state to

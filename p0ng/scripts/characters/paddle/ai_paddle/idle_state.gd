@@ -12,6 +12,7 @@ var _is_ready: bool
 #region Godot builtins
 func _ready() -> void:
     _cooldown_timer.connect("timeout", _on_cooldown_timer_timeout)
+#endregion
 # ============================================================================ #
 
 
@@ -32,6 +33,7 @@ func _physics_update(_delta: float, game_state_data: Global.GameStateData) -> vo
                 transitioned.emit(self, "PrepareState")
             [ Global.SIDE_LEFT, Vector2.LEFT ], [ Global.SIDE_RIGHT, Vector2.RIGHT ]:
                 transitioned.emit(self, "InterceptState")
+#endregion
 # ============================================================================ #
 
 

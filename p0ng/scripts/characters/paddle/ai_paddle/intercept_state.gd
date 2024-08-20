@@ -55,6 +55,7 @@ func _physics_update(delta: float, game_state_data: Global.GameStateData) -> voi
     match [ current_side, ball_heading ]:
         [ Global.SIDE_LEFT, Vector2.RIGHT ], [ Global.SIDE_RIGHT, Vector2.LEFT ]:
             transitioned.emit(self, "PrepareState")
+#endregion
 # ============================================================================ #
 
 
@@ -91,4 +92,5 @@ func _predict_ball_position_at(x: float, max_frames: int, delta: float) -> Vecto
     ):
         return Vector2.INF
     return current_position
+#endregion
 # ============================================================================ #

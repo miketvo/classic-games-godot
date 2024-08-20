@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://wjw02a5opby"]
+[gd_scene load_steps=20 format=4 uid="uid://wjw02a5opby"]
 
 [ext_resource type="Script" path="res://scripts/scenes/game/world/world.gd" id="1_2qbkl"]
 [ext_resource type="Script" path="res://scripts/scenes/game/world/tile_map.gd" id="2_jsiv2"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scripts/core/state_machine/state_matchine.gd" id="8_6hybs"]
 [ext_resource type="Script" path="res://scripts/scenes/game/world/world_state_controller/init_state.gd" id="9_856em"]
 [ext_resource type="Script" path="res://scripts/scenes/game/world/render_controller.gd" id="9_ddoxf"]
+[ext_resource type="Script" path="res://scripts/scenes/game/world/world_state_controller/run_state.gd" id="10_1ibom"]
 [ext_resource type="Script" path="res://scripts/core/state_machine/state.gd" id="10_128s5"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_uvbc0"]
@@ -186,8 +187,12 @@ script = ExtResource("9_856em")
 world = NodePath("../..")
 tile_map = NodePath("../../TileMap")
 
-[node name="RunState" type="Node" parent="WorldStateController"]
-script = ExtResource("10_128s5")
+[node name="RunState" type="Node" parent="WorldStateController" node_paths=PackedStringArray("world")]
+script = ExtResource("10_1ibom")
+world = NodePath("../..")
+
+[node name="StartDelayTimer" type="Timer" parent="WorldStateController/RunState"]
+wait_time = 0.5
 
 [node name="StopState" type="Node" parent="WorldStateController"]
 script = ExtResource("10_128s5")

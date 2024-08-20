@@ -31,6 +31,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
     _draw_debug()
+    _draw_environment()
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -62,8 +63,7 @@ func _draw_debug() -> void:
     var debug_layer: TileMapLayer = tile_map.get_node("DebugLayer")
     debug_layer.visible = world.draw_debug_grid
     if debug_layer.visible:
-        var debug_tileset_source_id: int = tile_map\
-                .get_source_id("DebugLayer", "debug_tileset")
+        var debug_tileset_source_id: int = tile_map.get_source_id("DebugLayer", "debug_tileset")
         for x in range(Global.WORLD_SIZE.x):
             for y in range(Global.WORLD_SIZE.y):
                 var cell_id: Vector2i = Vector2i(x, y)
@@ -87,5 +87,22 @@ func _draw_debug() -> void:
                                 tile_name
                         )["coords"]
                 )
+
+
+func _draw_environment() -> void:
+    if not Engine.is_editor_hint():
+        var environment_layer: TileMapLayer = tile_map.get_node("EnvironmentLayer")
+        var snake_tileset_source_id: int = tile_map.\
+                get_source_id("EnvironmentLayer", "snake_tileset")
+        var enemy_tileset_source_id: int = tile_map.\
+                get_source_id("EnvironmentLayer", "enemy_tileset")
+        var wall_tileset_source_id: int = tile_map.\
+                get_source_id("EnvironmentLayer", "wall_tileset")
+        var food_tileset_source_id: int = tile_map.\
+                get_source_id("EnvironmentLayer", "food_tileset")
+
+    for x in range(Global.WORLD_SIZE.x):
+        for y in range(Global.WORLD_SIZE.y):
+            pass  # TODO: Implement this.
 #endregion
 # ============================================================================ #

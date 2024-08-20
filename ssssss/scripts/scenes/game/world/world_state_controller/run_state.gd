@@ -1,11 +1,39 @@
 extends State
 
 
-# Called when the node enters the scene tree for the first time.
+@export var world: World
+
+var _is_ready: bool
+
+@onready var _start_delay_timer: Timer = $StartDelayTimer
+
+
+# ============================================================================ #
+#region Godot builtins
 func _ready() -> void:
-    pass # Replace with function body.
+    _start_delay_timer.connect("timeout", func (): _is_ready = true)
+#endregion
+# ============================================================================ #
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-    pass
+# ============================================================================ #
+#region State builtins
+func _enter() -> void:
+    _is_ready = false
+    _start_delay_timer.start()
+
+
+func _update(delta: float, _game_state_data: Global.GameStateData) -> void:
+    if _is_ready:
+        _update_snake()
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
+#region Utils
+func _update_snake() -> void:
+    var grid: WorldGrid2D = world.snake_grid
+    pass  # TODO: Implement this.
+#endregion
+# ============================================================================ #
