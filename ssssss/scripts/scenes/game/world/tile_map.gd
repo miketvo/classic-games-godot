@@ -4,7 +4,6 @@ extends Node2D
 
 signal map_changed
 
-
 var _source_ids: Dictionary
 var _tile_id: Dictionary
 

@@ -91,7 +91,7 @@ func _load_walls() -> void:
             var tile_data := environment.get_cell_tile_data(cell_coords)
             if tile_data:
                 var tile_name := tile_data.get_custom_data("tile_name") as StringName
-                if tile_name and tile_name == "wall":
+                if tile_name == World.WALL_TILE_NAME:
                     world.wall_grid.set_at(cell_coords, true)
 #endregion
 # ============================================================================ #

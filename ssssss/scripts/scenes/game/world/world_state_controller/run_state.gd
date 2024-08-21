@@ -33,20 +33,27 @@ func _exit() -> void:
 
 
 func _update(_delta: float, _game_state_data: Global.GameStateData) -> void:
-    if _started:
-        var snake_head: Vector2i = world.snake[0]
-        var snake_grid: WorldGrid2D = world.snake_grid
-        if Input.is_action_just_pressed("p_move_up"):
-            world.snake_grid.set_at(snake_head, Vector2i.UP)
-        elif Input.is_action_just_pressed("p_move_down"):
-            world.snake_grid.set_at(snake_head, Vector2i.DOWN)
-        elif Input.is_action_just_pressed("p_move_left"):
-            world.snake_grid.set_at(snake_head, Vector2i.LEFT)
-        elif Input.is_action_just_pressed("p_move_right"):
-            world.snake_grid.set_at(snake_head, Vector2i.RIGHT)
-
     if _dead:
         transitioned.emit(self, "StopState")
+
+    if _started:
+        var new_direction: Vector2i = Vector2i.ZERO
+        if Input.is_action_just_pressed("p_move_up"):
+            new_direction = Vector2i.UP
+        elif Input.is_action_just_pressed("p_move_down"):
+            new_direction = Vector2i.DOWN
+        elif Input.is_action_just_pressed("p_move_left"):
+            new_direction = Vector2i.LEFT
+        elif Input.is_action_just_pressed("p_move_right"):
+            new_direction = Vector2i.RIGHT
+
+        var snake_head: Vector2i = world.snake[0]
+        var snake_grid: WorldGrid2D = world.snake_grid
+        if (
+                new_direction != Vector2i.ZERO and
+                snake_head + new_direction != world.snake[1]
+        ):
+            world.snake_grid.set_at(snake_head, new_direction)
 #endregion
 # ============================================================================ #
 
@@ -92,5 +99,6 @@ func _on_start_cooldown_timer_timeout():
 # Listens to _step_timer.timeout().
 func _step() -> void:
     _update_snake()
+
 #endregion
 # ============================================================================ #

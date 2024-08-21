@@ -2,15 +2,6 @@
 extends Node
 
 
-const DEBUG_TILE_NAMES = {
-    0: "_0",
-    1: "_1",
-    Vector2i.UP: "n",
-    Vector2i.LEFT: "w",
-    Vector2i.DOWN: "s",
-    Vector2i.RIGHT: "e",
-}
-
 @export var world: World:
     set(node):
         world = node
@@ -73,11 +64,11 @@ func _draw_debug() -> void:
                 var tile_name: StringName
                 if snake_cell_data + enemy_cell_data == Vector2i.ZERO:
                     # Not a snake/enemy cell.
-                    tile_name = DEBUG_TILE_NAMES[(x + y) % 2]
+                    tile_name = World.DEBUG_TILE_NAMES[(x + y) % 2]
                 else: # Is a snake/enemy cell.
-                    tile_name = DEBUG_TILE_NAMES[snake_cell_data]\
+                    tile_name = World.DEBUG_TILE_NAMES[snake_cell_data]\
                             if snake_cell_data != Vector2i.ZERO\
-                            else DEBUG_TILE_NAMES[enemy_cell_data]
+                            else World.DEBUG_TILE_NAMES[enemy_cell_data]
 
                 debug_layer.set_cell(
                         Vector2i(x, y),
