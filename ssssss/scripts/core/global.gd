@@ -67,8 +67,6 @@ func _exit_tree() -> void:
 
 # ============================================================================ #
 #region Public methods
-func is_equal_approx(a: float, b: float, epsilon: float):
-    return absf(a - b) < epsilon
 #endregion
 # ============================================================================ #
 
