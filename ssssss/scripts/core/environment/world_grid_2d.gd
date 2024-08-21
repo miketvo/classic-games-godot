@@ -15,10 +15,11 @@ extends RefCounted
 ## Determines whether the grid represents a wrap-around space, i.e. the opposite
 ## edges' cells are connected
 ## ([url=https://en.wikipedia.org/wiki/Clifford_torus]Euclidean 2-torus /
-## Clifford torus[/url]). Affects distance calculation and pathfinding
-## algorithms. Below is an example of such a space, where anything that moves
-## off an edge or corner cell A, B, or C, "reappears" on the opposite A, B, or C
-## cell with its orientation, velocity, angular speed, etc. preserved:
+## Clifford torus[/url]). Affects [method get_at], [method set_at], distance
+## calculation and pathfinding algorithms. Below is an example of such a space,
+## where anything that moves off an edge or corner cell A, B, or C, "reappears"
+## on the opposite A, B, or C cell with its orientation, velocity, angular
+## speed, etc. preserved:
 ## [codeblock]
 ## C A A A A C
 ## B . . . . B
@@ -85,7 +86,7 @@ var _height: int  # The height of the grid. Read-only.
 ##  - [param wraparound] - see [member wraparound].[br]
 ## For possible data types, see: [enum Variant.Type]. The default value for all
 ## cells in the grid is the default value for their type (i.e. empty cells). See
-## [method get_cell_default] for all default values.
+## [method get_type_default] for all default values.
 @warning_ignore("shadowed_variable")
 func _init(
         dimensions: Vector2i = Vector2i.ONE,
@@ -119,7 +120,7 @@ func _init(
     _cells = Array([], data_type, data_class, class_script)
     if base.is_empty():
         _cells.resize(_width * _height)
-        _cells.fill(get_cell_default(data_type))
+        _cells.fill(get_type_default(data_type))
     else:
         load_array(base)
 
@@ -220,17 +221,17 @@ func max() -> Variant:
     return _cells.max()
 
 
-## Returns the cell value at [param coords].
+## Returns the cell value at [param coords]. Accepts coordinates out of the grid
+## bounds if [member wraparound] is [code]true[/code].
 func get_at(coords: Vector2i) -> Variant:
-    assert(0 <= coords.x and coords.x < _width, "`coord.x` = %d out of bounds" % coords.x)
-    assert(0 <= coords.y and coords.y < _height, "`coord.y` = %d out of bounds" % coords.y)
+    coords = _wraparound(coords)
     return _cells[coords.x + _width * coords.y]
 
 
-## Set the cell value at [param coords].
+## Set the cell value at [param coords]. Accepts coordinates out of the grid
+## bounds if [member wraparound] is [code]true[/code].
 func set_at(coords: Vector2i, value: Variant) -> void:
-    assert(0 <= coords.x and coords.x < _width, "`coord.x` = %d out of bounds" % coords.x)
-    assert(0 <= coords.y and coords.y < _height, "`coord.y` = %d out of bounds" % coords.y)
+    coords = _wraparound(coords)
     _cells[coords.x + _width * coords.y] = value
 
 
@@ -356,31 +357,37 @@ func fill(value: Variant) -> void:
 
 
 ## Reset (in-place) all cells in the grid with the default value for its type.
-## See [method get_cell_default] for all default values.
+## See [method get_type_default] for all default values.
 func reset() -> void:
-    _cells.fill(get_cell_default(_cells.get_typed_builtin()))
+    _cells.fill(get_cell_default())
 
 
 ## Reset (in-place) the cell at [param coords] with the default value for its
-## type. See [method get_cell_default] for all default values.
+## type. See [method get_type_default] for all default values.
 func reset_at(coords: Vector2i) -> void:
-    set_at(coords, get_cell_default(_cells.get_typed_builtin()))
+    set_at(coords, get_cell_default())
 
 
 ## Returns [code]true[/code] if the grid only contains empty cells (cells that
-## contains the default value for its type). See [method get_cell_default] for
+## contains the default value for its type). See [method get_type_default] for
 ## all default values.
 func is_clear() -> bool:
-    return all(func(cell): return cell == get_cell_default(_cells.get_typed_builtin()))
+    return all(func(cell): return cell == get_cell_default())
+
+
+## Returns [code]true[/code] if the cell at [param coords] is empty (contains
+## the default value for its type). See [method get_type_default] for all
+## default values.
+func is_clear_at(coords: Vector2i) -> bool:
+    return get_at(coords) == get_cell_default()
 
 
 ## Returns the Manhattan/Taxicab (L1 Norm) distance between two cell
-## coordinates.
+## coordinates. Accepts coordinates out of the grid bounds if
+## [member wraparound] is [code]true[/code].
 func l1_distance(c1: Vector2i, c2: Vector2i) -> int:
-    assert(0 <= c1.x and c1.x < _width, "`c1.x` = %d out of bounds" % c1.x)
-    assert(0 <= c1.y and c1.y < _height, "`c1.y` = %d out of bounds" % c1.y)
-    assert(0 <= c2.x and c2.x < _width, "`c2.x` = %d out of bounds" % c2.x)
-    assert(0 <= c2.y and c2.y < _height, "`c2.y` = %d out of bounds" % c2.y)
+    c1 = _wraparound(c1)
+    c2 = _wraparound(c2)
 
     var dx: int = abs(c1.x - c2.x)
     if wraparound and dx > .5 * _width:
@@ -394,11 +401,11 @@ func l1_distance(c1: Vector2i, c2: Vector2i) -> int:
 
 
 ## Returns the Euclidean (L2 Norm) distance between two cell coordinates.
+## Accepts coordinates out of the grid bounds if [member wraparound] is
+## [code]true[/code].
 func l2_distance(c1: Vector2i, c2: Vector2i) -> float:
-    assert(0 <= c1.x and c1.x < _width, "`c1.x` = %d out of bounds" % c1.x)
-    assert(0 <= c1.y and c1.y < _height, "`c1.y` = %d out of bounds" % c1.y)
-    assert(0 <= c2.x and c2.x < _width, "`c2.x` = %d out of bounds" % c2.x)
-    assert(0 <= c2.y and c2.y < _height, "`c2.y` = %d out of bounds" % c2.y)
+    c1 = _wraparound(c1)
+    c2 = _wraparound(c2)
 
     if wraparound:
         return sqrt(l2_distance_squared(c1, c2))
@@ -407,15 +414,14 @@ func l2_distance(c1: Vector2i, c2: Vector2i) -> float:
 
 
 ## Returns the squared Euclidean (L2 Norm) distance between two cell
-## coordinates.
+## coordinates. Accepts coordinates out of the grid bounds if
+## [member wraparound] is [code]true[/code].
 ## [br][br]
 ## This method runs faster than [method l2_distance], so prefer it if you need
 ## to compare vectors or need the squared distance for some formula.
 func l2_distance_squared(c1: Vector2i, c2: Vector2i) -> float:
-    assert(0 <= c1.x and c1.x < _width, "`c1.x` = %d out of bounds" % c1.x)
-    assert(0 <= c1.y and c1.y < _height, "`c1.y` = %d out of bounds" % c1.y)
-    assert(0 <= c2.x and c2.x < _width, "`c2.x` = %d out of bounds" % c2.x)
-    assert(0 <= c2.y and c2.y < _height, "`c2.y` = %d out of bounds" % c2.y)
+    c1 = _wraparound(c1)
+    c2 = _wraparound(c2)
 
     if wraparound:
         var dx: float = abs(c1.x - c2.x)
@@ -429,6 +435,11 @@ func l2_distance_squared(c1: Vector2i, c2: Vector2i) -> float:
         return dx * dx + dy * dy
     else:
         return Vector2(c1).distance_squared_to(Vector2(c2))
+
+
+## Returns the default cell value of this grid. See [method get_type_default].
+func get_cell_default() -> Variant:
+    return get_type_default(_cells.get_typed_builtin())
 
 
 ## Returns the default cell value for the corresponding [param type].
@@ -475,7 +486,7 @@ func l2_distance_squared(c1: Vector2i, c2: Vector2i) -> float:
 ##     TYPE_PACKED_COLOR_ARRAY: PackedColorArray(),
 ## }
 ## [/codeblock]
-func get_cell_default(type: Variant.Type) -> Variant:
+func get_type_default(type: Variant.Type) -> Variant:
     var defaults: Dictionary = {
         TYPE_BOOL: false,
         TYPE_INT: 0,
@@ -522,6 +533,25 @@ func get_cell_default(type: Variant.Type) -> Variant:
     elif type == TYPE_NIL:
         assert(false, "Invalid value: TYPE_NIL (%d) is not allowed" % TYPE_NIL)
     return null
+
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
+#region Godot builtins
+
+# Wraps [param coords] if [member wraparound] is [code]true[/code].
+func _wraparound(coords: Vector2i) -> Vector2i:
+    if wraparound:
+        return Vector2i(
+                posmod(coords.x, _width),
+                posmod(coords.y, _height)
+        )
+    else:
+        assert(0 <= coords.x and coords.x < _width, "`coords.x` = %d out of bounds" % coords.x)
+        assert(0 <= coords.y and coords.y < _height, "`coords.y` = %d out of bounds" % coords.y)
+        return coords
 
 #endregion
 # ============================================================================ #

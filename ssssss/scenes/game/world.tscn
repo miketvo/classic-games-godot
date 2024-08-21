@@ -11,7 +11,7 @@
 [ext_resource type="Script" path="res://scripts/scenes/game/world/world_state_controller/init_state.gd" id="9_856em"]
 [ext_resource type="Script" path="res://scripts/scenes/game/world/render_controller.gd" id="9_ddoxf"]
 [ext_resource type="Script" path="res://scripts/scenes/game/world/world_state_controller/run_state.gd" id="10_1ibom"]
-[ext_resource type="Script" path="res://scripts/core/state_machine/state.gd" id="10_128s5"]
+[ext_resource type="Script" path="res://scripts/scenes/game/world/world_state_controller/stop_state.gd" id="11_sfcvu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_uvbc0"]
 resource_name = "debug_tileset"
@@ -195,12 +195,14 @@ tile_map = NodePath("../../TileMap")
 script = ExtResource("10_1ibom")
 world = NodePath("../..")
 
-[node name="StartDelayTimer" type="Timer" parent="WorldStateController/RunState"]
+[node name="StartCooldownTimer" type="Timer" parent="WorldStateController/RunState"]
 wait_time = 0.5
 one_shot = true
 
+[node name="StepTimer" type="Timer" parent="WorldStateController/RunState"]
+
 [node name="StopState" type="Node" parent="WorldStateController"]
-script = ExtResource("10_128s5")
+script = ExtResource("11_sfcvu")
 
 [node name="RenderController" type="Node" parent="." node_paths=PackedStringArray("world", "tile_map")]
 script = ExtResource("9_ddoxf")

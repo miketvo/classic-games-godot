@@ -21,9 +21,6 @@ func _ready() -> void:
 
     world.connect("configuration_changed", _build_world)
     tile_map.connect("map_changed", _build_world)
-    _build_world()
-    if Engine.is_editor_hint():
-        transitioned.emit(self, "RunState")
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -50,6 +47,16 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 
 # ============================================================================ #
+#region State builtins
+func _enter() -> void:
+    _build_world()
+    if not Engine.is_editor_hint():
+        transitioned.emit(self, "RunState")
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
 #region Utils
 func _build_world() -> void:
     world.snake_grid.reset()
@@ -59,7 +66,6 @@ func _build_world() -> void:
     world.food_grid.reset()
 
     _spawn_player()
-    print("Built world")
 
 
 func _spawn_player() -> void:
