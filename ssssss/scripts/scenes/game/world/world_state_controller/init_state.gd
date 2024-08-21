@@ -60,21 +60,38 @@ func _enter() -> void:
 #region Utils
 func _build_world() -> void:
     world.snake_grid.reset()
-    world.enemy_heads.clear()
+    world.enemies.clear()
     world.enemy_grid.reset()
     world.wall_grid.reset()
     world.food_grid.reset()
 
     _spawn_player()
+    _load_walls()
 
 
 func _spawn_player() -> void:
-    world.snake_head = Vector2i(world.player_spawn_x, world.player_spawn_y)
-    var current_position: Vector2i = world.snake_head
+    world.snake = []
+    var current_position: Vector2i = Vector2i(world.player_spawn_x, world.player_spawn_y)
     var direction: Vector2i = Vector2i(Global.DIRECTIONS[world.player_spawn_direction])
     for i in range(world.player_initial_length):
+        world.snake.append(current_position)
         world.snake_grid.set_at(current_position, direction)
-        current_position = (current_position - direction) % Global.WORLD_SIZE
+        current_position = current_position - direction
+        current_position.x = posmod(current_position.x, Global.WORLD_SIZE.x)
+        current_position.y = posmod(current_position.y, Global.WORLD_SIZE.y)
 
+
+func _load_walls() -> void:
+    var environment := tile_map.get_node("EnvironmentLayer") as TileMapLayer
+    assert(environment, "EnvironmentLayer not found")
+
+    for x in range(Global.WORLD_SIZE.x):
+        for y in range(Global.WORLD_SIZE.y):
+            var cell_coords: Vector2i = Vector2i(x, y)
+            var tile_data := environment.get_cell_tile_data(cell_coords)
+            if tile_data:
+                var tile_name := tile_data.get_custom_data("tile_name") as StringName
+                if tile_name and tile_name == "wall":
+                    world.wall_grid.set_at(cell_coords, true)
 #endregion
 # ============================================================================ #

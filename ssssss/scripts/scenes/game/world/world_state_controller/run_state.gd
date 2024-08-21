@@ -34,16 +34,16 @@ func _exit() -> void:
 
 func _update(_delta: float, _game_state_data: Global.GameStateData) -> void:
     if _started:
-        var snake_head: Vector2i = world.snake_head
+        var snake_head: Vector2i = world.snake[0]
         var snake_grid: WorldGrid2D = world.snake_grid
         if Input.is_action_just_pressed("p_move_up"):
-            world.snake_grid.set_at(world.snake_head, Vector2i.UP)
+            world.snake_grid.set_at(snake_head, Vector2i.UP)
         elif Input.is_action_just_pressed("p_move_down"):
-            world.snake_grid.set_at(world.snake_head, Vector2i.DOWN)
+            world.snake_grid.set_at(snake_head, Vector2i.DOWN)
         elif Input.is_action_just_pressed("p_move_left"):
-            world.snake_grid.set_at(world.snake_head, Vector2i.LEFT)
+            world.snake_grid.set_at(snake_head, Vector2i.LEFT)
         elif Input.is_action_just_pressed("p_move_right"):
-            world.snake_grid.set_at(world.snake_head, Vector2i.RIGHT)
+            world.snake_grid.set_at(snake_head, Vector2i.RIGHT)
 
     if _dead:
         transitioned.emit(self, "StopState")
@@ -54,24 +54,28 @@ func _update(_delta: float, _game_state_data: Global.GameStateData) -> void:
 # ============================================================================ #
 #region Utils
 func _update_snake() -> void:
-    var grid: WorldGrid2D = world.snake_grid
-    var current: Vector2i = world.snake_head
-    var past_tail: bool = false
-    while not past_tail:
-        var movement = grid.get_at(current)
-        var new_movement = grid.get_at(current + movement)
-        if new_movement == grid.get_cell_default():
-            world.snake_head += movement
-            new_movement = movement
-        elif current == world.snake_head:
-            _dead = true
-            return
-        grid.set_at(current + movement, new_movement)
+    var snake_grid: WorldGrid2D = world.snake_grid
+    var enemy_grid: WorldGrid2D = world.enemy_grid
+    var wall_grid: WorldGrid2D = world.wall_grid
+    for i in range(world.snake.size()):
+        var movement = snake_grid.get_at(world.snake[i])
+        var target_cell = world.snake[i] + movement
+        var next_movement = snake_grid.get_at(target_cell)
+        if i == 0:  # If this is the head of the snake.
+            if (
+                    snake_grid.is_clear_at(target_cell) and
+                    enemy_grid.is_clear_at(target_cell) and
+                    wall_grid.is_clear_at(target_cell)
+            ):
+                next_movement = movement
+            else:
+                _dead = true
+                return
 
-        current = current - movement
-        if grid.get_at(current) != movement:
-            grid.reset_at(current)
-            past_tail = true
+        snake_grid.set_at(target_cell, next_movement)
+        if i == world.snake.size() - 1:
+            snake_grid.reset_at(world.snake[i])
+        world.snake[i] = target_cell
 #endregion
 # ============================================================================ #
 

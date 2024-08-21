@@ -32,7 +32,8 @@ signal configuration_changed
         configuration_changed.emit()
 
 ## The initial length of the player snake upon spawning.
-@export_range(2, 2, 1, "or_greater") var player_initial_length: int = 3:
+@warning_ignore("integer_division")
+@export_range(2, mini(Global.WORLD_SIZE.x, Global.WORLD_SIZE.y) / 4, 1) var player_initial_length: int = 3:
     set(value):
         player_initial_length = value
         configuration_changed.emit()
@@ -50,9 +51,9 @@ signal configuration_changed
 
 # ============================================================================ #
 #region Internal world state representation
-@export_storage var snake_head: Vector2i
+@export_storage var snake: Array[Vector2i]
 @export_storage var snake_grid: WorldGrid2D
-@export_storage var enemy_heads: Array[Vector2i]
+@export_storage var enemies: Array[Array]
 @export_storage var enemy_grid: WorldGrid2D
 @export_storage var wall_grid: WorldGrid2D
 @export_storage var food_grid: WorldGrid2D
@@ -63,13 +64,13 @@ signal configuration_changed
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    snake_head = Vector2i(-1, -1)
+    snake = []
     snake_grid = WorldGrid2D.new(
             Global.WORLD_SIZE,
             TYPE_VECTOR2I, &"", null, [],
             true
     )
-    enemy_heads = Array([], TYPE_VECTOR2I, &"", null)
+    enemies = []
     enemy_grid = WorldGrid2D.new(
             Global.WORLD_SIZE,
             TYPE_VECTOR2I, &"", null, [],

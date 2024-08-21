@@ -96,8 +96,6 @@ func _draw_environment() -> void:
                 get_source_id("EnvironmentLayer", "snake_tileset")
         var enemy_tileset_source_id: int = tile_map.\
                 get_source_id("EnvironmentLayer", "enemy_tileset")
-        var wall_tileset_source_id: int = tile_map.\
-                get_source_id("EnvironmentLayer", "wall_tileset")
         var food_tileset_source_id: int = tile_map.\
                 get_source_id("EnvironmentLayer", "food_tileset")
 
