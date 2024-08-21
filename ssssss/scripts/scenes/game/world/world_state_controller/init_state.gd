@@ -52,35 +52,23 @@ func _get_configuration_warnings() -> PackedStringArray:
 # ============================================================================ #
 #region Utils
 func _build_world() -> void:
-    world.snake_grid = WorldGrid2D.new(
-            Global.WORLD_SIZE,
-            TYPE_VECTOR2I, &"", null, [],
-            true
-    )
-    _spawn_player()
+    world.snake_grid.reset()
+    world.enemy_heads.clear()
+    world.enemy_grid.reset()
+    world.wall_grid.reset()
+    world.food_grid.reset()
 
-    world.food_grid = WorldGrid2D.new(
-            Global.WORLD_SIZE,
-            TYPE_INT, &"", null, [],
-            true
-    )
-    world.wall_grid = WorldGrid2D.new(
-            Global.WORLD_SIZE,
-            TYPE_BOOL, &"", null, [],
-            true
-    )
-    world.enemy_grid = WorldGrid2D.new(
-            Global.WORLD_SIZE,
-            TYPE_VECTOR2I, &"", null, [],
-            true
-    )
+    _spawn_player()
+    print("Built world")
 
 
 func _spawn_player() -> void:
-    var current_position: Vector2i = Vector2i(world.player_spawn_x, world.player_spawn_y)
+    world.snake_head = Vector2i(world.player_spawn_x, world.player_spawn_y)
+    var current_position: Vector2i = world.snake_head
     var direction: Vector2i = Vector2i(Global.DIRECTIONS[world.player_spawn_direction])
     for i in range(world.player_initial_length):
         world.snake_grid.set_at(current_position, direction)
         current_position = (current_position - direction) % Global.WORLD_SIZE
+
 #endregion
 # ============================================================================ #

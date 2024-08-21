@@ -1,3 +1,4 @@
+@tool
 class_name WorldGrid2D
 extends RefCounted
 ## Specialized typed 2D matrix of cells to represent game state/environment.

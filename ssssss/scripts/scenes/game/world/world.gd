@@ -50,9 +50,40 @@ signal configuration_changed
 
 # ============================================================================ #
 #region Internal world state representation
+@export_storage var snake_head: Vector2i
 @export_storage var snake_grid: WorldGrid2D
+@export_storage var enemy_heads: Array[Vector2i]
 @export_storage var enemy_grid: WorldGrid2D
 @export_storage var wall_grid: WorldGrid2D
 @export_storage var food_grid: WorldGrid2D
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
+#region Godot builtins
+func _ready() -> void:
+    snake_head = Vector2i(-1, -1)
+    snake_grid = WorldGrid2D.new(
+            Global.WORLD_SIZE,
+            TYPE_VECTOR2I, &"", null, [],
+            true
+    )
+    enemy_heads = Array([], TYPE_VECTOR2I, &"", null)
+    enemy_grid = WorldGrid2D.new(
+            Global.WORLD_SIZE,
+            TYPE_VECTOR2I, &"", null, [],
+            true
+    )
+    wall_grid = WorldGrid2D.new(
+            Global.WORLD_SIZE,
+            TYPE_BOOL, &"", null, [],
+            true
+    )
+    food_grid = WorldGrid2D.new(
+            Global.WORLD_SIZE,
+            TYPE_INT, &"", null, [],
+            true
+    )
 #endregion
 # ============================================================================ #

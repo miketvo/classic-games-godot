@@ -23,7 +23,7 @@ func _enter() -> void:
     _start_delay_timer.start()
 
 
-func _update(delta: float, _game_state_data: Global.GameStateData) -> void:
+func _update(_delta: float, _game_state_data: Global.GameStateData) -> void:
     if _is_ready:
         _update_snake()
 #endregion
@@ -33,6 +33,7 @@ func _update(delta: float, _game_state_data: Global.GameStateData) -> void:
 # ============================================================================ #
 #region Utils
 func _update_snake() -> void:
+    var head: Vector2i = world.snake_head
     var grid: WorldGrid2D = world.snake_grid
     pass  # TODO: Implement this.
 #endregion
