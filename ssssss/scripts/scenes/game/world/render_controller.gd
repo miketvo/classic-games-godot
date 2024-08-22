@@ -18,13 +18,14 @@ extends Node
 func _ready() -> void:
     assert(world, "`world` must be set")
     assert(tile_map, "`tile_map` must be set")
-    world.get_node("WorldStateController/RunState/StepTimer")\
-        .connect("timeout", _draw_environment)  # Lazy drawing.
-    _draw_environment()  # Initial render.
-
-
-func _process(_delta: float) -> void:
+    world.connect("configuration_changed", _draw_debug)
     _draw_debug()
+    if not Engine.is_editor_hint():
+        world.get_node("WorldStateController/RunState/StepTimer")\
+            .connect("timeout", _draw_debug)
+        world.get_node("WorldStateController/RunState/StepTimer")\
+            .connect("timeout", _draw_environment)
+        _draw_environment()
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -79,35 +80,30 @@ func _draw_debug() -> void:
 func _draw_environment() -> void:
     if not Engine.is_editor_hint():
         var environment_layer: TileMapLayer = tile_map.get_node("EnvironmentLayer")
+        environment_layer.clear()
 
-        var snake_tileset_source_id: int = tile_map.\
-                get_source_id("EnvironmentLayer", "snake_tileset")
-        var snakes: Array[Array] = world.snakes
-        var snake_grid: WorldGrid2D = world.snake_grid
-
+        # Draw food.
         var food_tileset_source_id: int = tile_map.\
                 get_source_id("EnvironmentLayer", "food_tileset")
         var food_grid: WorldGrid2D = world.food_grid
-
-        # Clear tile map layer.
-        # TODO: Optimize this. Right now it is a performance bottleneck.
         for x in range(Global.WORLD_SIZE.x):
             for y in range(Global.WORLD_SIZE.y):
-                var coords: Vector2i = Vector2i(x, y)
-
-                if snake_grid.is_clear_at(coords) and food_grid.is_clear_at(coords):
-                    environment_layer.erase_cell(coords)
-                elif not food_grid.is_clear_at(coords):
+                var food_coords: Vector2i = Vector2i(x, y)
+                if not food_grid.is_clear_at(food_coords):
                     environment_layer.set_cell(
-                            coords,
+                            food_coords,
                             food_tileset_source_id,
                             tile_map.get_tile_id(
                                     food_tileset_source_id,
-                                    tile_map.FOOD_TILE_NAMES[food_grid.get_at(coords)]
+                                    tile_map.FOOD_TILE_NAMES[food_grid.get_at(food_coords)]
                             )["coords"]
                     )
 
         # Draw snake.
+        var snake_tileset_source_id: int = tile_map.\
+                get_source_id("EnvironmentLayer", "snake_tileset")
+        var snakes: Array[Array] = world.snakes
+        var snake_grid: WorldGrid2D = world.snake_grid
         for snake_id in range(snakes.size()):
             var is_primary_snake: bool = snake_id == 0
             var snake: Array[Vector2i] = snakes[snake_id]
@@ -121,7 +117,6 @@ func _draw_environment() -> void:
                     snake,
                     snake_terrain_id["terrain_set"],
                     snake_terrain_id["terrain"],
-                    false
             )
 
             # Snake head.
