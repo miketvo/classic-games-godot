@@ -29,12 +29,6 @@ const SNAKE_HEAD_TILE_NAMES = {
     Vector2i.RIGHT: "head_e",
 }
 const SNAKE_BODY_EAT_TILE_NAME = "body_eat"
-const SNAKE_TAIL_TILE_NAMES = {
-    Vector2i.UP: "tail_n",
-    Vector2i.LEFT: "tail_w",
-    Vector2i.DOWN: "tail_s",
-    Vector2i.RIGHT: "tail_e",
-}
 const WALL_TILE_NAME = "wall"
 const FOOD_TILE_NAMES = {
     1: "food_small",

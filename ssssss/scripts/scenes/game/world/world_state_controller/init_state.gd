@@ -69,13 +69,14 @@ func _build_world() -> void:
 
 
 func _spawn_player() -> void:
-    world.snakes.append(Array([], TYPE_VECTOR2I, &"", null))
+    var snake: Array[Vector2i] = []
     var current_position: Vector2i = Vector2i(world.player_spawn_x, world.player_spawn_y)
     var direction: Vector2i = Vector2i(Global.DIRECTIONS[world.player_spawn_direction])
     for i in range(world.player_initial_length):
-        world.snakes[0].append(current_position)
+        snake.append(current_position)
         world.snake_grid.set_at(current_position, direction)
         current_position = world.snake_grid.wrap_coords(current_position - direction)
+    world.snakes.append(snake)
 
 
 func _load_walls() -> void:

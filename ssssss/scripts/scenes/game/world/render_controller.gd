@@ -113,10 +113,12 @@ func _draw_environment() -> void:
                     else tile_map.get_terrain_id("EnvironmentLayer", "snake_secondary")
 
             # Snake body.
-            environment_layer.set_cells_terrain_path(
-                    snake,
+            var snake_draw_path: Array[Vector2i] = snake.duplicate()
+            snake_draw_path.reverse()
+            _set_cells_terrain_path_wrapped(
+                    snake_draw_path,
                     snake_terrain_id["terrain_set"],
-                    snake_terrain_id["terrain"],
+                    snake_terrain_id["terrain"]
             )
 
             # Snake head.
@@ -157,21 +159,28 @@ func _draw_environment() -> void:
                         body_digest_tile_id["alt_id"]
                     )
 
-            # Snake tail.
-            var tail_coords: Vector2i = snake[snake.size() - 1]
-            var tail_direction: Vector2i = snake_grid.get_at(tail_coords)
-            var snake_tail_tile_name: StringName =\
-                    tile_map.SNAKE_TAIL_TILE_NAMES[tail_direction]
-            if is_primary_snake: snake_tail_tile_name += "_primary"
-            var tail_tile_id: Dictionary = tile_map.get_tile_id(
-                    snake_tileset_source_id,
-                    snake_tail_tile_name
-            )
-            environment_layer.set_cell(
-                tail_coords,
-                snake_tileset_source_id,
-                tail_tile_id["coords"],
-                tail_tile_id["alt_id"]
-            )
+
+func _set_cells_terrain_path_wrapped(
+        path: Array[Vector2i],
+        terrain_set: int,
+        terrain: int,
+        ignore_empty_terrains: bool = true
+) -> void:
+    var splits: Array[Array] = []
+    var split_begin: int = 0
+    for i in range(1, path.size()):
+        if path[i].distance_squared_to(path[i - 1]) > 1:
+            splits.append(path.slice(split_begin, i))
+            split_begin = i
+    splits.append(path.slice(split_begin, path.size()))
+
+    var environment_layer: TileMapLayer = tile_map.get_node("EnvironmentLayer")
+    for split in splits:
+        environment_layer.set_cells_terrain_path(
+                split,
+                terrain_set,
+                terrain,
+                ignore_empty_terrains
+        )
 #endregion
 # ============================================================================ #
