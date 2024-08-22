@@ -11,6 +11,12 @@ enum Direction { UP, LEFT, DOWN, RIGHT }
 
 # ============================================================================ #
 #region Constants
+const COLOR_PALETTE: Dictionary = {
+    "bg": Color("#180c21"),
+    "fg_0": Color("#6f324e"),
+    "fg_1": Color("#ce6b40"),
+    "fg_2": Color("#fff4b0"),
+}
 const UNIT_VECTORS: PackedVector2Array = [
     Vector2.UP,
     Vector2.LEFT,

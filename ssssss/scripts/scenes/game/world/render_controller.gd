@@ -59,16 +59,10 @@ func _draw_debug() -> void:
             for y in range(Global.WORLD_SIZE.y):
                 var cell_id: Vector2i = Vector2i(x, y)
                 var snake_cell_data: Vector2i = world.snake_grid.get_at(cell_id)
-                var enemy_cell_data: Vector2i = world.enemy_grid.get_at(cell_id)
-
-                var tile_name: StringName
-                if snake_cell_data + enemy_cell_data == Vector2i.ZERO:
-                    # Not a snake/enemy cell.
-                    tile_name = World.DEBUG_TILE_NAMES[(x + y) % 2]
-                else: # Is a snake/enemy cell.
-                    tile_name = World.DEBUG_TILE_NAMES[snake_cell_data]\
-                            if snake_cell_data != Vector2i.ZERO\
-                            else World.DEBUG_TILE_NAMES[enemy_cell_data]
+                var tile_name: StringName = \
+                        tile_map.DEBUG_TILE_NAMES[(x + y) % 2]\
+                        if snake_cell_data == world.snake_grid.get_cell_default()\
+                        else tile_map.DEBUG_TILE_NAMES[snake_cell_data]
 
                 debug_layer.set_cell(
                         Vector2i(x, y),
@@ -82,16 +76,14 @@ func _draw_debug() -> void:
 
 func _draw_environment() -> void:
     if not Engine.is_editor_hint():
-        var environment_layer: TileMapLayer = tile_map.get_node("EnvironmentLayer")
-        var snake_tileset_source_id: int = tile_map.\
-                get_source_id("EnvironmentLayer", "snake_tileset")
-        var enemy_tileset_source_id: int = tile_map.\
-                get_source_id("EnvironmentLayer", "enemy_tileset")
-        var food_tileset_source_id: int = tile_map.\
-                get_source_id("EnvironmentLayer", "food_tileset")
+        # var environment_layer: TileMapLayer = tile_map.get_node("EnvironmentLayer")
+        # var snake_tileset_source_id: int = tile_map.\
+        #         get_source_id("EnvironmentLayer", "snake_tileset")
+        # var food_tileset_source_id: int = tile_map.\
+        #         get_source_id("EnvironmentLayer", "food_tileset")
 
-    for x in range(Global.WORLD_SIZE.x):
-        for y in range(Global.WORLD_SIZE.y):
-            pass  # TODO: Implement this.
+        for x in range(Global.WORLD_SIZE.x):
+            for y in range(Global.WORLD_SIZE.y):
+                pass  # TODO: Implement this.
 #endregion
 # ============================================================================ #

@@ -4,6 +4,20 @@ extends Node2D
 
 signal map_changed
 
+const DEBUG_TILE_NAMES = {
+    0: "_0",
+    1: "_1",
+    Vector2i.UP: "n",
+    Vector2i.LEFT: "w",
+    Vector2i.DOWN: "s",
+    Vector2i.RIGHT: "e",
+}
+const WALL_TILE_NAME = "wall"
+const FOOD_TILE_NAMES = {
+    1: "food_small",
+    2: "food_big",
+}
+
 var _source_ids: Dictionary
 var _tile_id: Dictionary
 

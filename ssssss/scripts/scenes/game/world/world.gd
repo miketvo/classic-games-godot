@@ -7,25 +7,6 @@ signal configuration_changed
 
 
 # ============================================================================ #
-#region Constants
-const DEBUG_TILE_NAMES = {
-    0: "_0",
-    1: "_1",
-    Vector2i.UP: "n",
-    Vector2i.LEFT: "w",
-    Vector2i.DOWN: "s",
-    Vector2i.RIGHT: "e",
-}
-const WALL_TILE_NAME = "wall"
-const FOOD_TILE_NAMES = {
-    1: "food_small",
-    2: "food_big",
-}
-#endregion
-# ============================================================================ #
-
-
-# ============================================================================ #
 #region World configuration
 
 @export_group("Player", "player")
@@ -70,10 +51,8 @@ const FOOD_TILE_NAMES = {
 
 # ============================================================================ #
 #region Internal world state representation
-@export_storage var snake: Array[Vector2i]
+@export_storage var snakes: Array[Array]
 @export_storage var snake_grid: WorldGrid2D
-@export_storage var enemies: Array[Array]
-@export_storage var enemy_grid: WorldGrid2D
 @export_storage var wall_grid: WorldGrid2D
 @export_storage var food_grid: WorldGrid2D
 #endregion
@@ -83,14 +62,8 @@ const FOOD_TILE_NAMES = {
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    snake = []
+    snakes = Array([], TYPE_ARRAY, &"", null)
     snake_grid = WorldGrid2D.new(
-            Global.WORLD_SIZE,
-            TYPE_VECTOR2I, &"", null, [],
-            true
-    )
-    enemies = []
-    enemy_grid = WorldGrid2D.new(
             Global.WORLD_SIZE,
             TYPE_VECTOR2I, &"", null, [],
             true

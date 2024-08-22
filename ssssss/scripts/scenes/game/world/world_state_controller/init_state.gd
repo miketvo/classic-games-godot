@@ -59,9 +59,8 @@ func _enter() -> void:
 # ============================================================================ #
 #region Utils
 func _build_world() -> void:
+    world.snakes.clear()
     world.snake_grid.reset()
-    world.enemies.clear()
-    world.enemy_grid.reset()
     world.wall_grid.reset()
     world.food_grid.reset()
 
@@ -70,11 +69,11 @@ func _build_world() -> void:
 
 
 func _spawn_player() -> void:
-    world.snake = []
+    world.snakes.append(Array([], TYPE_VECTOR2I, &"", null))
     var current_position: Vector2i = Vector2i(world.player_spawn_x, world.player_spawn_y)
     var direction: Vector2i = Vector2i(Global.DIRECTIONS[world.player_spawn_direction])
     for i in range(world.player_initial_length):
-        world.snake.append(current_position)
+        world.snakes[0].append(current_position)
         world.snake_grid.set_at(current_position, direction)
         current_position = current_position - direction
         current_position.x = posmod(current_position.x, Global.WORLD_SIZE.x)
@@ -91,7 +90,7 @@ func _load_walls() -> void:
             var tile_data := environment.get_cell_tile_data(cell_coords)
             if tile_data:
                 var tile_name := tile_data.get_custom_data("tile_name") as StringName
-                if tile_name == World.WALL_TILE_NAME:
+                if tile_name == tile_map.WALL_TILE_NAME:
                     world.wall_grid.set_at(cell_coords, true)
 #endregion
 # ============================================================================ #
