@@ -72,12 +72,6 @@ func _exit_tree() -> void:
 
 
 # ============================================================================ #
-#region Public methods
-#endregion
-# ============================================================================ #
-
-
-# ============================================================================ #
 #region Inner classes
 
 ## Game state data. Contains relevant information on the current state of the

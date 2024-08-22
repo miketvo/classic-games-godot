@@ -131,6 +131,19 @@ func _init(
 # ============================================================================ #
 #region Public methods
 
+## Wraps [param coords] if [member wraparound] is [code]true[/code].
+func wrap_coords(coords: Vector2i) -> Vector2i:
+    if wraparound:
+        return Vector2i(
+                posmod(coords.x, _width),
+                posmod(coords.y, _height)
+        )
+    else:
+        assert(0 <= coords.x and coords.x < _width, "`coords.x` = %d out of bounds" % coords.x)
+        assert(0 <= coords.y and coords.y < _height, "`coords.y` = %d out of bounds" % coords.y)
+        return coords
+
+
 ## Populate/overwrite all cells in the grid with values from an array. The input
 ## parameter [param from] must be non-empty, and have the correct
 ## [method Array.size] matching the dimensions of the grid. Its elements also
@@ -224,14 +237,14 @@ func max() -> Variant:
 ## Returns the cell value at [param coords]. Accepts coordinates out of the grid
 ## bounds if [member wraparound] is [code]true[/code].
 func get_at(coords: Vector2i) -> Variant:
-    coords = _wraparound(coords)
+    coords = wrap_coords(coords)
     return _cells[coords.x + _width * coords.y]
 
 
 ## Set the cell value at [param coords]. Accepts coordinates out of the grid
 ## bounds if [member wraparound] is [code]true[/code].
 func set_at(coords: Vector2i, value: Variant) -> void:
-    coords = _wraparound(coords)
+    coords = wrap_coords(coords)
     _cells[coords.x + _width * coords.y] = value
 
 
@@ -386,8 +399,8 @@ func is_clear_at(coords: Vector2i) -> bool:
 ## coordinates. Accepts coordinates out of the grid bounds if
 ## [member wraparound] is [code]true[/code].
 func l1_distance(c1: Vector2i, c2: Vector2i) -> int:
-    c1 = _wraparound(c1)
-    c2 = _wraparound(c2)
+    c1 = wrap_coords(c1)
+    c2 = wrap_coords(c2)
 
     var dx: int = abs(c1.x - c2.x)
     if wraparound and dx > .5 * _width:
@@ -404,8 +417,8 @@ func l1_distance(c1: Vector2i, c2: Vector2i) -> int:
 ## Accepts coordinates out of the grid bounds if [member wraparound] is
 ## [code]true[/code].
 func l2_distance(c1: Vector2i, c2: Vector2i) -> float:
-    c1 = _wraparound(c1)
-    c2 = _wraparound(c2)
+    c1 = wrap_coords(c1)
+    c2 = wrap_coords(c2)
 
     if wraparound:
         return sqrt(l2_distance_squared(c1, c2))
@@ -420,8 +433,8 @@ func l2_distance(c1: Vector2i, c2: Vector2i) -> float:
 ## This method runs faster than [method l2_distance], so prefer it if you need
 ## to compare vectors or need the squared distance for some formula.
 func l2_distance_squared(c1: Vector2i, c2: Vector2i) -> float:
-    c1 = _wraparound(c1)
-    c2 = _wraparound(c2)
+    c1 = wrap_coords(c1)
+    c2 = wrap_coords(c2)
 
     if wraparound:
         var dx: float = abs(c1.x - c2.x)
@@ -533,25 +546,6 @@ func get_type_default(type: Variant.Type) -> Variant:
     elif type == TYPE_NIL:
         assert(false, "Invalid value: TYPE_NIL (%d) is not allowed" % TYPE_NIL)
     return null
-
-#endregion
-# ============================================================================ #
-
-
-# ============================================================================ #
-#region Godot builtins
-
-# Wraps [param coords] if [member wraparound] is [code]true[/code].
-func _wraparound(coords: Vector2i) -> Vector2i:
-    if wraparound:
-        return Vector2i(
-                posmod(coords.x, _width),
-                posmod(coords.y, _height)
-        )
-    else:
-        assert(0 <= coords.x and coords.x < _width, "`coords.x` = %d out of bounds" % coords.x)
-        assert(0 <= coords.y and coords.y < _height, "`coords.y` = %d out of bounds" % coords.y)
-        return coords
 
 #endregion
 # ============================================================================ #

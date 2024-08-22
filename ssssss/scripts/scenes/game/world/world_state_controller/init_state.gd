@@ -75,9 +75,7 @@ func _spawn_player() -> void:
     for i in range(world.player_initial_length):
         world.snakes[0].append(current_position)
         world.snake_grid.set_at(current_position, direction)
-        current_position = current_position - direction
-        current_position.x = posmod(current_position.x, Global.WORLD_SIZE.x)
-        current_position.y = posmod(current_position.y, Global.WORLD_SIZE.y)
+        current_position = world.snake_grid.wrap_coords(current_position - direction)
 
 
 func _load_walls() -> void:

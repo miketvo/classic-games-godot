@@ -68,9 +68,9 @@ func _update_snakes() -> void:
         var snake: Array[Vector2i] = world.snakes[snake_id]
         for cell_idx in range(snake.size()):
             var movement = snake_grid.get_at(snake[cell_idx])
-            var target_cell = snake[cell_idx] + movement
+            var target_cell = snake_grid.wrap_coords(snake[cell_idx] + movement)
             var next_movement = snake_grid.get_at(target_cell)
-            if cell_idx == 0:  # If this is the head of the snake.
+            if cell_idx == 0:  # Collision detection at the snake's head.
                 if (
                         snake_grid.is_clear_at(target_cell) and
                         wall_grid.is_clear_at(target_cell)
@@ -94,7 +94,7 @@ func _update_snakes() -> void:
 # Listens to _start_cooldown_timer.timeout().
 func _on_start_cooldown_timer_timeout():
     _started = true
-    _step_timer.start(0.1)
+    _step_timer.start()
 
 
 # Listens to _step_timer.timeout().
