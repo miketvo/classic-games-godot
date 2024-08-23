@@ -41,7 +41,7 @@ func _physics_update(_delta: float, game_state_data: Global.GameStateData) -> vo
 #region Signal listeners
 
 # Listens to _cooldown_timer.timeout().
-func _on_cooldown_timer_timeout():
+func _on_cooldown_timer_timeout() -> void:
     _is_ready = true
 
 #endregion

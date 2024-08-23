@@ -141,27 +141,27 @@ func _on_tween_transition_finshed() -> void:
 
 
 #region UI SFX listeners.
-func _on_ui_container_slider_button_pressed():
+func _on_ui_container_slider_button_pressed() -> void:
     if _sfx_controller:
         _sfx_controller.play_sound("UISelectedSfx")
 
 
-func _on_ui_scene_changer_button_pressed():
+func _on_ui_scene_changer_button_pressed() -> void:
     if _sfx_controller:
         _sfx_controller.play_sound("UIAcceptedSfx")
 
 
-func _on_ui_selected_button_pressed():
+func _on_ui_selected_button_pressed() -> void:
     if _sfx_controller:
         _sfx_controller.play_sound("UISelectedSfx")
 
 
-func _on_ui_accepted_button_pressed():
+func _on_ui_accepted_button_pressed() -> void:
     if _sfx_controller:
         _sfx_controller.play_sound("UIAcceptedSfx")
 
 
-func _on_ui_disabled_button_pressed():
+func _on_ui_disabled_button_pressed() -> void:
     if _sfx_controller:
         _sfx_controller.play_sound("UIRejectedSfx")
 #endregion

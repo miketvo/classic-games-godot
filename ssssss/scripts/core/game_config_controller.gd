@@ -58,7 +58,7 @@ func _process(_delta: float) -> void:
 
 # ============================================================================ #
 #region Utils
-func _update_graphics_window_size():
+func _update_graphics_window_size() -> void:
     if Global.os_platform == "Desktop":
         var window: Window = get_window()
         if (

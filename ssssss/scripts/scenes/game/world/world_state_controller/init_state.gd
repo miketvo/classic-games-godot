@@ -18,9 +18,8 @@ extends State
 func _ready() -> void:
     assert(world, "`world` must be set")
     assert(tile_map, "`tile_map` must be set")
-
-    world.connect("configuration_changed", _build_world)
-    tile_map.connect("map_changed", _build_world)
+    world.configuration_changed.connect(_build_world)
+    tile_map.map_changed.connect(_build_world)
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -49,6 +48,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 # ============================================================================ #
 #region State builtins
 func _enter() -> void:
+    world.running = false
     _build_world()
     if not Engine.is_editor_hint():
         transitioned.emit(self, "RunState")
@@ -63,20 +63,16 @@ func _build_world() -> void:
     world.snake_grid.reset()
     world.wall_grid.reset()
     world.food_grid.reset()
-
-    _spawn_player()
     _load_walls()
+    _spawn_player()
 
 
 func _spawn_player() -> void:
-    var snake: Array[Vector2i] = []
-    var current_position: Vector2i = Vector2i(world.player_spawn_x, world.player_spawn_y)
-    var direction: Vector2i = Vector2i(Global.DIRECTIONS[world.player_spawn_direction])
-    for i in range(world.player_initial_length):
-        snake.append(current_position)
-        world.snake_grid.set_at(current_position, direction)
-        current_position = world.snake_grid.wrap_coords(current_position - direction)
-    world.snakes.append(snake)
+    world.spawn_snake(
+        Vector2i(world.player_spawn_x, world.player_spawn_y),
+        Vector2i(Global.DIRECTIONS[world.player_spawn_direction]),
+        world.player_initial_length
+    )
 
 
 func _load_walls() -> void:

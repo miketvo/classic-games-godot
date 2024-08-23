@@ -179,13 +179,13 @@ func load_array(from: Array[Variant]) -> void:
                         "Array element typed script mismatch with grid"
                 )
 
-    _cells = from.duplicate()  # Import data.
+    _cells = from.duplicate() # Import data.
 
 
 ## Returns the size of the specified [param axis].
 ## [codeblock]
-## size(Vector2i.AXIS_X)  # returns the width of the grid.
-## size(Vector2i.AXIS_Y)  # returns the height of the grid.
+## size(Vector2i.AXIS_X) # returns the width of the grid.
+## size(Vector2i.AXIS_Y) # returns the height of the grid.
 ## [/codeblock]
 func size(axis: int) -> int:
     match axis:
@@ -223,7 +223,7 @@ func min() -> Variant:
 ## this example every cell is checked and the first maximum value is returned:
 ## [codeblock]
 ## func _ready():
-##     var grid = $WorldGrid2D  # Contains cells of Vector2 type.
+##     var grid = $WorldGrid2D # Contains cells of Vector2 type.
 ##     # In this example we compare the lengths.
 ##     print(grid.reduce(func(max, val): return val if is_length_greater(val, max) else max))
 ##

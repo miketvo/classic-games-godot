@@ -25,13 +25,13 @@ func _ready() -> void:
 #region Public methods
 
 ## Plays a child [AudioStreamPlayer].
-func play_sound(audio_stream_name: StringName):
+func play_sound(audio_stream_name: StringName) -> void:
     var audio_stream_player: AudioStreamPlayer = get_node("%s" % audio_stream_name)
     audio_stream_player.play()
 
 
 ## Plays a child [AudioStreamPlayer2D].
-func play_sound2d(audio_stream_name: StringName, position: Vector2):
+func play_sound2d(audio_stream_name: StringName, position: Vector2) -> void:
     var audio_stream_player: AudioStreamPlayer2D = get_node("%s" % audio_stream_name)
     audio_stream_player.global_position = position
     audio_stream_player.play()

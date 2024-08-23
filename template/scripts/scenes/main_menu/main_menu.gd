@@ -16,9 +16,9 @@ func _ready() -> void:
 func _on_main_menu_ui_acted(action: StringName) -> void:
     match action:
         "start_mode_1":
-            pass  # TODO: Change to your game scene here.
+            pass # TODO: Change to your game scene here.
         "start_mode_2":
-            pass  # TODO: Change to your game scene here.
+            pass # TODO: Change to your game scene here.
         "settings":
             scene_finished.emit(SceneKey.SETTINGS_MENU)
 

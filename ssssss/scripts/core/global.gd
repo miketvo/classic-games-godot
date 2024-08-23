@@ -4,7 +4,16 @@ extends Node2D
 
 # ============================================================================ #
 #region Enums
+
 enum Direction { UP, LEFT, DOWN, RIGHT }
+
+## The integer value on the RHS corresponds to how much a snake would grow when
+## digesting the LHS food type.
+enum FoodType {
+    SMALL = 1,
+    BIG = 10
+}
+
 #endregion
 # ============================================================================ #
 
@@ -29,7 +38,10 @@ const DIRECTIONS: Dictionary = {
     Direction.DOWN: Vector2.DOWN,
     Direction.RIGHT: Vector2.RIGHT,
 }
-const WORLD_SIZE: Vector2i = Vector2i(62, 32)
+const INITIAL_STEP_DURATION: float = 0.15 ## Unit: seconds.
+const STEP_DURATION_CHANGE: float = 0.95 ## Affects how much the game speeds up. This is a ratio.
+const WORLD_SIZE: Vector2i = Vector2i(62, 32) ## Unit: cells x cells.
+const FOOD_PROBABILITIES: Array[float] = [0.8, 0.2] ## Must adds up to 1.0.
 #endregion
 # ============================================================================ #
 

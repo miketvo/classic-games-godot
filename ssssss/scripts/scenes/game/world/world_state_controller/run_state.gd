@@ -5,6 +5,7 @@ extends State
 
 var _started: bool
 var _dead: bool
+var _next_step_duration: float
 
 @onready var _start_cooldown_timer: Timer = $StartCooldownTimer
 @onready var _step_timer: Timer = $StepTimer
@@ -30,6 +31,9 @@ func _enter() -> void:
 
 func _exit() -> void:
     _step_timer.stop()
+    world.running = false
+    world.step_count = 0
+    world.stopped.emit()
 
 
 func _update(_delta: float, _game_state_data: Global.GameStateData) -> void:
@@ -59,30 +63,68 @@ func _update(_delta: float, _game_state_data: Global.GameStateData) -> void:
 
 
 # ============================================================================ #
+#region Public methods
+
+## Returns the step duration (in seconds).
+func get_step_duration() -> float:
+    return $StepTimer.wait_time
+
+
+## Sets the step [param duration] (in seconds). Can be used to increase or
+## decrease the world simulation speed.
+func set_step_duration(duration: float) -> void:
+    _next_step_duration = duration
+
+
+
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
 #region Utils
 func _update_snakes() -> void:
     var snake_grid: WorldGrid2D = world.snake_grid
     var wall_grid: WorldGrid2D = world.wall_grid
+    var food_grid: WorldGrid2D = world.food_grid
 
     for snake_id in range(world.snakes.size()):
         var snake: Array[Vector2i] = world.snakes[snake_id]
+        var snake_grow_queue: Array[int] = world.snake_grow_queue
         for cell_idx in range(snake.size()):
-            var movement = snake_grid.get_at(snake[cell_idx])
-            var target_cell = snake_grid.wrap_coords(snake[cell_idx] + movement)
-            var next_movement = snake_grid.get_at(target_cell)
-            if cell_idx == 0:  # Collision detection at the snake's head.
+            var cell_coords: Vector2i = snake[cell_idx]
+            var movement: Vector2i = snake_grid.get_at(cell_coords)
+            var target_cell: Vector2i = snake_grid.wrap_coords(cell_coords + movement)
+            var next_movement: Vector2i = snake_grid.get_at(target_cell)
+            if cell_idx == 0: # Head update.
+                # Collision detection at the snake's head.
                 if (
                         snake_grid.is_clear_at(target_cell) and
                         wall_grid.is_clear_at(target_cell)
                 ):
                     next_movement = movement
                 else:
-                    _dead = true
-                    return
+                    world.snake_collided.emit(snake_id, target_cell)
+                    if snake_id == 0: _dead = true
+                    break
+
+                # Food detection at the snake's head.
+                if not food_grid.is_clear_at(target_cell):
+                    world.food_eaten.emit(snake_id)
 
             snake_grid.set_at(target_cell, next_movement)
-            if cell_idx == snake.size() - 1:
-                snake_grid.reset_at(snake[cell_idx])
+            if cell_idx == snake.size() - 1: # Tail update.
+                # Queue snake growth based on food value if food is digested.
+                if not food_grid.is_clear_at(cell_coords):
+                    snake_grow_queue[snake_id] += food_grid.get_at(cell_coords)
+                    world.food_digested.emit(cell_coords)
+
+                # Grow the snake if the grow queue is not empty.
+                if snake_grow_queue[snake_id] > 0:
+                    snake.append(cell_coords)
+                    snake_grow_queue[snake_id] -= 1
+                else:
+                    snake_grid.reset_at(cell_coords)
             snake[cell_idx] = target_cell
 #endregion
 # ============================================================================ #
@@ -92,16 +134,23 @@ func _update_snakes() -> void:
 #region Signal listeners
 
 # Listens to _start_cooldown_timer.timeout().
-func _on_start_cooldown_timer_timeout():
+func _on_start_cooldown_timer_timeout() -> void:
     _started = true
-    _step_timer.start()
+    _next_step_duration = world.initial_step_duration
+    _step_timer.start(_next_step_duration)
+    world.running = true
     world.step_count = 1
+    world.started.emit()
 
 
 # Listens to _step_timer.timeout().
 func _step() -> void:
     _update_snakes()
     world.step_count += 1
+    if _next_step_duration != $StepTimer.wait_time:
+        $StepTimer.stop()
+        $StepTimer.paused = false
+        $StepTimer.start(_next_step_duration)
 
 #endregion
 # ============================================================================ #
