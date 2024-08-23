@@ -323,7 +323,7 @@ wait_time = 0.5
 one_shot = true
 
 [node name="StepTimer" type="Timer" parent="WorldStateController/RunState"]
-wait_time = 0.5
+wait_time = 0.15
 
 [node name="StopState" type="Node" parent="WorldStateController"]
 script = ExtResource("11_sfcvu")

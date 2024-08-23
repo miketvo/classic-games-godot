@@ -113,10 +113,8 @@ func _draw_environment() -> void:
                     else tile_map.get_terrain_id("EnvironmentLayer", "snake_secondary")
 
             # Snake body.
-            var snake_draw_path: Array[Vector2i] = snake.duplicate()
-            snake_draw_path.reverse()
             _set_cells_terrain_path_wrapped(
-                    snake_draw_path,
+                    snake,
                     snake_terrain_id["terrain_set"],
                     snake_terrain_id["terrain"]
             )
@@ -140,7 +138,7 @@ func _draw_environment() -> void:
                 head_tile_id["alt_id"]
             )
 
-            # Snake body (if digesting food)
+            # Snake body if digesting food.
             for cell_idx in range(1, snake.size() - 1):
                 var body_coords: Vector2i = snake[cell_idx]
                 var is_digesting: bool = not food_grid.is_clear_at(body_coords)
@@ -166,21 +164,51 @@ func _set_cells_terrain_path_wrapped(
         terrain: int,
         ignore_empty_terrains: bool = true
 ) -> void:
+    var work_path: Array[Vector2i] = path.duplicate()
+    work_path.reverse()
+
     var splits: Array[Array] = []
     var split_begin: int = 0
-    for i in range(1, path.size()):
-        if path[i].distance_squared_to(path[i - 1]) > 1:
-            splits.append(path.slice(split_begin, i))
+    for i in range(1, work_path.size()):
+        if work_path[i].distance_squared_to(work_path[i - 1]) > 1:
+            splits.append(work_path.slice(split_begin, i))
             split_begin = i
-    splits.append(path.slice(split_begin, path.size()))
+    splits.append(work_path.slice(split_begin, work_path.size()))
 
     var environment_layer: TileMapLayer = tile_map.get_node("EnvironmentLayer")
-    for split in splits:
+    for i in range(splits.size()):
+        var split: Array[Vector2i] = splits[i]
+
+        var undershoot_cell: Vector2i = Vector2i(-1, -1)
+        var overshoot_cell: Vector2i = Vector2i(-1, -1)
+        if splits.size() > 0 and i > 0:
+            undershoot_cell = splits[i - 1][splits[i - 1].size() - 1]
+            var undershoot_diff: Vector2i = undershoot_cell - split[0]
+            undershoot_cell -= (
+                    undershoot_diff +
+                    Vector2i(Vector2(undershoot_diff).normalized())
+            )
+            split.push_front(undershoot_cell)
+
+            if i < splits.size() - 1:
+                overshoot_cell = splits[i + 1][0]
+                var overshoot_diff: Vector2i = overshoot_cell - split[split.size() - 1]
+                overshoot_cell -= (
+                        overshoot_diff +
+                        Vector2i(Vector2(overshoot_diff).normalized())
+                )
+                split.push_back(overshoot_cell)
+
         environment_layer.set_cells_terrain_path(
                 split,
                 terrain_set,
                 terrain,
                 ignore_empty_terrains
         )
+
+        if undershoot_cell != Vector2i(-1, -1):
+            environment_layer.erase_cell(undershoot_cell)
+        if overshoot_cell != Vector2i(-1, -1):
+            environment_layer.erase_cell(overshoot_cell)
 #endregion
 # ============================================================================ #
