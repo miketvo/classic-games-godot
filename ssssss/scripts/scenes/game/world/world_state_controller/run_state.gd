@@ -75,8 +75,6 @@ func get_step_duration() -> float:
 func set_step_duration(duration: float) -> void:
     _next_step_duration = duration
 
-
-
 #endregion
 # ============================================================================ #
 
