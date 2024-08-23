@@ -171,44 +171,34 @@ func _set_cells_terrain_path_wrapped(
     var split_begin: int = 0
     for i in range(1, work_path.size()):
         if work_path[i].distance_squared_to(work_path[i - 1]) > 1:
-            splits.append(work_path.slice(split_begin, i))
-            split_begin = i
+            splits.append(work_path.slice(split_begin, i + 1))
+            split_begin = i - 1
     splits.append(work_path.slice(split_begin, work_path.size()))
 
     var environment_layer: TileMapLayer = tile_map.get_node("EnvironmentLayer")
     for i in range(splits.size()):
         var split: Array[Vector2i] = splits[i]
 
-        var undershoot_cell: Vector2i = Vector2i(-1, -1)
-        var overshoot_cell: Vector2i = Vector2i(-1, -1)
-        if splits.size() > 0 and i > 0:
-            undershoot_cell = splits[i - 1][splits[i - 1].size() - 1]
-            var undershoot_diff: Vector2i = undershoot_cell - split[0]
-            undershoot_cell -= (
-                    undershoot_diff +
-                    Vector2i(Vector2(undershoot_diff).normalized())
-            )
-            split.push_front(undershoot_cell)
+        var undershoot: bool = false
+        undershoot = split[0].distance_squared_to(split[1]) > 1
+        if undershoot:
+            var diff: Vector2i = split[0] - split[1]
+            split[0] -= diff + Vector2i(Vector2(diff).normalized())
 
-            if i < splits.size() - 1:
-                overshoot_cell = splits[i + 1][0]
-                var overshoot_diff: Vector2i = overshoot_cell - split[split.size() - 1]
-                overshoot_cell -= (
-                        overshoot_diff +
-                        Vector2i(Vector2(overshoot_diff).normalized())
-                )
-                split.push_back(overshoot_cell)
+        var overshoot: bool = false
+        overshoot = split[split.size() - 2].distance_squared_to(split[split.size() - 1]) > 1
+        if overshoot:
+            var diff: Vector2i = split[split.size() - 1] - split[split.size() - 2]
+            split[split.size() - 1] -= diff + Vector2i(Vector2(diff).normalized())
 
         environment_layer.set_cells_terrain_path(
                 split,
-                terrain_set,
-                terrain,
+                terrain_set, terrain,
                 ignore_empty_terrains
         )
-
-        if undershoot_cell != Vector2i(-1, -1):
-            environment_layer.erase_cell(undershoot_cell)
-        if overshoot_cell != Vector2i(-1, -1):
-            environment_layer.erase_cell(overshoot_cell)
+        if undershoot:
+            environment_layer.erase_cell(split[0])
+        if overshoot:
+            environment_layer.erase_cell(split[split.size() - 1])
 #endregion
 # ============================================================================ #
