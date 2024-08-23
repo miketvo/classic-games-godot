@@ -43,7 +43,10 @@ signal configuration_changed
 
 ## If [code]true[/code], the outline and direction (if applicable) of each cell
 ## is drawn.
-@export var draw_debug_grid: bool = false
+@export var draw_debug_grid: bool = false:
+    set(value):
+        draw_debug_grid = value
+        configuration_changed.emit()
 
 #endregion
 # ============================================================================ #
