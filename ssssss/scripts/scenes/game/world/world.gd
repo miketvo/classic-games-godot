@@ -4,6 +4,15 @@ extends Node2D
 
 
 signal configuration_changed
+@warning_ignore("unused_signal")
+signal collided(snake_id: int, position: Vector2i)
+@warning_ignore("unused_signal")
+signal food_digested(snake_id: int)
+
+enum FoodType {
+    SMALL = 1,
+    BIG = 2
+}
 
 
 # ============================================================================ #
@@ -81,5 +90,33 @@ func _ready() -> void:
             TYPE_INT, &"", null, [],
             true
     )
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
+#region Public methods
+func spawn_snake(position: Vector2i, direction: Vector2i, length: int):
+    pass
+
+
+func despawn_snake(snake_id: int):
+    pass
+
+
+func grow_snake(snake_id: int):
+    pass
+
+
+func spawn_food(position: Vector2i, food_type: FoodType):
+    pass
+
+
+func spawn_random_food():
+    pass
+
+
+func despawn_food(position: Vector2i):
+    pass
 #endregion
 # ============================================================================ #

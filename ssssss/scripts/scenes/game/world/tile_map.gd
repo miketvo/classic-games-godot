@@ -31,8 +31,8 @@ const SNAKE_HEAD_TILE_NAMES = {
 const SNAKE_BODY_EAT_TILE_NAME = "body_eat"
 const WALL_TILE_NAME = "wall"
 const FOOD_TILE_NAMES = {
-    1: "food_small",
-    2: "food_big",
+    World.FoodType.SMALL: "food_small",
+    World.FoodType.BIG: "food_big",
 }
 
 #endregion
