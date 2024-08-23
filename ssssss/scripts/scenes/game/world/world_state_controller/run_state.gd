@@ -95,11 +95,13 @@ func _update_snakes() -> void:
 func _on_start_cooldown_timer_timeout():
     _started = true
     _step_timer.start()
+    world.step_count = 1
 
 
 # Listens to _step_timer.timeout().
 func _step() -> void:
     _update_snakes()
+    world.step_count += 1
 
 #endregion
 # ============================================================================ #

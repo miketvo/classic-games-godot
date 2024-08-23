@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://du5yheibrsk0p"
-path="res://.godot/imported/enemy_tileset.png-3a1052154cf4148acc33cee59c447637.ctex"
+uid="uid://dveak58kqjy3"
+path="res://.godot/imported/snake_odd_tileset.png-bbb710f1d1558c92d66f386b89bef47f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tilesets/enemy_tileset.png"
-dest_files=["res://.godot/imported/enemy_tileset.png-3a1052154cf4148acc33cee59c447637.ctex"]
+source_file="res://assets/tilesets/snake_odd_tileset.png"
+dest_files=["res://.godot/imported/snake_odd_tileset.png-bbb710f1d1558c92d66f386b89bef47f.ctex"]
 
 [params]
 

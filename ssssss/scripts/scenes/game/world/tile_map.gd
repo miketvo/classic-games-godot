@@ -96,7 +96,7 @@ func _ready() -> void:
                 )
                 assert(
                         terrain_name not in layer_terrains.keys(),
-                        "Terrain name must be unique across terrain sets"
+                        "Terrain name must be unique across terrain sets in a layer"
                 )
                 layer_terrains[terrain_name] = {
                     "terrain_set": terrain_set_id,

@@ -100,17 +100,27 @@ func _draw_environment() -> void:
                     )
 
         # Draw snake.
-        var snake_tileset_source_id: int = tile_map.\
-                get_source_id("EnvironmentLayer", "snake_tileset")
+        var is_world_odd_step: bool = world.step_count % 2 != 0
+        var snake_tileset_source_id: int =\
+                tile_map.get_source_id("EnvironmentLayer", "snake_odd_tileset")\
+                if is_world_odd_step\
+                else tile_map.get_source_id("EnvironmentLayer", "snake_even_tileset")
         var snakes: Array[Array] = world.snakes
         var snake_grid: WorldGrid2D = world.snake_grid
         for snake_id in range(snakes.size()):
             var is_primary_snake: bool = snake_id == 0
             var snake: Array[Vector2i] = snakes[snake_id]
-            var snake_terrain_id: Dictionary = \
-                    tile_map.get_terrain_id("EnvironmentLayer", "snake_primary")\
-                    if is_primary_snake\
-                    else tile_map.get_terrain_id("EnvironmentLayer", "snake_secondary")
+            var snake_terrain_id: Dictionary
+            if is_world_odd_step:
+                snake_terrain_id = \
+                        tile_map.get_terrain_id("EnvironmentLayer", "snake_odd_primary")\
+                        if is_primary_snake\
+                        else tile_map.get_terrain_id("EnvironmentLayer", "snake_odd_secondary")
+            else:
+                snake_terrain_id = \
+                        tile_map.get_terrain_id("EnvironmentLayer", "snake_even_primary")\
+                        if is_primary_snake\
+                        else tile_map.get_terrain_id("EnvironmentLayer", "snake_even_secondary")
 
             # Snake body.
             _set_cells_terrain_path_wrapped(

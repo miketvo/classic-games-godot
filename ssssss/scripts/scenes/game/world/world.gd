@@ -9,10 +9,15 @@ signal collided(snake_id: int, position: Vector2i)
 @warning_ignore("unused_signal")
 signal food_digested(snake_id: int)
 
+
+# ============================================================================ #
+#region Enums
 enum FoodType {
     SMALL = 1,
     BIG = 2
 }
+#endregion
+# ============================================================================ #
 
 
 # ============================================================================ #
@@ -56,6 +61,17 @@ enum FoodType {
     set(value):
         draw_debug_grid = value
         configuration_changed.emit()
+
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
+#region Public variables
+
+## The number of steps elapsed since the start of the world simulation,
+## including the current step.
+var step_count: int
 
 #endregion
 # ============================================================================ #
