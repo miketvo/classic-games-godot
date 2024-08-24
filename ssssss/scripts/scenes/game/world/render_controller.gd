@@ -12,20 +12,25 @@ extends Node
         tile_map = node
         update_configuration_warnings()
 
+@export var state_controller: StateMachine:
+    set(node):
+        state_controller = node
+        update_configuration_warnings()
+
 
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
     assert(world, "`world` must be set")
     assert(tile_map, "`tile_map` must be set")
-    world.connect("configuration_changed", _draw_debug)
-    _draw_debug()
+    assert(state_controller, "`state_controller` must be set")
+    world.connect("configuration_changed", _draw_debug_layer)
+    _draw_debug_layer()
     if not Engine.is_editor_hint():
-        world.get_node("WorldStateController/RunState/StepTimer")\
-            .connect("timeout", _draw_debug)
-        world.get_node("WorldStateController/RunState/StepTimer")\
-            .connect("timeout", _draw_environment)
-        _draw_environment()
+        var _step_timer: Timer = state_controller.get_node("RunState/StepTimer")
+        _step_timer.timeout.connect(_draw_debug_layer)
+        _step_timer.timeout.connect(_draw_dynamic_layer)
+        _draw_dynamic_layer()
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -46,6 +51,9 @@ func _get_configuration_warnings() -> PackedStringArray:
         if not has_tile_map_layer:
             warnings.append("`tile_map` must contain at least one TileMapLayer")
 
+    if not world:
+        warnings.append("`state_controller` must be set")
+
     return warnings
 #endregion
 # ============================================================================ #
@@ -53,11 +61,12 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 # ============================================================================ #
 #region Utils
-func _draw_debug() -> void:
+func _draw_debug_layer() -> void:
     var debug_layer: TileMapLayer = tile_map.get_node("DebugLayer")
     debug_layer.visible = world.draw_debug_grid
     if debug_layer.visible:
-        var debug_tileset_source_id: int = tile_map.get_source_id("DebugLayer", "debug_tileset")
+        var debug_tileset_source_id: int = tile_map\
+                .get_source_id("DebugLayer", "debug_tileset")
         for x in range(Global.WORLD_SIZE.x):
             for y in range(Global.WORLD_SIZE.y):
                 var cell_coords: Vector2i = Vector2i(x, y)
@@ -77,20 +86,20 @@ func _draw_debug() -> void:
                 )
 
 
-func _draw_environment() -> void:
+func _draw_dynamic_layer() -> void:
     if not Engine.is_editor_hint():
-        var environment_layer: TileMapLayer = tile_map.get_node("EnvironmentLayer")
-        environment_layer.clear()
+        var dynamic_layer: TileMapLayer = tile_map.get_node("DynamicLayer")
+        dynamic_layer.clear()
 
         # Draw food.
         var food_tileset_source_id: int = tile_map.\
-                get_source_id("EnvironmentLayer", "food_tileset")
+                get_source_id("DynamicLayer", "food_tileset")
         var food_grid: WorldGrid2D = world.food_grid
         for x in range(Global.WORLD_SIZE.x):
             for y in range(Global.WORLD_SIZE.y):
                 var food_coords: Vector2i = Vector2i(x, y)
                 if not food_grid.is_clear_at(food_coords):
-                    environment_layer.set_cell(
+                    dynamic_layer.set_cell(
                             food_coords,
                             food_tileset_source_id,
                             tile_map.get_tile_id(
@@ -102,9 +111,9 @@ func _draw_environment() -> void:
         # Draw snake.
         var is_world_odd_step: bool = world.step_count % 2 != 0
         var snake_tileset_source_id: int =\
-                tile_map.get_source_id("EnvironmentLayer", "snake_odd_tileset")\
+                tile_map.get_source_id("DynamicLayer", "snake_odd_tileset")\
                 if is_world_odd_step\
-                else tile_map.get_source_id("EnvironmentLayer", "snake_even_tileset")
+                else tile_map.get_source_id("DynamicLayer", "snake_even_tileset")
         var snakes: Array[Array] = world.snakes
         var snake_grid: WorldGrid2D = world.snake_grid
         for snake_id in range(snakes.size()):
@@ -113,14 +122,14 @@ func _draw_environment() -> void:
             var snake_terrain_id: Dictionary
             if is_world_odd_step:
                 snake_terrain_id = \
-                        tile_map.get_terrain_id("EnvironmentLayer", "snake_odd_primary")\
+                        tile_map.get_terrain_id("DynamicLayer", "snake_odd_primary")\
                         if is_primary_snake\
-                        else tile_map.get_terrain_id("EnvironmentLayer", "snake_odd_secondary")
+                        else tile_map.get_terrain_id("DynamicLayer", "snake_odd_secondary")
             else:
                 snake_terrain_id = \
-                        tile_map.get_terrain_id("EnvironmentLayer", "snake_even_primary")\
+                        tile_map.get_terrain_id("DynamicLayer", "snake_even_primary")\
                         if is_primary_snake\
-                        else tile_map.get_terrain_id("EnvironmentLayer", "snake_even_secondary")
+                        else tile_map.get_terrain_id("DynamicLayer", "snake_even_secondary")
 
             # Snake body.
             _set_cells_terrain_path_wrapped(
@@ -141,7 +150,7 @@ func _draw_environment() -> void:
                     snake_tileset_source_id,
                     snake_head_tile_name
             )
-            environment_layer.set_cell(
+            dynamic_layer.set_cell(
                 head_coords,
                 snake_tileset_source_id,
                 head_tile_id["coords"],
@@ -160,7 +169,7 @@ func _draw_environment() -> void:
                         body_digest_tile_name
                 )
                 if is_digesting:
-                    environment_layer.set_cell(
+                    dynamic_layer.set_cell(
                         body_coords,
                         snake_tileset_source_id,
                         body_digest_tile_id["coords"],
@@ -185,7 +194,7 @@ func _set_cells_terrain_path_wrapped(
             split_begin = i - 1
     splits.append(work_path.slice(split_begin, work_path.size()))
 
-    var environment_layer: TileMapLayer = tile_map.get_node("EnvironmentLayer")
+    var dynamic_layer: TileMapLayer = tile_map.get_node("DynamicLayer")
     for i in range(splits.size()):
         var split: Array[Vector2i] = splits[i]
 
@@ -201,14 +210,14 @@ func _set_cells_terrain_path_wrapped(
             var diff: Vector2i = split[split.size() - 1] - split[split.size() - 2]
             split[split.size() - 1] -= diff + Vector2i(Vector2(diff).normalized())
 
-        environment_layer.set_cells_terrain_path(
+        dynamic_layer.set_cells_terrain_path(
                 split,
                 terrain_set, terrain,
                 ignore_empty_terrains
         )
         if undershoot:
-            environment_layer.erase_cell(split[0])
+            dynamic_layer.erase_cell(split[0])
         if overshoot:
-            environment_layer.erase_cell(split[split.size() - 1])
+            dynamic_layer.erase_cell(split[split.size() - 1])
 #endregion
 # ============================================================================ #

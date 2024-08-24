@@ -16,6 +16,16 @@ func _process(_delta: float) -> void:
         $World.set_step_duration(
                 $World.get_step_duration() * Global.STEP_DURATION_CHANGE
         )
+    $World.food_eaten.connect(_on_food_eaten)
     # End of TODO.
 #endregion
 # ============================================================================ #
+
+
+# TODO: Remove this test code:
+func _on_food_eaten(snake_id: int) -> void:
+    if snake_id == 0:
+        $World.set_step_duration(
+                $World.get_step_duration() * Global.STEP_DURATION_CHANGE
+        )
+# End of TODO.

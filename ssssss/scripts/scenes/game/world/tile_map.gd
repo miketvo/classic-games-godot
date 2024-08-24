@@ -2,7 +2,7 @@
 extends Node2D
 
 
-signal map_changed
+signal map_changed(layer_name: StringName)
 
 
 # ============================================================================ #
@@ -52,7 +52,7 @@ func _ready() -> void:
         if child is not TileMapLayer: continue
 
         var layer: TileMapLayer = child
-        layer.connect("changed", func (): map_changed.emit())
+        layer.connect("changed", func (): map_changed.emit(layer.name))
         var tile_set: TileSet = layer.tile_set
 
         var layer_sources: Dictionary

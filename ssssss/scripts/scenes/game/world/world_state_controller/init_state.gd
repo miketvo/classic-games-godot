@@ -19,7 +19,6 @@ func _ready() -> void:
     assert(world, "`world` must be set")
     assert(tile_map, "`tile_map` must be set")
     world.configuration_changed.connect(_build_world)
-    tile_map.map_changed.connect(_build_world)
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -48,8 +47,8 @@ func _get_configuration_warnings() -> PackedStringArray:
 # ============================================================================ #
 #region State builtins
 func _enter() -> void:
-    world.running = false
     _build_world()
+    world.running = false
     if not Engine.is_editor_hint():
         transitioned.emit(self, "RunState")
 #endregion
@@ -76,13 +75,13 @@ func _spawn_player() -> void:
 
 
 func _load_walls() -> void:
-    var environment := tile_map.get_node("EnvironmentLayer") as TileMapLayer
-    assert(environment, "EnvironmentLayer not found")
+    var static_layer := tile_map.get_node("StaticLayer") as TileMapLayer
+    assert(static_layer, "StaticLayer not found")
 
     for x in range(Global.WORLD_SIZE.x):
         for y in range(Global.WORLD_SIZE.y):
             var cell_coords: Vector2i = Vector2i(x, y)
-            var tile_data := environment.get_cell_tile_data(cell_coords)
+            var tile_data := static_layer.get_cell_tile_data(cell_coords)
             if tile_data:
                 var tile_name := tile_data.get_custom_data("tile_name") as StringName
                 if tile_name == tile_map.WALL_TILE_NAME:

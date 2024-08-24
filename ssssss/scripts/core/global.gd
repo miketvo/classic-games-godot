@@ -39,7 +39,7 @@ const DIRECTIONS: Dictionary = {
     Direction.RIGHT: Vector2.RIGHT,
 }
 const INITIAL_STEP_DURATION: float = 0.15 ## Unit: seconds.
-const STEP_DURATION_CHANGE: float = 0.95 ## Affects how much the game speeds up. This is a ratio.
+const STEP_DURATION_CHANGE: float = 0.9 ## Affects how much the game speeds up. This is a ratio.
 const WORLD_SIZE: Vector2i = Vector2i(62, 32) ## Unit: cells x cells.
 const FOOD_PROBABILITIES: Array[float] = [0.8, 0.2] ## Must adds up to 1.0.
 #endregion

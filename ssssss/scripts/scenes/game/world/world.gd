@@ -87,6 +87,7 @@ var step_count: int
 # ============================================================================ #
 
 
+@onready var _tile_map: Node2D = $TileMap
 @onready var _state_controller: StateMachine = $WorldStateController
 
 
@@ -111,6 +112,7 @@ func _ready() -> void:
             true
     )
 
+    _tile_map.map_changed.connect(_on_tile_map_changed)
     snake_collided.connect(despawn_snake.unbind(1))
     food_digested.connect(despawn_food)
 
@@ -213,6 +215,18 @@ func get_step_duration() -> float:
 
 func set_step_duration(duration: float) -> void:
     _state_controller.get_node("RunState").set_step_duration(duration)
+
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
+#region Signal listeners
+
+# Listens to _tile_map.changed(layer_name: StringName)
+func _on_tile_map_changed(layer_name: StringName) -> void:
+    if layer_name == "StaticLayer":
+        configuration_changed.emit()
 
 #endregion
 # ============================================================================ #
