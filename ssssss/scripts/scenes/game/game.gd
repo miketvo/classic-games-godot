@@ -6,6 +6,7 @@ extends GameScene2D
 func _ready() -> void:
     # TODO: Remove this test code:
     $World.initial_step_duration = Global.INITIAL_STEP_DURATION
+    $World.food_eaten.connect(_on_food_eaten)
     # End of TODO.
 
 
@@ -16,7 +17,6 @@ func _process(_delta: float) -> void:
         $World.set_step_duration(
                 $World.get_step_duration() * Global.STEP_DURATION_CHANGE
         )
-    $World.food_eaten.connect(_on_food_eaten)
     # End of TODO.
 #endregion
 # ============================================================================ #
