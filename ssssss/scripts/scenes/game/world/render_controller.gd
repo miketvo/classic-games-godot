@@ -1,26 +1,89 @@
+@tool
 extends Node
 
 
-@export var world: World
-@export var tile_map: Node2D
+@export var world: World:
+    set(node):
+        world = node
+        update_configuration_warnings()
+
+@export var tile_map: Node2D:
+    set(node):
+        tile_map = node
+        update_configuration_warnings()
 
 
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    assert(world, "`world` must be set")
-    assert(tile_map, "`tile_map` must be set")
+    if Engine.is_editor_hint():
+        assert(world, "`world` must be set")
+        assert(tile_map, "`tile_map` must be set")
+        world.initialized.connect(_draw_editor_debug_layer)
+        world.configuration_changed.connect(_draw_editor_debug_layer)
+    else:
+        world.built.connect(_draw_debug_layer)
+        world.step.connect(_draw_debug_layer.unbind(1))
+        world.built.connect(_draw_dynamic_layer)
+        world.step.connect(_draw_dynamic_layer.unbind(1))
 
-    world.built.connect(_draw_debug_layer)
-    world.step.connect(_draw_debug_layer.unbind(1))
-    world.built.connect(_draw_dynamic_layer)
-    world.step.connect(_draw_dynamic_layer.unbind(1))
+
+func _get_configuration_warnings() -> PackedStringArray:
+    var warnings = []
+
+    if not world:
+        warnings.append("`world` must be set.")
+
+    if not tile_map:
+        warnings.append("`tile_map` must be set.")
+    else:
+        var tile_map_children: Array[Node] = tile_map.get_children()
+        var has_tile_map_layer: bool = false
+        for child in tile_map_children:
+            if child is TileMapLayer:
+                has_tile_map_layer = true
+                break
+        if not has_tile_map_layer:
+            warnings.append("`tile_map` must contain at least one TileMapLayer")
+
+    return warnings
 #endregion
 # ============================================================================ #
 
 
 # ============================================================================ #
 #region Utils
+func _draw_editor_debug_layer() -> void:
+    var debug_layer: TileMapLayer = tile_map.get_node("DebugLayer")
+    debug_layer.visible = world.draw_debug_grid
+    if debug_layer.visible:
+        var debug_tileset_source_id: int = tile_map\
+                .get_source_id("DebugLayer", "debug_tileset")
+        var preview_player_snake: Array[Vector2i] = world.spawn_snake(
+                Vector2i(world.player_spawn_x, world.player_spawn_y),
+                Vector2i(Global.DIRECTIONS[world.player_spawn_direction]),
+                world.player_initial_length,
+                true
+        )
+        for x in range(Global.WORLD_SIZE.x):
+            for y in range(Global.WORLD_SIZE.y):
+                var cell_coords: Vector2i = Vector2i(x, y)
+                var tile_name: StringName = \
+                        tile_map.DEBUG_TILE_NAMES[(x + y) % 2]\
+                        if cell_coords not in preview_player_snake\
+                        else tile_map.DEBUG_TILE_NAMES[Vector2i(
+                                Global.DIRECTIONS[world.player_spawn_direction]
+                        )]
+                debug_layer.set_cell(
+                        cell_coords,
+                        debug_tileset_source_id,
+                        tile_map.get_tile_id(
+                                debug_tileset_source_id,
+                                tile_name
+                        )["coords"]
+                )
+
+
 func _draw_debug_layer() -> void:
     var debug_layer: TileMapLayer = tile_map.get_node("DebugLayer")
     debug_layer.visible = world.draw_debug_grid
@@ -37,7 +100,7 @@ func _draw_debug_layer() -> void:
                         else tile_map.DEBUG_TILE_NAMES[snake_cell_data]
 
                 debug_layer.set_cell(
-                        Vector2i(x, y),
+                        cell_coords,
                         debug_tileset_source_id,
                         tile_map.get_tile_id(
                                 debug_tileset_source_id,
