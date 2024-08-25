@@ -224,26 +224,37 @@ func set_step_duration(duration: float) -> void:
 # ============================================================================ #
 #region Signal listeners
 
+# Listens to _tile_map.changed(layer_name: StringName).
+func _on_tile_map_changed(layer_name: StringName) -> void:
+    if layer_name == "StaticLayer":
+        configuration_changed.emit()
+
+
+# Listens to _run_state.started().
 func _on_started() -> void:
     running = true
     step_count = 1
     started.emit()
 
 
+# Listens to _run_state.step().
 func _on_step() -> void:
     step_count += 1
     step.emit(step_count)
 
 
+# Listens to _run_state.snake_collided(snake_id: int, collide_coords: Vector2i).
 func _on_snake_collided(snake_id: int, collide_coords: Vector2i) -> void:
     despawn_snake(snake_id)
     snake_collided.emit(snake_id, collide_coords)
 
 
+# Listens to _run_state.food_eaten(snake_id: int, food_coords: Vector2i).
 func _on_food_eaten(snake_id: int, food_coords: Vector2i) -> void:
     food_eaten.emit(snake_id, food_coords)
 
 
+# Listens to _run_state.food_digested(snake_id: int, food_coords: Vector2i).
 func _on_food_digested(snake_id: int, food_coords: Vector2i) -> void:
     # Queue snake growth based on food value if food is digested.
     snake_grow_queue[snake_id] += food_grid.get_at(food_coords)
@@ -251,16 +262,11 @@ func _on_food_digested(snake_id: int, food_coords: Vector2i) -> void:
     food_digested.emit(snake_id, food_coords)
 
 
+# Listens to _run_state.stopped().
 func _on_stopped() -> void:
     running = false
     step_count = 0
     stopped.emit()
-
-
-# Listens to _tile_map.changed(layer_name: StringName)
-func _on_tile_map_changed(layer_name: StringName) -> void:
-    if layer_name == "StaticLayer":
-        configuration_changed.emit()
 
 #endregion
 # ============================================================================ #
