@@ -59,6 +59,7 @@ func _enter() -> void:
 #region Utils
 func _build_world() -> void:
     world.snakes.clear()
+    world.snake_grow_queue.clear()
     world.snake_grid.reset()
     world.wall_grid.reset()
     world.food_grid.reset()
