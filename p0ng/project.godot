@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="p0ng"
-config/version="2.0.0"
+config/version="2.0.1"
 run/main_scene="res://scenes/main.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="ambientlamp/p0ng"
@@ -56,6 +56,14 @@ folder_colors={
 [filesystem]
 
 import/blender/enabled=false
+
+[global_group]
+
+ui_accepted_buttons=""
+ui_container_slider_buttons=""
+ui_scene_changer_buttons=""
+ui_disabled_buttons=""
+ui_selected_buttons=""
 
 [input]
 

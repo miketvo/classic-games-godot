@@ -53,6 +53,14 @@ folder_colors={
 
 import/blender/enabled=false
 
+[global_group]
+
+ui_accepted_buttons=""
+ui_container_slider_buttons=""
+ui_scene_changer_buttons=""
+ui_disabled_buttons=""
+ui_selected_buttons=""
+
 [input]
 
 ui_accept={
