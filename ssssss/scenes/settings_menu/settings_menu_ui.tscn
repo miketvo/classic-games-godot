@@ -35,11 +35,11 @@ script = ExtResource("2_e2d8y")
 
 [node name="Main" type="VBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 448.0
-offset_top = 160.0
-offset_right = 704.0
-offset_bottom = 354.0
-scale = Vector2(4, 4)
+offset_left = 576.0
+offset_top = 231.0
+offset_right = 832.0
+offset_bottom = 425.0
+scale = Vector2(3, 3)
 theme_override_constants/separation = 9
 alignment = 1
 
@@ -100,17 +100,17 @@ text = "reset defaults"
 
 [node name="Graphics" type="VBoxContainer" parent="."]
 layout_mode = 2
-offset_left = -1520.0
-offset_top = 136.0
-offset_right = -1140.0
-offset_bottom = 342.0
-scale = Vector2(4, 4)
+offset_left = -1140.0
+offset_top = 237.0
+offset_right = -760.0
+offset_bottom = 443.0
+scale = Vector2(3, 3)
 alignment = 1
 
 [node name="Label" type="Label" parent="Graphics"]
 layout_mode = 2
 theme_type_variation = &"LabelHeading"
-text = "GRAPHICS SETTINGS"
+text = "GRAPHICS SETTING"
 horizontal_alignment = 1
 
 [node name="Resolution" type="HBoxContainer" parent="Graphics"]
@@ -232,10 +232,10 @@ text = "back"
 [node name="Sounds" type="VBoxContainer" parent="."]
 layout_mode = 2
 offset_left = 1920.0
-offset_top = 208.0
+offset_top = 303.0
 offset_right = 2330.0
-offset_bottom = 378.0
-scale = Vector2(4, 4)
+offset_bottom = 473.0
+scale = Vector2(3, 3)
 alignment = 1
 
 [node name="Label" type="Label" parent="Sounds"]
@@ -383,11 +383,11 @@ text = "back"
 
 [node name="ResetDefaults" type="VBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 136.0
-offset_top = 1080.0
-offset_right = 548.0
-offset_bottom = 1174.0
-scale = Vector2(4, 4)
+offset_left = 348.0
+offset_top = 1083.0
+offset_right = 760.0
+offset_bottom = 1367.0
+scale = Vector2(3, 3)
 theme_override_constants/separation = 36
 alignment = 1
 
@@ -446,7 +446,7 @@ offset_left = 1920.0
 offset_top = 1080.0
 offset_right = 2080.0
 offset_bottom = 1240.0
-scale = Vector2(4, 4)
+scale = Vector2(3, 3)
 theme_override_styles/panel = SubResource("StyleBoxFlat_tpq7u")
 script = ExtResource("4_bila8")
 option_button = NodePath("../Graphics/Resolution/OptionButton")

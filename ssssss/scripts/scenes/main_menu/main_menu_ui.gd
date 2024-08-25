@@ -16,8 +16,8 @@ func _ready() -> void:
     else:
         %QuitButton.connect("pressed", _on_main_menu_quit_button_pressed)
     %SettingsButton.connect("pressed", _on_main_menu_settings_button_pressed)
-    %Mode1Button.connect("pressed", _on_start_menu_mode_1_button_pressed)
-    %Mode2Button.connect("pressed", _on_start_menu_mode_2_button_pressed)
+    %ClassicModeButton.connect("pressed", _on_start_menu_classic_mode_button_pressed)
+    %ChaosModeButton.connect("pressed", _on_start_menu_chaos_mode_button_pressed)
     _start_menu.get_node("BackButton").connect("pressed", _on_start_menu_back_button_pressed)
 
     for child in get_tree().get_nodes_in_group("ui_container_slider_buttons"):
@@ -46,7 +46,7 @@ func _process(_delta: float) -> void:
 #region Listens to _main_menu.get_node("*").
 func _on_main_menu_start_button_pressed() -> void:
     input_disabled = true
-    _start_menu.get_node("Mode1Button").grab_focus()
+    _start_menu.get_node("ClassicModeButton").grab_focus()
     tween_transition_slide_container(_main_menu, Vector2.LEFT, UI_TRANSITION_DURATION)\
             .connect("finished", _on_tween_transition_finshed)
     tween_transition_slide_container(_start_menu, Vector2.LEFT, UI_TRANSITION_DURATION)\
@@ -63,12 +63,12 @@ func _on_main_menu_quit_button_pressed() -> void:
 
 
 #region Listens to _start_menu.get_node("*").
-func _on_start_menu_mode_1_button_pressed() -> void:
-    acted.emit("start_mode_1")
+func _on_start_menu_classic_mode_button_pressed() -> void:
+    acted.emit("start_classic_mode")
 
 
-func _on_start_menu_mode_2_button_pressed() -> void:
-    acted.emit("start_mode_2")
+func _on_start_menu_chaos_mode_button_pressed() -> void:
+    acted.emit("start_chaos_mode")
 
 
 func _on_start_menu_back_button_pressed() -> void:
