@@ -6,12 +6,15 @@ signal built
 @export var world: World
 @export var tile_map: Node2D
 
+var _world_initialized: bool
+
 
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
     assert(world, "`world` must be set")
     assert(tile_map, "`tile_map` must be set")
+    _world_initialized = false
     world.initialized.connect(_on_world_initialized)
 #endregion
 # ============================================================================ #
@@ -19,6 +22,11 @@ func _ready() -> void:
 
 # ============================================================================ #
 #region State builtins
+func _enter() -> void:
+    if _world_initialized:
+        _on_world_initialized()
+
+
 func _exit() -> void:
     built.emit()
 #endregion
@@ -30,6 +38,7 @@ func _exit() -> void:
 
 # Listens to _world.initialized().
 func _on_world_initialized() -> void:
+    _world_initialized = true
     _build_world()
     transitioned.emit(self, "RunState")
 
@@ -49,14 +58,6 @@ func _build_world() -> void:
     _spawn_player()
 
 
-func _spawn_player() -> void:
-    world.spawn_snake(
-        Vector2i(world.player_spawn_x, world.player_spawn_y),
-        Vector2i(Global.DIRECTIONS[world.player_spawn_direction]),
-        world.player_initial_length
-    )
-
-
 func _load_walls() -> void:
     var static_layer := tile_map.get_node("StaticLayer") as TileMapLayer
     assert(static_layer, "StaticLayer not found")
@@ -69,5 +70,13 @@ func _load_walls() -> void:
                 var tile_name := tile_data.get_custom_data("tile_name") as StringName
                 if tile_name == tile_map.WALL_TILE_NAME:
                     world.wall_grid.set_at(cell_coords, true)
+
+
+func _spawn_player() -> void:
+    world.spawn_snake(
+        Vector2i(world.player_spawn_x, world.player_spawn_y),
+        Vector2i(Global.DIRECTIONS[world.player_spawn_direction]),
+        world.player_initial_length
+    )
 #endregion
 # ============================================================================ #
