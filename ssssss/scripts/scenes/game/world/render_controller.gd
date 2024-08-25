@@ -1,21 +1,8 @@
-@tool
 extends Node
 
 
-@export var world: World:
-    set(node):
-        world = node
-        update_configuration_warnings()
-
-@export var tile_map: Node2D:
-    set(node):
-        tile_map = node
-        update_configuration_warnings()
-
-@export var state_controller: StateMachine:
-    set(node):
-        state_controller = node
-        update_configuration_warnings()
+@export var world: World
+@export var tile_map: Node2D
 
 
 # ============================================================================ #
@@ -23,38 +10,11 @@ extends Node
 func _ready() -> void:
     assert(world, "`world` must be set")
     assert(tile_map, "`tile_map` must be set")
-    assert(state_controller, "`state_controller` must be set")
-    world.connect("configuration_changed", _draw_debug_layer)
-    _draw_debug_layer()
-    if not Engine.is_editor_hint():
-        var _step_timer: Timer = state_controller.get_node("RunState/StepTimer")
-        _step_timer.timeout.connect(_draw_debug_layer)
-        _step_timer.timeout.connect(_draw_dynamic_layer)
-        _draw_dynamic_layer()
 
-
-func _get_configuration_warnings() -> PackedStringArray:
-    var warnings = []
-
-    if not world:
-        warnings.append("`world` must be set.")
-
-    if not tile_map:
-        warnings.append("`tile_map` must be set.")
-    else:
-        var tile_map_children: Array[Node] = tile_map.get_children()
-        var has_tile_map_layer: bool = false
-        for child in tile_map_children:
-            if child is TileMapLayer:
-                has_tile_map_layer = true
-                break
-        if not has_tile_map_layer:
-            warnings.append("`tile_map` must contain at least one TileMapLayer")
-
-    if not world:
-        warnings.append("`state_controller` must be set")
-
-    return warnings
+    world.built.connect(_draw_debug_layer)
+    world.step.connect(_draw_debug_layer.unbind(1))
+    world.built.connect(_draw_dynamic_layer)
+    world.step.connect(_draw_dynamic_layer.unbind(1))
 #endregion
 # ============================================================================ #
 
@@ -87,94 +47,93 @@ func _draw_debug_layer() -> void:
 
 
 func _draw_dynamic_layer() -> void:
-    if not Engine.is_editor_hint():
-        var dynamic_layer: TileMapLayer = tile_map.get_node("DynamicLayer")
-        dynamic_layer.clear()
+    var dynamic_layer: TileMapLayer = tile_map.get_node("DynamicLayer")
+    dynamic_layer.clear()
 
-        # Draw food.
-        var food_tileset_source_id: int = tile_map.\
-                get_source_id("DynamicLayer", "food_tileset")
-        var food_grid: WorldGrid2D = world.food_grid
-        for x in range(Global.WORLD_SIZE.x):
-            for y in range(Global.WORLD_SIZE.y):
-                var food_coords: Vector2i = Vector2i(x, y)
-                if not food_grid.is_clear_at(food_coords):
-                    dynamic_layer.set_cell(
-                            food_coords,
-                            food_tileset_source_id,
-                            tile_map.get_tile_id(
-                                    food_tileset_source_id,
-                                    tile_map.FOOD_TILE_NAMES[food_grid.get_at(food_coords)]
-                            )["coords"]
-                    )
-
-        # Draw snake.
-        var is_world_odd_step: bool = world.step_count % 2 != 0
-        var snake_tileset_source_id: int =\
-                tile_map.get_source_id("DynamicLayer", "snake_odd_tileset")\
-                if is_world_odd_step\
-                else tile_map.get_source_id("DynamicLayer", "snake_even_tileset")
-        var snakes: Array[Array] = world.snakes
-        var snake_grid: WorldGrid2D = world.snake_grid
-        for snake_id in range(snakes.size()):
-            var is_primary_snake: bool = snake_id == 0
-            var snake: Array[Vector2i] = snakes[snake_id]
-            var snake_terrain_id: Dictionary
-            if is_world_odd_step:
-                snake_terrain_id = \
-                        tile_map.get_terrain_id("DynamicLayer", "snake_odd_primary")\
-                        if is_primary_snake\
-                        else tile_map.get_terrain_id("DynamicLayer", "snake_odd_secondary")
-            else:
-                snake_terrain_id = \
-                        tile_map.get_terrain_id("DynamicLayer", "snake_even_primary")\
-                        if is_primary_snake\
-                        else tile_map.get_terrain_id("DynamicLayer", "snake_even_secondary")
-
-            # Snake body.
-            _set_cells_terrain_path_wrapped(
-                    snake,
-                    snake_terrain_id["terrain_set"],
-                    snake_terrain_id["terrain"]
-            )
-
-            # Snake head.
-            var head_coords: Vector2i = snake[0]
-            var head_direction: Vector2i = snake_grid.get_at(head_coords)
-            var is_eating: bool = not food_grid.is_clear_at(head_coords)
-            var snake_head_tile_name: StringName =\
-                    tile_map.SNAKE_HEAD_TILE_NAMES[head_direction]
-            if is_eating: snake_head_tile_name += "_eat"
-            if is_primary_snake: snake_head_tile_name += "_primary"
-            var head_tile_id: Dictionary = tile_map.get_tile_id(
-                    snake_tileset_source_id,
-                    snake_head_tile_name
-            )
-            dynamic_layer.set_cell(
-                head_coords,
-                snake_tileset_source_id,
-                head_tile_id["coords"],
-                head_tile_id["alt_id"]
-            )
-
-            # Snake body if digesting food.
-            for cell_idx in range(1, snake.size() - 1):
-                var body_coords: Vector2i = snake[cell_idx]
-                var is_digesting: bool = not food_grid.is_clear_at(body_coords)
-                var body_digest_tile_name: StringName =\
-                        tile_map.SNAKE_BODY_EAT_TILE_NAME
-                if is_primary_snake: body_digest_tile_name += "_primary"
-                var body_digest_tile_id: Dictionary = tile_map.get_tile_id(
-                        snake_tileset_source_id,
-                        body_digest_tile_name
+    # Draw food.
+    var food_tileset_source_id: int = tile_map.\
+            get_source_id("DynamicLayer", "food_tileset")
+    var food_grid: WorldGrid2D = world.food_grid
+    for x in range(Global.WORLD_SIZE.x):
+        for y in range(Global.WORLD_SIZE.y):
+            var food_coords: Vector2i = Vector2i(x, y)
+            if not food_grid.is_clear_at(food_coords):
+                dynamic_layer.set_cell(
+                        food_coords,
+                        food_tileset_source_id,
+                        tile_map.get_tile_id(
+                                food_tileset_source_id,
+                                tile_map.FOOD_TILE_NAMES[food_grid.get_at(food_coords)]
+                        )["coords"]
                 )
-                if is_digesting:
-                    dynamic_layer.set_cell(
-                        body_coords,
-                        snake_tileset_source_id,
-                        body_digest_tile_id["coords"],
-                        body_digest_tile_id["alt_id"]
-                    )
+
+    # Draw snake.
+    var is_world_odd_step: bool = world.step_count % 2 != 0
+    var snake_tileset_source_id: int =\
+            tile_map.get_source_id("DynamicLayer", "snake_odd_tileset")\
+            if is_world_odd_step\
+            else tile_map.get_source_id("DynamicLayer", "snake_even_tileset")
+    var snakes: Array[Array] = world.snakes
+    var snake_grid: WorldGrid2D = world.snake_grid
+    for snake_id in range(snakes.size()):
+        var is_primary_snake: bool = snake_id == 0
+        var snake: Array[Vector2i] = snakes[snake_id]
+        var snake_terrain_id: Dictionary
+        if is_world_odd_step:
+            snake_terrain_id = \
+                    tile_map.get_terrain_id("DynamicLayer", "snake_odd_primary")\
+                    if is_primary_snake\
+                    else tile_map.get_terrain_id("DynamicLayer", "snake_odd_secondary")
+        else:
+            snake_terrain_id = \
+                    tile_map.get_terrain_id("DynamicLayer", "snake_even_primary")\
+                    if is_primary_snake\
+                    else tile_map.get_terrain_id("DynamicLayer", "snake_even_secondary")
+
+        # Snake body.
+        _set_cells_terrain_path_wrapped(
+                snake,
+                snake_terrain_id["terrain_set"],
+                snake_terrain_id["terrain"]
+        )
+
+        # Snake head.
+        var head_coords: Vector2i = snake[0]
+        var head_direction: Vector2i = snake_grid.get_at(head_coords)
+        var is_eating: bool = not food_grid.is_clear_at(head_coords)
+        var snake_head_tile_name: StringName =\
+                tile_map.SNAKE_HEAD_TILE_NAMES[head_direction]
+        if is_eating: snake_head_tile_name += "_eat"
+        if is_primary_snake: snake_head_tile_name += "_primary"
+        var head_tile_id: Dictionary = tile_map.get_tile_id(
+                snake_tileset_source_id,
+                snake_head_tile_name
+        )
+        dynamic_layer.set_cell(
+            head_coords,
+            snake_tileset_source_id,
+            head_tile_id["coords"],
+            head_tile_id["alt_id"]
+        )
+
+        # Snake body if digesting food.
+        for cell_idx in range(1, snake.size() - 1):
+            var body_coords: Vector2i = snake[cell_idx]
+            var is_digesting: bool = not food_grid.is_clear_at(body_coords)
+            var body_digest_tile_name: StringName =\
+                    tile_map.SNAKE_BODY_EAT_TILE_NAME
+            if is_primary_snake: body_digest_tile_name += "_primary"
+            var body_digest_tile_id: Dictionary = tile_map.get_tile_id(
+                    snake_tileset_source_id,
+                    body_digest_tile_name
+            )
+            if is_digesting:
+                dynamic_layer.set_cell(
+                    body_coords,
+                    snake_tileset_source_id,
+                    body_digest_tile_id["coords"],
+                    body_digest_tile_id["alt_id"]
+                )
 
 
 func _set_cells_terrain_path_wrapped(

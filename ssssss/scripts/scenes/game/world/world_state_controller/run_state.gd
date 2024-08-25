@@ -32,17 +32,17 @@ func _ready() -> void:
 func _enter() -> void:
     _started = false
     _dead = false
-    _step_timer.paused = false
+    _start_cooldown_timer.paused = false
     _start_cooldown_timer.start()
 
 
 func _exit() -> void:
-    _step_timer.stop()
     stopped.emit()
 
 
 func _update(_delta: float, _game_state_data: Global.GameStateData) -> void:
     if _dead:
+        _step_timer.stop()
         transitioned.emit(self, "StopState")
 
     if _started:
@@ -85,6 +85,31 @@ func set_step_duration(duration: float) -> void:
 
 
 # ============================================================================ #
+#region Signal listeners
+
+# Listens to _start_cooldown_timer.timeout().
+func _on_start_cooldown_timer_timeout() -> void:
+    _started = true
+    _next_step_duration = world.initial_step_duration
+    _step_timer.paused = false
+    _step_timer.start(_next_step_duration)
+    started.emit()
+
+
+# Listens to _step_timer.timeout().
+func _step() -> void:
+    _update_snakes()
+    if _next_step_duration != _step_timer.wait_time:
+        _step_timer.stop()
+        _step_timer.paused = false
+        _step_timer.start(_next_step_duration)
+    step.emit()
+
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
 #region Utils
 func _update_snakes() -> void:
     var snake_grid: WorldGrid2D = world.snake_grid
@@ -92,6 +117,7 @@ func _update_snakes() -> void:
     var food_grid: WorldGrid2D = world.food_grid
 
     for snake_id in range(world.snakes.size()):
+        var is_primary_snake: bool = snake_id == 0
         var snake: Array[Vector2i] = world.snakes[snake_id]
         var snake_grow_queue: Array[int] = world.snake_grow_queue
         for cell_idx in range(snake.size()):
@@ -108,7 +134,8 @@ func _update_snakes() -> void:
                     next_movement = movement
                 else:
                     snake_collided.emit(snake_id, target_cell)
-                    if snake_id == 0: _dead = true
+                    # Stop the simulation if the primary snake is dead.
+                    if is_primary_snake: _dead = true
                     break
 
                 # Food detection at the snake's head.
@@ -127,29 +154,5 @@ func _update_snakes() -> void:
                 else:
                     snake_grid.reset_at(cell_coords)
             snake[cell_idx] = target_cell
-#endregion
-# ============================================================================ #
-
-
-# ============================================================================ #
-#region Signal listeners
-
-# Listens to _start_cooldown_timer.timeout().
-func _on_start_cooldown_timer_timeout() -> void:
-    _started = true
-    _next_step_duration = world.initial_step_duration
-    _step_timer.start(_next_step_duration)
-    started.emit()
-
-
-# Listens to _step_timer.timeout().
-func _step() -> void:
-    _update_snakes()
-    step.emit()
-    if _next_step_duration != $StepTimer.wait_time:
-        $StepTimer.stop()
-        $StepTimer.paused = false
-        $StepTimer.start(_next_step_duration)
-
 #endregion
 # ============================================================================ #

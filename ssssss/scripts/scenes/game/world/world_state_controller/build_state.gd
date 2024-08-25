@@ -1,16 +1,10 @@
-@tool
 extends State
 
 
-@export var world: World:
-    set(node):
-        world = node
-        update_configuration_warnings()
+signal built
 
-@export var tile_map: Node2D:
-    set(node):
-        tile_map = node
-        update_configuration_warnings()
+@export var world: World
+@export var tile_map: Node2D
 
 
 # ============================================================================ #
@@ -18,39 +12,27 @@ extends State
 func _ready() -> void:
     assert(world, "`world` must be set")
     assert(tile_map, "`tile_map` must be set")
-    world.configuration_changed.connect(_build_world)
-
-
-func _get_configuration_warnings() -> PackedStringArray:
-    var warnings = []
-
-    if not world:
-        warnings.append("`world` must be set.")
-
-    if not tile_map:
-        warnings.append("`tile_map` must be set.")
-    else:
-        var tile_map_children: Array[Node] = tile_map.get_children()
-        var has_tile_map_layer: bool = false
-        for child in tile_map_children:
-            if child is TileMapLayer:
-                has_tile_map_layer = true
-                break
-        if not has_tile_map_layer:
-            warnings.append("`tile_map` must contain at least one TileMapLayer")
-
-    return warnings
+    world.initialized.connect(_on_world_initialized)
 #endregion
 # ============================================================================ #
 
 
 # ============================================================================ #
 #region State builtins
-func _enter() -> void:
+func _exit() -> void:
+    built.emit()
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
+#region Signal listeners
+
+# Listens to _world.initialized().
+func _on_world_initialized() -> void:
     _build_world()
-    world.running = false
-    if not Engine.is_editor_hint():
-        transitioned.emit(self, "RunState")
+    transitioned.emit(self, "RunState")
+
 #endregion
 # ============================================================================ #
 

@@ -1,9 +1,9 @@
-@tool
 class_name World
 extends Node2D
 
 
-signal configuration_changed
+signal initialized
+signal built
 signal started
 signal step(step_count: int)
 signal snake_collided(snake_id: int, collide_coords: Vector2i)
@@ -19,30 +19,18 @@ signal stopped
 
 ## The x-coordinate of the player snake head.
 @warning_ignore("integer_division")
-@export_range(0, Global.WORLD_SIZE.x, 1) var player_spawn_x: int = Global.WORLD_SIZE.x / 2:
-    set(value):
-        player_spawn_x = value
-        configuration_changed.emit()
+@export_range(0, Global.WORLD_SIZE.x, 1) var player_spawn_x: int = Global.WORLD_SIZE.x / 2
 
 ## The y-coordinate of the player snake head.
 @warning_ignore("integer_division")
-@export_range(0, Global.WORLD_SIZE.y, 1) var player_spawn_y: int = Global.WORLD_SIZE.y / 2 - 2:
-    set(value):
-        player_spawn_y = value
-        configuration_changed.emit()
+@export_range(0, Global.WORLD_SIZE.y, 1) var player_spawn_y: int = Global.WORLD_SIZE.y / 2 - 2
 
 ## The direction that the player snake faces upon spawning.
-@export var player_spawn_direction: Global.Direction = Global.Direction.UP:
-    set(value):
-        player_spawn_direction = value
-        configuration_changed.emit()
+@export var player_spawn_direction: Global.Direction = Global.Direction.UP
 
 ## The initial length of the player snake upon spawning.
 @warning_ignore("integer_division")
-@export_range(2, mini(Global.WORLD_SIZE.x, Global.WORLD_SIZE.y) / 4, 1) var player_initial_length: int = 3:
-    set(value):
-        player_initial_length = value
-        configuration_changed.emit()
+@export_range(2, mini(Global.WORLD_SIZE.x, Global.WORLD_SIZE.y) / 4, 1) var player_initial_length: int = 3
 
 @export_group("Simulation")
 @export_range(0.01, 1.0, 0.001, "or_greater", "suffix:s") var initial_step_duration: float = 0.5
@@ -51,10 +39,7 @@ signal stopped
 
 ## If [code]true[/code], the outline and direction (if applicable) of each cell
 ## is drawn.
-@export var draw_debug_grid: bool = false:
-    set(value):
-        draw_debug_grid = value
-        configuration_changed.emit()
+@export var draw_debug_grid: bool = false
 
 #endregion
 # ============================================================================ #
@@ -76,23 +61,23 @@ var step_count: int
 
 # ============================================================================ #
 #region Internal world state representation
-@export_storage var snakes: Array[Array]
-@export_storage var snake_grow_queue: Array[int]
-@export_storage var snake_grid: WorldGrid2D
-@export_storage var wall_grid: WorldGrid2D
-@export_storage var food_grid: WorldGrid2D
+var snakes: Array[Array]
+var snake_grow_queue: Array[int]
+var snake_grid: WorldGrid2D
+var wall_grid: WorldGrid2D
+var food_grid: WorldGrid2D
 #endregion
 # ============================================================================ #
 
 
-@onready var _tile_map: Node2D = $TileMap
+@onready var _build_state: State = $WorldStateController/BuildState
 @onready var _run_state: State = $WorldStateController/RunState
 
 
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    _tile_map.map_changed.connect(_on_tile_map_changed)
+    _build_state.built.connect(func (): built.emit())
     _run_state.started.connect(_on_started)
     _run_state.step.connect(_on_step)
     _run_state.snake_collided.connect(_on_snake_collided)
@@ -119,6 +104,8 @@ func _ready() -> void:
 
     running = false
     step_count = 0
+
+    initialized.emit()
 #endregion
 # ============================================================================ #
 
@@ -223,12 +210,6 @@ func set_step_duration(duration: float) -> void:
 
 # ============================================================================ #
 #region Signal listeners
-
-# Listens to _tile_map.changed(layer_name: StringName).
-func _on_tile_map_changed(layer_name: StringName) -> void:
-    if layer_name == "StaticLayer":
-        configuration_changed.emit()
-
 
 # Listens to _run_state.started().
 func _on_started() -> void:
