@@ -158,13 +158,19 @@ func _set_cells_terrain_path_wrapped(
         var split: Array[Vector2i] = splits[i]
 
         var undershoot: bool = false
-        undershoot = split[0].distance_squared_to(split[1]) > 1
+        undershoot = (
+                split[0].distance_squared_to(split[1]) > 1
+                and i > 0 # Tailward split cannot undershoot.
+        )
         if undershoot:
             var diff: Vector2i = split[0] - split[1]
             split[0] -= diff + Vector2i(Vector2(diff).normalized())
 
         var overshoot: bool = false
-        overshoot = split[split.size() - 2].distance_squared_to(split[split.size() - 1]) > 1
+        overshoot = (
+                split[split.size() - 2].distance_squared_to(split[split.size() - 1]) > 1
+                and i < splits.size() - 1 # Headward split cannot overshoot.
+        )
         if overshoot:
             var diff: Vector2i = split[split.size() - 1] - split[split.size() - 2]
             split[split.size() - 1] -= diff + Vector2i(Vector2(diff).normalized())
@@ -174,6 +180,7 @@ func _set_cells_terrain_path_wrapped(
                 terrain_set, terrain,
                 ignore_empty_terrains
         )
+
         if undershoot:
             dynamic_layer.erase_cell(split[0])
         if overshoot:
