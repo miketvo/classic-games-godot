@@ -80,12 +80,12 @@ metadata/_aseprite_wizard_config_ = {
 "keep_anim_length": false,
 "layer": "",
 "o_ex_p": "",
-"o_folder": "res://assets",
-"o_name": "splash",
+"o_folder": "",
+"o_name": "",
 "only_visible": false,
 "op_exp": false,
-"player": "Sprite2D/AnimationPlayer",
-"source": "res://assets/splash_animated.ase"
+"player": "",
+"source": ""
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]

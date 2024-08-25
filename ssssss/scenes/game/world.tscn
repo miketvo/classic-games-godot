@@ -500,7 +500,7 @@ sources/4 = SubResource("TileSetAtlasSource_1xoms")
 script = ExtResource("1_2qbkl")
 
 [node name="TileMap" type="Node2D" parent="."]
-position = Vector2(30, 90)
+position = Vector2(30, 96)
 script = ExtResource("2_jsiv2")
 
 [node name="CenterMarker" type="Marker2D" parent="TileMap"]

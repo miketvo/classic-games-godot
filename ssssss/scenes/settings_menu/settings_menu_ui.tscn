@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bprio2u3m5v2b"]
+[gd_scene load_steps=8 format=3 uid="uid://bprio2u3m5v2b"]
 
 [ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_apgf5"]
 [ext_resource type="Script" path="res://scripts/scenes/settings_menu/settings_menu_ui.gd" id="2_e2d8y"]
@@ -8,6 +8,8 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j5bjy"]
 content_margin_left = 48.0
 content_margin_right = 48.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nyq3u"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tpq7u"]
 content_margin_left = 6.0
@@ -101,9 +103,9 @@ text = "reset defaults"
 [node name="Graphics" type="VBoxContainer" parent="."]
 layout_mode = 2
 offset_left = -1140.0
-offset_top = 237.0
+offset_top = 231.0
 offset_right = -760.0
-offset_bottom = 443.0
+offset_bottom = 437.0
 scale = Vector2(3, 3)
 alignment = 1
 
@@ -112,6 +114,9 @@ layout_mode = 2
 theme_type_variation = &"LabelHeading"
 text = "GRAPHICS SETTING"
 horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Graphics"]
+layout_mode = 2
 
 [node name="Resolution" type="HBoxContainer" parent="Graphics"]
 layout_mode = 2
@@ -232,9 +237,9 @@ text = "back"
 [node name="Sounds" type="VBoxContainer" parent="."]
 layout_mode = 2
 offset_left = 1920.0
-offset_top = 303.0
+offset_top = 297.0
 offset_right = 2330.0
-offset_bottom = 473.0
+offset_bottom = 475.0
 scale = Vector2(3, 3)
 alignment = 1
 
@@ -243,6 +248,10 @@ layout_mode = 2
 theme_type_variation = &"LabelHeading"
 text = "SOUNDS SETTINGS"
 horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Sounds"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_nyq3u")
 
 [node name="MasterVolume" type="HBoxContainer" parent="Sounds"]
 layout_mode = 2
