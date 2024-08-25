@@ -4,14 +4,12 @@ extends Node2D
 
 
 signal configuration_changed
-@warning_ignore("unused_signal")
 signal started
-@warning_ignore("unused_signal")
-signal stopped
+signal step(step_count: int)
 signal snake_collided(snake_id: int, collide_coords: Vector2i)
-@warning_ignore("unused_signal")
-signal food_eaten(snake_id: int)
-signal food_digested(food_coords: Vector2i)
+signal food_eaten(snake_id: int, food_coords: Vector2i)
+signal food_digested(snake_id: int, food_coords: Vector2i)
+signal stopped
 
 
 # ============================================================================ #
@@ -88,12 +86,19 @@ var step_count: int
 
 
 @onready var _tile_map: Node2D = $TileMap
-@onready var _state_controller: StateMachine = $WorldStateController
+@onready var _run_state: State = $WorldStateController/RunState
 
 
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
+    _tile_map.map_changed.connect(_on_tile_map_changed)
+    _run_state.started.connect(_on_started)
+    _run_state.step.connect(_on_step)
+    _run_state.snake_collided.connect(_on_snake_collided)
+    _run_state.food_eaten.connect(_on_food_eaten)
+    _run_state.food_digested.connect(_on_food_digested)
+
     snakes = []
     snake_grow_queue = []
     snake_grid = WorldGrid2D.new(
@@ -111,10 +116,6 @@ func _ready() -> void:
             TYPE_INT, &"", null, [],
             true
     )
-
-    _tile_map.map_changed.connect(_on_tile_map_changed)
-    snake_collided.connect(despawn_snake.unbind(1))
-    food_digested.connect(despawn_food)
 
     running = false
     step_count = 0
@@ -210,11 +211,11 @@ func despawn_food(food_coords: Vector2i) -> void:
 
 
 func get_step_duration() -> float:
-    return _state_controller.get_node("RunState").get_step_duration()
+    return _run_state.get_step_duration()
 
 
 func set_step_duration(duration: float) -> void:
-    _state_controller.get_node("RunState").set_step_duration(duration)
+    _run_state.set_step_duration(duration)
 
 #endregion
 # ============================================================================ #
@@ -222,6 +223,39 @@ func set_step_duration(duration: float) -> void:
 
 # ============================================================================ #
 #region Signal listeners
+
+func _on_started() -> void:
+    running = true
+    step_count = 1
+    started.emit()
+
+
+func _on_step() -> void:
+    step_count += 1
+    step.emit(step_count)
+
+
+func _on_snake_collided(snake_id: int, collide_coords: Vector2i) -> void:
+    despawn_snake(snake_id)
+    snake_collided.emit(snake_id, collide_coords)
+
+
+func _on_food_eaten(snake_id: int, food_coords: Vector2i) -> void:
+    food_eaten.emit(snake_id, food_coords)
+
+
+func _on_food_digested(snake_id: int, food_coords: Vector2i) -> void:
+    # Queue snake growth based on food value if food is digested.
+    snake_grow_queue[snake_id] += food_grid.get_at(food_coords)
+    despawn_food(food_coords)
+    food_digested.emit(snake_id, food_coords)
+
+
+func _on_stopped() -> void:
+    running = false
+    step_count = 0
+    stopped.emit()
+
 
 # Listens to _tile_map.changed(layer_name: StringName)
 func _on_tile_map_changed(layer_name: StringName) -> void:

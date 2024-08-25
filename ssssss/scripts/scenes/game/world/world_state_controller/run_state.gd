@@ -1,6 +1,13 @@
 extends State
 
 
+signal started
+signal step
+signal snake_collided(snake_id: int, collide_coords: Vector2i)
+signal food_eaten(snake_id: int, food_coords: Vector2i)
+signal food_digested(snake_id: int, food_coords: Vector2i)
+signal stopped
+
 @export var world: World
 
 var _started: bool
@@ -31,9 +38,7 @@ func _enter() -> void:
 
 func _exit() -> void:
     _step_timer.stop()
-    world.running = false
-    world.step_count = 0
-    world.stopped.emit()
+    stopped.emit()
 
 
 func _update(_delta: float, _game_state_data: Global.GameStateData) -> void:
@@ -102,20 +107,18 @@ func _update_snakes() -> void:
                 ):
                     next_movement = movement
                 else:
-                    world.snake_collided.emit(snake_id, target_cell)
+                    snake_collided.emit(snake_id, target_cell)
                     if snake_id == 0: _dead = true
                     break
 
                 # Food detection at the snake's head.
                 if not food_grid.is_clear_at(target_cell):
-                    world.food_eaten.emit(snake_id)
+                    food_eaten.emit(snake_id, target_cell)
 
             snake_grid.set_at(target_cell, next_movement)
             if cell_idx == snake.size() - 1: # Tail update.
-                # Queue snake growth based on food value if food is digested.
                 if not food_grid.is_clear_at(cell_coords):
-                    snake_grow_queue[snake_id] += food_grid.get_at(cell_coords)
-                    world.food_digested.emit(cell_coords)
+                    food_digested.emit(snake_id, cell_coords)
 
                 # Grow the snake if the grow queue is not empty.
                 if snake_grow_queue[snake_id] > 0:
@@ -136,15 +139,13 @@ func _on_start_cooldown_timer_timeout() -> void:
     _started = true
     _next_step_duration = world.initial_step_duration
     _step_timer.start(_next_step_duration)
-    world.running = true
-    world.step_count = 1
-    world.started.emit()
+    started.emit()
 
 
 # Listens to _step_timer.timeout().
 func _step() -> void:
     _update_snakes()
-    world.step_count += 1
+    step.emit()
     if _next_step_duration != $StepTimer.wait_time:
         $StepTimer.stop()
         $StepTimer.paused = false
