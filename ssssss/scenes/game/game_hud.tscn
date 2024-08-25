@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dpy8k0nhdaw8i"]
 
 [ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_1nijk"]
-[ext_resource type="Script" path="res://scripts/game/game_hud.gd" id="1_2id7g"]
+[ext_resource type="Script" path="res://scripts/scenes/game/game_hud.gd" id="1_2id7g"]
 [ext_resource type="Texture2D" uid="uid://ctnpg4labkw18" path="res://assets/hud/game_bound.png" id="2_wot7v"]
 
 [node name="GameHUD" type="Control"]

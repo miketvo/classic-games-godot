@@ -4,19 +4,44 @@ extends Node2D
 
 # ============================================================================ #
 #region Enums
+
+enum Direction { UP, LEFT, DOWN, RIGHT }
+
+## The integer value on the RHS corresponds to how much a snake would grow when
+## digesting the LHS food type.
+enum FoodType {
+    SMALL = 1,
+    BIG = 10
+}
+
 #endregion
 # ============================================================================ #
 
 
 # ============================================================================ #
 #region Constants
+const COLOR_PALETTE: Dictionary = {
+    "bg": Color("#180c21"),
+    "fg_0": Color("#6f324e"),
+    "fg_1": Color("#ce6b40"),
+    "fg_2": Color("#fff4b0"),
+}
 const UNIT_VECTORS: PackedVector2Array = [
     Vector2.UP,
     Vector2.LEFT,
     Vector2.DOWN,
     Vector2.RIGHT,
 ]
-const WORLD_SIZE: Vector2i = Vector2i(62, 32)
+const DIRECTIONS: Dictionary = {
+    Direction.UP: Vector2.UP,
+    Direction.LEFT: Vector2.LEFT,
+    Direction.DOWN: Vector2.DOWN,
+    Direction.RIGHT: Vector2.RIGHT,
+}
+const INITIAL_STEP_DURATION: float = 0.15 ## Unit: seconds.
+const STEP_DURATION_CHANGE: float = 0.95 ## Affects how much the game speeds up. This is a ratio.
+const WORLD_SIZE: Vector2i = Vector2i(62, 32) ## Unit: cells x cells.
+const FOOD_PROBABILITIES: Array[float] = [0.8, 0.2] ## Must adds up to 1.0.
 #endregion
 # ============================================================================ #
 
@@ -54,14 +79,6 @@ func _ready() -> void:
 
 func _exit_tree() -> void:
     game_state_data.queue_free()
-#endregion
-# ============================================================================ #
-
-
-# ============================================================================ #
-#region Public methods
-func is_equal_approx(a: float, b: float, epsilon: float):
-    return absf(a - b) < epsilon
 #endregion
 # ============================================================================ #
 

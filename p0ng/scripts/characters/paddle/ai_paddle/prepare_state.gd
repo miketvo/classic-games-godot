@@ -38,4 +38,5 @@ func _physics_update(delta: float, game_state_data: Global.GameStateData) -> voi
     match [ current_side, ball_heading ]:
         [ Global.SIDE_LEFT, Vector2.LEFT ], [ Global.SIDE_RIGHT, Vector2.RIGHT ]:
             transitioned.emit(self, "InterceptState")
+#endregion
 # ============================================================================ #

@@ -26,7 +26,7 @@ func _process(_delta: float) -> void:
 # ============================================================================ #
 #region Signal listeners
 
-# Listens to _current_scene.scene_finished(next_scene_key: SceneKey)
+# Listens to _current_scene.scene_finished(next_scene_key: SceneKey).
 func _on_scene_finished(next_scene_key: GameScene2D.SceneKey) -> void:
     _current_scene.queue_free()
     _current_scene_key = next_scene_key

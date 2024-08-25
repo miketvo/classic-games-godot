@@ -64,5 +64,6 @@ func _input(event: InputEvent) -> void:
 func _on_idle_timer_timeout() -> void:
     if visibility == Visibility.IDLE_AUTO_HIDE:
         visible = false
+
 #endregion
 # ============================================================================ #

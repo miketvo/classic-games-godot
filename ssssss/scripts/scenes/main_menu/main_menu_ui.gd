@@ -53,7 +53,7 @@ func _on_main_menu_start_button_pressed() -> void:
             .connect("finished", _on_tween_transition_finshed)
 
 
-func _on_main_menu_settings_button_pressed():
+func _on_main_menu_settings_button_pressed() -> void:
     acted.emit("settings")
 
 

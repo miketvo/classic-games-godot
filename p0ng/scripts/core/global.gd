@@ -26,7 +26,7 @@ const UNIT_VECTORS: PackedVector2Array = [
 const PADDLE_SPEED: float = 600.0 ## Unit: px/s.
 const BALL_SPEED_INITIAL: float = 450.0 ## Unit: px/s.
 const BALL_SPEED_DIFFICULTY_MULTIPLIER: float = 1.15
-const SERVING_ANGULAR_VARIATION: PackedFloat32Array = [-0.392699, 0.392699] ## Unit: radian.
+const SERVING_ANGULAR_VARIATION: PackedFloat32Array = [-0.392699, 0.392699] ## Unit: radians.
 const TARGET_SCORE: int = 7
 
 ## How far into the future ball trajectory prediction works. Lower numbers means
@@ -78,7 +78,7 @@ func _exit_tree() -> void:
 
 # ============================================================================ #
 #region Public methods
-func is_equal_approx(a: float, b: float, epsilon: float):
+func is_equal_approx(a: float, b: float, epsilon: float) -> bool:
     return absf(a - b) < epsilon
 
 

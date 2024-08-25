@@ -95,7 +95,7 @@ func _on_resolution_option_item_selected(text: String) -> void:
         resolution_selected.emit(text)
 
 
-# Listens to option_button
+# Listens to option_button.pressed().
 func _on_option_button_pressed() -> void:
     if visible:
         option_button.button_pressed = true

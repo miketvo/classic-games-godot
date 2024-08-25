@@ -248,7 +248,7 @@ func _on_slider_updated(_value: float) -> void:
 
 # Listens to tween transition Tween.finished() from reset_defaults to re-enable
 # input and reset labels.
-func _on_reset_defaults_tween_transitioned():
+func _on_reset_defaults_tween_transitioned() -> void:
     _on_tween_transition_finshed()
     _reset_defaults.get_node("WarningLabel").visible = true
     _reset_defaults.get_node("DoneLabel").visible = false
