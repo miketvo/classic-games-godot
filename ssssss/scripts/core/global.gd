@@ -57,7 +57,7 @@ var os_platform: StringName
 
 var software_cursor_visibility: SoftwareCursor.Visibility\
         = SoftwareCursor.Visibility.ALWAYS_VISIBLE
-var game_mode: GameMode
+var current_game_mode: GameMode
 var game_state_data: GameStateData = GameStateData.new()
 
 #endregion

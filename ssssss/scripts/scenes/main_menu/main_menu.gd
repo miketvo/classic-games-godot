@@ -17,10 +17,10 @@ func _ready() -> void:
 func _on_main_menu_ui_acted(action: StringName) -> void:
     match action:
         "start_classic_mode":
-            Global.game_mode = Global.GameMode.CLASSIC
+            Global.current_game_mode = Global.GameMode.CLASSIC
             scene_finished.emit(SceneKey.GAME)
         "start_chaos_mode":
-            Global.game_mode = Global.GameMode.CHAOS
+            Global.current_game_mode = Global.GameMode.CHAOS
             scene_finished.emit(SceneKey.GAME)
         "settings":
             scene_finished.emit(SceneKey.SETTINGS_MENU)

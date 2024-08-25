@@ -21,8 +21,8 @@ var _next_step_duration: float
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    _start_cooldown_timer.connect("timeout", _on_start_cooldown_timer_timeout)
-    _step_timer.connect("timeout", _step)
+    _start_cooldown_timer.timeout.connect(_on_start_cooldown_timer_timeout)
+    _step_timer.timeout.connect(_step)
 #endregion
 # ============================================================================ #
 
@@ -45,7 +45,7 @@ func _update(_delta: float, _game_state_data: Global.GameStateData) -> void:
         _step_timer.stop()
         transitioned.emit(self, "StopState")
 
-    if _started:
+    if _started and not _dead:
         var new_direction: Vector2i = Vector2i.ZERO
         if Input.is_action_just_pressed("p_move_up"):
             new_direction = Vector2i.UP
@@ -79,6 +79,15 @@ func get_step_duration() -> float:
 ## decrease the world simulation speed.
 func set_step_duration(duration: float) -> void:
     _next_step_duration = duration
+
+
+func pause() -> void:
+    _step_timer.paused = true
+
+
+func unpause() -> void:
+    await get_tree().create_timer(0.5).timeout
+    _step_timer.paused = false
 
 #endregion
 # ============================================================================ #

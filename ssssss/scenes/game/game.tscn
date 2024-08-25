@@ -1,11 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://ii1krswp2yx6"]
+[gd_scene load_steps=5 format=3 uid="uid://ii1krswp2yx6"]
 
 [ext_resource type="PackedScene" uid="uid://wjw02a5opby" path="res://scenes/game/world.tscn" id="1_r6hut"]
 [ext_resource type="Script" path="res://scripts/scenes/game/game.gd" id="1_y2h2x"]
+[ext_resource type="PackedScene" uid="uid://b8yj1ahfqm5yo" path="res://scenes/game/game_ui.tscn" id="2_t11qt"]
 [ext_resource type="PackedScene" uid="uid://dpy8k0nhdaw8i" path="res://scenes/game/game_hud.tscn" id="3_0sgvk"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_y2h2x")
+
+[node name="UI" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="GameUI" parent="UI" node_paths=PackedStringArray("game") instance=ExtResource("2_t11qt")]
+game = NodePath("../..")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 

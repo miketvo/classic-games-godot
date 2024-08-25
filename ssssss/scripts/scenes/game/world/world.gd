@@ -101,6 +101,7 @@ func _ready() -> void:
         _run_state.snake_collided.connect(_on_snake_collided)
         _run_state.food_eaten.connect(_on_food_eaten)
         _run_state.food_digested.connect(_on_food_digested)
+        _run_state.stopped.connect(_on_stopped)
 
     snakes = []
     snake_grow_queue = []
@@ -232,6 +233,15 @@ func get_step_duration() -> float:
 func set_step_duration(duration: float) -> void:
     _run_state.set_step_duration(duration)
 
+
+func pause() -> void:
+    running = false
+    _run_state.pause()
+
+
+func unpause() -> void:
+    _run_state.unpause()
+
 #endregion
 # ============================================================================ #
 
@@ -254,7 +264,8 @@ func _on_step() -> void:
 
 # Listens to _run_state.snake_collided(snake_id: int, collide_coords: Vector2i).
 func _on_snake_collided(snake_id: int, collide_coords: Vector2i) -> void:
-    despawn_snake(snake_id)
+    if snake_id > 0:
+        despawn_snake(snake_id)
     snake_collided.emit(snake_id, collide_coords)
 
 

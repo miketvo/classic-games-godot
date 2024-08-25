@@ -64,7 +64,7 @@ _data = {
 }
 
 [node name="SoftwareCursor" type="CanvasLayer"]
-layer = 2
+layer = 3
 script = ExtResource("2_3xk1i")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
