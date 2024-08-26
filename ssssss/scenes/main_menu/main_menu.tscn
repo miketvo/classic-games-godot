@@ -60,12 +60,12 @@ metadata/_aseprite_wizard_config_ = {
 "keep_anim_length": false,
 "layer": "",
 "o_ex_p": "",
-"o_folder": "res://assets",
-"o_name": "title",
+"o_folder": "",
+"o_name": "",
 "only_visible": false,
-"player": "GameTitle/Sprite2D/AnimationPlayer",
+"player": "",
 "slice": "",
-"source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/ssssss/title.ase"
+"source": ""
 }
 metadata/_aseprite_wizard_source_file_hash_ = "308baab667821e783bfe967f66952807"
 

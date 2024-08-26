@@ -57,6 +57,7 @@ func _draw_editor_debug_layer() -> void:
     var debug_layer: TileMapLayer = tile_map.get_node("DebugLayer")
     debug_layer.visible = world.draw_debug_grid
     if debug_layer.visible:
+        debug_layer.clear()
         var debug_tileset_source_id: int = tile_map\
                 .get_source_id("DebugLayer", "debug_tileset")
         var preview_player_snake: Array[Vector2i] = world.spawn_snake(
@@ -88,6 +89,7 @@ func _draw_debug_layer() -> void:
     var debug_layer: TileMapLayer = tile_map.get_node("DebugLayer")
     debug_layer.visible = world.draw_debug_grid
     if debug_layer.visible:
+        debug_layer.clear()
         var debug_tileset_source_id: int = tile_map\
                 .get_source_id("DebugLayer", "debug_tileset")
         for x in range(Global.WORLD_SIZE.x):

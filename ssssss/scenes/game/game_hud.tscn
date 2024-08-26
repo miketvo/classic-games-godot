@@ -1,8 +1,205 @@
-[gd_scene load_steps=4 format=3 uid="uid://dpy8k0nhdaw8i"]
+[gd_scene load_steps=24 format=3 uid="uid://dpy8k0nhdaw8i"]
 
 [ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_1nijk"]
 [ext_resource type="Script" path="res://scripts/scenes/game/game_hud.gd" id="1_2id7g"]
 [ext_resource type="Texture2D" uid="uid://ctnpg4labkw18" path="res://assets/hud/game_bound.png" id="2_wot7v"]
+[ext_resource type="Texture2D" uid="uid://dhf28nkiwsr18" path="res://assets/hud/food_timeout_progress.png" id="4_06g36"]
+[ext_resource type="FontFile" uid="uid://ddknxnxd2tik7" path="res://assets/ui/fonts/gamer.ttf" id="4_gjqcv"]
+[ext_resource type="Texture2D" uid="uid://v22ahmyuximy" path="res://assets/hud/score_icon.png" id="5_qqopn"]
+[ext_resource type="Texture2D" uid="uid://dmotvygds0hxx" path="res://assets/hud/kill_icon.png" id="7_11dbq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tlsnu"]
+atlas = ExtResource("5_qqopn")
+region = Rect2(0, 0, 16, 22)
+filter_clip = true
+
+[sub_resource type="Animation" id="Animation_d8p4d"]
+length = 0.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_tlsnu")]
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wsary"]
+atlas = ExtResource("7_11dbq")
+region = Rect2(16, 0, 16, 16)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y2624"]
+atlas = ExtResource("7_11dbq")
+region = Rect2(0, 0, 16, 16)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3kfyk"]
+atlas = ExtResource("5_qqopn")
+region = Rect2(16, 0, 16, 22)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s7ryk"]
+atlas = ExtResource("5_qqopn")
+region = Rect2(0, 0, 16, 22)
+filter_clip = true
+
+[sub_resource type="Animation" id="Animation_ruefx"]
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../KillIcon:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../KillIcon:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [SubResource("AtlasTexture_wsary"), SubResource("AtlasTexture_y2624")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = false
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:texture")
+tracks/3/interp = 1
+tracks/3/loop_wrap = false
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [SubResource("AtlasTexture_3kfyk"), SubResource("AtlasTexture_s7ryk")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_py8b0"]
+_data = {
+"normal": SubResource("Animation_d8p4d"),
+"updated": SubResource("Animation_ruefx")
+}
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vfedx"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3w4v7"]
+atlas = ExtResource("7_11dbq")
+region = Rect2(0, 0, 16, 22)
+filter_clip = true
+
+[sub_resource type="Animation" id="Animation_cpoj4"]
+length = 0.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_3w4v7")]
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mrjm2"]
+atlas = ExtResource("7_11dbq")
+region = Rect2(16, 0, 16, 22)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wnd0j"]
+atlas = ExtResource("7_11dbq")
+region = Rect2(0, 0, 16, 22)
+filter_clip = true
+
+[sub_resource type="Animation" id="Animation_7d7ow"]
+length = 0.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = false
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [SubResource("AtlasTexture_mrjm2"), SubResource("AtlasTexture_wnd0j")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_atk6u"]
+_data = {
+"normal": SubResource("Animation_cpoj4"),
+"updated": SubResource("Animation_7d7ow")
+}
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jo8s8"]
+content_margin_right = 4.0
 
 [node name="GameHUD" type="Control"]
 layout_mode = 3
@@ -16,27 +213,123 @@ script = ExtResource("1_2id7g")
 
 [node name="BoundRect" type="TextureRect" parent="."]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 48.0
+offset_top = 108.0
+offset_right = 88.0
+offset_bottom = 148.0
 texture = ExtResource("2_wot7v")
 expand_mode = 2
 stretch_mode = 2
+
+[node name="FoodTimeoutProgressBar" type="TextureProgressBar" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 48.0
+offset_top = 96.0
+offset_right = 1872.0
+offset_bottom = 102.0
+value = 50.0
+rounded = true
+fill_mode = 6
+texture_progress = ExtResource("4_06g36")
+tint_progress = Color(0.435294, 0.196078, 0.305882, 1)
 
 [node name="StatContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 18.0
-offset_top = -6.0
-offset_right = -1274.0
-offset_bottom = -1058.0
+offset_left = 48.0
+offset_top = 15.0
+offset_right = -1264.0
+offset_bottom = -1037.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(3, 3)
 alignment = 1
 
+[node name="ScoreIcon" type="TextureRect" parent="StatContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 2
+texture = SubResource("AtlasTexture_tlsnu")
+stretch_mode = 3
+metadata/_aseprite_wizard_interface_config_ = {
+"animation_section": true,
+"output_section": true
+}
+metadata/_aseprite_wizard_config_ = {
+"i_mode": -1,
+"keep_anim_length": false,
+"layer": "",
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"player": "",
+"slice": "",
+"source": ""
+}
+metadata/_aseprite_wizard_source_file_hash_ = "6f9a3d305538487b9ac01192f0aa3b41"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="StatContainer/ScoreIcon"]
+libraries = {
+"": SubResource("AnimationLibrary_py8b0")
+}
+
 [node name="ScoreLabel" type="Label" parent="StatContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("4_gjqcv")
 text = "NaN"
+
+[node name="VSeparator" type="VSeparator" parent="StatContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+theme_override_styles/separator = SubResource("StyleBoxEmpty_vfedx")
+
+[node name="KillIcon" type="TextureRect" parent="StatContainer"]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 2
+texture = SubResource("AtlasTexture_3w4v7")
+stretch_mode = 3
+metadata/_aseprite_wizard_config_ = {
+"i_mode": -1,
+"keep_anim_length": false,
+"layer": "",
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"player": "",
+"slice": "",
+"source": ""
+}
+metadata/_aseprite_wizard_interface_config_ = {
+"output_section": true
+}
+metadata/_aseprite_wizard_source_file_hash_ = "d6fa86567f770d985e416ec300c99924"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="StatContainer/KillIcon"]
+libraries = {
+"": SubResource("AnimationLibrary_atk6u")
+}
+
+[node name="KillCountLabel" type="Label" parent="StatContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_stretch_ratio = 0.0
+theme_override_fonts/font = ExtResource("4_gjqcv")
+text = "NaN"
+
+[node name="LevelLabel" type="Label" parent="StatContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_gjqcv")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_jo8s8")
+text = "level -1"
+horizontal_alignment = 2

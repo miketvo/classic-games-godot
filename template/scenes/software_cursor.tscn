@@ -77,12 +77,12 @@ metadata/_aseprite_wizard_config_ = {
 "keep_anim_length": false,
 "layer": "",
 "o_ex_p": "",
-"o_folder": "res://assets/ui",
-"o_name": "cursor",
+"o_folder": "",
+"o_name": "",
 "only_visible": false,
 "op_exp": false,
-"player": "Cursor/AnimationPlayer",
-"source": "~/Projects/Godot/classic-games-godot-art/p0ng/cursor.ase"
+"player": "",
+"source": ""
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]

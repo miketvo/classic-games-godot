@@ -5,6 +5,8 @@ extends Node2D
 # ============================================================================ #
 #region Enums
 
+enum GameMode { CLASSIC, CHAOS }
+
 enum Direction { UP, LEFT, DOWN, RIGHT }
 
 ## The integer value on the RHS corresponds to how much a snake would grow when
@@ -40,7 +42,7 @@ const DIRECTIONS: Dictionary = {
 }
 const INITIAL_STEP_DURATION: float = 0.15 ## Unit: seconds.
 const STEP_DURATION_CHANGE: float = 0.95 ## Affects how much the game speeds up. This is a ratio.
-const WORLD_SIZE: Vector2i = Vector2i(62, 32) ## Unit: cells x cells.
+const WORLD_SIZE: Vector2i = Vector2i(60, 30) ## Unit: cells x cells.
 const FOOD_PROBABILITIES: Array[float] = [0.8, 0.2] ## Must adds up to 1.0.
 #endregion
 # ============================================================================ #
@@ -55,6 +57,7 @@ var os_platform: StringName
 
 var software_cursor_visibility: SoftwareCursor.Visibility\
         = SoftwareCursor.Visibility.ALWAYS_VISIBLE
+var current_game_mode: GameMode
 var game_state_data: GameStateData = GameStateData.new()
 
 #endregion
@@ -89,6 +92,6 @@ func _exit_tree() -> void:
 ## Game state data. Contains relevant information on the current state of the
 ## game, for use with a [StateMachine] and its [State]s.
 class GameStateData extends Node:
-    pass
+    pass # TODO: Include game state data here for AI functionalities.
 #endregion
 # ============================================================================ #

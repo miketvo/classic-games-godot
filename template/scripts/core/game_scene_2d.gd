@@ -2,7 +2,7 @@ class_name GameScene2D
 extends Node2D
 
 
-## Signal whether this scene is done processing and is ready to switch to the
+## Signals whether this scene is done processing and is ready to switch to the
 ## next scene.
 ## [br][br]
 ## Not emitted by default. Must be emitted manually.
