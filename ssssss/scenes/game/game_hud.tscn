@@ -270,7 +270,6 @@ metadata/_aseprite_wizard_config_ = {
 "slice": "",
 "source": ""
 }
-metadata/_aseprite_wizard_source_file_hash_ = "6f9a3d305538487b9ac01192f0aa3b41"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="StatContainer/ScoreIcon"]
 libraries = {
@@ -310,7 +309,6 @@ metadata/_aseprite_wizard_config_ = {
 metadata/_aseprite_wizard_interface_config_ = {
 "output_section": true
 }
-metadata/_aseprite_wizard_source_file_hash_ = "d6fa86567f770d985e416ec300c99924"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="StatContainer/KillIcon"]
 libraries = {

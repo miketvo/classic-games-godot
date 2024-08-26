@@ -21,9 +21,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 896.0
-offset_top = 539.0
+offset_top = 509.0
 offset_right = -896.0
-offset_bottom = -437.0
+offset_bottom = -467.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(3, 3)
@@ -68,9 +68,9 @@ text = "quit"
 [node name="StartMenuContainer" type="VBoxContainer" parent="."]
 layout_mode = 0
 offset_left = 2048.0
-offset_top = 467.0
+offset_top = 437.0
 offset_right = 2176.0
-offset_bottom = 601.0
+offset_bottom = 571.0
 scale = Vector2(3, 3)
 pivot_offset = Vector2(64, 0)
 

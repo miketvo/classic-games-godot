@@ -42,7 +42,7 @@ script = ExtResource("1_kt8cq")
 
 [node name="GameTitle" type="Node2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(960, 270)
+position = Vector2(960, 282)
 
 [node name="Sprite2D" type="Sprite2D" parent="GameTitle"]
 texture_filter = 1
@@ -67,7 +67,6 @@ metadata/_aseprite_wizard_config_ = {
 "slice": "",
 "source": ""
 }
-metadata/_aseprite_wizard_source_file_hash_ = "308baab667821e783bfe967f66952807"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="GameTitle/Sprite2D"]
 libraries = {
