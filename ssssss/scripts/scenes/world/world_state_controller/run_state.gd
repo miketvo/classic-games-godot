@@ -33,7 +33,7 @@ func _enter() -> void:
     _started = false
     _dead = false
     _start_cooldown_timer.paused = false
-    _start_cooldown_timer.start()
+    _start_cooldown_timer.start(world.start_delay)
 
 
 func _exit() -> void:
@@ -86,7 +86,7 @@ func pause() -> void:
 
 
 func unpause() -> void:
-    await get_tree().create_timer(0.5).timeout
+    await get_tree().create_timer(world.unpause_delay).timeout
     _step_timer.paused = false
 
 #endregion

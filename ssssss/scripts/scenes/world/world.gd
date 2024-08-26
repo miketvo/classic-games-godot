@@ -1,7 +1,8 @@
 @tool
 class_name World
 extends Node2D
-
+## All levels must be placed inside the [code]res://scenes/levels[/code]
+## directory.
 
 signal initialized
 signal configuration_changed
@@ -16,6 +17,26 @@ signal stopped
 
 # ============================================================================ #
 #region World configuration
+
+@export_group("Metadata", "meta")
+@export var meta_level_name: StringName = ""
+
+## Affects the placement of the level in the [code]LevelSelect[/code] scene. If
+## [code]-1[/code] or coincide with another level in the [code]levels[/code]
+## directory, then alphabetical order is used based on [param meta_level_name],
+## with priority given to ordered levels.
+@export var meta_level_order: int = -1
+
+## Additional JSON data to be stored along with the level, e.g. "target_score",
+## "target_food_count", "target_kill_count", etc., for use with building
+## external game logic handled by the parent scene of the level.
+## [br][br]
+## While this JSON file can be placed anywhere and have any name, for our,
+## convention, it should be placed under the same [code]levels[/code] folder as
+## the level it is attached to, and have the same name (ending in
+## [code].json[/code]).
+@export var meta_custom_data: JSON
+
 
 @export_group("Player", "player")
 
@@ -46,8 +67,21 @@ signal stopped
         player_initial_length = value
         configuration_changed.emit()
 
+
 @export_group("Simulation")
+
+## Delays the simulation start, to give the player more time to orient
+## themselves, or to give time for them to read any instruction displayed on the
+## screen.
+@export_range(0.01, 1.0, 0.001, "or_greater", "suffix:s") var start_delay: float = 0.5
+
+## Delays the simulation resume after [method unpause] id called, to help the
+## player re-orient themselves.
+@export_range(0.01, 1.0, 0.001, "or_greater", "suffix:s") var unpause_delay: float = 0.5
+
+## Is overriden by [constant NamespaceGlobal.INITIAL_STEP_DURATION].
 @export_range(0.01, 1.0, 0.001, "or_greater", "suffix:s") var initial_step_duration: float = 0.5
+
 
 @export_group("Rendering", "draw")
 

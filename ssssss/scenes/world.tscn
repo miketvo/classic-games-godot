@@ -1,21 +1,21 @@
 [gd_scene load_steps=21 format=4 uid="uid://wjw02a5opby"]
 
-[ext_resource type="Script" path="res://scripts/scenes/game/world/world.gd" id="1_2qbkl"]
-[ext_resource type="Script" path="res://scripts/scenes/game/world/tile_map.gd" id="2_jsiv2"]
-[ext_resource type="Texture2D" uid="uid://cwh5oliy2k7wa" path="res://assets/tilesets/debug_tileset.png" id="2_u2aod"]
-[ext_resource type="Texture2D" uid="uid://dveak58kqjy3" path="res://assets/tilesets/snake_odd_tileset.png" id="4_b5bwn"]
-[ext_resource type="Texture2D" uid="uid://dwh3bho0oetcw" path="res://assets/tilesets/wall_tileset.png" id="5_rpj3e"]
-[ext_resource type="Texture2D" uid="uid://cc0xtf4pfkgpo" path="res://assets/tilesets/snake_even_tileset.png" id="5_y1ofe"]
-[ext_resource type="Texture2D" uid="uid://cfa4iywspm65h" path="res://assets/tilesets/food_tileset.png" id="6_mi63g"]
-[ext_resource type="Script" path="res://scripts/core/state_machine/state_matchine.gd" id="8_6hybs"]
-[ext_resource type="Script" path="res://scripts/scenes/game/world/world_state_controller/build_state.gd" id="9_856em"]
-[ext_resource type="Script" path="res://scripts/scenes/game/world/render_controller.gd" id="9_ddoxf"]
-[ext_resource type="Script" path="res://scripts/scenes/game/world/world_state_controller/run_state.gd" id="10_1ibom"]
-[ext_resource type="Script" path="res://scripts/scenes/game/world/world_state_controller/stop_state.gd" id="11_sfcvu"]
+[ext_resource type="Script" path="res://scripts/scenes/world/world.gd" id="1_x8ono"]
+[ext_resource type="Script" path="res://scripts/scenes/world/tile_map.gd" id="2_odm1s"]
+[ext_resource type="Texture2D" uid="uid://cwh5oliy2k7wa" path="res://assets/tilesets/debug_tileset.png" id="3_hajen"]
+[ext_resource type="Texture2D" uid="uid://dveak58kqjy3" path="res://assets/tilesets/snake_odd_tileset.png" id="4_age47"]
+[ext_resource type="Texture2D" uid="uid://cc0xtf4pfkgpo" path="res://assets/tilesets/snake_even_tileset.png" id="5_l8ogs"]
+[ext_resource type="Texture2D" uid="uid://cfa4iywspm65h" path="res://assets/tilesets/food_tileset.png" id="6_xw6dw"]
+[ext_resource type="Texture2D" uid="uid://dwh3bho0oetcw" path="res://assets/tilesets/wall_tileset.png" id="7_7cbuq"]
+[ext_resource type="Script" path="res://scripts/scenes/world/render_controller.gd" id="8_ywaie"]
+[ext_resource type="Script" path="res://scripts/core/state_machine/state_matchine.gd" id="9_clrjh"]
+[ext_resource type="Script" path="res://scripts/scenes/world/world_state_controller/build_state.gd" id="10_brr5k"]
+[ext_resource type="Script" path="res://scripts/scenes/world/world_state_controller/run_state.gd" id="11_5cu36"]
+[ext_resource type="Script" path="res://scripts/scenes/world/world_state_controller/stop_state.gd" id="12_dvo2o"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_uvbc0"]
 resource_name = "debug_tileset"
-texture = ExtResource("2_u2aod")
+texture = ExtResource("3_hajen")
 texture_region_size = Vector2i(30, 30)
 0:0/0 = 0
 0:0/0/custom_data_0 = &"_0"
@@ -38,7 +38,7 @@ sources/0 = SubResource("TileSetAtlasSource_uvbc0")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_erv6w"]
 resource_name = "snake_odd_tileset"
-texture = ExtResource("4_b5bwn")
+texture = ExtResource("4_age47")
 texture_region_size = Vector2i(30, 30)
 1:2/next_alternative_id = 3
 1:2/0 = 0
@@ -248,7 +248,7 @@ texture_region_size = Vector2i(30, 30)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_n62ta"]
 resource_name = "snake_even_tileset"
-texture = ExtResource("5_y1ofe")
+texture = ExtResource("5_l8ogs")
 texture_region_size = Vector2i(30, 30)
 1:0/next_alternative_id = 2
 1:0/0 = 0
@@ -458,7 +458,7 @@ texture_region_size = Vector2i(30, 30)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yraow"]
 resource_name = "food_tileset"
-texture = ExtResource("6_mi63g")
+texture = ExtResource("6_xw6dw")
 texture_region_size = Vector2i(30, 30)
 0:0/0 = 0
 0:0/0/custom_data_0 = &"food_small"
@@ -485,7 +485,7 @@ sources/3 = SubResource("TileSetAtlasSource_yraow")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1xoms"]
 resource_name = "wall_tileset"
-texture = ExtResource("5_rpj3e")
+texture = ExtResource("7_7cbuq")
 texture_region_size = Vector2i(30, 30)
 0:0/0 = 0
 0:0/0/custom_data_0 = &"wall"
@@ -497,15 +497,16 @@ custom_data_layer_0/type = 21
 sources/4 = SubResource("TileSetAtlasSource_1xoms")
 
 [node name="World" type="Node2D"]
-script = ExtResource("1_2qbkl")
+script = ExtResource("1_x8ono")
 
 [node name="TileMap" type="Node2D" parent="."]
 position = Vector2(60, 120)
-script = ExtResource("2_jsiv2")
+script = ExtResource("2_odm1s")
 
 [node name="CenterMarker" type="Marker2D" parent="TileMap"]
 position = Vector2(900, 450)
 gizmo_extents = 450.0
+metadata/_edit_lock_ = true
 
 [node name="DebugLayer" type="TileMapLayer" parent="TileMap"]
 visible = false
@@ -522,28 +523,27 @@ tile_set = SubResource("TileSet_kq75h")
 tile_set = SubResource("TileSet_fpx3u")
 
 [node name="RenderController" type="Node" parent="." node_paths=PackedStringArray("world", "tile_map")]
-script = ExtResource("9_ddoxf")
+script = ExtResource("8_ywaie")
 world = NodePath("..")
 tile_map = NodePath("../TileMap")
 
 [node name="WorldStateController" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
-script = ExtResource("8_6hybs")
+script = ExtResource("9_clrjh")
 initial_state = NodePath("BuildState")
 
 [node name="BuildState" type="Node" parent="WorldStateController" node_paths=PackedStringArray("world", "tile_map")]
-script = ExtResource("9_856em")
+script = ExtResource("10_brr5k")
 world = NodePath("../..")
 tile_map = NodePath("../../TileMap")
 
 [node name="RunState" type="Node" parent="WorldStateController" node_paths=PackedStringArray("world")]
-script = ExtResource("10_1ibom")
+script = ExtResource("11_5cu36")
 world = NodePath("../..")
 
 [node name="StartCooldownTimer" type="Timer" parent="WorldStateController/RunState"]
-wait_time = 0.5
 one_shot = true
 
 [node name="StepTimer" type="Timer" parent="WorldStateController/RunState"]
 
 [node name="StopState" type="Node" parent="WorldStateController"]
-script = ExtResource("11_sfcvu")
+script = ExtResource("12_dvo2o")

@@ -44,7 +44,12 @@ const INITIAL_STEP_DURATION: float = 0.15 ## Unit: seconds.
 const STEP_DURATION_CHANGE: float = 0.95 ## Affects how much the game speeds up. This is a ratio.
 const WORLD_SIZE: Vector2i = Vector2i(60, 30) ## Unit: cells x cells.
 const FOOD_PROBABILITIES: Array[float] = [0.8, 0.2] ## Must adds up to 1.0.
-#endregion
+const FOOD_SCORE: Dictionary = { ## The score reward for the player for each food eaten.
+    FoodType.SMALL: 10,
+    FoodType.BIG: 100,
+}
+## The base score reward for the player when killing enemy snakes, based on how long that snake was.
+const KILL_SCORE_PER_LENGTH: int = 50
 # ============================================================================ #
 
 
