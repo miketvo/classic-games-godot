@@ -1,0 +1,14 @@
+{
+	"order": 5,
+	"name": "Crossroad",
+	"preview": "level_5.png",
+	"win_condition": {
+		"classic_mode": {
+			"target_score": 5000
+		},
+		"chaos_mode": {
+			"target_score": 6000,
+			"target_kills": 9
+		}
+	}
+}

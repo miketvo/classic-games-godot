@@ -1,0 +1,14 @@
+{
+	"order": 6,
+	"name": "Parking Lot",
+	"preview": "level_6.png",
+	"win_condition": {
+		"classic_mode": {
+			"target_score": 6000
+		},
+		"chaos_mode": {
+			"target_score": 7200,
+			"target_kills": 11
+		}
+	}
+}

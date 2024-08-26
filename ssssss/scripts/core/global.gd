@@ -22,6 +22,9 @@ enum FoodType {
 
 # ============================================================================ #
 #region Constants
+const LEVEL_DIRECTORY: String = "res://scenes/levels"
+const LEVEL_PREVIEW_DIRECTORY: String = "res://assets/level_previews"
+const LEVEL_PREVIEW_NULL: String = "res://assets/level_previews/null.png"
 const COLOR_PALETTE: Dictionary = {
     "bg": Color("#180c21"),
     "fg_0": Color("#6f324e"),
@@ -62,6 +65,8 @@ var os_platform: StringName
 
 var software_cursor_visibility: SoftwareCursor.Visibility\
         = SoftwareCursor.Visibility.ALWAYS_VISIBLE
+var levels: Array[Dictionary]
+var current_level: int
 var current_game_mode: GameMode
 var game_state_data: GameStateData = GameStateData.new()
 
@@ -83,6 +88,8 @@ func _ready() -> void:
         _:
             printerr("Platform not supported: %s", os_name)
             get_tree().quit()
+
+    levels = []
 
 
 func _exit_tree() -> void:

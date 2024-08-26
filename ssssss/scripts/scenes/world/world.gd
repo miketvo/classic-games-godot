@@ -18,26 +18,6 @@ signal stopped
 # ============================================================================ #
 #region World configuration
 
-@export_group("Metadata", "meta")
-@export var meta_level_name: StringName = ""
-
-## Affects the placement of the level in the [code]LevelSelect[/code] scene. If
-## [code]-1[/code] or coincide with another level in the [code]levels[/code]
-## directory, then alphabetical order is used based on [param meta_level_name],
-## with priority given to ordered levels.
-@export var meta_level_order: int = -1
-
-## Additional JSON data to be stored along with the level, e.g. "target_score",
-## "target_food_count", "target_kill_count", etc., for use with building
-## external game logic handled by the parent scene of the level.
-## [br][br]
-## While this JSON file can be placed anywhere and have any name, for our,
-## convention, it should be placed under the same [code]levels[/code] folder as
-## the level it is attached to, and have the same name (ending in
-## [code].json[/code]).
-@export var meta_custom_data: JSON
-
-
 @export_group("Player", "player")
 
 ## The x-coordinate of the player snake head.
