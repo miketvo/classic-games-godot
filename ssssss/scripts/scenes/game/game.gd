@@ -2,10 +2,12 @@ extends GameScene2D
 
 
 var _game_mode: Global.GameMode
+var _level: Dictionary
+var _level_scene: PackedScene
+var _game_world: World
 var _paused: bool
 
 
-@onready var _game_world: World = $World
 @onready var _game_ui: UI = $UI/GameUI
 
 
@@ -13,10 +15,14 @@ var _paused: bool
 #region Godot builtins
 func _ready() -> void:
     _game_mode = Global.current_game_mode
+    _level = Global.levels[Global.current_level]
+    _level_scene = load(_level["scene_file"])
     _paused = false
     _game_ui.acted.connect(_on_game_ui_acted)
 
     # TODO: Remove this test code:
+    _game_world = _level_scene.instantiate()
+    add_child(_game_world)
     _game_world.initial_step_duration = Global.INITIAL_STEP_DURATION
     _game_world.food_eaten.connect(_on_food_eaten.unbind(1))
     # End of TODO.
@@ -60,6 +66,7 @@ func is_paused() -> bool:
 # TODO: Remove this test code:
 func _on_food_eaten(snake_id: int) -> void:
     if snake_id == 0:
+        _game_world.spawn_random_food()
         _game_world.set_step_duration(
                 _game_world.get_step_duration() * Global.STEP_DURATION_CHANGE
         )

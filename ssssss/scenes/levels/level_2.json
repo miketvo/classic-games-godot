@@ -1,0 +1,14 @@
+{
+	"order": 2,
+	"name": "Fort",
+	"preview": "level_2.png",
+	"win_condition": {
+		"classic_mode": {
+			"target_score": 2000
+		},
+		"chaos_mode": {
+			"target_score": 2400,
+			"target_kills": 3
+		}
+	}
+}

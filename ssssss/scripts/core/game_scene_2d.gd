@@ -16,6 +16,7 @@ enum SceneKey {
     SPLASH,
     MAIN_MENU,
     SETTINGS_MENU,
+    LEVEL_SELECT,
     GAME,
     NONE,
 }
@@ -24,5 +25,6 @@ const GAME_SCENE = {
     SceneKey.SPLASH: "res://scenes/splash.tscn",
     SceneKey.MAIN_MENU: "res://scenes/main_menu/main_menu.tscn",
     SceneKey.SETTINGS_MENU: "res://scenes/settings_menu/settings_menu.tscn",
+    SceneKey.LEVEL_SELECT: "res://scenes/level_select/level_select.tscn",
     SceneKey.GAME: "res://scenes/game/game.tscn",
 }

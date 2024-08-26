@@ -1,7 +1,8 @@
 @tool
 class_name World
 extends Node2D
-
+## All levels must be placed inside the [code]res://scenes/levels[/code]
+## directory.
 
 signal initialized
 signal configuration_changed
@@ -46,8 +47,21 @@ signal stopped
         player_initial_length = value
         configuration_changed.emit()
 
+
 @export_group("Simulation")
+
+## Delays the simulation start, to give the player more time to orient
+## themselves, or to give time for them to read any instruction displayed on the
+## screen.
+@export_range(0.01, 1.0, 0.001, "or_greater", "suffix:s") var start_delay: float = 0.5
+
+## Delays the simulation resume after [method unpause] id called, to help the
+## player re-orient themselves.
+@export_range(0.01, 1.0, 0.001, "or_greater", "suffix:s") var unpause_delay: float = 0.5
+
+## Is overriden by [constant NamespaceGlobal.INITIAL_STEP_DURATION].
 @export_range(0.01, 1.0, 0.001, "or_greater", "suffix:s") var initial_step_duration: float = 0.5
+
 
 @export_group("Rendering", "draw")
 

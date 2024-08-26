@@ -22,6 +22,9 @@ enum FoodType {
 
 # ============================================================================ #
 #region Constants
+const LEVEL_DIRECTORY: String = "res://scenes/levels"
+const LEVEL_PREVIEW_DIRECTORY: String = "res://assets/level_previews"
+const LEVEL_PREVIEW_NULL: String = "res://assets/level_previews/null.png"
 const COLOR_PALETTE: Dictionary = {
     "bg": Color("#180c21"),
     "fg_0": Color("#6f324e"),
@@ -44,7 +47,12 @@ const INITIAL_STEP_DURATION: float = 0.15 ## Unit: seconds.
 const STEP_DURATION_CHANGE: float = 0.95 ## Affects how much the game speeds up. This is a ratio.
 const WORLD_SIZE: Vector2i = Vector2i(60, 30) ## Unit: cells x cells.
 const FOOD_PROBABILITIES: Array[float] = [0.8, 0.2] ## Must adds up to 1.0.
-#endregion
+const FOOD_SCORE: Dictionary = { ## The score reward for the player for each food eaten.
+    FoodType.SMALL: 10,
+    FoodType.BIG: 100,
+}
+## The base score reward for the player when killing enemy snakes, based on how long that snake was.
+const KILL_SCORE_PER_LENGTH: int = 50
 # ============================================================================ #
 
 
@@ -57,6 +65,8 @@ var os_platform: StringName
 
 var software_cursor_visibility: SoftwareCursor.Visibility\
         = SoftwareCursor.Visibility.ALWAYS_VISIBLE
+var levels: Array[Dictionary]
+var current_level: int
 var current_game_mode: GameMode
 var game_state_data: GameStateData = GameStateData.new()
 
@@ -78,6 +88,8 @@ func _ready() -> void:
         _:
             printerr("Platform not supported: %s", os_name)
             get_tree().quit()
+
+    levels = []
 
 
 func _exit_tree() -> void:
