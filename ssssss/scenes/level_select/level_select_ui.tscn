@@ -610,10 +610,10 @@ script = ExtResource("2_i3fuq")
 
 [node name="TopContainer" type="VBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 30.0
-offset_top = 30.0
-offset_right = 650.0
-offset_bottom = 370.0
+offset_left = 36.0
+offset_top = 42.0
+offset_right = 652.0
+offset_bottom = 376.0
 scale = Vector2(3, 3)
 metadata/_edit_group_ = true
 
@@ -627,6 +627,11 @@ layout_mode = 2
 [node name="PreviousLevelButton" type="Button" parent="TopContainer/LevelPreviewContainer/SelectionControlContainer" groups=["ui_container_slider_buttons"]]
 unique_name_in_owner = true
 layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath("../BackButton")
+focus_next = NodePath("../NextLevelButton")
+focus_previous = NodePath("../NextLevelButton")
 text = "<"
 
 [node name="LeftVSeparator" type="VSeparator" parent="TopContainer/LevelPreviewContainer/SelectionControlContainer"]
@@ -638,12 +643,22 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_noi0m")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+focus_neighbor_left = NodePath("../PreviousLevelButton")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath("../PlayButton")
+focus_next = NodePath("../PlayButton")
+focus_previous = NodePath("../PlayButton")
 text = "back"
 
 [node name="PlayButton" type="Button" parent="TopContainer/LevelPreviewContainer/SelectionControlContainer" groups=["ui_scene_changer_buttons"]]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+focus_neighbor_left = NodePath("../BackButton")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath("../NextLevelButton")
+focus_next = NodePath("../BackButton")
+focus_previous = NodePath("../BackButton")
 text = "play"
 
 [node name="RightVSeparator" type="VSeparator" parent="TopContainer/LevelPreviewContainer/SelectionControlContainer"]
@@ -654,22 +669,28 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_noi0m")
 [node name="NextLevelButton" type="Button" parent="TopContainer/LevelPreviewContainer/SelectionControlContainer" groups=["ui_container_slider_buttons"]]
 unique_name_in_owner = true
 layout_mode = 2
+focus_neighbor_left = NodePath("../PlayButton")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_next = NodePath("../PreviousLevelButton")
+focus_previous = NodePath("../PreviousLevelButton")
 text = ">"
 
 [node name="LevelPreviewImageContainer" type="CenterContainer" parent="TopContainer/LevelPreviewContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="LevelPreivew" type="TextureRect" parent="TopContainer/LevelPreviewContainer/LevelPreviewImageContainer"]
+[node name="LevelPreview" type="TextureRect" parent="TopContainer/LevelPreviewContainer/LevelPreviewImageContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="TopContainer"]
+[node name="LevelScrollContainer" type="ScrollContainer" parent="TopContainer"]
 layout_mode = 2
 theme = SubResource("Theme_mjjbh")
+follow_focus = true
 vertical_scroll_mode = 0
 
-[node name="LevelListContainer" type="HBoxContainer" parent="TopContainer/ScrollContainer"]
+[node name="LevelListContainer" type="HBoxContainer" parent="TopContainer/LevelScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 

@@ -20,6 +20,8 @@ func _ready() -> void:
             load_succeeded.emit()
         else:
             load_failed.emit()
+    else:
+        load_succeeded.emit()
 #endregion
 # ============================================================================ #
 
