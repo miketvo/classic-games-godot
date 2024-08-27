@@ -1,23 +1,22 @@
-[gd_scene load_steps=25 format=3 uid="uid://dpy8k0nhdaw8i"]
+[gd_scene load_steps=23 format=3 uid="uid://dpy8k0nhdaw8i"]
 
 [ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_1nijk"]
 [ext_resource type="Script" path="res://scripts/scenes/game/game_hud.gd" id="1_2id7g"]
 [ext_resource type="Texture2D" uid="uid://ctnpg4labkw18" path="res://assets/hud/game_bound.png" id="2_wot7v"]
 [ext_resource type="Texture2D" uid="uid://dhf28nkiwsr18" path="res://assets/hud/food_timeout_progress.png" id="4_06g36"]
 [ext_resource type="FontFile" uid="uid://ddknxnxd2tik7" path="res://assets/ui/fonts/gamer.ttf" id="4_gjqcv"]
-[ext_resource type="Texture2D" uid="uid://v22ahmyuximy" path="res://assets/hud/score_icon.png" id="5_qqopn"]
+[ext_resource type="Texture2D" uid="uid://v22ahmyuximy" path="res://assets/hud/score_icon.png" id="6_y24fw"]
 [ext_resource type="Texture2D" uid="uid://dmotvygds0hxx" path="res://assets/hud/kill_icon.png" id="7_11dbq"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5flap"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_tlsnu"]
-atlas = ExtResource("5_qqopn")
+[sub_resource type="AtlasTexture" id="AtlasTexture_14u7f"]
+atlas = ExtResource("6_y24fw")
 region = Rect2(0, 0, 16, 22)
 filter_clip = true
 
-[sub_resource type="Animation" id="Animation_d8p4d"]
+[sub_resource type="Animation" id="Animation_2su5r"]
 length = 0.1
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -40,36 +39,25 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [SubResource("AtlasTexture_tlsnu")]
+"values": [SubResource("AtlasTexture_14u7f")]
 }
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_wsary"]
-atlas = ExtResource("7_11dbq")
-region = Rect2(16, 0, 16, 16)
-filter_clip = true
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_y2624"]
-atlas = ExtResource("7_11dbq")
-region = Rect2(0, 0, 16, 16)
-filter_clip = true
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_3kfyk"]
-atlas = ExtResource("5_qqopn")
+[sub_resource type="AtlasTexture" id="AtlasTexture_bktf1"]
+atlas = ExtResource("6_y24fw")
 region = Rect2(16, 0, 16, 22)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_s7ryk"]
-atlas = ExtResource("5_qqopn")
+[sub_resource type="AtlasTexture" id="AtlasTexture_ubmui"]
+atlas = ExtResource("6_y24fw")
 region = Rect2(0, 0, 16, 22)
 filter_clip = true
 
-[sub_resource type="Animation" id="Animation_ruefx"]
+[sub_resource type="Animation" id="Animation_0ptha"]
 length = 0.2
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../KillIcon:visible")
+tracks/0/path = NodePath(".:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = false
 tracks/0/keys = {
@@ -81,56 +69,31 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../KillIcon:texture")
+tracks/1/path = NodePath(".:texture")
 tracks/1/interp = 1
 tracks/1/loop_wrap = false
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [SubResource("AtlasTexture_wsary"), SubResource("AtlasTexture_y2624")]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = false
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".:texture")
-tracks/3/interp = 1
-tracks/3/loop_wrap = false
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [SubResource("AtlasTexture_3kfyk"), SubResource("AtlasTexture_s7ryk")]
+"values": [SubResource("AtlasTexture_bktf1"), SubResource("AtlasTexture_ubmui")]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_py8b0"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_co0yv"]
 _data = {
-"normal": SubResource("Animation_d8p4d"),
-"updated": SubResource("Animation_ruefx")
+"normal": SubResource("Animation_2su5r"),
+"updated": SubResource("Animation_0ptha")
 }
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vfedx"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_3w4v7"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_5u5uk"]
 atlas = ExtResource("7_11dbq")
 region = Rect2(0, 0, 16, 22)
 filter_clip = true
 
-[sub_resource type="Animation" id="Animation_cpoj4"]
+[sub_resource type="Animation" id="Animation_mnwuw"]
 length = 0.1
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -153,22 +116,21 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [SubResource("AtlasTexture_3w4v7")]
+"values": [SubResource("AtlasTexture_5u5uk")]
 }
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mrjm2"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_5qgbc"]
 atlas = ExtResource("7_11dbq")
 region = Rect2(16, 0, 16, 22)
 filter_clip = true
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_wnd0j"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_1vxxb"]
 atlas = ExtResource("7_11dbq")
 region = Rect2(0, 0, 16, 22)
 filter_clip = true
 
-[sub_resource type="Animation" id="Animation_7d7ow"]
+[sub_resource type="Animation" id="Animation_bttd2"]
 length = 0.2
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -191,13 +153,13 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [SubResource("AtlasTexture_mrjm2"), SubResource("AtlasTexture_wnd0j")]
+"values": [SubResource("AtlasTexture_5qgbc"), SubResource("AtlasTexture_1vxxb")]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_atk6u"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q630x"]
 _data = {
-"normal": SubResource("Animation_cpoj4"),
-"updated": SubResource("Animation_7d7ow")
+"normal": SubResource("Animation_mnwuw"),
+"updated": SubResource("Animation_bttd2")
 }
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jo8s8"]
@@ -260,10 +222,11 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_5flap")
 unique_name_in_owner = true
 texture_filter = 1
 layout_mode = 2
-texture = SubResource("AtlasTexture_tlsnu")
+texture = SubResource("AtlasTexture_14u7f")
 stretch_mode = 3
 metadata/_aseprite_wizard_interface_config_ = {
 "animation_section": true,
+"layer_section": false,
 "output_section": true
 }
 metadata/_aseprite_wizard_config_ = {
@@ -271,17 +234,18 @@ metadata/_aseprite_wizard_config_ = {
 "keep_anim_length": false,
 "layer": "",
 "o_ex_p": "",
-"o_folder": "",
-"o_name": "",
+"o_folder": "res://assets/hud",
+"o_name": "score_icon",
 "only_visible": false,
-"player": "",
+"player": "StatContainer/ScoreIcon/AnimationPlayer",
 "slice": "",
-"source": ""
+"source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/ssssss/hud/score_icon_scaled.ase"
 }
+metadata/_aseprite_wizard_source_file_hash_ = "6f9a3d305538487b9ac01192f0aa3b41"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="StatContainer/ScoreIcon"]
 libraries = {
-"": SubResource("AnimationLibrary_py8b0")
+"": SubResource("AnimationLibrary_co0yv")
 }
 
 [node name="ScoreLabel" type="Label" parent="StatContainer"]
@@ -300,27 +264,28 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_vfedx")
 unique_name_in_owner = true
 texture_filter = 1
 layout_mode = 2
-texture = SubResource("AtlasTexture_3w4v7")
+texture = SubResource("AtlasTexture_5u5uk")
 stretch_mode = 3
 metadata/_aseprite_wizard_config_ = {
 "i_mode": -1,
 "keep_anim_length": false,
 "layer": "",
 "o_ex_p": "",
-"o_folder": "",
-"o_name": "",
+"o_folder": "res://assets/hud",
+"o_name": "kill_icon",
 "only_visible": false,
-"player": "",
+"player": "StatContainer/KillIcon/AnimationPlayer",
 "slice": "",
-"source": ""
+"source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/ssssss/hud/kill_icon_scaled.ase"
 }
 metadata/_aseprite_wizard_interface_config_ = {
 "output_section": true
 }
+metadata/_aseprite_wizard_source_file_hash_ = "d6fa86567f770d985e416ec300c99924"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="StatContainer/KillIcon"]
 libraries = {
-"": SubResource("AnimationLibrary_atk6u")
+"": SubResource("AnimationLibrary_q630x")
 }
 
 [node name="KillCountLabel" type="Label" parent="StatContainer"]

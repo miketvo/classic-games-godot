@@ -15,6 +15,7 @@ dest_files=["res://.godot/imported/3d_venture.ttf-869e0c482f610d61d813f4f0eabe6b
 Rendering=null
 antialiasing=1
 generate_mipmaps=false
+disable_embedded_bitmaps=true
 multichannel_signed_distance_field=false
 msdf_pixel_range=8
 msdf_size=48

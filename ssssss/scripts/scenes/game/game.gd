@@ -2,14 +2,14 @@ extends GameScene2D
 
 
 signal level_loaded
-
+signal player_ate_food
+signal player_killed_enemy
 
 enum GameResult {
     GAME_LOST,
     GAME_WON,
     NONE,
 }
-
 
 var game_world: World
 var game_result: GameResult
@@ -34,11 +34,13 @@ func _ready() -> void:
     _level_scene = load(_level["scene_file"])
     _paused = false
 
-    _game_ui.acted.connect(_on_game_ui_acted)
     _game_stop_state.game_ended.connect(_on_game_ended)
+    _game_ui.acted.connect(_on_game_ui_acted)
 
     game_world = _level_scene.instantiate()
     game_world.initial_step_duration = Global.INITIAL_STEP_DURATION
+    game_world.food_eaten.connect(_on_game_world_food_eaten.unbind(1))
+    game_world.snake_collided.connect(_on_game_world_snake_collided)
     add_child(game_world)
     level_loaded.emit()
 
@@ -87,6 +89,21 @@ func _on_game_ui_acted(action: StringName) -> void:
             scene_finished.emit(SceneKey.GAME)
         "end_game":
             scene_finished.emit(SceneKey.MAIN_MENU)
+
+
+# Listens to _game_world.food_eaten(snake_id: int, food_coords: Vector2i).unbind(1).
+func _on_game_world_food_eaten(snake_id: int) -> void:
+    if snake_id == 0:
+        player_ate_food.emit()
+
+
+# Listens to _game_world.snake_collided(snake_id: int, food_coords: Vector2i).
+func _on_game_world_snake_collided(snake_id: int, collide_coords: Vector2i) -> void:
+    if (
+            snake_id != 0 and
+            collide_coords in game_world.snakes[0]
+    ):
+        player_killed_enemy.emit()
 
 #endregion
 # ============================================================================ #

@@ -4,6 +4,7 @@ extends Node2D
 ## All levels must be placed inside the [code]res://scenes/levels[/code]
 ## directory.
 
+
 signal initialized
 signal configuration_changed
 signal built
