@@ -62,8 +62,6 @@ func _update(_delta: float, _game_state_data: Global.GameStateData) -> void:
             _player_control_queue.append(next_direction)
         if _player_control_queue.size() > 4:
             _player_control_queue.pop_front()
-
-    print(_player_control_queue)
 #endregion
 # ============================================================================ #
 
