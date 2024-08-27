@@ -40,6 +40,7 @@ func _ready() -> void:
 # Listens to parent.load_succeeded().
 func _on_load_succeeded() -> void:
     %LoadFailedLabel.visible = false
+    %PlayButton.disabled = false
     var level_select_button_group: ButtonGroup = ButtonGroup.new()
     for level in Global.levels:
         var level_number: int = level["metadata"]["order"]
@@ -68,6 +69,7 @@ func _on_load_succeeded() -> void:
 # Listens to parent.load_failed().
 func _on_load_failed() -> void:
     %LoadFailedLabel.visible = true
+    %PlayButton.disabled = true
 
 
 # Listens to %BackButton.pressed().

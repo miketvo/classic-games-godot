@@ -6,7 +6,7 @@ extends CanvasLayer
 enum Visibility {
     ALWAYS_VISIBLE,
     IDLE_AUTO_HIDE,
-    FORCE_HIDE
+    FORCE_HIDE,
 }
 
 

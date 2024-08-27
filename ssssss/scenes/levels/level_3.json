@@ -4,10 +4,10 @@
 	"preview": "level_3.png",
 	"win_condition": {
 		"classic_mode": {
-			"target_score": 3000
+			"target_score": 2400
 		},
 		"chaos_mode": {
-			"target_score": 3600,
+			"target_score": 2600,
 			"target_kills": 5
 		}
 	}

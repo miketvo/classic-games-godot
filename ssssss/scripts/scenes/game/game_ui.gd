@@ -1,7 +1,7 @@
 extends UI
 
 
-@export var game: GameScene2D
+@export var game_scene: GameScene2D
 
 var _disable_pausing: bool
 
@@ -29,6 +29,8 @@ func _ready() -> void:
             .connect("pressed", _on_restart_request)
     _pause_menu.get_node("VBoxContainer/EndGameButton")\
             .connect("pressed", _on_end_game_request)
+    _endgame_dialog.get_node("MenuContainer/VBoxContainer/NextLevelButton")\
+            .connect("pressed", _on_next_level_request)
     _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton")\
             .connect("pressed", _on_restart_request)
     _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton")\
@@ -54,7 +56,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
     if not input_disabled and not _disable_pausing:
-        if Input.is_action_just_released("pause") and not game.is_paused():
+        if Input.is_action_just_released("pause") and not game_scene.is_paused():
             Global.software_cursor_visibility = SoftwareCursor.Visibility.ALWAYS_VISIBLE
             acted.emit("pause")
             input_disabled = true
@@ -64,7 +66,7 @@ func _process(_delta: float) -> void:
                     Vector2.UP,
                     UI_TRANSITION_DURATION
             ).connect("finished", _on_tween_transition_finshed)
-        elif Input.is_action_just_released("pause") and game.is_paused():
+        elif Input.is_action_just_released("pause") and game_scene.is_paused():
             _on_resume_request()
 
 
@@ -78,12 +80,38 @@ func _input(_event: InputEvent) -> void:
 
 # ============================================================================ #
 #region Public methods
-func game_over() -> void:
+func end_game() -> void:
     _disable_pausing = true
     Global.software_cursor_visibility = SoftwareCursor.Visibility.ALWAYS_VISIBLE
 
     _endgame_dialog.visible = true
-    _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").grab_focus()
+    match game_scene.game_result:
+        game_scene.GameResult.GAME_WON:
+            if Global.current_level == Global.levels.size() - 1:
+                %WinLabel.visible = false
+                %LoseLabel.visible = false
+                %GameClearedMessageContainer.visible = true
+                UI.deactivate_control(_endgame_dialog.get_node(
+                        "MenuContainer/VBoxContainer/NextLevelButton"
+                ))
+                _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton")\
+                        .grab_focus()
+            else:
+                %WinLabel.visible = true
+                %LoseLabel.visible = false
+                %GameClearedMessageContainer.visible = false
+                _endgame_dialog.get_node("MenuContainer/VBoxContainer/NextLevelButton")\
+                        .grab_focus()
+        game_scene.GameResult.GAME_LOST:
+            %WinLabel.visible = false
+            %LoseLabel.visible = true
+            %GameClearedMessageContainer.visible = false
+            UI.deactivate_control(_endgame_dialog.get_node(
+                    "MenuContainer/VBoxContainer/NextLevelButton"
+            ))
+            _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton")\
+                    .grab_focus()
+
     tween_transition_fade_appear_container(
             _endgame_dialog,
             UI.UI_TRANSITION_DURATION / 8
@@ -110,6 +138,11 @@ func _on_resume_request() -> void:
 # $EndGameDialogContainer/MenuContainer/VBoxContainer/QuitToDesktopButton.pressed().
 func _on_quit_to_desktop_request() -> void:
     get_tree().quit()
+
+
+# Listens to _endgame_dialog.get_node("MenuContainer/VBoxContainer/NextLevelButton").pressed().
+func _on_next_level_request() -> void:
+    acted.emit("next_level")
 
 
 # Listens to _pause_menu.get_node("RestartButton").pressed() and

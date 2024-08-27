@@ -1,14 +1,29 @@
 extends GameScene2D
 
 
+signal level_loaded
+signal player_ate_food
+signal player_killed_enemy
+
+enum GameResult {
+    GAME_LOST,
+    GAME_WON,
+    NONE,
+}
+
+var game_world: World
+var game_result: GameResult
+var score: int
+var food_respawn_cooldown: float
+var kill_count: int
+
 var _game_mode: Global.GameMode
 var _level: Dictionary
 var _level_scene: PackedScene
-var _game_world: World
 var _paused: bool
 
-
 @onready var _game_ui: UI = $UI/GameUI
+@onready var _game_stop_state: State = $GameStateController/StopState
 
 
 # ============================================================================ #
@@ -18,40 +33,32 @@ func _ready() -> void:
     _level = Global.levels[Global.current_level]
     _level_scene = load(_level["scene_file"])
     _paused = false
+
+    _game_stop_state.game_ended.connect(_on_game_ended)
     _game_ui.acted.connect(_on_game_ui_acted)
 
-    # TODO: Remove this test code:
-    _game_world = _level_scene.instantiate()
-    add_child(_game_world)
-    _game_world.initial_step_duration = Global.INITIAL_STEP_DURATION
-    _game_world.food_eaten.connect(_on_food_eaten.unbind(1))
-    # End of TODO.
+    game_world = _level_scene.instantiate()
+    game_world.initial_step_duration = Global.INITIAL_STEP_DURATION
+    game_world.food_eaten.connect(_on_game_world_food_eaten.unbind(1))
+    game_world.snake_collided.connect(_on_game_world_snake_collided)
+    add_child(game_world)
+    level_loaded.emit()
 
-    _game_world.stopped.connect(_on_game_over)
-
-
-func _process(_delta: float) -> void:
-    # TODO: Remove this test code:
-    if _game_world.food_grid.is_clear():
-        _game_world.spawn_random_food()
-        _game_world.set_step_duration(
-                _game_world.get_step_duration() * Global.STEP_DURATION_CHANGE
-        )
-    # End of TODO.
+    game_result = GameResult.NONE
 #endregion
 # ============================================================================ #
 
 
 # ============================================================================ #
 #region Public methods
-func pause():
+func pause() -> void:
     _paused = true
-    _game_world.pause()
+    game_world.pause()
 
 
-func unpause():
+func unpause() -> void:
     _paused = false
-    _game_world.unpause()
+    game_world.unpause()
 
 
 func is_paused() -> bool:
@@ -63,18 +70,9 @@ func is_paused() -> bool:
 # ============================================================================ #
 #region Signal listeners
 
-# TODO: Remove this test code:
-func _on_food_eaten(snake_id: int) -> void:
-    if snake_id == 0:
-        _game_world.spawn_random_food()
-        _game_world.set_step_duration(
-                _game_world.get_step_duration() * Global.STEP_DURATION_CHANGE
-        )
-# End of TODO.
-
-
-func _on_game_over() -> void:
-    _game_ui.game_over()
+# Listens to $GameStateController/StopState.stopped().
+func _on_game_ended() -> void:
+    _game_ui.end_game()
 
 
 # Listens to $UI/GameUI.acted(action: StringName).
@@ -84,10 +82,28 @@ func _on_game_ui_acted(action: StringName) -> void:
             pause()
         "resume":
             unpause()
+        "next_level":
+            Global.current_level += 1
+            scene_finished.emit(SceneKey.GAME)
         "restart":
             scene_finished.emit(SceneKey.GAME)
         "end_game":
             scene_finished.emit(SceneKey.MAIN_MENU)
+
+
+# Listens to _game_world.food_eaten(snake_id: int, food_coords: Vector2i).unbind(1).
+func _on_game_world_food_eaten(snake_id: int) -> void:
+    if snake_id == 0:
+        player_ate_food.emit()
+
+
+# Listens to _game_world.snake_collided(snake_id: int, food_coords: Vector2i).
+func _on_game_world_snake_collided(snake_id: int, collide_coords: Vector2i) -> void:
+    if (
+            snake_id != 0 and
+            collide_coords in game_world.snakes[0]
+    ):
+        player_killed_enemy.emit()
 
 #endregion
 # ============================================================================ #
