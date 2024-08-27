@@ -234,14 +234,13 @@ metadata/_aseprite_wizard_config_ = {
 "keep_anim_length": false,
 "layer": "",
 "o_ex_p": "",
-"o_folder": "res://assets/hud",
-"o_name": "score_icon",
+"o_folder": "",
+"o_name": "",
 "only_visible": false,
-"player": "StatContainer/ScoreIcon/AnimationPlayer",
+"player": "",
 "slice": "",
-"source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/ssssss/hud/score_icon_scaled.ase"
+"source": ""
 }
-metadata/_aseprite_wizard_source_file_hash_ = "6f9a3d305538487b9ac01192f0aa3b41"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="StatContainer/ScoreIcon"]
 libraries = {
@@ -271,17 +270,16 @@ metadata/_aseprite_wizard_config_ = {
 "keep_anim_length": false,
 "layer": "",
 "o_ex_p": "",
-"o_folder": "res://assets/hud",
-"o_name": "kill_icon",
+"o_folder": "",
+"o_name": "",
 "only_visible": false,
-"player": "StatContainer/KillIcon/AnimationPlayer",
+"player": "",
 "slice": "",
-"source": "C:/Users/vomin/Projects/Godot/classic-games-godot-art/ssssss/hud/kill_icon_scaled.ase"
+"source": ""
 }
 metadata/_aseprite_wizard_interface_config_ = {
 "output_section": true
 }
-metadata/_aseprite_wizard_source_file_hash_ = "d6fa86567f770d985e416ec300c99924"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="StatContainer/KillIcon"]
 libraries = {
