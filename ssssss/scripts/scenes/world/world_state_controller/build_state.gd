@@ -6,16 +6,12 @@ signal built
 @export var world: World
 @export var tile_map: Node2D
 
-var _world_initialized: bool
-
 
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
     assert(world, "`world` must be set")
     assert(tile_map, "`tile_map` must be set")
-    _world_initialized = false
-    world.initialized.connect(_on_world_initialized)
 #endregion
 # ============================================================================ #
 
@@ -23,25 +19,10 @@ func _ready() -> void:
 # ============================================================================ #
 #region State builtins
 func _enter() -> void:
-    if _world_initialized:
-        _on_world_initialized()
-
-
-func _exit() -> void:
-    built.emit()
-#endregion
-# ============================================================================ #
-
-
-# ============================================================================ #
-#region Signal listeners
-
-# Listens to _world.initialized().
-func _on_world_initialized() -> void:
-    _world_initialized = true
+    await world.initialized
     _build_world()
+    built.emit()
     transitioned.emit(self, "RunState")
-
 #endregion
 # ============================================================================ #
 

@@ -208,7 +208,7 @@ func spawn_food(spawn_coords: Vector2i, food_type: Global.FoodType) -> void:
     food_grid.set_at(spawn_coords, food_type)
 
 
-func spawn_random_food(probabilities: Array[float] = Global.FOOD_PROBABILITIES) -> void:
+func spawn_random_food(probabilities: Array[float] = Global.FOOD_PROBABILITIES) -> Vector2i:
     assert(
             probabilities.reduce(
                     func (accum, probability): return accum + probability
@@ -234,6 +234,7 @@ func spawn_random_food(probabilities: Array[float] = Global.FOOD_PROBABILITIES) 
         ): break
     var food_type: int = Global.FoodType.values()[rng.rand_weighted(probabilities)]
     spawn_food(spawn_coords, food_type)
+    return spawn_coords
 
 
 func despawn_food(food_coords: Vector2i) -> void:

@@ -4,13 +4,22 @@ extends Node2D
 
 # ============================================================================ #
 #region Enums
-enum { SIDE_LEFT, SIDE_RIGHT, SIDE_UNDEFINED }
+enum {
+    SIDE_LEFT,
+    SIDE_RIGHT,
+    SIDE_UNDEFINED,
+}
 enum GameMode {
     GAME_MODE_ONE_PLAYER_LEFT,
     GAME_MODE_ONE_PLAYER_RIGHT,
     GAME_MODE_TWO_PLAYERS,
 }
-enum ControlScheme { NONE, MAIN, ALT, BOTH }
+enum ControlScheme {
+    NONE,
+    MAIN,
+    ALT,
+    BOTH,
+}
 #endregion
 # ============================================================================ #
 

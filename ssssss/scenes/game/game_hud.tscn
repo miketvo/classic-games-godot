@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dpy8k0nhdaw8i"]
+[gd_scene load_steps=25 format=3 uid="uid://dpy8k0nhdaw8i"]
 
 [ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_1nijk"]
 [ext_resource type="Script" path="res://scripts/scenes/game/game_hud.gd" id="1_2id7g"]
@@ -7,6 +7,8 @@
 [ext_resource type="FontFile" uid="uid://ddknxnxd2tik7" path="res://assets/ui/fonts/gamer.ttf" id="4_gjqcv"]
 [ext_resource type="Texture2D" uid="uid://v22ahmyuximy" path="res://assets/hud/score_icon.png" id="5_qqopn"]
 [ext_resource type="Texture2D" uid="uid://dmotvygds0hxx" path="res://assets/hud/kill_icon.png" id="7_11dbq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5flap"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_tlsnu"]
 atlas = ExtResource("5_qqopn")
@@ -246,7 +248,13 @@ offset_bottom = -1037.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(3, 3)
+theme_override_constants/separation = 6
 alignment = 1
+
+[node name="LeftPaddingVSeparator" type="VSeparator" parent="StatContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+theme_override_styles/separator = SubResource("StyleBoxEmpty_5flap")
 
 [node name="ScoreIcon" type="TextureRect" parent="StatContainer"]
 unique_name_in_owner = true
@@ -281,9 +289,9 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("4_gjqcv")
-text = "NaN"
+text = "NaN/NaN"
 
-[node name="VSeparator" type="VSeparator" parent="StatContainer"]
+[node name="GameStatVSeparator" type="VSeparator" parent="StatContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 theme_override_styles/separator = SubResource("StyleBoxEmpty_vfedx")
@@ -321,7 +329,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_stretch_ratio = 0.0
 theme_override_fonts/font = ExtResource("4_gjqcv")
-text = "NaN"
+text = "NaN/NaN"
 
 [node name="LevelLabel" type="Label" parent="StatContainer"]
 unique_name_in_owner = true
@@ -329,5 +337,5 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("4_gjqcv")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_jo8s8")
-text = "level -1"
+text = "level -1: NULL"
 horizontal_alignment = 2

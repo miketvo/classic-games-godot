@@ -5,15 +5,22 @@ extends Node2D
 # ============================================================================ #
 #region Enums
 
-enum GameMode { CLASSIC, CHAOS }
-
-enum Direction { UP, LEFT, DOWN, RIGHT }
+enum GameMode {
+    CLASSIC,
+    CHAOS,
+}
+enum Direction {
+    UP,
+    LEFT,
+    DOWN,
+    RIGHT,
+}
 
 ## The integer value on the RHS corresponds to how much a snake would grow when
 ## digesting the LHS food type.
 enum FoodType {
     SMALL = 1,
-    BIG = 10
+    BIG = 10,
 }
 
 #endregion
@@ -48,11 +55,11 @@ const STEP_DURATION_CHANGE: float = 0.95 ## Affects how much the game speeds up.
 const WORLD_SIZE: Vector2i = Vector2i(60, 30) ## Unit: cells x cells.
 const FOOD_PROBABILITIES: Array[float] = [0.8, 0.2] ## Must adds up to 1.0.
 const FOOD_SCORE: Dictionary = { ## The score reward for the player for each food eaten.
-    FoodType.SMALL: 10,
+    FoodType.SMALL: 50,
     FoodType.BIG: 100,
 }
 ## The base score reward for the player when killing enemy snakes, based on how long that snake was.
-const KILL_SCORE_PER_LENGTH: int = 50
+const KILL_SCORE_PER_LENGTH: int = 150
 # ============================================================================ #
 
 

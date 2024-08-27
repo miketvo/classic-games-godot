@@ -1,12 +1,14 @@
 extends UI
 
 
-@export var game: GameScene2D
+@export var game_scene: GameScene2D
 
 var _disable_pausing: bool
 
 @onready var _pause_menu: Container = $PauseMenuContainer
 @onready var _endgame_dialog: Container = $EndGameDialogContainer
+@onready var _win_label: Label = %WinLabel
+@onready var _lose_label: Label = %LoseLabel
 
 
 # ============================================================================ #
@@ -54,7 +56,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
     if not input_disabled and not _disable_pausing:
-        if Input.is_action_just_released("pause") and not game.is_paused():
+        if Input.is_action_just_released("pause") and not game_scene.is_paused():
             Global.software_cursor_visibility = SoftwareCursor.Visibility.ALWAYS_VISIBLE
             acted.emit("pause")
             input_disabled = true
@@ -64,7 +66,7 @@ func _process(_delta: float) -> void:
                     Vector2.UP,
                     UI_TRANSITION_DURATION
             ).connect("finished", _on_tween_transition_finshed)
-        elif Input.is_action_just_released("pause") and game.is_paused():
+        elif Input.is_action_just_released("pause") and game_scene.is_paused():
             _on_resume_request()
 
 
@@ -78,9 +80,17 @@ func _input(_event: InputEvent) -> void:
 
 # ============================================================================ #
 #region Public methods
-func game_over() -> void:
+func end_game() -> void:
     _disable_pausing = true
     Global.software_cursor_visibility = SoftwareCursor.Visibility.ALWAYS_VISIBLE
+
+    match game_scene.game_result:
+        game_scene.GameResult.GAME_WON:
+            _win_label.visible = true
+            _lose_label.visible = false
+        game_scene.GameResult.GAME_LOST:
+            _win_label.visible = false
+            _lose_label.visible = true
 
     _endgame_dialog.visible = true
     _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").grab_focus()
