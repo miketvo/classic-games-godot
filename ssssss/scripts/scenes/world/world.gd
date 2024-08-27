@@ -13,6 +13,8 @@ signal step(step_count: int)
 signal snake_collided(snake_id: int, collide_coords: Vector2i)
 signal food_eaten(snake_id: int, food_coords: Vector2i)
 signal food_digested(snake_id: int, food_coords: Vector2i)
+signal paused
+signal unpaused
 signal stopped
 
 
@@ -252,10 +254,12 @@ func set_step_duration(duration: float) -> void:
 
 func pause() -> void:
     running = false
+    paused.emit()
     _run_state.pause()
 
 
 func unpause() -> void:
+    unpaused.emit()
     _run_state.unpause()
 
 #endregion

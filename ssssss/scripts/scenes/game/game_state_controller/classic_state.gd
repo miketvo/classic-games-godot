@@ -38,6 +38,8 @@ func _ready() -> void:
 #region State builtins
 func _enter() -> void:
     _world = game_scene.game_world
+    _world.paused.connect(_on_world_paused)
+    _world.unpaused.connect(_on_world_unpaused)
     _world.stopped.connect(_lose_game)
     _world.food_eaten.connect(_on_food_eaten)
     _target_score = Global.levels[Global.current_level]\
@@ -59,6 +61,17 @@ func _update(_delta: float, _game_state_data: Global.GameStateData):
 
 # ============================================================================ #
 #region Signal listeners
+
+# Listens to _world.paused().
+func _on_world_paused() -> void:
+    _food_respawn_timer.paused = true
+
+
+# Listens to _world.unpaused().
+func _on_world_unpaused() -> void:
+    await get_tree().create_timer(_world.unpause_delay).timeout
+    _food_respawn_timer.paused = false
+
 
 # Listens to _world.food_eaten().
 func _on_food_eaten(_snake_id: int, food_coords: Vector2i) -> void:
@@ -127,7 +140,7 @@ func _on_food_respawn_timer_timeout() -> void:
 
 
 # ============================================================================ #
-#region Signal listeners
+#region Utils
 func _win_game() -> void:
     _food_respawn_timer.stop()
     _world.pause()
