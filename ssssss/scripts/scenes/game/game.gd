@@ -80,6 +80,9 @@ func _on_game_ui_acted(action: StringName) -> void:
             pause()
         "resume":
             unpause()
+        "next_level":
+            Global.current_level += 1
+            scene_finished.emit(SceneKey.GAME)
         "restart":
             scene_finished.emit(SceneKey.GAME)
         "end_game":

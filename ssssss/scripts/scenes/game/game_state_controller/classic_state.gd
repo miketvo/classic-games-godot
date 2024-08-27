@@ -63,7 +63,10 @@ func _update(_delta: float, _game_state_data: Global.GameStateData):
 # Listens to _world.food_eaten().
 func _on_food_eaten(_snake_id: int, food_coords: Vector2i) -> void:
     game_scene.score += Global.FOOD_SCORE[_world.food_grid.get_at(food_coords)]
-    _world.set_step_duration(_world.get_step_duration() * Global.STEP_DURATION_CHANGE)
+    _world.set_step_duration(max(
+            _world.get_step_duration() * Global.STEP_DURATION_CHANGE,
+            Global.MIN_STEP_DURATION
+    ))
 
     var new_food_pool: Array[Vector2i] = []
 

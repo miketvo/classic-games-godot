@@ -7,8 +7,6 @@ var _disable_pausing: bool
 
 @onready var _pause_menu: Container = $PauseMenuContainer
 @onready var _endgame_dialog: Container = $EndGameDialogContainer
-@onready var _win_label: Label = %WinLabel
-@onready var _lose_label: Label = %LoseLabel
 
 
 # ============================================================================ #
@@ -31,6 +29,8 @@ func _ready() -> void:
             .connect("pressed", _on_restart_request)
     _pause_menu.get_node("VBoxContainer/EndGameButton")\
             .connect("pressed", _on_end_game_request)
+    _endgame_dialog.get_node("MenuContainer/VBoxContainer/NextLevelButton")\
+            .connect("pressed", _on_next_level_request)
     _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton")\
             .connect("pressed", _on_restart_request)
     _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton")\
@@ -84,16 +84,34 @@ func end_game() -> void:
     _disable_pausing = true
     Global.software_cursor_visibility = SoftwareCursor.Visibility.ALWAYS_VISIBLE
 
+    _endgame_dialog.visible = true
     match game_scene.game_result:
         game_scene.GameResult.GAME_WON:
-            _win_label.visible = true
-            _lose_label.visible = false
+            if Global.current_level == Global.levels.size() - 1:
+                %WinLabel.visible = false
+                %LoseLabel.visible = false
+                %GameClearedMessageContainer.visible = true
+                UI.deactivate_control(_endgame_dialog.get_node(
+                        "MenuContainer/VBoxContainer/NextLevelButton"
+                ))
+                _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton")\
+                        .grab_focus()
+            else:
+                %WinLabel.visible = true
+                %LoseLabel.visible = false
+                %GameClearedMessageContainer.visible = false
+                _endgame_dialog.get_node("MenuContainer/VBoxContainer/NextLevelButton")\
+                        .grab_focus()
         game_scene.GameResult.GAME_LOST:
-            _win_label.visible = false
-            _lose_label.visible = true
+            %WinLabel.visible = false
+            %LoseLabel.visible = true
+            %GameClearedMessageContainer.visible = false
+            UI.deactivate_control(_endgame_dialog.get_node(
+                    "MenuContainer/VBoxContainer/NextLevelButton"
+            ))
+            _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton")\
+                    .grab_focus()
 
-    _endgame_dialog.visible = true
-    _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").grab_focus()
     tween_transition_fade_appear_container(
             _endgame_dialog,
             UI.UI_TRANSITION_DURATION / 8
@@ -120,6 +138,11 @@ func _on_resume_request() -> void:
 # $EndGameDialogContainer/MenuContainer/VBoxContainer/QuitToDesktopButton.pressed().
 func _on_quit_to_desktop_request() -> void:
     get_tree().quit()
+
+
+# Listens to _endgame_dialog.get_node("MenuContainer/VBoxContainer/NextLevelButton").pressed().
+func _on_next_level_request() -> void:
+    acted.emit("next_level")
 
 
 # Listens to _pause_menu.get_node("RestartButton").pressed() and
