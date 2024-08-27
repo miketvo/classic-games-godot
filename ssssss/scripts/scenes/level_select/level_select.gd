@@ -59,6 +59,14 @@ func _load_level_scenes() -> Error:
         printerr("No levels available in %s", Global.LEVEL_DIRECTORY)
         return FAILED
 
+    # Exported scene files ends with `.tscn.remap` or `scn.remap`. This
+    # statement converts that back. DO NOT REMOVE.
+    #
+    # See https://github.com/godotengine/godot/issues/66014 for more details.
+    level_dir_list = Array(level_dir_list.map(
+            func (file: String): return file.trim_suffix(".remap")
+    ), TYPE_STRING, &"", null)
+
     var level_metadata_files: Array[String] = level_dir_list.filter(
             func (file_name: String): return (file_name.ends_with(".json"))
     )
