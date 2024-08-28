@@ -6,6 +6,7 @@ extends State
 ## will be increased by 1 (with minimum of 1 food respawned each time).
 const FOOD_RESPAWN_COUNT_MULTIPLIER: int = 6
 const MAX_FOOD_RESPAWN_COUNT: int = 3
+const FOOD_RESPAWN_COOLDOWN: int = 4 ## Unit: steps.
 
 ## Unit: steps. Specifies the number of simulation steps before food will be
 ## respawned.
@@ -16,6 +17,7 @@ const FOOD_RESPAWN_DELAY_STEPS: int = 90
 
 var _world: World
 var _food_pool: Array[Vector2i]
+var _food_respawn_blocked: bool
 var _food_respawn_count: int
 var _target_score: int
 
@@ -26,8 +28,8 @@ var _target_score: int
 #region Godot builtins
 func _ready() -> void:
     assert(game_scene, "`game_scene` must be set")
-
     _food_pool = []
+    _food_respawn_blocked = false
     _food_respawn_count = 0
     _food_respawn_timer.timeout.connect(_on_food_respawn_timer_timeout)
 #endregion
@@ -76,64 +78,24 @@ func _on_world_unpaused() -> void:
 # Listens to _world.food_eaten().
 func _on_food_eaten(_snake_id: int, food_coords: Vector2i) -> void:
     game_scene.score += Global.FOOD_SCORE[_world.food_grid.get_at(food_coords)]
-    _world.set_step_duration(max(
-            _world.get_step_duration() * Global.STEP_DURATION_CHANGE,
-            Global.MIN_STEP_DURATION
-    ))
+    _increase_game_speed()
 
-    var new_food_pool: Array[Vector2i] = []
+    if not _food_respawn_blocked:
+        # Add a cooldown before new food is respawned.
+        _food_respawn_blocked = true
+        _food_respawn_timer.paused = true
+        await get_tree().create_timer(_world.get_step_duration() * FOOD_RESPAWN_COOLDOWN).timeout
+        _food_respawn_blocked = false
 
-    # Despawn old undigested food.
-    for spawned_food_coords in _food_pool:
-        if (
-                spawned_food_coords != food_coords and
-                _world.snake_grid.is_clear_at(spawned_food_coords)
-        ): # If food is not being eaten or digested.
-            _world.despawn_food(spawned_food_coords)
-        else: # If food is being eaten or digested.
-            new_food_pool.append(spawned_food_coords)
-
-    # Spawn in new food.
-    @warning_ignore("integer_division")
-    for i in range(min(
-            _food_respawn_count / FOOD_RESPAWN_COUNT_MULTIPLIER + 1,
-            MAX_FOOD_RESPAWN_COUNT
-    )):
-        new_food_pool.append(_world.spawn_random_food())
-
-    _food_pool = new_food_pool
-    _food_respawn_count += 1
-
-    _food_respawn_timer.stop()
-    _food_respawn_timer.paused = false
-    _food_respawn_timer.start(_world.get_step_duration() * FOOD_RESPAWN_DELAY_STEPS)
+        _respawn_food()
+        _restart_food_respawn_timer()
 
 
 # Listens to _food_respawn_timer.timeout().
 func _on_food_respawn_timer_timeout() -> void:
-    var new_food_pool: Array[Vector2i] = []
+    _respawn_food()
+    _restart_food_respawn_timer()
 
-    # Despawn old undigested food.
-    for food_coords in _food_pool:
-        if _world.snake_grid.is_clear_at(food_coords): # If food is not being digested.
-            _world.despawn_food(food_coords)
-        else: # If food is being digested.
-            new_food_pool.append(food_coords)
-
-    # Spawn in new food.
-    @warning_ignore("integer_division")
-    for i in range(min(
-            _food_respawn_count / FOOD_RESPAWN_COUNT_MULTIPLIER + 1,
-            MAX_FOOD_RESPAWN_COUNT
-    )):
-        new_food_pool.append(_world.spawn_random_food())
-
-    _food_pool = new_food_pool
-    _food_respawn_count += 1
-
-    _food_respawn_timer.stop()
-    _food_respawn_timer.paused = false
-    _food_respawn_timer.start(_world.get_step_duration() * FOOD_RESPAWN_DELAY_STEPS)
 
 #endregion
 # ============================================================================ #
@@ -152,5 +114,43 @@ func _lose_game() -> void:
     _food_respawn_timer.stop()
     game_scene.game_result = game_scene.GameResult.GAME_LOST
     transitioned.emit(self, "StopState")
+
+
+func _increase_game_speed() -> void:
+    _world.set_step_duration(max(
+            _world.get_step_duration() * Global.STEP_DURATION_CHANGE,
+            Global.MIN_STEP_DURATION
+    ))
+
+
+func _respawn_food(except_coords: Vector2i = Vector2i(-1, -1)) -> void:
+    var new_food_pool: Array[Vector2i] = []
+
+    # Despawn old undigested food.
+    for spawned_food_coords in _food_pool:
+        if (
+                spawned_food_coords != except_coords and
+                _world.snake_grid.is_clear_at(spawned_food_coords)
+        ): # If food is not at [param except_coords] or being digested.
+            _world.despawn_food(spawned_food_coords)
+        else: # If food is being digested.
+            new_food_pool.append(spawned_food_coords)
+
+    # Spawn in new food.
+    @warning_ignore("integer_division")
+    for i in range(min(
+            _food_respawn_count / FOOD_RESPAWN_COUNT_MULTIPLIER + 1,
+            MAX_FOOD_RESPAWN_COUNT
+    )):
+        new_food_pool.append(_world.spawn_random_food())
+
+    _food_pool = new_food_pool
+    _food_respawn_count += 1
+
+
+func _restart_food_respawn_timer() -> void:
+    _food_respawn_timer.stop()
+    _food_respawn_timer.paused = false
+    _food_respawn_timer.start(_world.get_step_duration() * FOOD_RESPAWN_DELAY_STEPS)
 #endregion
 # ============================================================================ #

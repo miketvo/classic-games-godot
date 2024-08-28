@@ -4,8 +4,11 @@ extends UI
 @export var game_scene: GameScene2D
 
 var _target_score: int
+var _target_score_reached: bool
 var _target_kills: int
+var _target_kills_reached: bool
 
+@onready var _bound_rect: TextureRect = %BoundRect
 @onready var _score_icon: TextureRect = %ScoreIcon
 @onready var _score_label: Label = %ScoreLabel
 @onready var _kill_icon: TextureRect = %KillIcon
@@ -20,6 +23,7 @@ func _ready() -> void:
     assert(game_scene, "`game_scene` must be set")
     game_scene.player_ate_food.connect(_on_game_scene_player_ate_food)
     game_scene.player_killed_enemy.connect(_on_game_scene_player_killed_enemy)
+    game_scene.game_ended.connect(_on_game_scene_game_ended)
 
     _level_label.text = "level %d: %s" % [
         Global.levels[Global.current_level]["metadata"]["order"],
@@ -44,11 +48,26 @@ func _ready() -> void:
         _:
             assert(false, "Unrecognized game mode %d" % Global.current_game_mode)
 
+    _target_score_reached = false
+    _target_kills_reached = false
+
 
 func _process(_delta: float) -> void:
     _score_label.text = "%d/%d" % [game_scene.score, _target_score]
-    if Global.current_game_mode == Global.GameMode.CHAOS:
+    if _kill_icon.visible and _kill_count_label.visible:
         _kill_count_label.text = "%d/%d" % [game_scene.kill_count, _target_kills]
+    if game_scene.score >= _target_score and not _target_score_reached:
+        _target_score_reached = true
+        _score_icon.get_node("AnimationPlayer").play("locked")
+        _score_label.get_node("AnimationPlayer").play("locked")
+    if (
+            _kill_icon.visible and _kill_count_label.visible and
+            game_scene.kill_count >= _target_kills and not _target_kills_reached
+    ):
+        _target_kills_reached = true
+        _kill_icon.get_node("AnimationPlayer").play("locked")
+        _kill_count_label.get_node("AnimationPlayer").play("locked")
+
     _food_timeout_progress_bar.value =\
             _food_timeout_progress_bar.max_value * game_scene.food_respawn_cooldown
 #endregion
@@ -60,14 +79,30 @@ func _process(_delta: float) -> void:
 
 # Listens to game_scene.player_ate_food().
 func _on_game_scene_player_ate_food() -> void:
-    _score_icon.get_node("AnimationPlayer").play("updated")
-    _score_icon.get_node("AnimationPlayer").queue("normal")
+    if not _target_score_reached:
+        _bound_rect.get_node("AnimationPlayer").play("active_food")
+        _bound_rect.get_node("AnimationPlayer").queue("idle")
+        _score_icon.get_node("AnimationPlayer").play("active")
+        _score_icon.get_node("AnimationPlayer").queue("idle")
+        _score_label.get_node("AnimationPlayer").play("active")
+        _score_label.get_node("AnimationPlayer").queue("idle")
 
 
 # Listens to game_scene.player_killed_enemy().
 func _on_game_scene_player_killed_enemy() -> void:
-    _kill_icon.get_node("AnimationPlayer").play("updated")
-    _kill_icon.get_node("AnimationPlayer").queue("normal")
+    if not _target_kills_reached:
+        _bound_rect.get_node("AnimationPlayer").play("active_kill")
+        _bound_rect.get_node("AnimationPlayer").queue("idle")
+        _kill_icon.get_node("AnimationPlayer").play("active")
+        _kill_icon.get_node("AnimationPlayer").queue("idle")
+        _kill_count_label.get_node("AnimationPlayer").play("active")
+        _kill_count_label.get_node("AnimationPlayer").queue("idle")
+
+
+# Listens to game_scene.game_ended().
+func _on_game_scene_game_ended() -> void:
+    if game_scene.game_result == game_scene.GameResult.GAME_WON:
+        _bound_rect.get_node("AnimationPlayer").play("game_won")
 
 #endregion
 # ============================================================================ #

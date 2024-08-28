@@ -12,19 +12,19 @@ border_width_left = 4
 border_width_top = 4
 border_width_right = 4
 border_width_bottom = 4
-border_color = Color(0.435294, 0.196078, 0.305882, 1)
+border_color = Color(1, 0.956863, 0.690196, 1)
 expand_margin_left = 24.0
 expand_margin_top = 24.0
 expand_margin_right = 24.0
 expand_margin_bottom = 24.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gcg6x"]
-bg_color = Color(0.435294, 0.196078, 0.305882, 1)
+bg_color = Color(1, 0.956863, 0.690196, 1)
 border_width_left = 4
 border_width_top = 4
 border_width_right = 4
 border_width_bottom = 4
-border_color = Color(0.435294, 0.196078, 0.305882, 1)
+border_color = Color(1, 0.956863, 0.690196, 1)
 expand_margin_left = 8.0
 expand_margin_right = 8.0
 
@@ -85,7 +85,7 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.435294, 0.196078, 0.305882, 1)
 theme_override_constants/line_spacing = -6
-text = "you absolute mad lad/lass. you have cleared the entire game!"
+text = "you absolute mad lad/lass. you have beaten the entire game!"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2

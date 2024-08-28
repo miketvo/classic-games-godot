@@ -104,6 +104,8 @@ var food_grid: WorldGrid2D
 # ============================================================================ #
 
 
+@onready var _tile_map: Node2D = $TileMap
+@onready var _render_controller: Node = $RenderController
 @onready var _build_state: State = $WorldStateController/BuildState
 @onready var _run_state: State = $WorldStateController/RunState
 
@@ -244,6 +246,10 @@ func despawn_food(food_coords: Vector2i) -> void:
     food_grid.reset_at(food_coords)
 
 
+func get_tile_size() -> Vector2i:
+    return _tile_map.get_node("DebugLayer").tile_set.tile_size
+
+
 func get_step_duration() -> float:
     return _run_state.get_step_duration()
 
@@ -262,6 +268,9 @@ func unpause() -> void:
     unpaused.emit()
     _run_state.unpause()
 
+
+func play_tile_map_animation(anim_name: StringName) -> void:
+    _tile_map.get_node("AnimationPlayer").play(anim_name)
 #endregion
 # ============================================================================ #
 
@@ -284,9 +293,10 @@ func _on_step() -> void:
 
 # Listens to _run_state.snake_collided(snake_id: int, collide_coords: Vector2i).
 func _on_snake_collided(snake_id: int, collide_coords: Vector2i) -> void:
+    snake_collided.emit(snake_id, collide_coords)
+    await _render_controller.snake_death_animation_finished
     if snake_id > 0:
         despawn_snake(snake_id)
-    snake_collided.emit(snake_id, collide_coords)
 
 
 # Listens to _run_state.food_eaten(snake_id: int, food_coords: Vector2i).
