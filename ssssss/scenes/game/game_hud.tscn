@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://dpy8k0nhdaw8i"]
+[gd_scene load_steps=42 format=3 uid="uid://dpy8k0nhdaw8i"]
 
 [ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_1nijk"]
 [ext_resource type="Script" path="res://scripts/scenes/game/game_hud.gd" id="1_2id7g"]
@@ -192,10 +192,94 @@ tracks/1/keys = {
 "values": [SubResource("AtlasTexture_14u7f")]
 }
 
+[sub_resource type="Animation" id="Animation_0837t"]
+resource_name = "target_reached"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [SubResource("AtlasTexture_bktf1"), SubResource("AtlasTexture_ubmui"), SubResource("AtlasTexture_bktf1"), SubResource("AtlasTexture_ubmui"), SubResource("AtlasTexture_bktf1")]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_co0yv"]
 _data = {
 "active": SubResource("Animation_0ptha"),
-"idle": SubResource("Animation_2su5r")
+"idle": SubResource("Animation_2su5r"),
+"locked": SubResource("Animation_0837t")
+}
+
+[sub_resource type="Animation" id="Animation_ogbtn"]
+resource_name = "idle"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_colors/font_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.435294, 0.196078, 0.305882, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_mawf2"]
+resource_name = "active_scored"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_colors/font_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Color(1, 0.956863, 0.690196, 1), Color(0.435294, 0.196078, 0.305882, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_60bvx"]
+resource_name = "active_target_reached"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_colors/font_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Color(1, 0.956863, 0.690196, 1), Color(0.435294, 0.196078, 0.305882, 1), Color(1, 0.956863, 0.690196, 1), Color(0.435294, 0.196078, 0.305882, 1), Color(1, 0.956863, 0.690196, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6ltsy"]
+_data = {
+"active": SubResource("Animation_mawf2"),
+"idle": SubResource("Animation_ogbtn"),
+"locked": SubResource("Animation_60bvx")
 }
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vfedx"]
@@ -269,10 +353,92 @@ tracks/1/keys = {
 "values": [SubResource("AtlasTexture_5u5uk")]
 }
 
+[sub_resource type="Animation" id="Animation_e1f8f"]
+resource_name = "target_reached"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [SubResource("AtlasTexture_5qgbc"), SubResource("AtlasTexture_1vxxb"), SubResource("AtlasTexture_5qgbc"), SubResource("AtlasTexture_1vxxb"), SubResource("AtlasTexture_5qgbc")]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_q630x"]
 _data = {
 "active": SubResource("Animation_bttd2"),
-"idle": SubResource("Animation_mnwuw")
+"idle": SubResource("Animation_mnwuw"),
+"locked": SubResource("Animation_e1f8f")
+}
+
+[sub_resource type="Animation" id="Animation_olw1i"]
+resource_name = "idle"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_colors/font_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.435294, 0.196078, 0.305882, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_dhefc"]
+resource_name = "active_killed"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_colors/font_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Color(0.807843, 0.419608, 0.25098, 1), Color(0.435294, 0.196078, 0.305882, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_pnush"]
+resource_name = "target_reached"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_colors/font_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [Color(0.807843, 0.419608, 0.25098, 1), Color(0.435294, 0.196078, 0.305882, 1), Color(0.807843, 0.419608, 0.25098, 1), Color(0.435294, 0.196078, 0.305882, 1), Color(0.807843, 0.419608, 0.25098, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3dket"]
+_data = {
+"active": SubResource("Animation_dhefc"),
+"idle": SubResource("Animation_olw1i"),
+"locked": SubResource("Animation_pnush")
 }
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jo8s8"]
@@ -383,8 +549,14 @@ libraries = {
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.435294, 0.196078, 0.305882, 1)
 theme_override_fonts/font = ExtResource("4_gjqcv")
 text = "NaN/NaN"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="StatContainer/ScoreLabel"]
+libraries = {
+"": SubResource("AnimationLibrary_6ltsy")
+}
 
 [node name="GameStatVSeparator" type="VSeparator" parent="StatContainer"]
 layout_mode = 2
@@ -423,8 +595,14 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_stretch_ratio = 0.0
+theme_override_colors/font_color = Color(0.435294, 0.196078, 0.305882, 1)
 theme_override_fonts/font = ExtResource("4_gjqcv")
 text = "NaN/NaN"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="StatContainer/KillCountLabel"]
+libraries = {
+"": SubResource("AnimationLibrary_3dket")
+}
 
 [node name="LevelLabel" type="Label" parent="StatContainer"]
 unique_name_in_owner = true

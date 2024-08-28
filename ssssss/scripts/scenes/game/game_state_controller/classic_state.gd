@@ -6,7 +6,7 @@ extends State
 ## will be increased by 1 (with minimum of 1 food respawned each time).
 const FOOD_RESPAWN_COUNT_MULTIPLIER: int = 6
 const MAX_FOOD_RESPAWN_COUNT: int = 3
-const FOOD_RESPAWN_COOLDOWN: int = 4 ## Unit: steps.
+const FOOD_RESPAWN_COOLDOWN: int = 6 ## Unit: steps.
 
 ## Unit: steps. Specifies the number of simulation steps before food will be
 ## respawned.
