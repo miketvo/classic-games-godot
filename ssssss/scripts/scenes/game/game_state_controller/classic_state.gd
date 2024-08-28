@@ -44,6 +44,7 @@ func _enter() -> void:
     _world.unpaused.connect(_on_world_unpaused)
     _world.stopped.connect(_lose_game)
     _world.food_eaten.connect(_on_food_eaten)
+    _world.spawn_snake(Vector2i(10, 10), Global.DIRECTIONS[Global.Direction.RIGHT], 6) # TODO: Remove this test code.
     _target_score = Global.levels[Global.current_level]\
             ["metadata"]["win_condition"]["classic_mode"]["target_score"]
 
