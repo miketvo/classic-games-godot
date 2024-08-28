@@ -80,13 +80,13 @@ func _on_food_eaten(_snake_id: int, food_coords: Vector2i) -> void:
     game_scene.score += Global.FOOD_SCORE[_world.food_grid.get_at(food_coords)]
     _increase_game_speed()
 
-    # Add a cooldown before new food is respawned.
-    _food_respawn_blocked = true
-    _food_respawn_timer.paused = true
-    await get_tree().create_timer(_world.get_step_duration() * FOOD_RESPAWN_COOLDOWN).timeout
-    _food_respawn_blocked = false
-
     if not _food_respawn_blocked:
+        # Add a cooldown before new food is respawned.
+        _food_respawn_blocked = true
+        _food_respawn_timer.paused = true
+        await get_tree().create_timer(_world.get_step_duration() * FOOD_RESPAWN_COOLDOWN).timeout
+        _food_respawn_blocked = false
+
         _respawn_food()
         _restart_food_respawn_timer()
 
