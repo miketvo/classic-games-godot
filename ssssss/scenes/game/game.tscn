@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ii1krswp2yx6"]
+[gd_scene load_steps=15 format=3 uid="uid://ii1krswp2yx6"]
 
 [ext_resource type="Script" path="res://scripts/scenes/game/game.gd" id="1_y2h2x"]
 [ext_resource type="PackedScene" uid="uid://b8yj1ahfqm5yo" path="res://scenes/game/game_ui.tscn" id="2_t11qt"]
@@ -8,6 +8,12 @@
 [ext_resource type="Script" path="res://scripts/core/state_machine/state.gd" id="6_li0jf"]
 [ext_resource type="Script" path="res://scripts/scenes/game/game_state_controller/classic_state.gd" id="6_svpid"]
 [ext_resource type="Script" path="res://scripts/scenes/game/game_state_controller/stop_state.gd" id="8_x3kth"]
+[ext_resource type="Script" path="res://scripts/core/sfx_controller.gd" id="9_62386"]
+[ext_resource type="AudioStream" uid="uid://di5o2v7rwwtf3" path="res://assets/sfx/level_lost.wav" id="10_141y4"]
+[ext_resource type="AudioStream" uid="uid://cfwma0y7vnnlu" path="res://assets/sfx/level_won.wav" id="11_2d5jk"]
+[ext_resource type="AudioStream" uid="uid://jujqj345ygj8" path="res://assets/sfx/game_beaten.wav" id="12_vfwgr"]
+[ext_resource type="AudioStream" uid="uid://bxffji76hmx4e" path="res://assets/sfx/food_eaten.wav" id="13_lgpxk"]
+[ext_resource type="AudioStream" uid="uid://hj33qaf21w5" path="res://assets/sfx/snake_collide.wav" id="14_4wm4w"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_y2h2x")
@@ -46,3 +52,29 @@ script = ExtResource("6_li0jf")
 
 [node name="StopState" type="Node" parent="GameStateController"]
 script = ExtResource("8_x3kth")
+
+[node name="SfxController" type="Node" parent="."]
+script = ExtResource("9_62386")
+
+[node name="LevelLostSfx" type="AudioStreamPlayer" parent="SfxController"]
+stream = ExtResource("10_141y4")
+volume_db = 2.0
+bus = &"Gameplay"
+
+[node name="LevelWonSfx" type="AudioStreamPlayer" parent="SfxController"]
+stream = ExtResource("11_2d5jk")
+bus = &"Gameplay"
+
+[node name="GameBeatenSfx" type="AudioStreamPlayer" parent="SfxController"]
+stream = ExtResource("12_vfwgr")
+bus = &"Gameplay"
+
+[node name="FoodEatenSfx" type="AudioStreamPlayer2D" parent="SfxController"]
+stream = ExtResource("13_lgpxk")
+volume_db = 6.0
+bus = &"Gameplay"
+
+[node name="SnakeCollideSfx" type="AudioStreamPlayer2D" parent="SfxController"]
+stream = ExtResource("14_4wm4w")
+volume_db = 16.0
+bus = &"Gameplay"

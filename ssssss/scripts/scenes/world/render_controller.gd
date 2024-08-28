@@ -2,8 +2,6 @@
 extends Node
 
 
-signal snake_death_animation_finished
-
 const SnakeDeath: PackedScene = preload("res://scenes/world/snake_death.tscn")
 
 @export var world: World:
@@ -270,19 +268,14 @@ func _set_cells_terrain_path_wrapped(
 
 func _play_snake_death_animation(snake_id: int) -> void:
     var snake_cell_coords: Array[Vector2i] = world.snakes[snake_id]
-    var tile_size: Vector2i = world.get_tile_size()
     for cell_coords in snake_cell_coords:
         var snake_death_sprite: Sprite2D = SnakeDeath.instantiate()
         snake_death_sprite.modulate =\
                 Global.COLOR_PALETTE["fg_1"] if snake_id == 0\
                 else Global.COLOR_PALETTE["fg_0"]
-        snake_death_sprite.position = Vector2i(
-                cell_coords.x * tile_size.x,
-                cell_coords.y * tile_size.y
-        )
+        snake_death_sprite.position = world.get_cell_position(cell_coords)
         tile_map.add_child(snake_death_sprite)
         await get_tree().create_timer(0.03).timeout
-    snake_death_animation_finished.emit()
 
 #endregion
 # ============================================================================ #

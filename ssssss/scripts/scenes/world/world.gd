@@ -105,7 +105,6 @@ var food_grid: WorldGrid2D
 
 
 @onready var _tile_map: Node2D = $TileMap
-@onready var _render_controller: Node = $RenderController
 @onready var _build_state: State = $WorldStateController/BuildState
 @onready var _run_state: State = $WorldStateController/RunState
 
@@ -151,6 +150,17 @@ func _ready() -> void:
 
 # ============================================================================ #
 #region Public methods
+func get_cell_position(
+        cell_coords: Vector2i,
+        center: bool = false,
+        include_tile_map_transform: bool = false
+) -> Vector2:
+    var result_position: Vector2 = Vector2(get_tile_size() * cell_coords)
+    if center: result_position += Vector2(get_tile_size()) / 2
+    if include_tile_map_transform: result_position = _tile_map.transform * result_position
+    return result_position
+
+
 func spawn_snake(
         spawn_coords: Vector2i, direction: Vector2i, length: int,
         debug: bool = false
@@ -294,7 +304,6 @@ func _on_step() -> void:
 # Listens to _run_state.snake_collided(snake_id: int, collide_coords: Vector2i).
 func _on_snake_collided(snake_id: int, collide_coords: Vector2i) -> void:
     snake_collided.emit(snake_id, collide_coords)
-    await _render_controller.snake_death_animation_finished
     if snake_id > 0:
         despawn_snake(snake_id)
 
