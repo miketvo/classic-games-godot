@@ -4,12 +4,15 @@ extends GameScene2D
 signal level_loaded
 signal player_ate_food
 signal player_killed_enemy
+signal game_ended
 
 enum GameResult {
-    GAME_LOST,
     GAME_WON,
+    GAME_LOST,
     NONE,
 }
+
+const GAME_END_DELAY: float = 1.6 ## Unit: seconds.
 
 var game_world: World
 var game_result: GameResult
@@ -72,6 +75,15 @@ func is_paused() -> bool:
 
 # Listens to $GameStateController/StopState.stopped().
 func _on_game_ended() -> void:
+    game_ended.emit()
+    if game_result == GameResult.GAME_LOST:
+        game_world.play_tile_map_animation("game_lost")
+
+    # Give the player a bit of time to register the game result.
+    await get_tree().create_timer(GAME_END_DELAY).timeout
+
+    if game_result == GameResult.GAME_WON:
+        game_world.play_tile_map_animation("game_won")
     _game_ui.end_game()
 
 

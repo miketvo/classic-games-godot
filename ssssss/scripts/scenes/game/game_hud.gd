@@ -23,6 +23,7 @@ func _ready() -> void:
     assert(game_scene, "`game_scene` must be set")
     game_scene.player_ate_food.connect(_on_game_scene_player_ate_food)
     game_scene.player_killed_enemy.connect(_on_game_scene_player_killed_enemy)
+    game_scene.game_ended.connect(_on_game_scene_game_ended)
 
     _level_label.text = "level %d: %s" % [
         Global.levels[Global.current_level]["metadata"]["order"],
@@ -96,6 +97,12 @@ func _on_game_scene_player_killed_enemy() -> void:
         _kill_icon.get_node("AnimationPlayer").queue("idle")
         _kill_count_label.get_node("AnimationPlayer").play("active")
         _kill_count_label.get_node("AnimationPlayer").queue("idle")
+
+
+# Listens to game_scene.game_ended().
+func _on_game_scene_game_ended() -> void:
+    if game_scene.game_result == game_scene.GameResult.GAME_WON:
+        _bound_rect.get_node("AnimationPlayer").play("game_won")
 
 #endregion
 # ============================================================================ #

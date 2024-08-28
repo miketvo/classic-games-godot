@@ -268,6 +268,9 @@ func unpause() -> void:
     unpaused.emit()
     _run_state.unpause()
 
+
+func play_tile_map_animation(anim_name: StringName) -> void:
+    _tile_map.get_node("AnimationPlayer").play(anim_name)
 #endregion
 # ============================================================================ #
 

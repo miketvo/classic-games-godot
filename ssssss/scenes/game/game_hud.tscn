@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://dpy8k0nhdaw8i"]
+[gd_scene load_steps=43 format=3 uid="uid://dpy8k0nhdaw8i"]
 
 [ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_1nijk"]
 [ext_resource type="Script" path="res://scripts/scenes/game/game_hud.gd" id="1_2id7g"]
@@ -87,6 +87,34 @@ tracks/1/keys = {
 "values": [SubResource("AtlasTexture_qo1f4"), SubResource("AtlasTexture_x8ofd")]
 }
 
+[sub_resource type="Animation" id="Animation_54xpf"]
+resource_name = "game_won"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [SubResource("AtlasTexture_qo1f4"), SubResource("AtlasTexture_o1uaf"), SubResource("AtlasTexture_w5jvm"), SubResource("AtlasTexture_o1uaf"), SubResource("AtlasTexture_w5jvm")]
+}
+
 [sub_resource type="Animation" id="Animation_26x04"]
 length = 0.2
 tracks/0/type = "value"
@@ -118,6 +146,7 @@ tracks/1/keys = {
 _data = {
 "active_food": SubResource("Animation_yskii"),
 "active_kill": SubResource("Animation_cs14u"),
+"game_won": SubResource("Animation_54xpf"),
 "idle": SubResource("Animation_26x04")
 }
 
@@ -227,22 +256,6 @@ _data = {
 "locked": SubResource("Animation_0837t")
 }
 
-[sub_resource type="Animation" id="Animation_ogbtn"]
-resource_name = "idle"
-length = 0.2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:theme_override_colors/font_color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0.435294, 0.196078, 0.305882, 1)]
-}
-
 [sub_resource type="Animation" id="Animation_mawf2"]
 resource_name = "active_scored"
 length = 0.4
@@ -257,6 +270,22 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [Color(1, 0.956863, 0.690196, 1), Color(0.435294, 0.196078, 0.305882, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ogbtn"]
+resource_name = "idle"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_colors/font_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.435294, 0.196078, 0.305882, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_60bvx"]
@@ -387,22 +416,6 @@ _data = {
 "locked": SubResource("Animation_e1f8f")
 }
 
-[sub_resource type="Animation" id="Animation_olw1i"]
-resource_name = "idle"
-length = 0.2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:theme_override_colors/font_color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0.435294, 0.196078, 0.305882, 1)]
-}
-
 [sub_resource type="Animation" id="Animation_dhefc"]
 resource_name = "active_killed"
 length = 0.4
@@ -417,6 +430,22 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [Color(0.807843, 0.419608, 0.25098, 1), Color(0.435294, 0.196078, 0.305882, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_olw1i"]
+resource_name = "idle"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_colors/font_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.435294, 0.196078, 0.305882, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_pnush"]
