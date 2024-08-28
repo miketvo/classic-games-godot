@@ -57,22 +57,20 @@ script = ExtResource("9_62386")
 
 [node name="LevelLostSfx" type="AudioStreamPlayer" parent="SfxController"]
 stream = ExtResource("10_141y4")
-volume_db = 3.0
+volume_db = 2.0
 bus = &"Gameplay"
 
 [node name="LevelWonSfx" type="AudioStreamPlayer" parent="SfxController"]
 stream = ExtResource("11_2d5jk")
-volume_db = -4.0
 bus = &"Gameplay"
 
 [node name="GameBeatenSfx" type="AudioStreamPlayer" parent="SfxController"]
 stream = ExtResource("12_vfwgr")
-volume_db = -4.0
 bus = &"Gameplay"
 
 [node name="FoodEatenSfx" type="AudioStreamPlayer2D" parent="SfxController"]
 stream = ExtResource("13_lgpxk")
-volume_db = 5.0
+volume_db = 6.0
 bus = &"Gameplay"
 
 [node name="SnakeCollideSfx" type="AudioStreamPlayer2D" parent="SfxController"]
