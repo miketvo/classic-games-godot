@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="ssssss"
-config/version="0.5.4"
+config/version="0.5.5"
 run/main_scene="res://scenes/main.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="ambientlamp/ssssss"
@@ -49,6 +49,7 @@ enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg")
 
 folder_colors={
 "res://assets/": "red",
+"res://dist/": "orange",
 "res://scenes/": "purple",
 "res://scripts/": "blue"
 }
