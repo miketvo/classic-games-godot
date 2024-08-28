@@ -2,6 +2,10 @@
 extends Node
 
 
+signal snake_death_animation_finished
+
+const SnakeDeath: PackedScene = preload("res://scenes/world/snake_death.tscn")
+
 @export var world: World:
     set(node):
         world = node
@@ -26,6 +30,7 @@ func _ready() -> void:
         world.step.connect(_draw_debug_layer.unbind(1))
         world.built.connect(_draw_dynamic_layer)
         world.step.connect(_draw_dynamic_layer.unbind(1))
+        world.snake_collided.connect(_on_snake_collided.unbind(1))
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -47,6 +52,17 @@ func _get_configuration_warnings() -> PackedStringArray:
             warnings.append("`tile_map` must contain at least one TileMapLayer")
 
     return warnings
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
+#region Utils
+
+# Listens to world.snake_collided(snake_id: int, collide_coords: Vector2i).unbind(1).
+func _on_snake_collided(snake_id: int) -> void:
+    _play_snake_death_animation(snake_id)
+
 #endregion
 # ============================================================================ #
 
@@ -250,5 +266,23 @@ func _set_cells_terrain_path_wrapped(
             dynamic_layer.erase_cell(split[0])
         if overshoot:
             dynamic_layer.erase_cell(split[split.size() - 1])
+
+
+func _play_snake_death_animation(snake_id: int) -> void:
+    var snake_cell_coords: Array[Vector2i] = world.snakes[snake_id]
+    var tile_size: Vector2i = world.get_tile_size()
+    for cell_coords in snake_cell_coords:
+        var snake_death_sprite: Sprite2D = SnakeDeath.instantiate()
+        snake_death_sprite.modulate =\
+                Global.COLOR_PALETTE["fg_1"] if snake_id == 0\
+                else Global.COLOR_PALETTE["fg_0"]
+        snake_death_sprite.position = Vector2i(
+                cell_coords.x * tile_size.x,
+                cell_coords.y * tile_size.y
+        )
+        tile_map.add_child(snake_death_sprite)
+        await get_tree().create_timer(0.03).timeout
+    snake_death_animation_finished.emit()
+
 #endregion
 # ============================================================================ #

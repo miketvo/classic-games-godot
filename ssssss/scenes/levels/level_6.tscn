@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=4 uid="uid://05ddg7t2eti0"]
 
-[ext_resource type="PackedScene" uid="uid://wjw02a5opby" path="res://scenes/world.tscn" id="1_tunhw"]
+[ext_resource type="PackedScene" uid="uid://wjw02a5opby" path="res://scenes/world/world.tscn" id="1_tunhw"]
 
 [node name="World" instance=ExtResource("1_tunhw")]
 

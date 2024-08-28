@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=4 uid="uid://5kmonn68x6l6"]
 
-[ext_resource type="PackedScene" uid="uid://wjw02a5opby" path="res://scenes/world.tscn" id="1_by80g"]
+[ext_resource type="PackedScene" uid="uid://wjw02a5opby" path="res://scenes/world/world.tscn" id="1_by80g"]
 
 [node name="World" instance=ExtResource("1_by80g")]
 player_spawn_x = 30
