@@ -80,6 +80,9 @@ func _update_graphics_fullscreen_mode() -> void:
 
 
 func _update_graphics_post_processing_mode() -> void:
+    if Global.os_platform == "Web":
+        post_processing_node.environment = null
+        return
     var environment: Environment = post_processing_node.environment
     match [ GameConfig.config.graphics.post_processing, environment.background_mode ]:
         [ false, Environment.BG_CANVAS ]:
