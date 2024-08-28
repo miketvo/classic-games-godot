@@ -18,6 +18,7 @@ body {
 	touch-action: none;
 }
 
+progress:not(value),
 progress[value] {
     appearance: none;
     border: none;
@@ -35,12 +36,14 @@ progress[value] {
     margin: 0 0 1.5em;
 }
 
+progress:not(value)::-webkit-progress-bar,
 progress[value]::-webkit-progress-bar {
     background-color: #180c21;
     border-radius: 0px;
     box-shadow: 0 2px 3px rgba(0, 0, 0, .5) inset;
 }
 
+progress:not(value)::-webkit-progress-value,
 progress[value]::-webkit-progress-value {
     position: relative;
     background-color: #6f324e;
@@ -48,6 +51,7 @@ progress[value]::-webkit-progress-value {
     border-radius: 0;
 }
 
+progress:not(value)::-moz-progress-bar,
 progress[value]::-moz-progress-bar {
     background-color: #6f324e;
     background-size: 35px 6px, 100% 100%, 100% 100%;
