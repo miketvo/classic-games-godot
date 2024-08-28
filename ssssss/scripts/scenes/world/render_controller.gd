@@ -2,8 +2,6 @@
 extends Node
 
 
-signal snake_death_animation_finished
-
 const SnakeDeath: PackedScene = preload("res://scenes/world/snake_death.tscn")
 
 @export var world: World:
@@ -278,7 +276,6 @@ func _play_snake_death_animation(snake_id: int) -> void:
         snake_death_sprite.position = world.get_cell_position(cell_coords)
         tile_map.add_child(snake_death_sprite)
         await get_tree().create_timer(0.03).timeout
-    snake_death_animation_finished.emit()
 
 #endregion
 # ============================================================================ #
