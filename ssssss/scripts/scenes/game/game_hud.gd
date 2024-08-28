@@ -6,6 +6,7 @@ extends UI
 var _target_score: int
 var _target_kills: int
 
+@onready var _bound_rect: TextureRect = %BoundRect
 @onready var _score_icon: TextureRect = %ScoreIcon
 @onready var _score_label: Label = %ScoreLabel
 @onready var _kill_icon: TextureRect = %KillIcon
@@ -60,14 +61,18 @@ func _process(_delta: float) -> void:
 
 # Listens to game_scene.player_ate_food().
 func _on_game_scene_player_ate_food() -> void:
-    _score_icon.get_node("AnimationPlayer").play("updated")
-    _score_icon.get_node("AnimationPlayer").queue("normal")
+    _bound_rect.get_node("AnimationPlayer").play("active_food")
+    _bound_rect.get_node("AnimationPlayer").queue("idle")
+    _score_icon.get_node("AnimationPlayer").play("active")
+    _score_icon.get_node("AnimationPlayer").queue("idle")
 
 
 # Listens to game_scene.player_killed_enemy().
 func _on_game_scene_player_killed_enemy() -> void:
-    _kill_icon.get_node("AnimationPlayer").play("updated")
-    _kill_icon.get_node("AnimationPlayer").queue("normal")
+    _bound_rect.get_node("AnimationPlayer").play("active_kill")
+    _bound_rect.get_node("AnimationPlayer").queue("idle")
+    _kill_icon.get_node("AnimationPlayer").play("active")
+    _kill_icon.get_node("AnimationPlayer").queue("idle")
 
 #endregion
 # ============================================================================ #
