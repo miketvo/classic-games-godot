@@ -17,6 +17,7 @@ const FOOD_RESPAWN_DELAY_STEPS: int = 90
 
 var _world: World
 var _food_pool: Array[Vector2i]
+var _food_respawn_blocked: bool
 var _food_respawn_count: int
 var _target_score: int
 
@@ -28,6 +29,7 @@ var _target_score: int
 func _ready() -> void:
     assert(game_scene, "`game_scene` must be set")
     _food_pool = []
+    _food_respawn_blocked = false
     _food_respawn_count = 0
     _food_respawn_timer.timeout.connect(_on_food_respawn_timer_timeout)
 #endregion
@@ -79,11 +81,14 @@ func _on_food_eaten(_snake_id: int, food_coords: Vector2i) -> void:
     _increase_game_speed()
 
     # Add a cooldown before new food is respawned.
-    _food_respawn_timer.stop()
+    _food_respawn_blocked = true
+    _food_respawn_timer.paused = true
     await get_tree().create_timer(_world.get_step_duration() * FOOD_RESPAWN_COOLDOWN).timeout
+    _food_respawn_blocked = false
 
-    _respawn_food()
-    _restart_food_respawn_timer()
+    if not _food_respawn_blocked:
+        _respawn_food()
+        _restart_food_respawn_timer()
 
 
 # Listens to _food_respawn_timer.timeout().
