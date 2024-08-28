@@ -151,6 +151,17 @@ func _ready() -> void:
 
 # ============================================================================ #
 #region Public methods
+func get_cell_position(
+        cell_coords: Vector2i,
+        center: bool = false,
+        include_tile_map_transform: bool = false
+) -> Vector2:
+    var result_position: Vector2 = Vector2(get_tile_size() * cell_coords)
+    if center: result_position += Vector2(get_tile_size()) / 2
+    if include_tile_map_transform: result_position = _tile_map.transform * result_position
+    return result_position
+
+
 func spawn_snake(
         spawn_coords: Vector2i, direction: Vector2i, length: int,
         debug: bool = false
