@@ -9,6 +9,10 @@ enum GameMode {
     CLASSIC,
     CHAOS,
 }
+enum GameOutcome {
+    WIN,
+    LOSE,
+}
 enum Direction {
     UP,
     LEFT,
@@ -113,5 +117,6 @@ func _exit_tree() -> void:
 ## game, for use with a [StateMachine] and its [State]s.
 class GameStateData extends Node:
     pass # TODO: Include game state data here for AI functionalities.
+
 #endregion
 # ============================================================================ #
