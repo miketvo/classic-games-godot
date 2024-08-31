@@ -14,6 +14,7 @@ enum GameOutcome {
     LOSE,
 }
 enum Direction {
+    NONE,
     UP,
     LEFT,
     DOWN,
@@ -49,11 +50,13 @@ const UNIT_VECTORS: PackedVector2Array = [
     Vector2.RIGHT,
 ]
 const DIRECTIONS: Dictionary = {
+    Direction.NONE: Vector2i.ZERO,
     Direction.UP: Vector2.UP,
     Direction.LEFT: Vector2.LEFT,
     Direction.DOWN: Vector2.DOWN,
     Direction.RIGHT: Vector2.RIGHT,
 }
+const PLAYER_CONTROL_BUFFER: int = 4 ## Unit: frames.
 const INITIAL_STEP_DURATION: float = 0.15 ## Unit: seconds.
 const STEP_DURATION_CHANGE: float = 0.98 ## Affects how much the game speeds up. This is a ratio.
 const MIN_STEP_DURATION: float = 0.06 ## Unit: seconds.
@@ -80,7 +83,7 @@ var software_cursor_visibility: SoftwareCursor.Visibility\
 var levels: Array[Dictionary]
 var current_level: int
 var current_game_mode: GameMode
-var game_state_data: GameStateData = GameStateData.new()
+var game_state_data: GameStateData
 
 #endregion
 # ============================================================================ #
@@ -102,6 +105,9 @@ func _ready() -> void:
             get_tree().quit()
 
     levels = []
+    game_state_data = GameStateData.new()
+    game_state_data.name = "GameStateData"
+    add_child(game_state_data)
 
 
 func _exit_tree() -> void:
@@ -114,9 +120,44 @@ func _exit_tree() -> void:
 #region Inner classes
 
 ## Game state data. Contains relevant information on the current state of the
-## game, for use with a [StateMachine] and its [State]s.
+## game, for use with a [SnakeAgent], or a [StateMachine] and its [State]s.
 class GameStateData extends Node:
-    pass # TODO: Include game state data here for AI functionalities.
+    var world: World
+    var player_control_queue: Array[Direction]
+    var _player_control_enabled: bool
+
+
+    func _ready() -> void:
+        player_control_queue = []
+        _player_control_enabled = false
+
+
+    func _process(_delta: float) -> void:
+        if _player_control_enabled:
+            var next_direction: Direction = Direction.NONE
+            if Input.is_action_just_pressed("p_move_up"):
+                next_direction = Direction.UP
+            elif Input.is_action_just_pressed("p_move_down"):
+                next_direction = Direction.DOWN
+            elif Input.is_action_just_pressed("p_move_left"):
+                next_direction = Direction.LEFT
+            elif Input.is_action_just_pressed("p_move_right"):
+                next_direction = Direction.RIGHT
+
+            if next_direction != Direction.NONE:
+                player_control_queue.append(next_direction)
+            if player_control_queue.size() > PLAYER_CONTROL_BUFFER:
+                player_control_queue.pop_front()
+
+
+    func is_player_control_enabled() -> bool:
+        return _player_control_enabled
+
+
+    func set_player_control_enabled(enabled: bool) -> void:
+        _player_control_enabled = enabled
+        if not enabled:
+            player_control_queue.clear()
 
 #endregion
 # ============================================================================ #

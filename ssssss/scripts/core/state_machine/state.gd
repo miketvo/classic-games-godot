@@ -31,7 +31,7 @@ func _enter_tree() -> void:
 
 
 # ============================================================================ #
-#region Overriden methods
+#region Overridable methods
 
 ## Called when entering this state. Override this method to define custom
 ## behavior for state entry.

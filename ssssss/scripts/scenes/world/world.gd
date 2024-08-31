@@ -95,11 +95,18 @@ var step_count: int
 
 # ============================================================================ #
 #region Internal world state representation
+
+## Contains the references to all snakes currently in the [World]. Each element
+## is an [Array] containing the [Vector2i] cell coordinates of each segment of
+## the snake, starting from the head at index 0. The index of each element is
+## the [code]ID[/code] of the snake.
 var snakes: Array[Array]
 var snake_grow_queue: Array[int]
+var snake_agents: Array[SnakeAgent]
 var snake_grid: WorldGrid2D
 var wall_grid: WorldGrid2D
 var food_grid: WorldGrid2D
+
 #endregion
 # ============================================================================ #
 
@@ -113,6 +120,7 @@ var food_grid: WorldGrid2D
 #region Godot builtins
 func _ready() -> void:
     if not Engine.is_editor_hint():
+        Global.game_state_data.world = self
         _build_state.built.connect(func (): built.emit())
         _run_state.started.connect(_on_started)
         _run_state.step.connect(_on_step)
@@ -123,6 +131,7 @@ func _ready() -> void:
 
     snakes = []
     snake_grow_queue = []
+    snake_agents = []
     snake_grid = WorldGrid2D.new(
             Global.WORLD_SIZE,
             TYPE_VECTOR2I, &"", null, [],
@@ -144,6 +153,13 @@ func _ready() -> void:
         step_count = 0
 
     initialized.emit()
+
+
+func _notification(what: int) -> void:
+    if what == NOTIFICATION_PREDELETE:
+        while snake_agents.size() > 0:
+            var snake_agent: SnakeAgent = snake_agents.pop_back()
+            snake_agent.free()
 #endregion
 # ============================================================================ #
 
@@ -163,8 +179,18 @@ func get_cell_position(
 
 func spawn_snake(
         spawn_coords: Vector2i, direction: Vector2i, length: int,
-        debug: bool = false
+        debug: bool = false, agent_type: StringName = &""
 ) -> Variant:
+    var control_agent: SnakeAgent
+    match agent_type:
+        &"PlayerSnakeAgent":
+            control_agent = PlayerSnakeAgent.new(snakes.size())
+        &"":
+            control_agent = null
+        _:
+            assert(false, "Unrecognized `agent_type` %s" % agent_type)
+
+
     var snake: Array[Vector2i] = []
     var current_position: Vector2i = spawn_coords
     for i in range(length):
@@ -193,6 +219,7 @@ func spawn_snake(
     else:
         snakes.append(snake)
         snake_grow_queue.append(0)
+        snake_agents.append(control_agent)
         return null
 
 

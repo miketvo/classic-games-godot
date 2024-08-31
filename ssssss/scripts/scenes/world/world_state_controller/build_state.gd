@@ -57,7 +57,8 @@ func _spawn_player() -> void:
     world.spawn_snake(
         Vector2i(world.player_spawn_x, world.player_spawn_y),
         Vector2i(Global.DIRECTIONS[world.player_spawn_direction]),
-        world.player_initial_length
+        world.player_initial_length,
+        false, &"PlayerSnakeAgent"
     )
 #endregion
 # ============================================================================ #

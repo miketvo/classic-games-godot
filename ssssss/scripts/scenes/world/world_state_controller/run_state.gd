@@ -13,7 +13,6 @@ signal stopped
 var _started: bool
 var _dead: bool
 var _next_step_duration: float
-var _player_control_queue: Array[Vector2i]
 
 @onready var _start_cooldown_timer: Timer = $StartCooldownTimer
 @onready var _step_timer: Timer = $StepTimer
@@ -33,7 +32,6 @@ func _ready() -> void:
 func _enter() -> void:
     _started = false
     _dead = false
-    _player_control_queue = []
     _start_cooldown_timer.paused = false
     _start_cooldown_timer.start(world.start_delay)
 
@@ -46,22 +44,6 @@ func _update(_delta: float, _game_state_data: Global.GameStateData) -> void:
     if _dead:
         _step_timer.stop()
         transitioned.emit(self, "StopState")
-
-    if _started and not _dead:
-        var next_direction: Vector2i = Vector2i.ZERO
-        if Input.is_action_just_pressed("p_move_up"):
-            next_direction = Vector2i.UP
-        elif Input.is_action_just_pressed("p_move_down"):
-            next_direction = Vector2i.DOWN
-        elif Input.is_action_just_pressed("p_move_left"):
-            next_direction = Vector2i.LEFT
-        elif Input.is_action_just_pressed("p_move_right"):
-            next_direction = Vector2i.RIGHT
-
-        if next_direction != Vector2i.ZERO:
-            _player_control_queue.append(next_direction)
-        if _player_control_queue.size() > 4:
-            _player_control_queue.pop_front()
 #endregion
 # ============================================================================ #
 
@@ -106,7 +88,7 @@ func _on_start_cooldown_timer_timeout() -> void:
 
 # Listens to _step_timer.timeout().
 func _step() -> void:
-    _update_player_snake_direction()
+    _update_snake_heads()
     _update_snakes()
     if _next_step_duration != _step_timer.wait_time:
         _step_timer.stop()
@@ -120,15 +102,18 @@ func _step() -> void:
 
 # ============================================================================ #
 #region Utils
-func _update_player_snake_direction() -> void:
-    var snake_head: Vector2i = world.snakes[0][0]
+func _update_snake_heads() -> void:
+    var snake_agents: Array[SnakeAgent] = world.snake_agents
     var snake_grid: WorldGrid2D = world.snake_grid
-    var next_direction = _player_control_queue.pop_front()
-    if (
-            next_direction and
-            snake_head + next_direction != world.snakes[0][1]
-    ):
-        snake_grid.set_at(snake_head, next_direction)
+    for snake_id in range(world.snakes.size()):
+        var snake_head: Vector2i = world.snakes[snake_id][0]
+        var snake_agent: SnakeAgent = snake_agents[snake_id]
+        if snake_agent:
+            var next_movement = Vector2i(
+                    Global.DIRECTIONS[snake_agent.get_action(Global.game_state_data)]
+            )
+            if next_movement != Global.DIRECTIONS[Global.Direction.NONE]:
+                snake_grid.set_at(snake_head, next_movement)
 
 
 func _update_snakes() -> void:

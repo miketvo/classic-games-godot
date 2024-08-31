@@ -39,6 +39,7 @@ func _ready() -> void:
 # ============================================================================ #
 #region State builtins
 func _enter() -> void:
+    Global.game_state_data.set_player_control_enabled(true)
     _world = game_scene.game_world
     _world.paused.connect(_on_world_paused)
     _world.unpaused.connect(_on_world_unpaused)
@@ -50,6 +51,10 @@ func _enter() -> void:
     _food_pool.append(_world.spawn_random_food())
     _food_respawn_count += 1
     _food_respawn_timer.start(Global.INITIAL_STEP_DURATION * FOOD_RESPAWN_DELAY_STEPS)
+
+
+func _exit() -> void:
+    Global.game_state_data.set_player_control_enabled(false)
 
 
 func _update(_delta: float, _game_state_data: Global.GameStateData):
@@ -66,11 +71,13 @@ func _update(_delta: float, _game_state_data: Global.GameStateData):
 
 # Listens to _world.paused().
 func _on_world_paused() -> void:
+    Global.game_state_data.set_player_control_enabled(false)
     _food_respawn_timer.paused = true
 
 
 # Listens to _world.unpaused().
 func _on_world_unpaused() -> void:
+    Global.game_state_data.set_player_control_enabled(true)
     await get_tree().create_timer(_world.unpause_delay).timeout
     _food_respawn_timer.paused = false
 

@@ -57,7 +57,7 @@ var os_platform: StringName
 var software_cursor_visibility: SoftwareCursor.Visibility\
         = SoftwareCursor.Visibility.ALWAYS_VISIBLE
 var current_game_mode: GameMode
-var game_state_data: GameStateData = GameStateData.new()
+var game_state_data: GameStateData
 
 #endregion
 # ============================================================================ #
@@ -77,6 +77,10 @@ func _ready() -> void:
         _:
             printerr("Platform not supported: %s", os_name)
             get_tree().quit()
+
+    game_state_data = GameStateData.new()
+    game_state_data.name = "GameStateData"
+    add_child(game_state_data)
 
 
 func _exit_tree() -> void:
