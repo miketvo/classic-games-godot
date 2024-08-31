@@ -226,6 +226,14 @@ func spawn_snake(
 
 func despawn_snake(snake_id: int) -> void:
     snake_grow_queue.pop_at(snake_id)
+
+    var snake_agent: SnakeAgent = snake_agents.pop_at(snake_id)
+    for current_snake_id in range(snake_id + 1, snake_agents.size()):
+        snake_agent = snake_agents[current_snake_id]
+        if snake_agent: snake_agent.set_snake_id(current_snake_id - 1)
+    snake_agent = snake_agents.pop_at(snake_id)
+    if snake_agent: snake_agent.free()
+
     var snake := snakes.pop_at(snake_id) as Array[Vector2i]
     if snake:
         for cell_coords in snake:
@@ -333,6 +341,7 @@ func _on_step() -> void:
 func _on_snake_collided(snake_id: int, collide_coords: Vector2i) -> void:
     snake_collided.emit(snake_id, collide_coords)
     if snake_id > 0:
+        await _run_state.step
         despawn_snake(snake_id)
 
 

@@ -105,7 +105,6 @@ focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath("../BackButton")
 focus_next = NodePath("../BackButton")
 focus_previous = NodePath("../ClassicModeButton")
-disabled = true
 text = "chaos"
 
 [node name="BackButton" type="Button" parent="StartMenuContainer" groups=["ui_container_slider_buttons"]]

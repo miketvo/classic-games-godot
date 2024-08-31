@@ -105,6 +105,11 @@ func get_snake_id() -> int:
     return _snake_id
 
 
+## Sets the [param snake_id].
+func set_snake_id(snake_id: int) -> void:
+    _snake_id = snake_id
+
+
 ## Returns the action based on the world state in [param state]. Override
 ## [method _get_action] to customize the action calculation algorithm.
 func get_action(state: Global.GameStateData) -> Global.Direction:
