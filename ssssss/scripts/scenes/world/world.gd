@@ -114,6 +114,7 @@ var food_grid: WorldGrid2D
 @onready var _tile_map: Node2D = $TileMap
 @onready var _build_state: State = $WorldStateController/BuildState
 @onready var _run_state: State = $WorldStateController/RunState
+@onready var _stop_state: State = $WorldStateController/StopState
 
 
 # ============================================================================ #
@@ -127,7 +128,7 @@ func _ready() -> void:
         _run_state.snake_collided.connect(_on_snake_collided)
         _run_state.food_eaten.connect(_on_food_eaten)
         _run_state.food_digested.connect(_on_food_digested)
-        _run_state.stopped.connect(_on_stopped)
+        _stop_state.stopped.connect(_on_stopped)
 
     snakes = []
     snake_grow_queue = []

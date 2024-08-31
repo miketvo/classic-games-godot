@@ -1,5 +1,6 @@
 class_name PlayerSnakeAgent
 extends SnakeAgent
+## Player-controlled [SnakeAgent].
 
 
 # ============================================================================ #

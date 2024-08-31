@@ -6,7 +6,7 @@ signal step
 signal snake_collided(snake_id: int, collide_coords: Vector2i)
 signal food_eaten(snake_id: int, food_coords: Vector2i)
 signal food_digested(snake_id: int, food_coords: Vector2i)
-signal stopped
+
 
 @export var world: World
 
@@ -34,10 +34,6 @@ func _enter() -> void:
     _dead = false
     _start_cooldown_timer.paused = false
     _start_cooldown_timer.start(world.start_delay)
-
-
-func _exit() -> void:
-    stopped.emit()
 
 
 func _update(_delta: float, _game_state_data: Global.GameStateData) -> void:
@@ -113,6 +109,7 @@ func _update_snake_heads() -> void:
                     Global.DIRECTIONS[snake_agent.get_action(Global.game_state_data)]
             )
             if next_movement != Global.DIRECTIONS[Global.Direction.NONE]:
+                # Change direction if agent action is not NONE.
                 snake_grid.set_at(snake_head, next_movement)
 
 

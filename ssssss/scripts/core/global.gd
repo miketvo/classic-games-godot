@@ -9,16 +9,12 @@ enum GameMode {
     CLASSIC,
     CHAOS,
 }
-enum GameOutcome {
-    WIN,
-    LOSE,
-}
 enum Direction {
-    NONE,
-    UP,
-    LEFT,
-    DOWN,
-    RIGHT,
+    NONE,  ## No direction / keep previous direction.
+    UP,    ## Go up (north).
+    LEFT,  ## Go left (west).
+    DOWN,  ## Go down (south).
+    RIGHT, ## Go right (east).
 }
 
 ## The integer value on the RHS corresponds to how much a snake would grow when
