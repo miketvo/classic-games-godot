@@ -160,7 +160,7 @@ func _notification(what: int) -> void:
     if what == NOTIFICATION_PREDELETE:
         while snake_agents.size() > 0:
             var snake_agent: SnakeAgent = snake_agents.pop_back()
-            snake_agent.free()
+            if snake_agent: snake_agent.free()
 #endregion
 # ============================================================================ #
 
@@ -190,7 +190,6 @@ func spawn_snake(
             control_agent = null
         _:
             assert(false, "Unrecognized `agent_type` %s" % agent_type)
-
 
     var snake: Array[Vector2i] = []
     var current_position: Vector2i = spawn_coords
@@ -227,7 +226,7 @@ func spawn_snake(
 func despawn_snake(snake_id: int) -> void:
     snake_grow_queue.pop_at(snake_id)
 
-    var snake_agent: SnakeAgent = snake_agents.pop_at(snake_id)
+    var snake_agent: SnakeAgent
     for current_snake_id in range(snake_id + 1, snake_agents.size()):
         snake_agent = snake_agents[current_snake_id]
         if snake_agent: snake_agent.set_snake_id(current_snake_id - 1)
