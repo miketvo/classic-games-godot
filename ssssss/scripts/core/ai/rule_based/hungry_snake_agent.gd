@@ -26,7 +26,6 @@ func _get_action(state: Global.GameStateData) -> Global.Direction:
     if state.get_tree().debug_collisions_hint and (not _map_visualizer):
         _map_visualizer = MapVisualizer.instantiate()
         state.world.get_node("TileMap").add_child(_map_visualizer)
-        _map_visualizer.load(_map_cache)
 
     var snake_head: Vector2i = state.world.snakes[_snake_id][0]
     var new_closest_food: Variant = _get_closest_available_food(snake_head, state)
@@ -38,6 +37,8 @@ func _get_action(state: Global.GameStateData) -> Global.Direction:
         _construct_pathfinding_map(state)
     else:
         _update_pathfinding_map(state)
+    if _map_visualizer:
+        _map_visualizer.load(_map_cache)
 
     var target_point_id: Variant
     if _closest_food != new_closest_food:
