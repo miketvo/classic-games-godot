@@ -101,27 +101,23 @@ func _construct_pathfinding_map(state: Global.GameStateData) -> void:
         var point_coords: Vector2i = Vector2i(_map_cache.get_point_position(point_id))
 
         # Connect surrounding points.
-        var top_neighbor: Vector2i = point_coords + Vector2i.UP
-        top_neighbor.y = posmod(top_neighbor.y, Global.WORLD_SIZE.y)
-        var top_neighbor_id: int = top_neighbor.x + top_neighbor.y * top_neighbor.x
+        var top_neighbor: Vector2i = snake_grid.wrap_coords(point_coords + Vector2i.UP)
+        var top_neighbor_id: int = top_neighbor.x + top_neighbor.y * Global.WORLD_SIZE.x
         if _map_cache.has_point(top_neighbor_id):
             _map_cache.connect_points(point_id, top_neighbor_id)
 
-        var left_neighbor: Vector2i = point_coords + Vector2i.LEFT
-        left_neighbor.x = posmod(left_neighbor.x, Global.WORLD_SIZE.x)
-        var left_neighbor_id: int = left_neighbor.x + left_neighbor.y * left_neighbor.x
+        var left_neighbor: Vector2i = snake_grid.wrap_coords(point_coords + Vector2i.LEFT)
+        var left_neighbor_id: int = left_neighbor.x + left_neighbor.y * Global.WORLD_SIZE.x
         if _map_cache.has_point(left_neighbor_id):
             _map_cache.connect_points(point_id, left_neighbor_id)
 
-        var bottom_neighbor: Vector2i = point_coords + Vector2i.DOWN
-        bottom_neighbor.y = posmod(bottom_neighbor.y, Global.WORLD_SIZE.y)
-        var bottom_neighbor_id: int = bottom_neighbor.x + bottom_neighbor.y * bottom_neighbor.x
+        var bottom_neighbor: Vector2i = snake_grid.wrap_coords(point_coords + Vector2i.DOWN)
+        var bottom_neighbor_id: int = bottom_neighbor.x + bottom_neighbor.y * Global.WORLD_SIZE.x
         if _map_cache.has_point(bottom_neighbor_id):
             _map_cache.connect_points(point_id, bottom_neighbor_id)
 
-        var right_neighbor: Vector2i = point_coords + Vector2i.RIGHT
-        right_neighbor.x = posmod(right_neighbor.x, Global.WORLD_SIZE.x)
-        var right_neighbor_id: int = right_neighbor.x + right_neighbor.y * right_neighbor.x
+        var right_neighbor: Vector2i = snake_grid.wrap_coords(point_coords + Vector2i.RIGHT)
+        var right_neighbor_id: int = right_neighbor.x + right_neighbor.y * Global.WORLD_SIZE.x
         if _map_cache.has_point(right_neighbor_id):
             _map_cache.connect_points(point_id, right_neighbor_id)
 
