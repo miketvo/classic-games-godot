@@ -11,7 +11,8 @@ const MapVisualizer: PackedScene = preload("res://scenes/world/a_star_2d_visuali
 var _map_cache: AStar2D
 var _id_path_cache: Array[int]
 var _closest_food: Variant
-var _map_visualizer: AStar2DVisualizer
+static var _map_visualizer: AStar2DVisualizer
+static var _agents_count: int = 0
 
 
 # ============================================================================ #
@@ -19,7 +20,7 @@ var _map_visualizer: AStar2DVisualizer
 func _setup() -> void:
     _map_cache = null
     _id_path_cache = []
-    _map_visualizer = null
+    _agents_count += 1
 
 
 func _get_action(state: Global.GameStateData) -> Global.Direction:
@@ -38,7 +39,7 @@ func _get_action(state: Global.GameStateData) -> Global.Direction:
     else:
         _update_pathfinding_map(state)
     if _map_visualizer:
-        _map_visualizer.load(_map_cache)
+        _map_visualizer.load_map(_map_cache)
 
     var target_point_id: Variant = null
     if _closest_food != new_closest_food:
@@ -75,7 +76,8 @@ func _get_action(state: Global.GameStateData) -> Global.Direction:
 
 
 func _terminate():
-    if is_instance_valid(_map_visualizer):
+    _agents_count -= 1
+    if _agents_count == 0 and is_instance_valid(_map_visualizer):
         _map_visualizer.queue_free()
 #endregion
 # ============================================================================ #
@@ -176,6 +178,7 @@ func _get_id_path(from: Vector2i, to: Vector2i) -> Array[int]:
             from.x + from.y * Global.WORLD_SIZE.x,
             to.x + to.y * Global.WORLD_SIZE.x
     )), TYPE_INT, &"", null)
+    id_path.pop_front()
     return id_path
 #endregion
 # ============================================================================ #

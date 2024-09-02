@@ -43,7 +43,7 @@ func _draw():
 
 # ============================================================================ #
 #region Public methods
-func load(map: AStar2D) -> void:
+func load_map(map: AStar2D) -> void:
     _map = map
     queue_redraw()
 #endregion

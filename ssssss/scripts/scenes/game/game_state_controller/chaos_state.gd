@@ -15,7 +15,7 @@ const FOOD_RESPAWN_DELAY_STEPS: int = 90
 const ENEMY_SPAWN_LENGTH: int = 3 ## Unit: cells.
 const ENEMY_SPAWN_MIN_DELAY_STEPS: int = 20 ## Unit: steps.
 const ENEMY_SPAWN_MAX_DELAY_STEPS: int = 60 ## Unit: steps.
-const MAX_CONCURRENT_ENEMIES_COUNT: int = 3
+const MAX_CONCURRENT_ENEMIES_COUNT: int = 2
 
 
 @export var game_scene: GameScene2D
