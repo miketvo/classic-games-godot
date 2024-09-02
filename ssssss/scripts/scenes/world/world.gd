@@ -167,17 +167,6 @@ func _notification(what: int) -> void:
 
 # ============================================================================ #
 #region Public methods
-func get_cell_position(
-        cell_coords: Vector2i,
-        center: bool = false,
-        include_tile_map_transform: bool = false
-) -> Vector2:
-    var result_position: Vector2 = Vector2(get_tile_size() * cell_coords)
-    if center: result_position += Vector2(get_tile_size()) / 2
-    if include_tile_map_transform: result_position = _tile_map.transform * result_position
-    return result_position
-
-
 func spawn_snake(
         spawn_coords: Vector2i, direction: Vector2i, length: int,
         debug: bool = false, agent_type: StringName = &""
@@ -291,8 +280,18 @@ func despawn_food(food_coords: Vector2i) -> void:
     food_grid.reset_at(food_coords)
 
 
+func get_cell_position(
+        cell_coords: Vector2i,
+        center: bool = false,
+        global: bool = false
+) -> Vector2:
+    var cell_position: Vector2 = _tile_map.get_tile_position(cell_coords, center)
+    if global: cell_position = _tile_map.transform * cell_position
+    return cell_position
+
+
 func get_tile_size() -> Vector2i:
-    return _tile_map.get_node("DebugLayer").tile_set.tile_size
+    return _tile_map.get_tile_size()
 
 
 func get_step_duration() -> float:

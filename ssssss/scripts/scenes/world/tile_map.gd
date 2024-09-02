@@ -115,6 +115,24 @@ func _ready() -> void:
 # ============================================================================ #
 #region Public methods
 
+## Returns the screen position of the cell at [param cell_coords].
+## [param center] specifies if the position of the center of the tile or the
+## position of the upper left corner of the tile is returned.
+func get_tile_position(
+        cell_coords: Vector2i,
+        center: bool = false,
+) -> Vector2:
+    var cell_position: Vector2 = Vector2(get_tile_size() * cell_coords)
+    if center: cell_position += Vector2(get_tile_size()) / 2
+    return cell_position
+
+
+## Returns the tile size of the tile map. All children [TileMapLayer]s must be
+## set up with same tile size for this method to return the correct value.
+func get_tile_size() -> Vector2i:
+    return $DebugLayer.tile_set.tile_size
+
+
 ## Returns the [TileSetSource] ID of the [TileSet]s used in [param layer] given
 ## the [param source_name].
 func get_source_id(layer: String, source_name: String) -> int:
