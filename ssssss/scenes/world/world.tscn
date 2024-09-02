@@ -613,7 +613,6 @@ script = ExtResource("4_0ia51")
 tile_size = Vector2(30, 30)
 
 [node name="DynamicLayer" type="TileMapLayer" parent="TileMap"]
-visible = false
 tile_set = SubResource("TileSet_kq75h")
 
 [node name="StaticLayer" type="TileMapLayer" parent="TileMap"]
