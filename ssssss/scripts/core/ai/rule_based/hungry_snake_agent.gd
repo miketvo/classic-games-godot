@@ -8,7 +8,7 @@ extends SnakeAgent
 const MapVisualizer: PackedScene = preload("res://scenes/world/a_star_2d_visualizer.tscn")
 
 
-var _map_cache: AStar2D
+var _map_cache: SnakeAStar2D
 var _id_path_cache: Array[int]
 var _closest_food: Variant
 static var _map_visualizer: AStar2DVisualizer
@@ -58,8 +58,20 @@ func _get_action(state: Global.GameStateData) -> Global.Direction:
         target_point_id = _id_path_cache.pop_front()
 
     if target_point_id:
-        var target_coords = Vector2i(_map_cache.get_point_position(target_point_id))
-        match target_coords - snake_head:
+        var target_coords = _map_cache.get_point_position(target_point_id)
+        var movement: Vector2 = target_coords - Vector2(snake_head)
+        if (
+                (
+                        Vector2.UP.dot(movement.normalized()) == 0 # Horizontal
+                        and movement.length_squared() == pow(Global.WORLD_SIZE.x, 2)
+                ) != ( # XOR
+                        Vector2.RIGHT.dot(movement.normalized()) == 0 # Vertical
+                        and movement.length_squared() == pow(Global.WORLD_SIZE.y, 2)
+                )
+        ):
+            movement = movement.normalized().rotated(PI)
+
+        match Vector2i(movement):
             Vector2i.UP: return Global.Direction.UP
             Vector2i.LEFT: return Global.Direction.LEFT
             Vector2i.DOWN: return Global.Direction.DOWN
@@ -67,7 +79,7 @@ func _get_action(state: Global.GameStateData) -> Global.Direction:
             _:
                 assert(
                         false,
-                        "Invalid `target_coords` (%d, %d)"
+                        "Invalid `target_coords`: (%d, %d)"
                         % [target_coords.x, target_coords.y]
                 )
                 return Global.Direction.NONE
@@ -85,7 +97,7 @@ func _terminate():
 
 # ============================================================================ #
 #region Public methods
-func get_map() -> AStar2D:
+func get_map() -> SnakeAStar2D:
     return _map_cache
 
 
@@ -102,7 +114,7 @@ func _construct_pathfinding_map(state: Global.GameStateData) -> void:
     var snake_grid: WorldGrid2D = state.world.snake_grid
     var wall_grid: WorldGrid2D = state.world.wall_grid
 
-    _map_cache = AStar2D.new()
+    _map_cache = SnakeAStar2D.new()
     _map_cache.reserve_space(Global.WORLD_SIZE.x * Global.WORLD_SIZE.y)
 
     # Add points.
@@ -178,7 +190,7 @@ func _get_id_path(from: Vector2i, to: Vector2i) -> Array[int]:
             from.x + from.y * Global.WORLD_SIZE.x,
             to.x + to.y * Global.WORLD_SIZE.x
     )), TYPE_INT, &"", null)
-    id_path.pop_front()
+    id_path.pop_front() # No need for the snake head to be in the path.
     return id_path
 #endregion
 # ============================================================================ #
