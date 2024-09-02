@@ -588,6 +588,7 @@ _data = {
 }
 
 [node name="World" type="Node2D"]
+position = Vector2(1, 0)
 script = ExtResource("1_x8ono")
 
 [node name="TileMap" type="Node2D" parent="."]
