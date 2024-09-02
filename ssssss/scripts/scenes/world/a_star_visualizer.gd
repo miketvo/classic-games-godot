@@ -8,7 +8,7 @@ extends Node2D
 @export_range(0.1, 1.0, 0.1, "or_greater", "suffix:px") var point_radius: float = 6.0
 @export var enabled_point_color: Color = Color("00ff0050")
 @export var disabled_point_color = Color("ff000040")
-@export var edge_color = Color("0000ff20")
+@export var edge_color = Color("0000ff30")
 @export_range(0.1, 1.0, 0.1, "or_greater", "suffix:px") var edge_width: float = 2.0
 
 var _map: AStar2D
@@ -27,13 +27,16 @@ func _draw():
 
         for neighbor_point_id in _map.get_point_connections(point_id):
             var neighbor_position: Vector2 = _get_point_position(neighbor_point_id)
-            print(point_position.distance_to(neighbor_position))
-            draw_line(
-                    point_position,
-                    neighbor_position,
-                    edge_color,
-                    edge_width
-            )
+            if (
+                    (abs(point_position.x - neighbor_position.x) == tile_size.x) != # XOR
+                    (abs(point_position.y - neighbor_position.y) == tile_size.y)
+            ):
+                draw_line(
+                        point_position,
+                        neighbor_position,
+                        edge_color,
+                        edge_width
+                )
 #endregion
 # ============================================================================ #
 
