@@ -1,5 +1,5 @@
 extends State
-## Classic mode game logic.
+## Chaos mode game logic.
 
 
 ## For each multiple of this value, the number of random food being spawned in,
@@ -12,10 +12,10 @@ const FOOD_RESPAWN_COOLDOWN: int = 4 ## Unit: steps.
 ## respawned.
 const FOOD_RESPAWN_DELAY_STEPS: int = 90
 
-const ENEMY_SPAWN_LENGTH: int = 3
-const ENEMY_SPAWN_MIN_DELAY_STEPS: int = 20
-const ENEMY_SPAWN_MAX_DELAY_STEPS: int = 60
-const MAX_CONCURRENT_ENEMIES_COUNT: int = 3
+const ENEMY_SPAWN_LENGTH: int = 12 ## Unit: cells.
+const ENEMY_SPAWN_MIN_DELAY_STEPS: int = 20 ## Unit: steps.
+const ENEMY_SPAWN_MAX_DELAY_STEPS: int = 60 ## Unit: steps.
+const MAX_CONCURRENT_ENEMIES_COUNT: int = 2
 
 
 @export var game_scene: GameScene2D
@@ -41,7 +41,6 @@ func _ready() -> void:
     _food_respawn_count = 0
     _food_respawn_timer.timeout.connect(_on_food_respawn_timer_timeout)
     _enemy_spawn_timer.timeout.connect(_on_enemy_spawn_timer_timeout)
-
     _rng = RandomNumberGenerator.new()
 #endregion
 # ============================================================================ #
@@ -56,6 +55,7 @@ func _enter() -> void:
     _world.stopped.connect(_lose_game)
     _world.food_eaten.connect(_on_food_eaten)
     _world.snake_collided.connect(_on_snake_collided)
+
     _target_score = Global.levels[Global.current_level]\
             ["metadata"]["win_condition"]["chaos_mode"]["target_score"]
     _target_kills = Global.levels[Global.current_level]\
@@ -130,7 +130,7 @@ func _on_snake_collided(snake_id: int, collide_corrds: Vector2i) -> void:
 
 # Listens to _enemy_spawn_timer.timeout().
 func _on_enemy_spawn_timer_timeout() -> void:
-    if _world.snakes.size() < MAX_CONCURRENT_ENEMIES_COUNT + 1:
+    if _world.snakes.size() <= MAX_CONCURRENT_ENEMIES_COUNT:
         _spawn_random_enemy()
         _restart_enemy_spawn_timer()
 
@@ -192,35 +192,35 @@ func _restart_food_respawn_timer() -> void:
 
 
 func _spawn_random_enemy() -> void:
-    var _snake_grid: WorldGrid2D = _world.snake_grid
-    var _wall_grid: WorldGrid2D = _world.wall_grid
-    var _food_grid: WorldGrid2D = _world.food_grid
+    var snake_grid: WorldGrid2D = _world.snake_grid
+    var wall_grid: WorldGrid2D = _world.wall_grid
+    var food_grid: WorldGrid2D = _world.food_grid
 
-    var direction: Vector2i
+    var spawn_direction: Vector2i
     while true:
-        direction = Global.DIRECTIONS[randi_range(0, Global.Direction.values().size() - 1)]
-        if direction != Global.DIRECTIONS[Global.Direction.NONE]: break
+        spawn_direction = Global.DIRECTIONS[randi_range(0, Global.Direction.values().size() - 1)]
+        if spawn_direction != Global.DIRECTIONS[Global.Direction.NONE]: break
 
     var is_clear: bool = false
     var spawn_coords: Vector2i
     while not is_clear:
         spawn_coords = Vector2i(
-                _rng.randi_range(0, _snake_grid.size(Vector2i.AXIS_X)),
-                _rng.randi_range(0, _snake_grid.size(Vector2i.AXIS_Y))
+                _rng.randi_range(0, snake_grid.size(Vector2i.AXIS_X)),
+                _rng.randi_range(0, snake_grid.size(Vector2i.AXIS_Y))
         )
 
         is_clear = true
         var test_coords: Vector2i = spawn_coords
-        for i in range(ENEMY_SPAWN_LENGTH - 1):
+        for i in range(ENEMY_SPAWN_LENGTH):
             if (
-                    not _food_grid.is_clear_at(test_coords) or
-                    not _wall_grid.is_clear_at(test_coords) or
-                    not _snake_grid.is_clear_at(test_coords)
+                    not food_grid.is_clear_at(test_coords) or
+                    not wall_grid.is_clear_at(test_coords) or
+                    not snake_grid.is_clear_at(test_coords)
             ):
                 is_clear = false
                 break
-            test_coords += direction
-    _world.spawn_snake(spawn_coords, direction, ENEMY_SPAWN_LENGTH)
+            test_coords -= spawn_direction
+    _world.spawn_snake(spawn_coords, spawn_direction, ENEMY_SPAWN_LENGTH)
 
 
 func _restart_enemy_spawn_timer() -> void:
