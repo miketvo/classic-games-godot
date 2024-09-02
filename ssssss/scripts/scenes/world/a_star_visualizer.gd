@@ -7,11 +7,13 @@ extends Node2D
 @export_group("Appearance")
 @export_range(0.1, 1.0, 0.1, "or_greater", "suffix:px") var point_radius: float = 6.0
 @export var enabled_point_color: Color = Color("00ff0050")
-@export var disabled_point_color = Color("ff000040")
-@export var edge_color = Color("0000ff30")
+@export var disabled_point_color: Color = Color("ff000040")
+@export var path_point_color: Color = Color("ff00ffff")
+@export var edge_color: Color = Color("0000ff30")
 @export_range(0.1, 1.0, 0.1, "or_greater", "suffix:px") var edge_width: float = 2.0
 
 var _map: AStar2D
+var _paths_point_ids: Array[int]
 
 
 # ============================================================================ #
@@ -22,6 +24,7 @@ func _draw():
         var point_position: Vector2 = _get_point_position(point_id)
         var point_color =\
                 disabled_point_color if _map.is_point_disabled(point_id)\
+                else path_point_color if point_id in _paths_point_ids\
                 else enabled_point_color
         draw_circle(point_position, point_radius, point_color)
 
@@ -46,6 +49,15 @@ func _draw():
 func load_map(map: AStar2D) -> void:
     _map = map
     queue_redraw()
+
+
+func add_id_path(id_path: Array[int]) -> void:
+    _paths_point_ids.append_array(id_path)
+
+
+func erase_id_path(id_path: Array[int]) -> void:
+    for point_id in id_path:
+        _paths_point_ids.erase(point_id)
 #endregion
 # ============================================================================ #
 

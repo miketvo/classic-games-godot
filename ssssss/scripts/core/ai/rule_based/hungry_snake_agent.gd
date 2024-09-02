@@ -5,7 +5,7 @@ extends SnakeAgent
 ## food cell is available.
 
 
-const MapVisualizer: PackedScene = preload("res://scenes/world/a_star_2d_visualizer.tscn")
+const MapVisualizer: PackedScene = preload("res://scenes/a_star_2d_visualizer.tscn")
 
 
 var _map_cache: SnakeAStar2D
@@ -40,12 +40,14 @@ func _get_action(state: Global.GameStateData) -> Global.Direction:
         _update_pathfinding_map(state)
     if _map_visualizer:
         _map_visualizer.load_map(_map_cache)
+        _map_visualizer.erase_id_path(_id_path_cache)
 
-    var target_point_id: Variant = null
+    var target_point_id: Variant
     if _closest_food != new_closest_food:
         _closest_food = new_closest_food
         _id_path_cache = _get_id_path(snake_head, _closest_food)
         target_point_id = _id_path_cache.pop_front()
+        if _map_visualizer: _map_visualizer.add_id_path(_id_path_cache)
     else:
         var snake_grid: WorldGrid2D = state.world.snake_grid
         var valid_path: bool = true
@@ -56,6 +58,7 @@ func _get_action(state: Global.GameStateData) -> Global.Direction:
                 break
         if not valid_path: _id_path_cache = _get_id_path(snake_head, _closest_food)
         target_point_id = _id_path_cache.pop_front()
+        if _map_visualizer: _map_visualizer.add_id_path(_id_path_cache)
 
     if target_point_id:
         var target_coords = _map_cache.get_point_position(target_point_id)
