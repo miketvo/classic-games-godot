@@ -35,7 +35,7 @@ func _notification(what: int) -> void:
 ## [method Object.to_string], and therefore the [SnakeAgent] representation as a
 ## [String].
 ## [codeblock]
-## class_name RandomSnakeAgent
+## class_name SomeSnakeAgent
 ## extends SnakeAgent
 ##
 ##
