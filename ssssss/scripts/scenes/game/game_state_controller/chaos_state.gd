@@ -204,14 +204,17 @@ func _spawn_random_enemy() -> void:
     var is_clear: bool = false
     var spawn_coords: Vector2i
     while not is_clear:
+        is_clear = true
         spawn_coords = Vector2i(
                 _rng.randi_range(0, snake_grid.size(Vector2i.AXIS_X)),
                 _rng.randi_range(0, snake_grid.size(Vector2i.AXIS_Y))
         )
 
-        is_clear = true
-        var test_coords: Vector2i = spawn_coords
-        for i in range(ENEMY_SPAWN_LENGTH):
+        var test_snake: Array[Vector2i] = _world.spawn_snake(
+                spawn_coords, spawn_direction, ENEMY_SPAWN_LENGTH,
+                true
+        )
+        for test_coords in test_snake:
             if (
                     not food_grid.is_clear_at(test_coords) or
                     not wall_grid.is_clear_at(test_coords) or
@@ -219,7 +222,6 @@ func _spawn_random_enemy() -> void:
             ):
                 is_clear = false
                 break
-            test_coords -= spawn_direction
     _world.spawn_snake(spawn_coords, spawn_direction, ENEMY_SPAWN_LENGTH)
 
 

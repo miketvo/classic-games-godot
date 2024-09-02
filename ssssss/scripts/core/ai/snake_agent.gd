@@ -16,7 +16,10 @@ var _snake_id: int
 #region Godot builtins
 
 ## Construct a [SnakeAgent] corresponding to the snake in [member World.snakes]
-## with [param snake_id]. [b]Note:[/b] Do [b]NOT[/b] override this method. Use
+## with [param snake_id]. The correct [param snake_id] is automatically managed
+## by [method World.spawn_snake].
+## [br][br]
+## [b]Note:[/b] Do [b]NOT[/b] override this method. Use
 ## [method _setup] instead.
 func _init(snake_id: int) -> void:
     _snake_id = snake_id
@@ -105,7 +108,11 @@ func get_snake_id() -> int:
     return _snake_id
 
 
-## Sets the [param snake_id].
+## Sets the [param snake_id] corresponding to the snake in [member World.snake].
+## The behavior for setting an incorrect [param snake_id] is undefined, only
+## call this method if you know what you are doing. Otherwise, the correct
+## [param snake_id] is managed by [method World.spawn_snake] and
+## [method World.despawn_snake].
 func set_snake_id(snake_id: int) -> void:
     _snake_id = snake_id
 

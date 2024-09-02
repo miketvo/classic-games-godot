@@ -167,9 +167,18 @@ func _notification(what: int) -> void:
 
 # ============================================================================ #
 #region Public methods
+
+## Spawns in a snake at [param spawn_coords], heading at [param direction], with
+## a length of [param length], and behavior defined by the [param agent_type]
+## (See [SnakeAgent]). [b]Note:[/b] The cells that the spawned snake would
+## occupy must not be occupied (no other snakes, food, nor walls).
+## [br][br]
+## If [param test] is set to [code]true[/code], returns the coordinates of the
+## cells that the spawned snake would be occupying. Otherwise, returns
+## [code]null[/code].
 func spawn_snake(
         spawn_coords: Vector2i, direction: Vector2i, length: int,
-        debug: bool = false, agent_type: StringName = &""
+        test: bool = false, agent_type: StringName = &""
 ) -> Variant:
     var control_agent: SnakeAgent
     match agent_type:
@@ -183,7 +192,7 @@ func spawn_snake(
     var snake: Array[Vector2i] = []
     var current_position: Vector2i = spawn_coords
     for i in range(length):
-        if not debug:
+        if not test:
             assert(
                     snake_grid.is_clear_at(current_position),
                     "Cannot spawn snake: (%d, %d) is occupied by another snake"
@@ -203,7 +212,7 @@ func spawn_snake(
         snake.append(current_position)
         current_position = snake_grid.wrap_coords(current_position - direction)
 
-    if debug:
+    if test:
         return snake
     else:
         snakes.append(snake)
@@ -212,6 +221,8 @@ func spawn_snake(
         return null
 
 
+## Despawns (deletes) the snake with [param snake_id]. [param snake_id] must be
+## a correct index of [member snakes].
 func despawn_snake(snake_id: int) -> void:
     snake_grow_queue.pop_at(snake_id)
 
@@ -228,6 +239,9 @@ func despawn_snake(snake_id: int) -> void:
             snake_grid.reset_at(cell_coords)
 
 
+## Spawns in a food cell of [param food_type] at [param spawn_coords]. See
+## [enum Global.FoodType] for the available food types. [spawn_coords] must not
+## be occupied.
 func spawn_food(spawn_coords: Vector2i, food_type: Global.FoodType) -> void:
     assert(
             snake_grid.is_clear_at(spawn_coords),
@@ -247,6 +261,8 @@ func spawn_food(spawn_coords: Vector2i, food_type: Global.FoodType) -> void:
     food_grid.set_at(spawn_coords, food_type)
 
 
+# Spawns in a food cell of random [enum Global.FoodType] at a random
+## non-occupied cell.
 func spawn_random_food(probabilities: Array[float] = Global.FOOD_PROBABILITIES) -> Vector2i:
     assert(
             probabilities.reduce(
@@ -276,10 +292,17 @@ func spawn_random_food(probabilities: Array[float] = Global.FOOD_PROBABILITIES) 
     return spawn_coords
 
 
+## Despawns (deletes) the food at [param food_coords]. Has no effect if there is
+## no food at [param food_coords].
 func despawn_food(food_coords: Vector2i) -> void:
     food_grid.reset_at(food_coords)
 
 
+## Returns the screen position of the cell's tile at [param cell_coords].
+## [param center] specifies if the center position of the cell or the top-left
+## corner position is returned. [param global] specifies if the returned
+## position is global (set to [code]true[/code]) or relative to the tile map
+## (set to [code]false[/code]).
 func get_cell_position(
         cell_coords: Vector2i,
         center: bool = false,
@@ -290,31 +313,38 @@ func get_cell_position(
     return cell_position
 
 
+## Returns the tile size of the tile map.
 func get_tile_size() -> Vector2i:
     return _tile_map.get_tile_size()
 
 
+## Returns the simulation step duration (in seconds).
 func get_step_duration() -> float:
     return _run_state.get_step_duration()
 
 
+## Sets the simulation step duration (in seconds).
 func set_step_duration(duration: float) -> void:
     _run_state.set_step_duration(duration)
 
 
+## Pauses the simulation.
 func pause() -> void:
     running = false
     paused.emit()
     _run_state.pause()
 
 
+# Unpauses the simulation.
 func unpause() -> void:
     unpaused.emit()
     _run_state.unpause()
 
 
+# Plays the [param anim_name] tile map animation.
 func play_tile_map_animation(anim_name: StringName) -> void:
     _tile_map.get_node("AnimationPlayer").play(anim_name)
+
 #endregion
 # ============================================================================ #
 
