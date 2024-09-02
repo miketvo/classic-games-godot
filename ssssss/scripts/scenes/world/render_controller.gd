@@ -67,6 +67,18 @@ func _on_snake_collided(snake_id: int) -> void:
 
 # ============================================================================ #
 #region Utils
+
+## Undocumented. Used internally to render [AStar2D] instances during runtime
+## for debugging.
+func register_astar_debug_render(map: AStar2D) -> void:
+    tile_map.get_node("DebugLayer/AStarVisualizer").load(map)
+
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
+#region Utils
 func _draw_editor_debug_layer() -> void:
     var debug_layer: TileMapLayer = tile_map.get_node("DebugLayer")
     debug_layer.visible = world.draw_debug_grid

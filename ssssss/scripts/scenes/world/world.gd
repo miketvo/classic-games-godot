@@ -111,6 +111,8 @@ var food_grid: WorldGrid2D
 # ============================================================================ #
 
 
+var _food_pool: Array[Vector2i]
+
 @onready var _tile_map: Node2D = $TileMap
 @onready var _build_state: State = $WorldStateController/BuildState
 @onready var _run_state: State = $WorldStateController/RunState
@@ -129,6 +131,7 @@ func _ready() -> void:
         _run_state.food_eaten.connect(_on_food_eaten)
         _run_state.food_digested.connect(_on_food_digested)
         _stop_state.stopped.connect(_on_stopped)
+        _food_pool = []
 
     snakes = []
     snake_grow_queue = []
@@ -184,6 +187,8 @@ func spawn_snake(
     match agent_type:
         &"PlayerSnakeAgent":
             control_agent = PlayerSnakeAgent.new(snakes.size())
+        &"HungrySnakeAgent":
+            control_agent = HungrySnakeAgent.new(snakes.size())
         &"":
             control_agent = null
         _:
@@ -259,6 +264,7 @@ func spawn_food(spawn_coords: Vector2i, food_type: Global.FoodType) -> void:
             % [spawn_coords.x, spawn_coords.y]
     )
     food_grid.set_at(spawn_coords, food_type)
+    _food_pool.append(spawn_coords)
 
 
 # Spawns in a food cell of random [enum Global.FoodType] at a random
@@ -296,6 +302,13 @@ func spawn_random_food(probabilities: Array[float] = Global.FOOD_PROBABILITIES) 
 ## no food at [param food_coords].
 func despawn_food(food_coords: Vector2i) -> void:
     food_grid.reset_at(food_coords)
+    _food_pool.erase(food_coords)
+
+
+## Returns [b]a copy[/b] of the list of food coordinates spawned in this
+## [World].
+func get_foods() -> Array[Vector2i]:
+    return _food_pool.duplicate()
 
 
 ## Returns the screen position of the cell's tile at [param cell_coords].

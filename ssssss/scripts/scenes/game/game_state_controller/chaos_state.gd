@@ -12,10 +12,10 @@ const FOOD_RESPAWN_COOLDOWN: int = 4 ## Unit: steps.
 ## respawned.
 const FOOD_RESPAWN_DELAY_STEPS: int = 90
 
-const ENEMY_SPAWN_LENGTH: int = 12 ## Unit: cells.
+const ENEMY_SPAWN_LENGTH: int = 3 ## Unit: cells.
 const ENEMY_SPAWN_MIN_DELAY_STEPS: int = 20 ## Unit: steps.
 const ENEMY_SPAWN_MAX_DELAY_STEPS: int = 60 ## Unit: steps.
-const MAX_CONCURRENT_ENEMIES_COUNT: int = 2
+const MAX_CONCURRENT_ENEMIES_COUNT: int = 3
 
 
 @export var game_scene: GameScene2D
@@ -222,7 +222,10 @@ func _spawn_random_enemy() -> void:
             ):
                 is_clear = false
                 break
-    _world.spawn_snake(spawn_coords, spawn_direction, ENEMY_SPAWN_LENGTH)
+    _world.spawn_snake(
+            spawn_coords, spawn_direction, ENEMY_SPAWN_LENGTH,
+            false, &"HungrySnakeAgent"
+    )
 
 
 func _restart_enemy_spawn_timer() -> void:
