@@ -63,10 +63,10 @@ func _get_action(state: Global.GameStateData) -> Global.Direction:
         if (
                 (
                         Vector2.UP.dot(movement.normalized()) == 0 # Horizontal.
-                        and movement.length_squared() == pow(Global.WORLD_SIZE.x, 2)
+                        and movement.length_squared() == pow(Global.WORLD_SIZE.x - 1, 2)
                 ) != ( # XOR.
                         Vector2.RIGHT.dot(movement.normalized()) == 0 # Vertical.
-                        and movement.length_squared() == pow(Global.WORLD_SIZE.y, 2)
+                        and movement.length_squared() == pow(Global.WORLD_SIZE.y - 1, 2)
                 )
         ):
             movement = movement.normalized().rotated(PI)

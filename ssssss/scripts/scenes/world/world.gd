@@ -238,7 +238,7 @@ func despawn_snake(snake_id: int) -> void:
     snake_agent = snake_agents.pop_at(snake_id)
     if snake_agent: snake_agent.free()
 
-    var snake := snakes.pop_at(snake_id) as Array[Vector2i]
+    var snake: Variant = snakes.pop_at(snake_id)
     if snake:
         for cell_coords in snake:
             snake_grid.reset_at(cell_coords)
