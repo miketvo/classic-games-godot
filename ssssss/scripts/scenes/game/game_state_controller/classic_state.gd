@@ -98,7 +98,6 @@ func _on_food_respawn_timer_timeout() -> void:
     _respawn_food()
     _restart_food_respawn_timer()
 
-
 #endregion
 # ============================================================================ #
 
