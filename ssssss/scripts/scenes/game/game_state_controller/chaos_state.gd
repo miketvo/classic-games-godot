@@ -98,10 +98,9 @@ func _on_world_unpaused() -> void:
 
 # Listens to _world.food_eaten(snake_id: int, food_coords: Vector2i).
 func _on_food_eaten(snake_id: int, food_coords: Vector2i) -> void:
-    if snake_id != 0: return
-
-    game_scene.score += Global.FOOD_SCORE[_world.food_grid.get_at(food_coords)]
-    _increase_game_speed()
+    if snake_id == 0:
+        game_scene.score += Global.FOOD_SCORE[_world.food_grid.get_at(food_coords)]
+        _increase_game_speed()
 
     if not _food_respawn_blocked:
         # Add a cooldown before new food is respawned.
