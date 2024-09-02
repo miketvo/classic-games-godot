@@ -5,9 +5,13 @@ extends SnakeAgent
 ## food cell is available.
 
 
+const MapVisualizer: PackedScene = preload("res://scenes/world/a_star_2d_visualizer.tscn")
+
+
 var _map_cache: AStar2D
 var _id_path_cache: Array[int]
 var _closest_food: Variant
+var _map_visualizer: AStar2DVisualizer
 
 
 # ============================================================================ #
@@ -15,16 +19,21 @@ var _closest_food: Variant
 func _setup() -> void:
     _map_cache = null
     _id_path_cache = []
+    _map_visualizer = null
 
 
 func _get_action(state: Global.GameStateData) -> Global.Direction:
+    if state.get_tree().debug_collisions_hint and (not _map_visualizer):
+        _map_visualizer = MapVisualizer.instantiate()
+        state.world.get_node("TileMap").add_child(_map_visualizer)
+        _map_visualizer.load(_map_cache)
+
     var snake_head: Vector2i = state.world.snakes[_snake_id][0]
     var new_closest_food: Variant = _get_closest_available_food(snake_head, state)
     if not new_closest_food:
         _closest_food = null
         return Global.Direction.NONE
 
-    state.world.get_node("RenderController").register_astar_debug_render(_map_cache)
     if not _map_cache:
         _construct_pathfinding_map(state)
     else:
