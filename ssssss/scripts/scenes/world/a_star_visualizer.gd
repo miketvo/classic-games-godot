@@ -28,7 +28,7 @@ func _draw():
         for neighbor_point_id in _map.get_point_connections(point_id):
             var neighbor_position: Vector2 = _get_point_position(neighbor_point_id)
             if (
-                    (abs(point_position.x - neighbor_position.x) == tile_size.x) != # XOR
+                    (abs(point_position.x - neighbor_position.x) == tile_size.x) != # XOR.
                     (abs(point_position.y - neighbor_position.y) == tile_size.y)
             ):
                 draw_line(

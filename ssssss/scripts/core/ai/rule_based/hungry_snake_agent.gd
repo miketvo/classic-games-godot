@@ -62,10 +62,10 @@ func _get_action(state: Global.GameStateData) -> Global.Direction:
         var movement: Vector2 = target_coords - Vector2(snake_head)
         if (
                 (
-                        Vector2.UP.dot(movement.normalized()) == 0 # Horizontal
+                        Vector2.UP.dot(movement.normalized()) == 0 # Horizontal.
                         and movement.length_squared() == pow(Global.WORLD_SIZE.x, 2)
-                ) != ( # XOR
-                        Vector2.RIGHT.dot(movement.normalized()) == 0 # Vertical
+                ) != ( # XOR.
+                        Vector2.RIGHT.dot(movement.normalized()) == 0 # Vertical.
                         and movement.length_squared() == pow(Global.WORLD_SIZE.y, 2)
                 )
         ):
