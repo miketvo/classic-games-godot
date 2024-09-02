@@ -78,9 +78,7 @@ func _on_world_unpaused() -> void:
 
 
 # Listens to _world.food_eaten().
-func _on_food_eaten(snake_id: int, food_coords: Vector2i) -> void:
-    if snake_id != 0: return
-
+func _on_food_eaten(_snake_id: int, food_coords: Vector2i) -> void:
     game_scene.score += Global.FOOD_SCORE[_world.food_grid.get_at(food_coords)]
     _increase_game_speed()
 
