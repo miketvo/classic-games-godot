@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://fyi0t1bppf0"]
 
-[ext_resource type="Script" path="res://scripts/scenes/world/a_star_visualizer.gd" id="1_xasmd"]
+[ext_resource type="Script" path="res://scripts/scenes/world/a_star_2d_visualizer.gd" id="1_xasmd"]
 
 [node name="AStar2DVisualizer" type="Node2D"]
 script = ExtResource("1_xasmd")
