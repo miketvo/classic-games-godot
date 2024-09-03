@@ -12,6 +12,7 @@ extends Node2D
 @export var edge_color: Color = Color("0000ff30")
 @export_range(0.1, 1.0, 0.1, "or_greater", "suffix:px") var edge_width: float = 2.0
 
+var _world: World
 var _map: AStar2D
 var _paths_point_ids: Array[int]
 
@@ -46,6 +47,11 @@ func _draw():
 
 # ============================================================================ #
 #region Public methods
+func attach_world(world: World) -> void:
+    _world = world
+    _world.get_node("TileMap").add_child(self)
+
+
 func load_map(map: AStar2D) -> void:
     _map = map
     queue_redraw()
@@ -53,11 +59,13 @@ func load_map(map: AStar2D) -> void:
 
 func add_id_path(id_path: Array[int]) -> void:
     _paths_point_ids.append_array(id_path)
+    queue_redraw()
 
 
 func erase_id_path(id_path: Array[int]) -> void:
     for point_id in id_path:
         _paths_point_ids.erase(point_id)
+    queue_redraw()
 #endregion
 # ============================================================================ #
 

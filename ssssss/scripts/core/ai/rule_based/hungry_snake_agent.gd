@@ -8,9 +8,9 @@ extends SnakeAgent
 const MapVisualizer: PackedScene = preload("res://scenes/a_star_2d_visualizer.tscn")
 
 
-var _map_cache: SnakeAStar2D
-var _id_path_cache: Array[int]
 var _closest_food: Variant
+var _id_path_cache: Array[int]
+static var _map_cache: SnakeAStar2D = null
 static var _map_visualizer: AStar2DVisualizer
 static var _agents_count: int = 0
 
@@ -18,15 +18,14 @@ static var _agents_count: int = 0
 # ============================================================================ #
 #region SnakeAgent builtins
 func _setup() -> void:
-    _map_cache = null
-    _id_path_cache = []
     _agents_count += 1
+    _id_path_cache = []
 
 
 func _get_action(state: Global.GameStateData) -> Global.Direction:
     if state.get_tree().debug_collisions_hint and (not _map_visualizer):
         _map_visualizer = MapVisualizer.instantiate()
-        state.world.get_node("TileMap").add_child(_map_visualizer)
+        _map_visualizer.attach_world(state.world)
 
     var snake_head: Vector2i = state.world.snakes[_snake_id][0]
     var new_closest_food: Variant = _get_closest_available_food(snake_head, state)
@@ -36,27 +35,35 @@ func _get_action(state: Global.GameStateData) -> Global.Direction:
 
     if not _map_cache:
         _construct_pathfinding_map(state)
-    else:
-        _update_pathfinding_map(state)
-    if _map_visualizer:
-        _map_visualizer.load_map(_map_cache)
-        _map_visualizer.erase_id_path(_id_path_cache)
+        state.world.step.connect(
+                func (_step_count): _update_pathfinding_map(state)
+        )
+        if _map_visualizer: state.world.step.connect(
+                func (_step_count): _map_visualizer.load_map(_map_cache)
+        )
+    if _map_visualizer: _map_visualizer.erase_id_path(_id_path_cache)
 
+    var snake_grid: WorldGrid2D = state.world.snake_grid
     var target_point_id: Variant
     if _closest_food != new_closest_food:
         _closest_food = new_closest_food
-        _id_path_cache = _get_id_path(snake_head, _closest_food)
+        _id_path_cache = _get_id_path(
+                snake_head + snake_grid.get_at(snake_head),
+                _closest_food
+        )
         target_point_id = _id_path_cache.pop_front()
         if _map_visualizer: _map_visualizer.add_id_path(_id_path_cache)
     else:
-        var snake_grid: WorldGrid2D = state.world.snake_grid
         var valid_path: bool = true
         for point_id in _id_path_cache:
             var point_coords: Vector2i = Vector2i(_map_cache.get_point_position(point_id))
             if not snake_grid.is_clear_at(point_coords):
                 valid_path = false
                 break
-        if not valid_path: _id_path_cache = _get_id_path(snake_head, _closest_food)
+        if not valid_path: _id_path_cache = _get_id_path(
+                snake_head + snake_grid.get_at(snake_head),
+                _closest_food
+        )
         target_point_id = _id_path_cache.pop_front()
         if _map_visualizer: _map_visualizer.add_id_path(_id_path_cache)
 
@@ -65,10 +72,10 @@ func _get_action(state: Global.GameStateData) -> Global.Direction:
         var movement: Vector2 = target_coords - Vector2(snake_head)
         if (
                 (
-                        Vector2.UP.dot(movement.normalized()) == 0 # Horizontal.
+                        Vector2.UP.dot(movement) == 0 # Horizontal.
                         and movement.length_squared() == pow(Global.WORLD_SIZE.x - 1, 2)
                 ) != ( # XOR.
-                        Vector2.RIGHT.dot(movement.normalized()) == 0 # Vertical.
+                        Vector2.RIGHT.dot(movement) == 0 # Vertical.
                         and movement.length_squared() == pow(Global.WORLD_SIZE.y - 1, 2)
                 )
         ):
@@ -113,7 +120,6 @@ func get_map_id_path() -> Array[int]:
 # ============================================================================ #
 #region Utils
 func _construct_pathfinding_map(state: Global.GameStateData) -> void:
-    var snake_head: Vector2i = state.world.snakes[_snake_id][0]
     var snake_grid: WorldGrid2D = state.world.snake_grid
     var wall_grid: WorldGrid2D = state.world.wall_grid
 
@@ -156,18 +162,17 @@ func _construct_pathfinding_map(state: Global.GameStateData) -> void:
         # Disable point if occupied.
         _map_cache.set_point_disabled(
                 point_id,
-                point_coords != snake_head and (not snake_grid.is_clear_at(point_coords))
+                not snake_grid.is_clear_at(point_coords)
         )
 
 
 func _update_pathfinding_map(state: Global.GameStateData) -> void:
-    var snake_head: Vector2i = state.world.snakes[_snake_id][0]
     var snake_grid: WorldGrid2D = state.world.snake_grid
     for point_id in _map_cache.get_point_ids():
         var coords: Vector2i = Vector2i(_map_cache.get_point_position(point_id))
         _map_cache.set_point_disabled(
                 point_id,
-                coords != snake_head and (not snake_grid.is_clear_at(coords))
+                not snake_grid.is_clear_at(coords)
         )
 
 
@@ -193,7 +198,6 @@ func _get_id_path(from: Vector2i, to: Vector2i) -> Array[int]:
             from.x + from.y * Global.WORLD_SIZE.x,
             to.x + to.y * Global.WORLD_SIZE.x
     )), TYPE_INT, &"", null)
-    id_path.pop_front() # No need for the snake head to be in the path.
     return id_path
 #endregion
 # ============================================================================ #
