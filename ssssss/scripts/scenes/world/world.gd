@@ -285,8 +285,8 @@ func spawn_random_food(probabilities: Array[float] = Global.FOOD_PROBABILITIES) 
     var spawn_coords: Vector2i
     while true:
         spawn_coords = Vector2i(
-                rng.randi_range(0, food_grid.size(Vector2i.AXIS_X)),
-                rng.randi_range(0, food_grid.size(Vector2i.AXIS_Y))
+                rng.randi_range(0, food_grid.size(Vector2i.AXIS_X) - 1),
+                rng.randi_range(0, food_grid.size(Vector2i.AXIS_Y) - 1)
         )
         if (
                 food_grid.is_clear_at(spawn_coords) and

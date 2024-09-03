@@ -207,8 +207,8 @@ func _spawn_random_enemy() -> void:
     while not is_clear:
         is_clear = true
         spawn_coords = Vector2i(
-                _rng.randi_range(0, snake_grid.size(Vector2i.AXIS_X)),
-                _rng.randi_range(0, snake_grid.size(Vector2i.AXIS_Y))
+                _rng.randi_range(0, snake_grid.size(Vector2i.AXIS_X) - 1),
+                _rng.randi_range(0, snake_grid.size(Vector2i.AXIS_Y) - 1)
         )
 
         var test_snake: Array[Vector2i] = _world.spawn_snake(
