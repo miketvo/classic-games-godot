@@ -11,13 +11,13 @@ extends GameScene2D
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    _ui_back_button.connect("pressed", _on_back_button_pressed)
-    _ui_left_button.connect("mouse_entered", _on_focused_left_side)
-    _ui_left_button.connect("focus_entered", _on_focused_left_side)
-    _ui_left_button.connect("pressed", _on_selected_left_side)
-    _ui_right_button.connect("mouse_entered", _on_focused_right_side)
-    _ui_right_button.connect("focus_entered", _on_focused_right_side)
-    _ui_right_button.connect("pressed", _on_selected_right_side)
+    _ui_back_button.pressed.connect(_on_back_button_pressed)
+    _ui_left_button.mouse_entered.connect(_on_focused_left_side)
+    _ui_left_button.focus_entered.connect(_on_focused_left_side)
+    _ui_left_button.pressed.connect(_on_selected_left_side)
+    _ui_right_button.mouse_entered.connect(_on_focused_right_side)
+    _ui_right_button.focus_entered.connect(_on_focused_right_side)
+    _ui_right_button.pressed.connect(_on_selected_right_side)
     _ui_left_button.grab_focus()
 #endregion
 # ============================================================================ #

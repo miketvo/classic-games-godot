@@ -46,7 +46,7 @@ var _game_point_state: int
 #region Godot builtins
 func _ready() -> void:
     _game_mode = Global.current_game_mode
-    _game_ui.connect("acted", _on_game_ui_acted)
+    _game_ui.acted.connect(_on_game_ui_acted)
     _spawn_paddes()
     _configure_world()
     _configure_game()
@@ -213,8 +213,8 @@ func _spawn_paddes() -> void:
 func _spawn_ball() -> void:
     ball = Ball.instantiate()
     ball.position = _ball_spawn.position
-    ball.connect("body_entered", _on_ball_body_entered)
-    ball.connect("body_exited", _on_ball_body_exited)
+    ball.body_entered.connect(_on_ball_body_entered)
+    ball.body_exited.connect(_on_ball_body_exited)
     _current_ball_speed = Global.BALL_SPEED_INITIAL
     _round_started = false
     add_child(ball)
@@ -256,9 +256,9 @@ func _despawn_ball() -> void:
 
 
 func _configure_world() -> void:
-    $World/LeftBound.connect("body_entered", _on_left_bound_body_entered)
-    $World/RightBound.connect("body_entered", _on_right_bound_body_entered)
-    $World/VerticalSeparator.connect("body_entered", _on_vertical_separator_body_entered)
+    $World/LeftBound.body_entered.connect(_on_left_bound_body_entered)
+    $World/RightBound.body_entered.connect(_on_right_bound_body_entered)
+    $World/VerticalSeparator.body_entered.connect(_on_vertical_separator_body_entered)
 
 
 func _configure_game() -> void:

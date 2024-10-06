@@ -19,7 +19,7 @@ func _ready() -> void:
     _main.get_node("SoundsButton").connect("pressed", _on_main_sounds_button_pressed)
     _main.get_node("ResetButton").connect("pressed", _on_main_reset_button_pressed)
     if Global.os_platform == "Desktop":
-        _resolution_popup.connect("resolution_selected", _on_resolution_popup_resolution_selected)
+        _resolution_popup.resolution_selected.connect(_on_resolution_popup_resolution_selected)
         _graphics.get_node("Fullscreen/ToggleButton")\
                 .connect("toggled", _on_graphics_fullscreen_toggled)
         _graphics.get_node("PostProcessing/ToggleButton")\
@@ -61,25 +61,25 @@ func _ready() -> void:
 
     for child in get_tree().get_nodes_in_group("ui_container_slider_buttons"):
         assert(child is Button, "ui_container_slider_buttons group must contain only Buttons")
-        child.connect("pressed", _on_ui_container_slider_button_pressed)
+        child.pressed.connect(_on_ui_container_slider_button_pressed)
     for child in get_tree().get_nodes_in_group("ui_scene_changer_buttons"):
         assert(child is Button, "ui_scene_changer_buttons group must contain only Buttons")
-        child.connect("pressed", _on_ui_scene_changer_button_pressed)
+        child.pressed.connect(_on_ui_scene_changer_button_pressed)
     for child in get_tree().get_nodes_in_group("ui_selected_buttons"):
         assert(child is Button, "ui_selected_buttons group must contain only Buttons")
-        child.connect("pressed", _on_ui_selected_button_pressed)
+        child.pressed.connect(_on_ui_selected_button_pressed)
     for child in get_tree().get_nodes_in_group("ui_accepted_buttons"):
         assert(
                 (child is Button) or (child is Slider),
                 "ui_accepted_buttons group must contain only Buttons or Slider"
         )
         if child is Slider:
-            child.connect("value_changed", _on_slider_updated)
+            child.value_changed.connect(_on_slider_updated)
         else:
-            child.connect("pressed", _on_ui_accepted_button_pressed)
+            child.pressed.connect(_on_ui_accepted_button_pressed)
     for child in get_tree().get_nodes_in_group("ui_disabled_buttons"):
         assert(child is Button, "ui_disabled_buttons group must contain only Buttons")
-        child.connect("pressed", _on_ui_disabled_button_pressed)
+        child.pressed.connect(_on_ui_disabled_button_pressed)
 
 
 func _process(_delta: float) -> void:
@@ -275,8 +275,8 @@ func _update_graphics_save_button() -> void:
                 graphics_save_button.disconnect("pressed", _on_ui_disabled_button_pressed)
                 graphics_save_button.remove_from_group("ui_disabled_buttons")
                 graphics_save_button.add_to_group("ui_accepted_buttons")
-                graphics_save_button.connect("pressed", _on_ui_accepted_button_pressed)
-                graphics_save_button.connect("pressed", _on_graphics_menu_save_button_pressed)
+                graphics_save_button.pressed.connect(_on_ui_accepted_button_pressed)
+                graphics_save_button.pressed.connect(_on_graphics_menu_save_button_pressed)
         [ false, _, false ]:
             graphics_message_label.text = ""
             graphics_save_button.flat = true
@@ -284,7 +284,7 @@ func _update_graphics_save_button() -> void:
                 graphics_save_button.disconnect("pressed", _on_ui_accepted_button_pressed)
                 graphics_save_button.remove_from_group("ui_accepted_buttons")
                 graphics_save_button.add_to_group("ui_disabled_buttons")
-                graphics_save_button.connect("pressed", _on_ui_disabled_button_pressed)
+                graphics_save_button.pressed.connect(_on_ui_disabled_button_pressed)
                 graphics_save_button.disconnect("pressed", _on_graphics_menu_save_button_pressed)
 
 
@@ -304,8 +304,8 @@ func _update_sounds_save_button() -> void:
                 sounds_save_button.disconnect("pressed", _on_ui_disabled_button_pressed)
                 sounds_save_button.remove_from_group("ui_disabled_buttons")
                 sounds_save_button.add_to_group("ui_accepted_buttons")
-                sounds_save_button.connect("pressed", _on_ui_accepted_button_pressed)
-                sounds_save_button.connect("pressed", _on_sounds_menu_save_button_pressed)
+                sounds_save_button.pressed.connect(_on_ui_accepted_button_pressed)
+                sounds_save_button.pressed.connect(_on_sounds_menu_save_button_pressed)
         [ false, _, false ]:
             sounds_message_label.text = ""
             sounds_save_button.flat = true
@@ -313,7 +313,7 @@ func _update_sounds_save_button() -> void:
                 sounds_save_button.disconnect("pressed", _on_ui_accepted_button_pressed)
                 sounds_save_button.remove_from_group("ui_accepted_buttons")
                 sounds_save_button.add_to_group("ui_disabled_buttons")
-                sounds_save_button.connect("pressed", _on_ui_disabled_button_pressed)
+                sounds_save_button.pressed.connect(_on_ui_disabled_button_pressed)
                 sounds_save_button.disconnect("pressed", _on_sounds_menu_save_button_pressed)
 #endregion
 # ============================================================================ #

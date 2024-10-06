@@ -10,10 +10,10 @@ var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    $Walls/TopWall.connect("body_entered", _on_top_wall_body_entered)
-    $Walls/LeftWall.connect("body_entered", _on_left_wall_body_entered)
-    $Walls/BottomWall.connect("body_entered", _on_bottom_wall_body_entered)
-    $Walls/RightWall.connect("body_entered", _on_right_wall_body_entered)
+    $Walls/TopWall.body_entered.connect(_on_top_wall_body_entered)
+    $Walls/LeftWall.body_entered.connect(_on_left_wall_body_entered)
+    $Walls/BottomWall.body_entered.connect(_on_bottom_wall_body_entered)
+    $Walls/RightWall.body_entered.connect(_on_right_wall_body_entered)
 
     var ball_speed = _rng.randf_range(60.0, 60.0)
     var ball_velocity = Vector2.RIGHT * ball_speed
