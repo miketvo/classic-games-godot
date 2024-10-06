@@ -11,7 +11,7 @@ var _is_ready: bool
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    _cooldown_timer.connect("timeout", _on_cooldown_timer_timeout)
+    _cooldown_timer.timeout.connect(_on_cooldown_timer_timeout)
 #endregion
 # ============================================================================ #
 

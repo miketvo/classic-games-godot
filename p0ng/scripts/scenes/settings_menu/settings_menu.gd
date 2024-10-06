@@ -8,8 +8,8 @@ extends GameScene2D
 #region Godot builtins
 func _ready() -> void:
     _ui_load_config()
-    _ui.connect("acted", _on_main_menu_ui_acted)
-    _ui.connect("acted_with_data", _on_main_menu_ui_acted_with_data)
+    _ui.acted.connect(_on_main_menu_ui_acted)
+    _ui.acted_with_data.connect(_on_main_menu_ui_acted_with_data)
 #endregion
 # ============================================================================ #
 

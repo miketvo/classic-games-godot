@@ -23,7 +23,7 @@ func _ready() -> void:
     var children: Array[Node] = get_children()
     for child in children:
         if child is State:
-            child.connect("transitioned", _on_child_state_transitioned)
+            child.transitioned.connect(_on_child_state_transitioned)
             _states[child.name.to_lower()] = child
     if _states.is_empty():
         print_debug("State machine has no states")

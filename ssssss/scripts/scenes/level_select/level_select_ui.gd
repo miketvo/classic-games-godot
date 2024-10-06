@@ -53,8 +53,8 @@ func _on_load_succeeded() -> void:
         level_select_button.toggle_mode = true
         level_select_button.custom_minimum_size = Vector2(180, 0)
         level_select_button.add_to_group("ui_selected_buttons")
-        level_select_button.connect("pressed", _on_level_select_button_pressed)
-        level_select_button.connect("pressed", _on_ui_selected_button_pressed)
+        level_select_button.pressed.connect(_on_level_select_button_pressed)
+        level_select_button.pressed.connect(_on_ui_selected_button_pressed)
 
         %LevelListContainer.add_child(level_select_button)
         _level_select_buttons.append(level_select_button)

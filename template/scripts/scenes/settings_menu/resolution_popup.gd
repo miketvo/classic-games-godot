@@ -15,7 +15,7 @@ var resolution_option_items: Array = Array()
 func _ready() -> void:
     visible = false
     if Global.os_platform == "Desktop":
-        option_button.connect("pressed", _on_option_button_pressed)
+        option_button.pressed.connect(_on_option_button_pressed)
 
         var resolution_popup_button_group: ButtonGroup = ButtonGroup.new()
         var resolution_popup_container: Container = $ScrollContainer/VBoxContainer
@@ -31,7 +31,7 @@ func _ready() -> void:
                     resolution_key,
                     resolution_popup_button_group
             )
-            resolution_option_item.connect("selected", _on_resolution_option_item_selected)
+            resolution_option_item.selected.connect(_on_resolution_option_item_selected)
             resolution_option_item.add_to_group("ui_accepted_buttons")
             resolution_popup_container.add_child(resolution_option_item)
 
