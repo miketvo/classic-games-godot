@@ -18,7 +18,7 @@ func _process(_delta: float) -> void:
         _current_scene = load(GameScene2D.GAME_SCENE[_current_scene_key]).instantiate()
         add_child(_current_scene)
         move_child(_current_scene, 0)
-        _current_scene.connect("scene_finished", _on_scene_finished)
+        _current_scene.scene_finished.connect(_on_scene_finished)
 #endregion
 # ============================================================================ #
 

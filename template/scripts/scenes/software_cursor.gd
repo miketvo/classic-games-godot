@@ -26,7 +26,7 @@ func _ready() -> void:
     Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
     process_mode = Node.PROCESS_MODE_ALWAYS
     idle_timer.autostart = true
-    idle_timer.connect("timeout", _on_idle_timer_timeout)
+    idle_timer.timeout.connect(_on_idle_timer_timeout)
 
 
 func _process(_delta: float) -> void:

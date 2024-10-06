@@ -45,10 +45,10 @@ func _ready() -> void:
 
     for child in get_tree().get_nodes_in_group("ui_container_slider_buttons"):
         assert(child is Button, "ui_container_slider_buttons group must contain only Buttons")
-        child.connect("pressed", _on_ui_container_slider_button_pressed)
+        child.pressed.connect(_on_ui_container_slider_button_pressed)
     for child in get_tree().get_nodes_in_group("ui_scene_changer_buttons"):
         assert(child is Button, "ui_scene_changer_buttons group must contain only Buttons")
-        child.connect("pressed", _on_ui_scene_changer_button_pressed)
+        child.pressed.connect(_on_ui_scene_changer_button_pressed)
 
     _endgame_dialog.modulate = Color(1.0, 1.0, 1.0, 0.0)
     _endgame_dialog.visible = false
