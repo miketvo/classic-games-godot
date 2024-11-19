@@ -6,6 +6,7 @@ on:
       - reopened
       - synchronize
     branches:
+      - main
       - dev
   push:
     tags:

@@ -7,7 +7,6 @@ on:
       - synchronize
     branches:
       - main
-      - dev
   push:
     tags:
       - '*'
