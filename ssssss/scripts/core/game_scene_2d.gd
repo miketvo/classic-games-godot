@@ -7,7 +7,7 @@ extends Node2D
 ## [br][br]
 ## Not emitted by default. Must be emitted manually.
 ## [br][br]
-## This signal is connected to [Main]. If [param next_scene_key] is used for the
+## This signal is connected to [Main]. [param next_scene_key] is used for the
 ## next scene change.
 @warning_ignore("unused_signal")
 signal scene_finished(next_scene_key: SceneKey)
