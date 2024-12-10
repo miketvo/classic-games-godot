@@ -7,7 +7,7 @@ extends GameScene2D
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    _animation_player.connect("animation_finished", _end_splash.unbind(1))
+    _animation_player.animation_finished.connect(_end_splash.unbind(1))
     _animation_player.play("default")
 
 

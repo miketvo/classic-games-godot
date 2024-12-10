@@ -17,31 +17,31 @@ func _ready() -> void:
     _disable_pausing = false
 
     _pause_menu.get_node("VBoxContainer/ResumeButton")\
-            .connect("pressed", _on_resume_request)
+            .pressed.connect(_on_resume_request)
     if Global.os_platform in [ "Mobile", "Web" ]:
         UI.deactivate_control(_pause_menu.get_node(
                 "VBoxContainer/QuitToDesktopButton"
         ))
     else:
         _pause_menu.get_node("VBoxContainer/QuitToDesktopButton")\
-                .connect("pressed", _on_quit_to_desktop_request)
+                .pressed.connect(_on_quit_to_desktop_request)
     _pause_menu.get_node("VBoxContainer/RestartButton")\
-            .connect("pressed", _on_restart_request)
+            .pressed.connect(_on_restart_request)
     _pause_menu.get_node("VBoxContainer/EndGameButton")\
-            .connect("pressed", _on_end_game_request)
+            .pressed.connect(_on_end_game_request)
     _endgame_dialog.get_node("MenuContainer/VBoxContainer/NextLevelButton")\
-            .connect("pressed", _on_next_level_request)
+            .pressed.connect(_on_next_level_request)
     _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton")\
-            .connect("pressed", _on_restart_request)
+            .pressed.connect(_on_restart_request)
     _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton")\
-            .connect("pressed", _on_end_game_request)
+            .pressed.connect(_on_end_game_request)
     if Global.os_platform in [ "Mobile", "Web" ]:
         UI.deactivate_control(_endgame_dialog.get_node(
                 "MenuContainer/VBoxContainer/QuitToDesktopButton"
         ))
     else:
         _endgame_dialog.get_node("MenuContainer/VBoxContainer/QuitToDesktopButton")\
-            .connect("pressed", _on_quit_to_desktop_request)
+            .pressed.connect(_on_quit_to_desktop_request)
 
     for child in get_tree().get_nodes_in_group("ui_container_slider_buttons"):
         assert(child is Button, "ui_container_slider_buttons group must contain only Buttons")
@@ -65,7 +65,7 @@ func _process(_delta: float) -> void:
                     $PauseMenuContainer,
                     Vector2.UP,
                     UI_TRANSITION_DURATION
-            ).connect("finished", _on_tween_transition_finshed)
+            ).finished.connect(_on_tween_transition_finshed)
         elif Input.is_action_just_released("pause") and game_scene.is_paused():
             _on_resume_request()
 
@@ -132,7 +132,7 @@ func _on_resume_request() -> void:
     acted.emit("resume")
     input_disabled = true
     tween_transition_slide_container($PauseMenuContainer, Vector2.DOWN, UI_TRANSITION_DURATION)\
-            .connect("finished", _on_tween_transition_finshed)
+            .finished.connect(_on_tween_transition_finshed)
 
 # Listens to _pause_menu.get_node("QuitToDesktopButton").pressed() and
 # $EndGameDialogContainer/MenuContainer/VBoxContainer/QuitToDesktopButton.pressed().

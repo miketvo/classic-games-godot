@@ -14,16 +14,16 @@ extends UI
 #region Godot builtins
 func _ready() -> void:
     _main.get_node("BackButton").grab_focus()
-    _main.get_node("BackButton").connect("pressed", _on_main_back_button_pressed)
-    _main.get_node("GraphicsButton").connect("pressed", _on_main_graphics_button_pressed)
-    _main.get_node("SoundsButton").connect("pressed", _on_main_sounds_button_pressed)
-    _main.get_node("ResetButton").connect("pressed", _on_main_reset_button_pressed)
+    _main.get_node("BackButton").pressed.connect(_on_main_back_button_pressed)
+    _main.get_node("GraphicsButton").pressed.connect(_on_main_graphics_button_pressed)
+    _main.get_node("SoundsButton").pressed.connect(_on_main_sounds_button_pressed)
+    _main.get_node("ResetButton").pressed.connect(_on_main_reset_button_pressed)
     if Global.os_platform == "Desktop":
         _resolution_popup.resolution_selected.connect(_on_resolution_popup_resolution_selected)
         _graphics.get_node("Fullscreen/ToggleButton")\
-                .connect("toggled", _on_graphics_fullscreen_toggled)
+                .toggled.connect(_on_graphics_fullscreen_toggled)
         _graphics.get_node("PostProcessing/ToggleButton")\
-            .connect("toggled", _on_graphics_post_processing_toggled)
+            .toggled.connect(_on_graphics_post_processing_toggled)
     else:
         UI.deactivate_control(_graphics.get_node("Resolution/OptionButton"))
         _graphics.get_node("Resolution").hide()
@@ -32,27 +32,27 @@ func _ready() -> void:
         UI.deactivate_control(_graphics.get_node("PostProcessing/ToggleButton"))
         _graphics.get_node("PostProcessing").hide()
     _graphics.get_node("CrtEffect/ToggleButton")\
-            .connect("toggled", _on_graphics_crt_effect_toggled)
-    _graphics.get_node("Menu/BackButton").connect("pressed", _on_graphics_menu_back_button_pressed)
+            .toggled.connect(_on_graphics_crt_effect_toggled)
+    _graphics.get_node("Menu/BackButton").pressed.connect(_on_graphics_menu_back_button_pressed)
     _sounds.get_node("MasterVolume/HSlider")\
-            .connect("value_changed", _on_sounds_master_volume_slider_updated)
+            .value_changed.connect(_on_sounds_master_volume_slider_updated)
     _sounds.get_node("MasterVolume/MuteToggleButton")\
-            .connect("toggled", _on_sounds_master_volume_mute_toggled)
+            .toggled.connect(_on_sounds_master_volume_mute_toggled)
     _sounds.get_node("UIVolume/HSlider")\
-            .connect("value_changed", _on_sounds_ui_volume_slider_updated)
+            .value_changed.connect(_on_sounds_ui_volume_slider_updated)
     _sounds.get_node("UIVolume/MuteToggleButton")\
-            .connect("toggled", _on_sounds_ui_volume_mute_toggled)
+            .toggled.connect(_on_sounds_ui_volume_mute_toggled)
     _sounds.get_node("GameplayVolume/HSlider")\
-            .connect("value_changed", _on_sounds_gameplay_volume_slider_updated)
+            .value_changed.connect(_on_sounds_gameplay_volume_slider_updated)
     _sounds.get_node("GameplayVolume/MuteToggleButton")\
-            .connect("toggled", _on_sounds_gameplay_volume_mute_toggled)
-    _sounds.get_node("Menu/BackButton").connect("pressed", _on_sounds_menu_back_button_pressed)
+            .toggled.connect(_on_sounds_gameplay_volume_mute_toggled)
+    _sounds.get_node("Menu/BackButton").pressed.connect(_on_sounds_menu_back_button_pressed)
     _reset_defaults.get_node("Menu/ProceedButton")\
-            .connect("pressed", _on_reset_defaults_menu_proceed_button_pressed)
+            .pressed.connect(_on_reset_defaults_menu_proceed_button_pressed)
     _reset_defaults.get_node("Menu/CancelButton")\
-            .connect("pressed", _on_reset_defaults_menu_cancel_button_pressed)
+            .pressed.connect(_on_reset_defaults_menu_cancel_button_pressed)
     _reset_defaults.get_node("ResetCooldownTimer")\
-            .connect("timeout", _on_reset_defaults_reset_cooldown_timer_timeout)
+            .timeout.connect(_on_reset_defaults_reset_cooldown_timer_timeout)
 
     _graphics.get_node("Menu/MessageLabel").text = ""
     _sounds.get_node("Menu/MessageLabel").text = ""
@@ -100,27 +100,27 @@ func _on_main_graphics_button_pressed() -> void:
     else:
         _graphics.get_node("PostProcessing/ToggleButton").grab_focus()
     tween_transition_slide_container($Main, Vector2.RIGHT, UI_TRANSITION_DURATION)\
-            .connect("finished", _on_tween_transition_finshed)
+            .finished.connect(_on_tween_transition_finshed)
     tween_transition_slide_container(_graphics, Vector2.RIGHT, UI_TRANSITION_DURATION)\
-            .connect("finished", _on_tween_transition_finshed)
+            .finished.connect(_on_tween_transition_finshed)
 
 
 func _on_main_sounds_button_pressed() -> void:
     input_disabled = true
     _sounds.get_node("MasterVolume/HSlider").grab_focus()
     tween_transition_slide_container($Main, Vector2.LEFT, UI_TRANSITION_DURATION)\
-            .connect("finished", _on_tween_transition_finshed)
+            .finished.connect(_on_tween_transition_finshed)
     tween_transition_slide_container(_sounds, Vector2.LEFT, UI_TRANSITION_DURATION)\
-            .connect("finished", _on_tween_transition_finshed)
+            .finished.connect(_on_tween_transition_finshed)
 
 
 func _on_main_reset_button_pressed() -> void:
     input_disabled = true
     _reset_defaults.get_node("Menu/CancelButton").grab_focus()
     tween_transition_slide_container($Main, Vector2.UP, UI_TRANSITION_DURATION, 8.0)\
-            .connect("finished", _on_tween_transition_finshed)
+            .finished.connect(_on_tween_transition_finshed)
     tween_transition_slide_container(_reset_defaults, Vector2.UP, UI_TRANSITION_DURATION)\
-            .connect("finished", _on_tween_transition_finshed)
+            .finished.connect(_on_tween_transition_finshed)
 
 
 func _on_main_back_button_pressed() -> void:
@@ -150,9 +150,9 @@ func _on_graphics_menu_back_button_pressed() -> void:
     input_disabled = true
     _main.get_node("GraphicsButton").grab_focus()
     tween_transition_slide_container(_graphics, Vector2.LEFT, UI_TRANSITION_DURATION)\
-            .connect("finished", _on_tween_transition_finshed)
+            .finished.connect(_on_tween_transition_finshed)
     tween_transition_slide_container($Main, Vector2.LEFT, UI_TRANSITION_DURATION)\
-            .connect("finished", _on_tween_transition_finshed)
+            .finished.connect(_on_tween_transition_finshed)
 #endregion
 
 
@@ -200,9 +200,9 @@ func _on_sounds_menu_back_button_pressed() -> void:
     input_disabled = true
     _main.get_node("SoundsButton").grab_focus()
     tween_transition_slide_container(_sounds, Vector2.RIGHT, UI_TRANSITION_DURATION)\
-            .connect("finished", _on_tween_transition_finshed)
+            .finished.connect(_on_tween_transition_finshed)
     tween_transition_slide_container($Main, Vector2.RIGHT, UI_TRANSITION_DURATION)\
-            .connect("finished", _on_tween_transition_finshed)
+            .finished.connect(_on_tween_transition_finshed)
 #endregion
 
 
@@ -219,18 +219,18 @@ func _on_reset_defaults_menu_cancel_button_pressed() -> void:
     input_disabled = true
     _main.get_node("ResetButton").grab_focus()
     tween_transition_slide_container(_reset_defaults, Vector2.DOWN, UI_TRANSITION_DURATION)\
-            .connect("finished", _on_tween_transition_finshed)
+            .finished.connect(_on_tween_transition_finshed)
     tween_transition_slide_container($Main, Vector2.DOWN, UI_TRANSITION_DURATION, 12.0)\
-            .connect("finished", _on_tween_transition_finshed)
+            .finished.connect(_on_tween_transition_finshed)
 
 
 func _on_reset_defaults_reset_cooldown_timer_timeout() -> void:
     input_disabled = true
     _main.get_node("ResetButton").grab_focus()
     tween_transition_slide_container(_reset_defaults, Vector2.DOWN, UI_TRANSITION_DURATION)\
-            .connect("finished", _on_reset_defaults_tween_transitioned)
+            .finished.connect(_on_reset_defaults_tween_transitioned)
     tween_transition_slide_container($Main, Vector2.DOWN, UI_TRANSITION_DURATION, 12.0)\
-            .connect("finished", _on_reset_defaults_tween_transitioned)
+            .finished.connect(_on_reset_defaults_tween_transitioned)
 #endregion
 
 

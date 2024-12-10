@@ -18,7 +18,7 @@ func _ready() -> void:
     %SettingsButton.pressed.connect(_on_main_menu_settings_button_pressed)
     %ClassicModeButton.pressed.connect(_on_start_menu_classic_mode_button_pressed)
     %ChaosModeButton.pressed.connect(_on_start_menu_chaos_mode_button_pressed)
-    _start_menu.get_node("BackButton").connect("pressed", _on_start_menu_back_button_pressed)
+    _start_menu.get_node("BackButton").pressed.connect(_on_start_menu_back_button_pressed)
 
     for child in get_tree().get_nodes_in_group("ui_container_slider_buttons"):
         assert(child is Button, "ui_container_slider_buttons group must contain only Buttons")
@@ -48,9 +48,9 @@ func _on_main_menu_start_button_pressed() -> void:
     input_disabled = true
     _start_menu.get_node("ClassicModeButton").grab_focus()
     tween_transition_slide_container(_main_menu, Vector2.LEFT, UI_TRANSITION_DURATION)\
-            .connect("finished", _on_tween_transition_finshed)
+            .finished.connect(_on_tween_transition_finshed)
     tween_transition_slide_container(_start_menu, Vector2.LEFT, UI_TRANSITION_DURATION)\
-            .connect("finished", _on_tween_transition_finshed)
+            .finished.connect(_on_tween_transition_finshed)
 
 
 func _on_main_menu_settings_button_pressed() -> void:
@@ -75,9 +75,9 @@ func _on_start_menu_back_button_pressed() -> void:
     input_disabled = true
     _main_menu.get_node("StartButton").grab_focus()
     tween_transition_slide_container(_start_menu, Vector2.RIGHT, UI_TRANSITION_DURATION)\
-            .connect("finished", _on_tween_transition_finshed)
+            .finished.connect(_on_tween_transition_finshed)
     tween_transition_slide_container(_main_menu, Vector2.RIGHT, UI_TRANSITION_DURATION)\
-            .connect("finished", _on_tween_transition_finshed)
+            .finished.connect(_on_tween_transition_finshed)
 #endregion
 
 #endregion
