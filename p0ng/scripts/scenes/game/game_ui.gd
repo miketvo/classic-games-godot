@@ -51,10 +51,10 @@ func _ready() -> void:
 
     for child in get_tree().get_nodes_in_group("ui_container_slider_buttons"):
         assert(child is Button, "ui_container_slider_buttons group must contain only Buttons")
-        child.connect("pressed", _on_ui_container_slider_button_pressed)
+        child.pressed.connect(_on_ui_container_slider_button_pressed)
     for child in get_tree().get_nodes_in_group("ui_scene_changer_buttons"):
         assert(child is Button, "ui_scene_changer_buttons group must contain only Buttons")
-        child.connect("pressed", _on_ui_scene_changer_button_pressed)
+        child.pressed.connect(_on_ui_scene_changer_button_pressed)
 
     _endgame_dialog.modulate = Color(1.0, 1.0, 1.0, 0.0)
     _endgame_dialog.visible = false
@@ -117,7 +117,7 @@ func game_over(winning_side: int) -> void:
 # ============================================================================ #
 #region Signal listeners
 
-# Listens to _pause_menu.get_node("ResumeButton.pressed().
+# Listens to _pause_menu.get_node("ResumeButton").pressed().
 func _on_resume_request() -> void:
     Global.software_cursor_visibility = SoftwareCursor.Visibility.IDLE_AUTO_HIDE
     for control: Control in _pause_menu.get_node("VBoxContainer").get_children():
@@ -128,20 +128,20 @@ func _on_resume_request() -> void:
     tween_transition_slide_container($PauseMenuContainer, Vector2.DOWN, UI_TRANSITION_DURATION)\
             .connect("finished", _on_tween_transition_finshed)
 
-# Listens to _pause_menu.get_node("QuitToDesktopButton.pressed() and
-## $EndGameDialogContainer/MenuContainer/VBoxContainer/QuitToDesktopButton.pressed().
+# Listens to _pause_menu.get_node("QuitToDesktopButton").pressed() and
+# $EndGameDialogContainer/MenuContainer/VBoxContainer/QuitToDesktopButton.pressed().
 func _on_quit_to_desktop_request() -> void:
     get_tree().quit()
 
 
-# Listens to _pause_menu.get_node("RestartButton.pressed() and
-## _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").pressed().
+# Listens to _pause_menu.get_node("RestartButton").pressed() and
+# _endgame_dialog.get_node("MenuContainer/VBoxContainer/RestartButton").pressed().
 func _on_restart_request() -> void:
     acted.emit("restart")
 
 
-# Listens to _pause_menu.get_node("EndGameButton.pressed() and
-## _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton").pressed().
+# Listens to _pause_menu.get_node("EndGameButton").pressed() and
+# _endgame_dialog.get_node("MenuContainer/VBoxContainer/BackToMainMenuButton").pressed().
 func _on_end_game_request() -> void:
     acted.emit("end_game")
 

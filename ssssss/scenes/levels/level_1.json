@@ -1,0 +1,14 @@
+{
+	"order": 1,
+	"name": "Torus",
+	"preview": "level_1.png",
+	"win_condition": {
+		"classic_mode": {
+			"target_score": 2000
+		},
+		"chaos_mode": {
+			"target_score": 2200,
+			"target_kills": 1
+		}
+	}
+}

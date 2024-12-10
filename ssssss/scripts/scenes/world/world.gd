@@ -1,0 +1,331 @@
+@tool
+class_name World
+extends Node2D
+## All levels must be placed inside the [code]res://scenes/levels[/code]
+## directory.
+
+
+signal initialized
+signal configuration_changed
+signal built
+signal started
+signal step(step_count: int)
+signal snake_collided(snake_id: int, collide_coords: Vector2i)
+signal food_eaten(snake_id: int, food_coords: Vector2i)
+signal food_digested(snake_id: int, food_coords: Vector2i)
+signal paused
+signal unpaused
+signal stopped
+
+
+# ============================================================================ #
+#region World configuration
+
+@export_group("Player", "player")
+
+## The x-coordinate of the player snake head.
+@warning_ignore("integer_division")
+@export_range(0, Global.WORLD_SIZE.x, 1) var player_spawn_x: int = Global.WORLD_SIZE.x / 2 - 1:
+    set(value):
+        player_spawn_x = value
+        configuration_changed.emit()
+
+## The y-coordinate of the player snake head.
+@warning_ignore("integer_division")
+@export_range(0, Global.WORLD_SIZE.y, 1) var player_spawn_y: int = Global.WORLD_SIZE.y / 2 - 1:
+    set(value):
+        player_spawn_y = value
+        configuration_changed.emit()
+
+## The direction that the player snake faces upon spawning.
+@export var player_spawn_direction: Global.Direction = Global.Direction.UP:
+    set(value):
+        player_spawn_direction = value
+        configuration_changed.emit()
+
+## The initial length of the player snake upon spawning.
+@warning_ignore("integer_division")
+@export_range(2, mini(Global.WORLD_SIZE.x, Global.WORLD_SIZE.y) / 4, 1) var player_initial_length: int = 3:
+    set(value):
+        player_initial_length = value
+        configuration_changed.emit()
+
+
+@export_group("Simulation")
+
+## Delays the simulation start, to give the player more time to orient
+## themselves, or to give time for them to read any instruction displayed on the
+## screen.
+@export_range(0.01, 1.0, 0.001, "or_greater", "suffix:s") var start_delay: float = 0.5
+
+## Delays the simulation resume after [method unpause] id called, to help the
+## player re-orient themselves.
+@export_range(0.01, 1.0, 0.001, "or_greater", "suffix:s") var unpause_delay: float = 0.5
+
+## Is overriden by [constant NamespaceGlobal.INITIAL_STEP_DURATION].
+@export_range(0.01, 1.0, 0.001, "or_greater", "suffix:s") var initial_step_duration: float = 0.5
+
+
+@export_group("Rendering", "draw")
+
+## If [code]true[/code], the outline and direction (if applicable) of each cell
+## is drawn.
+@export var draw_debug_grid: bool = false:
+    set(value):
+        draw_debug_grid = value
+        configuration_changed.emit()
+
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
+#region Public variables
+
+## Whether the world is being simulated.
+var running: bool
+
+## The number of steps elapsed since the start of the world simulation,
+## including the current step.
+var step_count: int
+
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
+#region Internal world state representation
+var snakes: Array[Array]
+var snake_grow_queue: Array[int]
+var snake_grid: WorldGrid2D
+var wall_grid: WorldGrid2D
+var food_grid: WorldGrid2D
+#endregion
+# ============================================================================ #
+
+
+@onready var _tile_map: Node2D = $TileMap
+@onready var _build_state: State = $WorldStateController/BuildState
+@onready var _run_state: State = $WorldStateController/RunState
+
+
+# ============================================================================ #
+#region Godot builtins
+func _ready() -> void:
+    if not Engine.is_editor_hint():
+        _build_state.built.connect(func (): built.emit())
+        _run_state.started.connect(_on_started)
+        _run_state.step.connect(_on_step)
+        _run_state.snake_collided.connect(_on_snake_collided)
+        _run_state.food_eaten.connect(_on_food_eaten)
+        _run_state.food_digested.connect(_on_food_digested)
+        _run_state.stopped.connect(_on_stopped)
+
+    snakes = []
+    snake_grow_queue = []
+    snake_grid = WorldGrid2D.new(
+            Global.WORLD_SIZE,
+            TYPE_VECTOR2I, &"", null, [],
+            true
+    )
+    wall_grid = WorldGrid2D.new(
+            Global.WORLD_SIZE,
+            TYPE_BOOL, &"", null, [],
+            true
+    )
+    food_grid = WorldGrid2D.new(
+            Global.WORLD_SIZE,
+            TYPE_INT, &"", null, [],
+            true
+    )
+
+    if not Engine.is_editor_hint():
+        running = false
+        step_count = 0
+
+    initialized.emit()
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
+#region Public methods
+func get_cell_position(
+        cell_coords: Vector2i,
+        center: bool = false,
+        include_tile_map_transform: bool = false
+) -> Vector2:
+    var result_position: Vector2 = Vector2(get_tile_size() * cell_coords)
+    if center: result_position += Vector2(get_tile_size()) / 2
+    if include_tile_map_transform: result_position = _tile_map.transform * result_position
+    return result_position
+
+
+func spawn_snake(
+        spawn_coords: Vector2i, direction: Vector2i, length: int,
+        debug: bool = false
+) -> Variant:
+    var snake: Array[Vector2i] = []
+    var current_position: Vector2i = spawn_coords
+    for i in range(length):
+        if not debug:
+            assert(
+                    snake_grid.is_clear_at(current_position),
+                    "Cannot spawn snake: (%d, %d) is occupied by another snake"
+                    % [current_position.x, current_position.y]
+            )
+            assert(
+                    wall_grid.is_clear_at(current_position),
+                    "Cannot spawn snake: (%d, %d) is occupied by a wall"
+                    % [current_position.x, current_position.y]
+            )
+            assert(
+                    food_grid.is_clear_at(current_position),
+                    "Cannot spawn snake: (%d, %d) is occupied by food"
+                    % [current_position.x, current_position.y]
+            )
+            snake_grid.set_at(current_position, direction)
+        snake.append(current_position)
+        current_position = snake_grid.wrap_coords(current_position - direction)
+
+    if debug:
+        return snake
+    else:
+        snakes.append(snake)
+        snake_grow_queue.append(0)
+        return null
+
+
+func despawn_snake(snake_id: int) -> void:
+    snake_grow_queue.pop_at(snake_id)
+    var snake := snakes.pop_at(snake_id) as Array[Vector2i]
+    if snake:
+        for cell_coords in snake:
+            snake_grid.reset_at(cell_coords)
+
+
+func spawn_food(spawn_coords: Vector2i, food_type: Global.FoodType) -> void:
+    assert(
+            snake_grid.is_clear_at(spawn_coords),
+            "Cannot spawn food: (%d, %d) is occupied by a snake"
+            % [spawn_coords.x, spawn_coords.y]
+    )
+    assert(
+            wall_grid.is_clear_at(spawn_coords),
+            "Cannot spawn food: (%d, %d) is occupied by a wall"
+            % [spawn_coords.x, spawn_coords.y]
+    )
+    assert(
+            food_grid.is_clear_at(spawn_coords),
+            "Cannot spawn food: (%d, %d) is occupied by another food"
+            % [spawn_coords.x, spawn_coords.y]
+    )
+    food_grid.set_at(spawn_coords, food_type)
+
+
+func spawn_random_food(probabilities: Array[float] = Global.FOOD_PROBABILITIES) -> Vector2i:
+    assert(
+            probabilities.reduce(
+                    func (accum, probability): return accum + probability
+            ) == 1.0,
+            "`probabilities` vector must add up to 1.0"
+    )
+    assert(
+            probabilities.size() == Global.FoodType.size(),
+            "`probabilities` vector size must match World.FoodType size"
+    )
+
+    var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+    var spawn_coords: Vector2i
+    while true:
+        spawn_coords = Vector2i(
+                rng.randi_range(0, food_grid.size(Vector2i.AXIS_X)),
+                rng.randi_range(0, food_grid.size(Vector2i.AXIS_Y))
+        )
+        if (
+                food_grid.is_clear_at(spawn_coords) and
+                wall_grid.is_clear_at(spawn_coords) and
+                snake_grid.is_clear_at(spawn_coords)
+        ): break
+    var food_type: int = Global.FoodType.values()[rng.rand_weighted(probabilities)]
+    spawn_food(spawn_coords, food_type)
+    return spawn_coords
+
+
+func despawn_food(food_coords: Vector2i) -> void:
+    food_grid.reset_at(food_coords)
+
+
+func get_tile_size() -> Vector2i:
+    return _tile_map.get_node("DebugLayer").tile_set.tile_size
+
+
+func get_step_duration() -> float:
+    return _run_state.get_step_duration()
+
+
+func set_step_duration(duration: float) -> void:
+    _run_state.set_step_duration(duration)
+
+
+func pause() -> void:
+    running = false
+    paused.emit()
+    _run_state.pause()
+
+
+func unpause() -> void:
+    unpaused.emit()
+    _run_state.unpause()
+
+
+func play_tile_map_animation(anim_name: StringName) -> void:
+    _tile_map.get_node("AnimationPlayer").play(anim_name)
+#endregion
+# ============================================================================ #
+
+
+# ============================================================================ #
+#region Signal listeners
+
+# Listens to _run_state.started().
+func _on_started() -> void:
+    running = true
+    step_count = 1
+    started.emit()
+
+
+# Listens to _run_state.step().
+func _on_step() -> void:
+    step_count += 1
+    step.emit(step_count)
+
+
+# Listens to _run_state.snake_collided(snake_id: int, collide_coords: Vector2i).
+func _on_snake_collided(snake_id: int, collide_coords: Vector2i) -> void:
+    snake_collided.emit(snake_id, collide_coords)
+    if snake_id > 0:
+        despawn_snake(snake_id)
+
+
+# Listens to _run_state.food_eaten(snake_id: int, food_coords: Vector2i).
+func _on_food_eaten(snake_id: int, food_coords: Vector2i) -> void:
+    food_eaten.emit(snake_id, food_coords)
+
+
+# Listens to _run_state.food_digested(snake_id: int, food_coords: Vector2i).
+func _on_food_digested(snake_id: int, food_coords: Vector2i) -> void:
+    # Queue snake growth based on food value if food is digested.
+    snake_grow_queue[snake_id] += food_grid.get_at(food_coords)
+    despawn_food(food_coords)
+    food_digested.emit(snake_id, food_coords)
+
+
+# Listens to _run_state.stopped().
+func _on_stopped() -> void:
+    running = false
+    step_count = 0
+    stopped.emit()
+
+#endregion
+# ============================================================================ #

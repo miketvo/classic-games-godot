@@ -1,0 +1,71 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Project",
+            "type": "godot",
+            "request": "launch",
+            "project": "${workspaceFolder}",
+            "port": 6007,
+            "scene": "main",
+            // engine command line flags
+            "profiling": false,
+            "single_threaded_scene": false,
+            "debug_collisions": false,
+            "debug_paths": false,
+            "debug_navigation": false,
+            "debug_avoidance": false,
+            "debug_stringnames": false,
+            "frame_delay": 0,
+            "time_scale": 1.0,
+            "disable_vsync": false,
+            // anything else
+            "additional_options": ""
+        },
+        {
+            "name": "Launch Current",
+            "type": "godot",
+            "request": "launch",
+            "project": "${workspaceFolder}",
+            "port": 6007,
+            "scene": "current",
+            // engine command line flags
+            "profiling": false,
+            "single_threaded_scene": false,
+            "debug_collisions": false,
+            "debug_paths": false,
+            "debug_navigation": false,
+            "debug_avoidance": false,
+            "debug_stringnames": false,
+            "frame_delay": 0,
+            "time_scale": 1.0,
+            "disable_vsync": false,
+            // anything else
+            "additional_options": ""
+        },
+        {
+            "name": "Launch Pinned",
+            "type": "godot",
+            "request": "launch",
+            "project": "${workspaceFolder}",
+            "port": 6007,
+            "scene": "pinned",
+            // engine command line flags
+            "profiling": false,
+            "single_threaded_scene": false,
+            "debug_collisions": false,
+            "debug_paths": false,
+            "debug_navigation": false,
+            "debug_avoidance": false,
+            "debug_stringnames": false,
+            "frame_delay": 0,
+            "time_scale": 1.0,
+            "disable_vsync": false,
+            // anything else
+            "additional_options": ""
+        }
+    ]
+}

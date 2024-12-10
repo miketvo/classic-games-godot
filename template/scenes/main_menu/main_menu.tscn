@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://0h88hlpf41jq"]
+
+[ext_resource type="Script" path="res://scripts/scenes/main_menu/main_menu.gd" id="1_kt8cq"]
+[ext_resource type="PackedScene" uid="uid://dw130mw8nfytq" path="res://scenes/main_menu/main_menu_ui.tscn" id="1_rs3e2"]
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource("1_kt8cq")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="MainMenuUI" parent="UI" instance=ExtResource("1_rs3e2")]

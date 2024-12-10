@@ -4,7 +4,7 @@ extends GameScene2D
 # ============================================================================ #
 #region Godot builtins
 func _ready() -> void:
-    $UI/MainMenuUI.connect("acted", _on_main_menu_ui_acted)
+    $UI/MainMenuUI.acted.connect(_on_main_menu_ui_acted)
 #endregion
 # ============================================================================ #
 

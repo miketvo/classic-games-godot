@@ -17,7 +17,7 @@ func _physics_process(_delta: float) -> void:
 # ============================================================================ #
 #region Signal listeners
 
-# Listens to self.body_entered(body: Node)
+# Listens to self.body_entered(body: Node).
 func _on_body_entered(_body: Node) -> void:
     $HitSfx.play()
 

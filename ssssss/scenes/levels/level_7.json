@@ -1,0 +1,14 @@
+{
+	"order": 7,
+	"name": "Castle",
+	"preview": "level_7.png",
+	"win_condition": {
+		"classic_mode": {
+			"target_score": 3200
+		},
+		"chaos_mode": {
+			"target_score": 3400,
+			"target_kills": 13
+		}
+	}
+}

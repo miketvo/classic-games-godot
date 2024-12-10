@@ -1,0 +1,14 @@
+{
+	"order": 4,
+	"name": "Treadmill",
+	"preview": "level_4.png",
+	"win_condition": {
+		"classic_mode": {
+			"target_score": 2600
+		},
+		"chaos_mode": {
+			"target_score": 2800,
+			"target_kills": 7
+		}
+	}
+}

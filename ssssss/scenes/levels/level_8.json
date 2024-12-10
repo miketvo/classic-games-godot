@@ -1,0 +1,14 @@
+{
+	"order": 8,
+	"name": "Arena",
+	"preview": "level_8.png",
+	"win_condition": {
+		"classic_mode": {
+			"target_score": 3400
+		},
+		"chaos_mode": {
+			"target_score": 3600,
+			"target_kills": 15
+		}
+	}
+}

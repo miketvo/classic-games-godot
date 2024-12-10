@@ -1,0 +1,236 @@
+[gd_scene load_steps=8 format=3 uid="uid://b8yj1ahfqm5yo"]
+
+[ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_h5sd5"]
+[ext_resource type="Script" path="res://scripts/scenes/game/game_ui.gd" id="2_5qob0"]
+[ext_resource type="FontFile" uid="uid://cnw16sy3gnjdp" path="res://assets/ui/fonts/3d_venture.ttf" id="3_hmxjm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6tqls"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tmej6"]
+bg_color = Color(0.0941176, 0.0470588, 0.129412, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.956863, 0.690196, 1)
+expand_margin_left = 24.0
+expand_margin_top = 24.0
+expand_margin_right = 24.0
+expand_margin_bottom = 24.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gcg6x"]
+bg_color = Color(1, 0.956863, 0.690196, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.956863, 0.690196, 1)
+expand_margin_left = 8.0
+expand_margin_right = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eqgj4"]
+bg_color = Color(0.0941176, 0.0470588, 0.129412, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.435294, 0.196078, 0.305882, 1)
+expand_margin_left = 8.0
+expand_margin_right = 8.0
+
+[node name="GameUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_h5sd5")
+script = ExtResource("2_5qob0")
+
+[node name="EndGameDialogContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+offset_right = 640.0
+offset_bottom = 360.0
+scale = Vector2(3, 3)
+
+[node name="TopSpacer" type="HSeparator" parent="EndGameDialogContainer"]
+layout_mode = 2
+theme_override_constants/separation = 36
+theme_override_styles/separator = SubResource("StyleBoxEmpty_6tqls")
+
+[node name="MessageContainer" type="CenterContainer" parent="EndGameDialogContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GameClearedMessageContainer" type="PanelContainer" parent="EndGameDialogContainer/MessageContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tmej6")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EndGameDialogContainer/MessageContainer/GameClearedMessageContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TitleLabel" type="Label" parent="EndGameDialogContainer/MessageContainer/GameClearedMessageContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.956863, 0.690196, 1)
+theme_override_fonts/font = ExtResource("3_hmxjm")
+text = "CONGRATULATIONS!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MessageLabel" type="Label" parent="EndGameDialogContainer/MessageContainer/GameClearedMessageContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.435294, 0.196078, 0.305882, 1)
+theme_override_constants/line_spacing = -6
+text = "you absolute mad lad/lass. you have beaten the entire game!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="WinLabel" type="Label" parent="EndGameDialogContainer/MessageContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.0941176, 0.0470588, 0.129412, 1)
+theme_override_fonts/font = ExtResource("3_hmxjm")
+theme_override_styles/normal = SubResource("StyleBoxFlat_gcg6x")
+text = "level cleared"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LoseLabel" type="Label" parent="EndGameDialogContainer/MessageContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.435294, 0.196078, 0.305882, 1)
+theme_override_fonts/font = ExtResource("3_hmxjm")
+theme_override_styles/normal = SubResource("StyleBoxFlat_eqgj4")
+text = "game over"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MenuContainer" type="PanelContainer" parent="EndGameDialogContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EndGameDialogContainer/MenuContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="NextLevelButton" type="Button" parent="EndGameDialogContainer/MenuContainer/VBoxContainer" groups=["ui_scene_changer_buttons"]]
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../QuitToDesktopButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../RestartButton")
+focus_next = NodePath("../RestartButton")
+focus_previous = NodePath("../QuitToDesktopButton")
+text = "next level"
+
+[node name="RestartButton" type="Button" parent="EndGameDialogContainer/MenuContainer/VBoxContainer" groups=["ui_scene_changer_buttons"]]
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../NextLevelButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../BackToMainMenuButton")
+focus_next = NodePath("../BackToMainMenuButton")
+focus_previous = NodePath("../NextLevelButton")
+text = "restart"
+
+[node name="BackToMainMenuButton" type="Button" parent="EndGameDialogContainer/MenuContainer/VBoxContainer" groups=["ui_scene_changer_buttons"]]
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../RestartButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../QuitToDesktopButton")
+focus_next = NodePath("../QuitToDesktopButton")
+focus_previous = NodePath("../RestartButton")
+text = "back to main menu"
+
+[node name="QuitToDesktopButton" type="Button" parent="EndGameDialogContainer/MenuContainer/VBoxContainer"]
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../BackToMainMenuButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../NextLevelButton")
+focus_next = NodePath("../NextLevelButton")
+focus_previous = NodePath("../BackToMainMenuButton")
+text = "quit to desktop"
+
+[node name="BottomSpacer" type="HSeparator" parent="EndGameDialogContainer"]
+layout_mode = 2
+theme_override_constants/separation = 52
+theme_override_styles/separator = SubResource("StyleBoxEmpty_6tqls")
+
+[node name="PauseMenuContainer" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 870.0
+offset_top = 1080.0
+offset_right = 1050.0
+offset_bottom = 1262.0
+scale = Vector2(3, 3)
+pivot_offset = Vector2(90, 0)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenuContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Heading" type="Label" parent="PauseMenuContainer/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"LabelHeading"
+text = "paused"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="PauseMenuContainer/VBoxContainer" groups=["ui_container_slider_buttons"]]
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../QuitToDesktopButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../RestartButton")
+focus_next = NodePath("../RestartButton")
+focus_previous = NodePath("../QuitToDesktopButton")
+text = "resume"
+
+[node name="RestartButton" type="Button" parent="PauseMenuContainer/VBoxContainer" groups=["ui_scene_changer_buttons"]]
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../ResumeButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../EndGameButton")
+focus_next = NodePath("../EndGameButton")
+focus_previous = NodePath("../ResumeButton")
+text = "restart"
+
+[node name="EndGameButton" type="Button" parent="PauseMenuContainer/VBoxContainer" groups=["ui_scene_changer_buttons"]]
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../RestartButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../QuitToDesktopButton")
+focus_next = NodePath("../QuitToDesktopButton")
+focus_previous = NodePath("../RestartButton")
+text = "end game"
+
+[node name="QuitToDesktopButton" type="Button" parent="PauseMenuContainer/VBoxContainer"]
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../EndGameButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../ResumeButton")
+focus_next = NodePath("../ResumeButton")
+focus_previous = NodePath("../EndGameButton")
+text = "quit to desktop"

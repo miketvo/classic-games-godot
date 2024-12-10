@@ -10,22 +10,22 @@ extends UI
 func _ready() -> void:
     %GameVersionLabel.text += ProjectSettings.get_setting("application/config/version")
     %StartButton.grab_focus()
-    %StartButton.connect("pressed", _on_main_menu_start_button_pressed)
+    %StartButton.pressed.connect(_on_main_menu_start_button_pressed)
     if Global.os_platform in [ "Mobile", "Web" ]:
         UI.deactivate_control(%QuitButton)
     else:
-        %QuitButton.connect("pressed", _on_main_menu_quit_button_pressed)
-    %SettingsButton.connect("pressed", _on_main_menu_settings_button_pressed)
-    %OnePlayerButton.connect("pressed", _on_start_menu_one_player_button_pressed)
-    %TwoPlayersButton.connect("pressed", _on_start_menu_two_players_button_pressed)
+        %QuitButton.pressed.connect(_on_main_menu_quit_button_pressed)
+    %SettingsButton.pressed.connect(_on_main_menu_settings_button_pressed)
+    %OnePlayerButton.pressed.connect(_on_start_menu_one_player_button_pressed)
+    %TwoPlayersButton.pressed.connect(_on_start_menu_two_players_button_pressed)
     _start_menu.get_node("BackButton").connect("pressed", _on_start_menu_back_button_pressed)
 
     for child in get_tree().get_nodes_in_group("ui_container_slider_buttons"):
         assert(child is Button, "ui_container_slider_buttons group must contain only Buttons")
-        child.connect("pressed", _on_ui_container_slider_button_pressed)
+        child.pressed.connect(_on_ui_container_slider_button_pressed)
     for child in get_tree().get_nodes_in_group("ui_scene_changer_buttons"):
         assert(child is Button, "ui_scene_changer_buttons group must contain only Buttons")
-        child.connect("pressed", _on_ui_scene_changer_button_pressed)
+        child.pressed.connect(_on_ui_scene_changer_button_pressed)
 
 
 func _process(_delta: float) -> void:
@@ -53,7 +53,7 @@ func _on_main_menu_start_button_pressed() -> void:
             .connect("finished", _on_tween_transition_finshed)
 
 
-func _on_main_menu_settings_button_pressed():
+func _on_main_menu_settings_button_pressed() -> void:
     acted.emit("settings")
 
 

@@ -1,0 +1,128 @@
+[gd_scene load_steps=3 format=3 uid="uid://dw130mw8nfytq"]
+
+[ext_resource type="Theme" uid="uid://n51w2k47rkyf" path="res://assets/ui/menus.theme" id="1_jv3ik"]
+[ext_resource type="Script" path="res://scripts/scenes/main_menu/main_menu_ui.gd" id="1_oofdk"]
+
+[node name="MainMenuUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_jv3ik")
+script = ExtResource("1_oofdk")
+
+[node name="MainMenuContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 896.0
+offset_top = 495.0
+offset_right = -896.0
+offset_bottom = -481.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4, 4)
+pivot_offset = Vector2(64, 0)
+alignment = 1
+
+[node name="StartButton" type="Button" parent="MainMenuContainer" groups=["ui_container_slider_buttons"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../QuitButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../SettingsButton")
+focus_next = NodePath("../SettingsButton")
+focus_previous = NodePath("../QuitButton")
+text = "start"
+
+[node name="SettingsButton" type="Button" parent="MainMenuContainer" groups=["ui_scene_changer_buttons"]]
+unique_name_in_owner = true
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../StartButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../QuitButton")
+focus_next = NodePath("../QuitButton")
+focus_previous = NodePath("../StartButton")
+text = "settings"
+
+[node name="QuitButton" type="Button" parent="MainMenuContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../SettingsButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../StartButton")
+focus_next = NodePath("../StartButton")
+focus_previous = NodePath("../SettingsButton")
+text = "quit"
+
+[node name="StartMenuContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 2112.0
+offset_top = 407.0
+offset_right = 2240.0
+offset_bottom = 541.0
+scale = Vector2(4, 4)
+pivot_offset = Vector2(64, 0)
+
+[node name="Heading" type="Label" parent="StartMenuContainer"]
+layout_mode = 2
+theme_type_variation = &"LabelHeading"
+text = "start game"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Mode1Button" type="Button" parent="StartMenuContainer" groups=["ui_scene_changer_buttons"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../BackButton")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../Mode2Button")
+focus_next = NodePath("../Mode2Button")
+focus_previous = NodePath("../BackButton")
+text = "mode 1"
+
+[node name="Mode2Button" type="Button" parent="StartMenuContainer" groups=["ui_scene_changer_buttons"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../Mode1Button")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../BackButton")
+focus_next = NodePath("../BackButton")
+focus_previous = NodePath("../Mode1Button")
+text = "mode 2"
+
+[node name="BackButton" type="Button" parent="StartMenuContainer" groups=["ui_container_slider_buttons"]]
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../Mode2Button")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../Mode1Button")
+focus_next = NodePath("../Mode1Button")
+focus_previous = NodePath("../Mode2Button")
+text = "back"
+
+[node name="GameVersionLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 967.0
+offset_right = 78.0
+offset_bottom = 995.0
+scale = Vector2(4, 4)
+text = "version "
+horizontal_alignment = 2
