@@ -27,17 +27,19 @@ func _ready() -> void:
 ## Plays a child [AudioStreamPlayer].
 func play_sound(audio_stream_name: StringName) -> void:
     var audio_stream_player: AudioStreamPlayer = get_node("%s" % audio_stream_name)
-    audio_stream_player.play()
+    if audio_stream_player:
+        audio_stream_player.play()
 
 
 ## Plays a child [AudioStreamPlayer2D].
-func play_sound2d(audio_stream_name: StringName, position: Vector2, global: bool = true) -> void:
+func play_sound_2d(audio_stream_name: StringName, position: Vector2, global: bool = true) -> void:
     var audio_stream_player: AudioStreamPlayer2D = get_node("%s" % audio_stream_name)
-    if global:
-        audio_stream_player.global_position = position
-    else:
-        audio_stream_player.position = position
-    audio_stream_player.play()
+    if audio_stream_player:
+        if global:
+            audio_stream_player.global_position = position
+        else:
+            audio_stream_player.position = position
+        audio_stream_player.play()
 
 #endregion
 # ============================================================================ #
